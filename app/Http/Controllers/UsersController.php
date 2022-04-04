@@ -45,7 +45,7 @@ class UsersController extends Controller
                 'NamaDepanUsers' => 'required',
                 'NamaBelakangUsers' => 'required',
                 'NoUsers' => 'required',
-                'logo' => 'mimes:jpeg,jpg,png|required|max:10000'
+                'img' => 'mimes:jpeg,jpg,png|required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -53,7 +53,11 @@ class UsersController extends Controller
             ]
         );
 
+        // $files = $request->file('img');
 
+        // $imageName = time() . '.' . $files->getClientOriginalExtension();
+
+        // $files->move(public_path('uploads/users'), $imageName);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
@@ -76,7 +80,7 @@ class UsersController extends Controller
                 'phone' => $request->input('NoUsers'),
                 'gender' => $request->input('gender'),
                 'group_id' => $request->input('GroupsUsers'),
-                'img' => '',
+                // 'img' => $imageName,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'last_login' => date('Y-m-d H:i:s')
             ];

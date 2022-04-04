@@ -31,6 +31,11 @@ class AuthController extends Controller
         $data = User::where('username', $username)->first();
         if ($data) {
             $DataStore = Store::where('id', $data['store_id'])->first();
+            if ($DataStore) {
+                $tipe = $DataStore['tipe'];
+            } else {
+                $tipe = 0;
+            }
             $ses_data = [
                 'id' => $data['id'],
                 'username'  => $data['username'],
@@ -39,7 +44,7 @@ class AuthController extends Controller
                 'store_id'     => $data['store_id'],
                 'group_id' => $data['group_id'],
                 'logo' => $data['logo'],
-                'tipe' => $DataStore['tipe'],
+                'tipe' => $tipe,
                 'logged_in' => TRUE
             ];
 

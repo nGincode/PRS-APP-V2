@@ -20,7 +20,7 @@ if (request()->session()->has('logged_in')) {
 if(file_exists('/uploads/logo/' . $Logo)){ 
         $urlLogo = url('/uploads/logo/' . $Logo);
     }else{  
-        $urlLogo = url('/uploads/ivn_image/unnamed.png');
+        $urlLogo = url('/assets/images/unnamed.png');
 }
 
 $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.group_id')->where('groups_users.user_id', $Id)->first();
@@ -68,6 +68,13 @@ $user_permission = unserialize($DataGroup['permission']);
   <!-- summernote -->
   <link rel="stylesheet" href="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/summernote/summernote-bs4.min.css">
 
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+  
   {{-- Admin LTE BASE TAMPLATE --}}
   <link rel="stylesheet" href="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/dist/css/adminlte.min.css">
 
@@ -329,6 +336,21 @@ $user_permission = unserialize($DataGroup['permission']);
 <!-- Sweetalert -->
 <script src="{{ url('/vendor/sweetalert/sweetalert.all.js') }}"></script>
 
+
+<!-- DataTables  & Plugins -->
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/jszip/jszip.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="{{url('/'); }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 <script>
   $.ajaxSetup({
         headers: {
@@ -565,6 +587,22 @@ $(document).ready(function() {
     })
     
     bsCustomFileInput.init();
+
+
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
 
   })
 </script>
