@@ -27,6 +27,7 @@ class UsersController extends Controller
 
         $this->data['Store'] = Store::all();
         $this->data['Group'] = Groups::orderBy('group_name')->get();
+        $this->data['DataUsers'] = User::orderBy('username')->get();
         return view('Users', $this->data);
     }
 
@@ -53,11 +54,7 @@ class UsersController extends Controller
             ]
         );
 
-        // $files = $request->file('img');
 
-        // $imageName = time() . '.' . $files->getClientOriginalExtension();
-
-        // $files->move(public_path('uploads/users'), $imageName);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
@@ -68,6 +65,15 @@ class UsersController extends Controller
                 ];
             }
         } else {
+
+            if ($request->hasFile('img')) {
+                $files = $request->file('img');
+                $imageName = $request->input('Username') . '.' . $files->getClientOriginalExtension();
+                $files->move(public_path('uploads/users'), $imageName);
+            } else {
+                $imageName = '';
+            }
+
             $StoreName = Store::where('id', $request->input('OutletUsers'))->first();
             $input = [
                 'store' => $StoreName['name'],
@@ -80,7 +86,7 @@ class UsersController extends Controller
                 'phone' => $request->input('NoUsers'),
                 'gender' => $request->input('gender'),
                 'group_id' => $request->input('GroupsUsers'),
-                // 'img' => $imageName,
+                'img' => url('/') . '/uploads/users/' . $imageName,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'last_login' => date('Y-m-d H:i:s')
             ];

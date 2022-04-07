@@ -41,7 +41,6 @@ class DashboardController extends Controller
             $this->data['JumlahProductLogistik'] = LogistikProduk::count();
         }
 
-        $this->data['title'] = 'Dashboard';
 
         return view('Dashboard', $this->data);
     }
