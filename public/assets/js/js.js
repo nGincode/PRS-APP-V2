@@ -1,8 +1,8 @@
 //ajax setup
 $.ajaxSetup({
-      headers: {
+    headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
+    }
 });
 
 //penggunaan library
@@ -94,15 +94,17 @@ $(function() {
 
 //DataTable
 $(function() {
+  if($("#manage").length){
     $("#manage").DataTable({
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print"]
     }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
+  }
 })
 
-//popup alert
+//alert
 function popup($icon, $toast, $pesan) {
       if ($toast == true) {
         if ($icon === 'success') {
@@ -259,7 +261,6 @@ function popup($icon, $toast, $pesan) {
 
 //form
 $(document).ready(function() {
-
       //users
     if ($('#FormUsers').length) {
         $('#FormUsers').validate({
@@ -309,7 +310,7 @@ $(document).ready(function() {
 
           if (isValid) {
             $.ajax({
-              url: "{{ url('/users') }}",
+              url: $(this).attr('action'),
               type: "POST",
               data: formData,
               cache:false,
@@ -331,6 +332,19 @@ $(document).ready(function() {
     }
 });
 
-
-
+//popup manage
+function EditManage(id, title) {
+    $.ajax({
+            url: title + "/Edit",
+            type: "POST",
+            data: {
+                id:id
+            },
+            success: function(data) {
+                $('#ModalLabel').html('Edit ' + title);
+                $('#ModelView').html(data);
+            }
+    })
+        
+}
 

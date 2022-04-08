@@ -36,5 +36,15 @@ Route::controller(UsersController::class)->group(
     function () {
         Route::get('users', 'index')->middleware('auth');
         Route::post('users', 'tambah')->middleware('auth');
+
+        Route::post('Users/Edit', 'Edit')->middleware('auth');
+        Route::post('Users/TambahEdit', 'TambahEdit')->middleware('auth');
     }
 );
+
+Route::get('/test', function () {
+
+    if ($message = session('sukses')) {
+        echo $message;
+    }
+});
