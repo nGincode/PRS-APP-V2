@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\StoreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +35,26 @@ Route::get('/', [DashboardController::class, 'Index'])->middleware('auth')->name
 //Users
 Route::controller(UsersController::class)->group(
     function () {
-        Route::get('users', 'index')->middleware('auth');
-        Route::post('users', 'tambah')->middleware('auth');
+        Route::get('Users', 'index')->middleware('auth');
+        Route::post('Users', 'tambah')->middleware('auth');
 
         Route::post('Users/Edit', 'Edit')->middleware('auth');
         Route::post('Users/TambahEdit', 'TambahEdit')->middleware('auth');
+
+        Route::post('Users/Hapus', 'Hapus')->middleware('auth');
+    }
+);
+
+
+Route::controller(StoreController::class)->group(
+    function () {
+        Route::get('Store', 'Index')->middleware('auth');
+        Route::post('Store', 'Tambah')->middleware('auth');
+
+        Route::post('Store/Edit', 'Edit')->middleware('auth');
+        Route::post('Store/TambahEdit', 'TambahEdit')->middleware('auth');
+
+        Route::post('Store/Hapus', 'Hapus')->middleware('auth');
     }
 );
 

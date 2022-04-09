@@ -15,20 +15,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-class UsersController extends Controller
+class StoreController extends Controller
 {
     public function __construct()
     {
-        $this->data['title'] = 'Users';
-        $this->data['manage'] = 'Data Users ' . date('Y-m-d');
+        $this->data['title'] = 'Store';
     }
 
-    public function index(Request $request)
+    public function Index(Request $request)
     {
         $this->data['Store'] = Store::all();
         $this->data['Group'] = Groups::orderBy('group_name')->get();
         $this->data['DataUsers'] = User::orderBy('username')->get();
-        return view('Users', $this->data);
+        return view('Stores', $this->data);
     }
 
     public function Tambah(Request $request)

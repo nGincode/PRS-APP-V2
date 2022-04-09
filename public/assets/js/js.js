@@ -92,17 +92,6 @@ $(function() {
 
 })
 
-//DataTable
-$(function() {
-  if($("#manage").length){
-    $("#manage").DataTable({
-        "responsive": true,
-        "lengthChange": false,
-        "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print"]
-    }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
-  }
-})
 
 //alert
 function popup($icon, $toast, $pesan) {
@@ -332,8 +321,9 @@ $(document).ready(function() {
     }
 });
 
-//popup manage
-function EditManage(id, title) {
+
+//popup
+function Edit(id, title) {
     $.ajax({
             url: title + "/Edit",
             type: "POST",
@@ -345,6 +335,41 @@ function EditManage(id, title) {
                 $('#ModelView').html(data);
             }
     })
+        
+}
+
+
+function Hapus(id, title) {
+    Swal.fire({
+    title: 'Yakin Menghapus?',
+    text: "Data Akan Dihapus Permanen!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Hapus'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      
+      $.ajax({
+              url: title + "/Hapus",
+              type: "POST",
+              data: {
+                  id:id
+              },
+              dataType: 'json',
+              success: function(data) {
+                  if (data.status === 'success') {
+                    popup(data.status, data.toast, data.pesan);
+                    $('#FormUsers')[0].reset();
+                  } else {
+                    popup(data.status, data.toast, data.pesan);
+                  }
+              }
+      })
+    }
+})
+
         
 }
 

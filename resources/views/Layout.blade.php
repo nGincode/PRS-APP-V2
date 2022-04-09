@@ -59,6 +59,7 @@ $user_permission = unserialize($DataGroup['permission']);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="icon" href="{{ url('/') }}/assets/images/logo/prslogin.png" sizes="10x16">
     <title>{{ $title }}</title>
 
     <!-- Google Font: Source Sans Pro -->
@@ -145,7 +146,7 @@ $user_permission = unserialize($DataGroup['permission']);
             <ul class="navbar-nav ml-auto">
 
                 <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         <span class="badge badge-warning navbar-badge">15</span>
@@ -170,7 +171,7 @@ $user_permission = unserialize($DataGroup['permission']);
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
@@ -234,11 +235,36 @@ $user_permission = unserialize($DataGroup['permission']);
                             </a>
                         </li>
 
+                        @if (in_array('createStore', $user_permission) || in_array('updateStore', $user_permission) || in_array('viewStore', $user_permission) || in_array('deleteStore', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Store') }}"
+                                    class="nav-link @if ($title == 'Store') active @endif ">
+                                    <i class=" nav-icon fas fa-home"></i>
+                                    <p>
+                                        Stores
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+
+                        @if (in_array('createGrou', $user_permission) || in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Group') }}"
+                                    class="nav-link @if ($title == 'Group') active @endif ">
+                                    <i class=" nav-icon fas fa-users"></i>
+                                    <p>
+                                        Groups
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
                         @if (in_array('createUser', $user_permission) || in_array('updateUser', $user_permission) || in_array('viewUser', $user_permission) || in_array('deleteUser', $user_permission))
                             <li class="nav-item ">
-                                <a href="{{ url('/users') }}"
+                                <a href="{{ url('/Users') }}"
                                     class="nav-link @if ($title == 'Users') active @endif ">
-                                    <i class=" nav-icon fas fa-users"></i>
+                                    <i class=" nav-icon fas fa-user"></i>
                                     <p>
                                         Users
                                     </p>
@@ -450,6 +476,55 @@ $user_permission = unserialize($DataGroup['permission']);
         }
 
     </style>
+    <script>
+        //DataTable
+        $(function() {
+            if ($("#manage").length) {
+                $("#manage").DataTable({
+                    "responsive": true,
+                    "lengthChange": true,
+                    "autoWidth": false,
+                    "buttons": [{
+                            extend: 'copyHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [0, 1, 2, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [0, 1, 2, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [0, 1, 2, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [0, 1, 2, 4, 5, 6]
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [0, 1, 2, 4, 5, 6]
+                            }
+                        }
+                    ]
+                }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
+            }
+        })
+    </script>
     @include('sweetalert::alert')
 </body>
 
