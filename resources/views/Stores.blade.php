@@ -3,7 +3,7 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            <form id="FormUsers" action="{{ url('/Store') }}">
+            <form id="FormStore" action="{{ url('/Store') }}">
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
@@ -24,62 +24,57 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="Email">Email</label>
-                                    <input type="email" class="form-control" id="Email" placeholder="Email" name="Email">
+                                    <label>Status</label>
+                                    <select name="status" id="status" class="form-control select2 select2-danger" required
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">In Active</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="Username">Username</label>
-                                    <input type="text" class="form-control" id="Username" placeholder="Username"
-                                        name="Username">
+                                    <label>Tipe</label>
+                                    <select name="tipe" id="tipe" class="form-control select2 select2-danger" required
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        <option value="Office">Office</option>
+                                        <option value="Outlet">Outlet</option>
+                                        <option value="Logistik">Logistik</option>
+                                        <option value="Khusus">Khusus</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="PasswordUsers">Password</label>
-                                    <input type="password" class="form-control" id="PasswordUsers" placeholder="Password"
-                                        name="PasswordUsers">
+                                    <label for="name">Nama Store</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Nama Store"
+                                        name="name">
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="PasswordRipet">Password Ulangi</label>
-                                    <input type="password" class="form-control" id="PasswordRipet" placeholder="Passworrd"
-                                        name="PasswordRipet">
+                                    <label for="alamat">Alamat</label>
+                                    <input type="text" class="form-control" id="alamat" placeholder="alamat"
+                                        name="alamat">
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="NamaDepanUsers">Nama Depan</label>
-                                    <input type="text" class="form-control" id="NamaDepanUsers" placeholder="Nama Depan"
-                                        name="NamaDepanUsers">
+                                    <label for="wa">No Whatsapp</label>
+                                    <input type="number" class="form-control" id="wa" placeholder="No Wa" name="wa">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="NamaBelakangUsers">Nama Belakang</label>
-                                    <input type="text" class="form-control" id="NamaBelakangUsers"
-                                        placeholder="Nama Belakang" name="NamaBelakangUsers">
-                                </div>
-                            </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="NoUsers">No Whatsapp</label>
-                                    <input type="number" class="form-control" id="NoUsers" placeholder="No Whatsapp"
-                                        name="NoUsers">
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="img">Image Profil</label>
+                                    <label for="img">Logo Store</label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" accept="image/*" id="img" name="img">
                                         <label class="custom-file-label" for="img">Choose file</label>
@@ -87,24 +82,29 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group clearfix">
-                                    <label>Gender</label><br>
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" id="GenderUsersPerempuan" name="gender" value="1" checked>
-                                        <label for="GenderUsersPerempuan">
-                                            Perempuan
-                                        </label>
-                                    </div>
-                                    <div class="icheck-primary d-inline">
-                                        <input type="radio" id="GenderUsersPria" value="2" name="gender">
-                                        <label for="GenderUsersPria">
-                                            Laki-Laki
-                                        </label>
-                                    </div>
+                            <div class="col-12 col-sm-12" id="isi_jam_kerja">
+                                <div class="form-group">
+                                    <label for="nama_shift">Nama Shift</label>
+                                    <input type="text" class="form-control" id="nama_shift" placeholder="Nama Shift"
+                                        name="nama_shift[]">
                                 </div>
                             </div>
 
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="masuk_kerja">Masuk </label>
+                                    <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-6" id='akhir_isi_jam_kerja'>
+                                <div class="form-group">
+                                    <label for="pulang_kerja">Pulang </label>
+                                    <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]">
+                                </div>
+                            </div>
+
+                            <a class="col-12 col-sm-12 btn btn-success" id="add_row_jam_kerja">+ Tambah Shift</a>
 
                         </div>
                         <!-- /.row -->
@@ -125,47 +125,15 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Username</th>
                                 <th>Store</th>
-                                <th>Email</th>
-                                <th>Nama Lengkap</th>
+                                <th>Status</th>
+                                <th>Tipe</th>
+                                <th>Alamat</th>
                                 <th>No Wa</th>
-                                <th>Last Login</th>
+                                <th>Jam Kerja</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($DataUsers as $v)
-                                @if ($v['id'] != 1)
-                                    <tr>
-                                        <td><img width="30" class="rounded-circle"
-                                                src="@if ($v['img']) {{ $v['img'] }} @else http://prs/assets/images/unnamed.png @endif">
-                                        </td>
-                                        <td>{{ $v['username'] }}</td>
-                                        <td>{{ $v['store'] }}</td>
-                                        <td>{{ $v['email'] }}</td>
-                                        <td>{{ $v['firstname'] . ' ' . $v['lastname'] }}</td>
-                                        <td>{{ $v['phone'] }}</td>
-                                        <td>{{ $v['last_login'] }}</td>
-                                        <td>
-                                            <div class="btn-group dropleft">
-                                                <button type="button" class="btn btn-default dropdown-toggle"
-                                                    data-toggle="dropdown" aria-expanded="false"> <span
-                                                        class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item"
-                                                            onclick="Edit({{ $v['id'] }}, '{{ $title }}')"
-                                                            data-toggle="modal" data-target="#Modal" href="#"><i
-                                                                class="fas fa-pencil-alt"></i> Edit</a></li>
-                                                    <li><a class="dropdown-item"
-                                                            onclick="Hapus({{ $v['id'] }}, '{{ $title }}')"
-                                                            href="#"><i class="fas fa-trash-alt"></i> Hapus</a></li>
-                                                </ul>
-                                            </div>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
                 <!-- /.card-body -->

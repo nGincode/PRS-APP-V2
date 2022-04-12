@@ -159,38 +159,6 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($DataUsers as $v)
-                                @if ($v['id'] != 1)
-                                    <tr>
-                                        <td><img width="30" class="rounded-circle"
-                                                src="@if ($v['img']) {{ $v['img'] }} @else http://prs/assets/images/unnamed.png @endif">
-                                        </td>
-                                        <td>{{ $v['username'] }}</td>
-                                        <td>{{ $v['store'] }}</td>
-                                        <td>{{ $v['email'] }}</td>
-                                        <td>{{ $v['firstname'] . ' ' . $v['lastname'] }}</td>
-                                        <td>{{ $v['phone'] }}</td>
-                                        <td>{{ $v['last_login'] }}</td>
-                                        <td>
-                                            <div class="btn-group dropleft">
-                                                <button type="button" class="btn btn-default dropdown-toggle"
-                                                    data-toggle="dropdown" aria-expanded="false"> <span
-                                                        class="caret"></span></button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item"
-                                                            onclick="Edit({{ $v['id'] }}, '{{ $title }}')"
-                                                            data-toggle="modal" data-target="#Modal" href="#"><i
-                                                                class="fas fa-pencil-alt"></i> Edit</a></li>
-                                                    <li><a class="dropdown-item"
-                                                            onclick="Hapus({{ $v['id'] }}, '{{ $title }}')"
-                                                            href="#"><i class="fas fa-trash-alt"></i> Hapus</a></li>
-                                                </ul>
-                                            </div>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
                 <!-- /.card-body -->

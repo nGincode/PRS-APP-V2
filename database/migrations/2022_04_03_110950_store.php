@@ -18,12 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('active');
             $table->string('tipe');
-            $table->string('s1');
-            $table->string('s2');
-            $table->string('lembur');
-            $table->string('khusus_s1');
-            $table->string('khusus_s2');
-            $table->string('akustik');
+            $table->string('alamat')->nullable();
+            $table->string('img')->nullable();
+            $table->string('wa')->nullable();
+            $table->string('Jam_kerja')->nullable();
             $table->timestamps();
         });
     }

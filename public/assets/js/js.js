@@ -68,7 +68,8 @@ $(function() {
 
       //Timepicker
       $('#timepicker').datetimepicker({
-        format: 'LT'
+        format: 'HH:mm',
+        use24hours: true
       })
 
       //Bootstrap Duallistbox
@@ -288,7 +289,7 @@ $(document).ready(function() {
             }
           },
           messages: {
-            // OutletUsers : "Masih Kosong"
+            // id : "pesan"
           }
         });
 
@@ -306,10 +307,72 @@ $(document).ready(function() {
               contentType: false,
               processData: false,
               dataType: 'json',
+              error: function(xhr, status, error) {
+                popup(status, true, xhr.status +" "+ error );
+              },
               success: function(data) {
                 if (data.status === 'success') {
                   popup(data.status, data.toast, data.pesan);
                   $('#FormUsers')[0].reset();
+                  $('#manage').DataTable().ajax.reload();
+                } else {
+                  popup(data.status, data.toast, data.pesan);
+                }
+              }
+            });
+
+          }
+        });
+    }
+    
+      //store
+    if ($('#FormStore').length) {
+        $('#FormStore').validate({
+          errorClass: 'error',
+          rules: {
+            'name': {
+              required: true
+            },
+            'status': {
+              required: true
+            },
+            'tipe': {
+              required: true
+            },
+            'alamat': {
+              required: true
+            },
+            'wa': {
+              required: true
+            }
+          },
+          messages: {
+            // OutletUsers : "Masih Kosong"
+          }
+        });
+
+        $('#FormStore').on('submit', function(event) {
+          var isValid = $(this).valid();
+          event.preventDefault();
+          var formData = new FormData(this);
+
+          if (isValid) {
+            $.ajax({
+              url: $(this).attr('action'),
+              type: "POST",
+              data: formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              dataType: 'json',
+              error: function(xhr, status, error) {
+                popup(status, true, xhr.status +" "+ error );
+              },
+              success: function(data) {
+                if (data.status === 'success') {
+                  popup(data.status, data.toast, data.pesan);
+                  $('#FormStore')[0].reset();
+                  $('#manage').DataTable().ajax.reload();
                 } else {
                   popup(data.status, data.toast, data.pesan);
                 }
@@ -321,6 +384,18 @@ $(document).ready(function() {
     }
 });
 
+//Lainnya
+$(document).ready(function() {
+            //Tambah Jam Kerja
+            $("#add_row_jam_kerja").unbind('click').bind('click', function() {
+                var row_id = $(".row #isi_jam_kerja").length + 1;
+                var html ='<div class="col-12 col-sm-12" id="isi_jam_kerja"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift '+row_id+'" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
+                if (row_id >= 2) {
+                    $(".row #akhir_isi_jam_kerja:last").after(html);
+                }
+            });
+});
+
 
 //popup
 function Edit(id, title) {
@@ -329,6 +404,10 @@ function Edit(id, title) {
             type: "POST",
             data: {
                 id:id
+            },
+            error: function(xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                popup('error', true, err.Message);
             },
             success: function(data) {
                 $('#ModalLabel').html('Edit ' + title);
@@ -358,10 +437,13 @@ function Hapus(id, title) {
                   id:id
               },
               dataType: 'json',
+              error: function(xhr, status, error) {
+                popup(status, true, xhr.status +" "+ error );
+              },
               success: function(data) {
                   if (data.status === 'success') {
                     popup(data.status, data.toast, data.pesan);
-                    $('#FormUsers')[0].reset();
+                    $('#manage').DataTable().ajax.reload();
                   } else {
                     popup(data.status, data.toast, data.pesan);
                   }

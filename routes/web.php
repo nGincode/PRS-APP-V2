@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
@@ -42,25 +44,26 @@ Route::controller(UsersController::class)->group(
         Route::post('Users/TambahEdit', 'TambahEdit')->middleware('auth');
 
         Route::post('Users/Hapus', 'Hapus')->middleware('auth');
+
+        Route::post('Users/Manage', 'Manage')->middleware('auth');
     }
 );
 
 
 Route::controller(StoreController::class)->group(
     function () {
-        Route::get('Store', 'Index')->middleware('auth');
+        Route::get('Group', 'Index')->middleware('auth');
         Route::post('Store', 'Tambah')->middleware('auth');
 
         Route::post('Store/Edit', 'Edit')->middleware('auth');
         Route::post('Store/TambahEdit', 'TambahEdit')->middleware('auth');
 
         Route::post('Store/Hapus', 'Hapus')->middleware('auth');
+
+        Route::post('Store/Manage', 'Manage')->middleware('auth');
     }
 );
 
 Route::get('/test', function () {
-
-    if ($message = session('sukses')) {
-        echo $message;
-    }
+    print_r(Auth::user());
 });

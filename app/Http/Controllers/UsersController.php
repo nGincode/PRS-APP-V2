@@ -17,17 +17,18 @@ use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
+
     public function __construct()
     {
         $this->data['title'] = 'Users';
-        $this->data['manage'] = 'Data Users ' . date('Y-m-d');
+        $this->title = $this->data['title'];
+        $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
     public function index(Request $request)
     {
         $this->data['Store'] = Store::all();
         $this->data['Group'] = Groups::orderBy('group_name')->get();
-        $this->data['DataUsers'] = User::orderBy('username')->get();
         return view('Users', $this->data);
     }
 
@@ -114,7 +115,7 @@ class UsersController extends Controller
     public function Edit(Request $request)
     {
         $id = $request->input('id');
-        session()->flash('IdUsers', $id);
+        session()->flash('IdEdit', $id);
 
         $this->data['UsersData'] = User::where('id', $id)->first();
         $this->data['Store'] = Store::all();
@@ -124,7 +125,7 @@ class UsersController extends Controller
 
     public function TambahEdit(Request $request)
     {
-        $id = session('IdUsers');
+        $id = session('IdEdit');
         $pass = $request->input('PasswordUsersLama');
 
         $Users = User::where('id', $id)->first();
@@ -155,7 +156,7 @@ class UsersController extends Controller
                 ]
             );
 
-            if ($Users['username'] === $request->input('Username')) {
+            if ($Users['username'] == $request->input('Username')) {
                 $username = $request->input('Username');
             } else {
                 $usr = User::where('username', $request->input('Username'))->count();
@@ -206,7 +207,7 @@ class UsersController extends Controller
                         $files->move(public_path('uploads/users'), $imageName);
                         $urlimg = url('/') . '/uploads/users/' . $imageName;
                     } else {
-                        $urlimg = '';
+                        $urlimg = $Users['img'];
                     }
 
                     $StoreName = Store::where('id', $request->input('OutletUsers'))->first();
@@ -278,5 +279,49 @@ class UsersController extends Controller
         };
 
         echo json_encode($data);
+    }
+
+
+
+    public function Manage(Request $request)
+    {
+        $result = array('data' => array());
+        $Data = User::orderBy('username')->get();
+        foreach ($Data as $key => $value) {
+            if ($value['id'] != 1) {
+                if ($value['img']) {
+                    $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
+                } else {
+                    $img = '<img width="30" class="rounded-circle" src="http://prs/assets/images/unnamed.png">';
+                }
+
+                $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+                if (in_array('updateUser', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+                }
+                if (in_array('deleteUser', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                }
+
+                $button .= '</ul></div>';
+
+                $result['data'][$key] = array(
+                    $img,
+                    $value['username'],
+                    $value['store'],
+                    $value['email'],
+                    $value['firstname'],
+                    $value['phone'],
+                    $value['last_login'],
+                    $button
+                );
+            }
+        }
+        echo json_encode($result);
     }
 }

@@ -1,57 +1,101 @@
 <?php
-
-use App\Models\Users;
+use App\Models\User;
 use App\Models\Groups;
 use App\Models\GroupsUsers;
 
-if (
-    request()
-        ->session()
-        ->has('logged_in')
-) {
-    $Id = request()
-        ->session()
-        ->get('id');
-    $Username = request()
-        ->session()
-        ->get('username');
-    $Email = request()
-        ->session()
-        ->get('email');
-    $Store = request()
-        ->session()
-        ->get('store');
-    $StoreId = request()
-        ->session()
-        ->get('store_id');
-    $GroupId = request()
-        ->session()
-        ->get('group_id');
-    $Divisi = request()
-        ->session()
-        ->get('divisi');
-    $Tipe = request()
-        ->session()
-        ->get('tipe');
-    $Logo = request()
-        ->session()
-        ->get('logo');
+if (Auth::check()) {
+    $DataUsers = User::where('id', Auth::id())->first();
+
+    if (
+        request()
+            ->session()
+            ->has('id')
+    ) {
+        $Id = request()
+            ->session()
+            ->get('id');
+        $Username = request()
+            ->session()
+            ->get('username');
+        $Email = request()
+            ->session()
+            ->get('email');
+        $Store = request()
+            ->session()
+            ->get('store');
+        $StoreId = request()
+            ->session()
+            ->get('store_id');
+        $GroupId = request()
+            ->session()
+            ->get('group_id');
+        $Divisi = request()
+            ->session()
+            ->get('divisi');
+        $Tipe = request()
+            ->session()
+            ->get('tipe');
+        $Logo = request()
+            ->session()
+            ->get('logo');
+    } else {
+        $Id = Auth::id();
+        $Username = $DataUsers['username'];
+        $Email = $DataUsers['email'];
+        $Store = $DataUsers['store'];
+        $StoreId = $DataUsers['store_id'];
+        $GroupId = $DataUsers['group_id'];
+        $Divisi = $DataUsers['divisi'];
+        $Tipe = $DataUsers['tipe'];
+        $Logo = $DataUsers['logo'];
+
+        request()
+            ->session()
+            ->put('id', $Id);
+        request()
+            ->session()
+            ->get('username', $Username);
+        request()
+            ->session()
+            ->get('email', $Email);
+        request()
+            ->session()
+            ->get('store', $Store);
+        request()
+            ->session()
+            ->get('store_id', $StoreId);
+        request()
+            ->session()
+            ->get('group_id', $GroupId);
+        request()
+            ->session()
+            ->get('divisi', $Divisi);
+        request()
+            ->session()
+            ->get('tipe', $Tipe);
+        request()
+            ->session()
+            ->get('logo', $Logo);
+    }
+
+    if (file_exists('/uploads/logo/' . $Logo)) {
+        $urlLogo = url('/uploads/logo/' . $Logo);
+    } else {
+        $urlLogo = url('/assets/images/unnamed.png');
+    }
+
+    $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.group_id')
+        ->where('groups_users.user_id', $Id)
+        ->first();
+    $user_permission = unserialize($DataGroup['permission']);
 } else {
     echo '<script>window.location.href = "' . url('/logout') . '";</script>';
-}
-
-if (file_exists('/uploads/logo/' . $Logo)) {
-    $urlLogo = url('/uploads/logo/' . $Logo);
-} else {
     $urlLogo = url('/assets/images/unnamed.png');
+    $user_permission = '';
 }
-
-$DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.group_id')
-    ->where('groups_users.user_id', $Id)
-    ->first();
-$user_permission = unserialize($DataGroup['permission']);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -113,7 +157,6 @@ $user_permission = unserialize($DataGroup['permission']);
         href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet"
         href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-
 
     {{-- Admin LTE BASE TAMPLATE --}}
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/dist/css/adminlte.min.css">
@@ -219,9 +262,6 @@ $user_permission = unserialize($DataGroup['permission']);
                     </div>
                 </div>
 
-
-
-
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
@@ -285,14 +325,9 @@ $user_permission = unserialize($DataGroup['permission']);
                 </nav>
                 <!-- /.sidebar-menu -->
 
-
-
-
             </div>
             <!-- /.sidebar -->
         </aside>
-
-
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -320,9 +355,6 @@ $user_permission = unserialize($DataGroup['permission']);
         </div>
         <!-- /.content-wrapper -->
 
-
-
-
         <footer class="main-footer">
             <strong>PRS Copyright &copy; {{ date('Y') }} Theme By : <a href="https://adminlte.io">AdminLTE.io</a>
             </strong>
@@ -339,8 +371,6 @@ $user_permission = unserialize($DataGroup['permission']);
     </div>
     <!-- ./wrapper -->
 
-
-
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-backdrop="static"
         data-keyboard="false" aria-hidden="true">
@@ -356,10 +386,6 @@ $user_permission = unserialize($DataGroup['permission']);
             </div>
         </div>
     </div>
-
-
-
-
 
 
     <!-- jQuery -->
@@ -466,7 +492,7 @@ $user_permission = unserialize($DataGroup['permission']);
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js">
     </script>
 
-    <script src="assets/js/js.js"></script>
+    <script src="{{ url('/') }}/assets/js/js.js"></script>
     <style>
         label.error {
             display: block;
@@ -480,36 +506,58 @@ $user_permission = unserialize($DataGroup['permission']);
         //DataTable
         $(function() {
             if ($("#manage").length) {
+                var cells = document.getElementById('manage').getElementsByTagName('th').length - 1;
+
+                var jmlcolm = '';
+                for (let index = 0; index < cells; index++) {
+                    if (cells - 1 == index) {
+                        jmlcolm += index;
+                    } else {
+                        jmlcolm += index + ',';
+                    }
+                }
+
                 $("#manage").DataTable({
+                    "ajax": {
+                        url: "{{ url('/') }}/{{ $title }}/Manage",
+                        type: "POST",
+                    },
                     "responsive": true,
-                    "lengthChange": true,
-                    "autoWidth": false,
+                    "autoWidth": true,
+                    "processing": true,
+                    "searching": true,
+                    "sort": true,
+                    "paging": true,
+                    "destroy": true,
+
+                    // "lengthChange": true,
+                    "dom": '<"dt-buttons"Bf><"clear">lirtp',
                     "buttons": [{
                             extend: 'copyHtml5',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                columns: [0, 1, 2, 4, 5, 6]
+                                columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'excelHtml5',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                columns: [0, 1, 2, 4, 5, 6]
+                                columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'csvHtml5',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                columns: [0, 1, 2, 4, 5, 6]
+                                columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'pdfHtml5',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                columns: [0, 1, 2, 4, 5, 6]
+                                columns: [jmlcolm]
                             }
                         },
                         {
@@ -517,7 +565,7 @@ $user_permission = unserialize($DataGroup['permission']);
                             messageTop: '',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                columns: [0, 1, 2, 4, 5, 6]
+                                columns: [jmlcolm]
                             }
                         }
                     ]

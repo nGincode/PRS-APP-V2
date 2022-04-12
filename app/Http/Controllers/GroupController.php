@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-class StoreController extends Controller
+class GroupController extends Controller
 {
     public function __construct()
     {
