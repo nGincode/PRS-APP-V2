@@ -140,7 +140,6 @@ class UsersController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 $rules = [
-                    'GroupsUsers' => 'required',
                     'OutletUsers' => 'required',
                     'Email' => 'required|email',
                     'Username' => 'required|min:6',

@@ -46,13 +46,20 @@ class GroupController extends Controller
         $nama = array();
         $permission = array();
         foreach ($GroupsUsers as $v) {
-            if ($v->groups->id != 1) {
-                $usr[] = array(
-                    str_replace(" ", "_", $v->groups->nama)  => $v->users->username
-                );
-                $nama[] = $v->groups->nama;
-                $permission[] = $v->groups->permission;
-                $id[] = $v->groups->id;
+            if (isset($v->groups->id)) {
+                if ($v->groups->id != 1) {
+                    $usr[] = array(
+                        str_replace(" ", "_", $v->groups->nama)  => $v->users->username
+                    );
+                    $nama[] = $v->groups->nama;
+                    $permission[] = $v->groups->permission;
+                    $id[] = $v->groups->id;
+                }
+            } else {
+                $usr[] = array();
+                $nama[] = 'Tak Ditemukan (Hapus)';
+                $id[] = $v['id'];
+                $permission[] = '';
             }
         }
         $nama = array_unique($nama);
@@ -81,24 +88,26 @@ class GroupController extends Controller
             }
             $button .= '</ul></div>';
 
-            $judul = array_unique(str_replace(['create', 'update', 'view', 'delete'], '', unserialize($permission[$key])));
-            $user_permission = unserialize($permission[$key]);
             $izin = '';
-            foreach ($judul as $v) {
-                $izin .= ' ' . $v . ' ( ';
-                if (in_array('view' . $v, $user_permission)) {
-                    $izin .= '<i class="fa fa-eye"></i> ';
+            if ($permission[$key]) {
+                $judul = array_unique(str_replace(['create', 'update', 'view', 'delete'], '', unserialize($permission[$key])));
+                $user_permission = unserialize($permission[$key]);
+                foreach ($judul as $v) {
+                    $izin .= ' ' . $v . ' ( ';
+                    if (in_array('view' . $v, $user_permission)) {
+                        $izin .= '<i class="fa fa-eye"></i> ';
+                    }
+                    if (in_array('create' . $v, $user_permission)) {
+                        $izin .= '<i class="fa fa-plus"></i> ';
+                    }
+                    if (in_array('update' . $v, $user_permission)) {
+                        $izin .= '<i class="fa fa-pen"></i> ';
+                    }
+                    if (in_array('delete' . $v, $user_permission)) {
+                        $izin .= '<i class="fa fa-trash"></i>';
+                    }
+                    $izin .= ' )<br>';
                 }
-                if (in_array('create' . $v, $user_permission)) {
-                    $izin .= '<i class="fa fa-plus"></i> ';
-                }
-                if (in_array('update' . $v, $user_permission)) {
-                    $izin .= '<i class="fa fa-pen"></i> ';
-                }
-                if (in_array('delete' . $v, $user_permission)) {
-                    $izin .= '<i class="fa fa-trash"></i>';
-                }
-                $izin .= ' )<br>';
             }
 
             $result['data'][$key] = array(
@@ -121,7 +130,7 @@ class GroupController extends Controller
             $rules = [
                 'permission' => 'required',
                 'users' => 'required',
-                'NamaGroup' => 'required'
+                'nama' => 'required|unique:groups'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -140,7 +149,7 @@ class GroupController extends Controller
             }
         } else {
             $input = [
-                'nama' => $request->input('NamaGroup'),
+                'nama' => $request->input('nama'),
                 'permission' => $permission,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
@@ -177,18 +186,18 @@ class GroupController extends Controller
     public function Hapus(Request $request)
     {
         $id =  $request->input('id');
-        if (GroupsUsers::where('groups_id', $id)->count()) {
+        if (Groups::where('id', $id)->delete() && GroupsUsers::where('groups_id', $id)->delete()) {
             $data = [
                 'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Group Masih Terpakai Di Users, Silahkan Ubah di User'
+                'status' => 'success',
+                'pesan' => 'Berhasil Terhapus'
             ];
         } else {
-            if (Groups::where('id', $id)->delete() && GroupsUsers::where('group_id', $id)->delete()) {
+            if (GroupsUsers::where('id', $id)->delete()) {
                 $data = [
                     'toast' => true,
                     'status' => 'success',
-                    'pesan' => 'Berhasil Terhapus'
+                    'pesan' => 'Eror Berhasil Terhapus'
                 ];
             } else {
                 $data = [
@@ -196,8 +205,8 @@ class GroupController extends Controller
                     'status' => 'error',
                     'pesan' =>  'Terjadi kegagalan system'
                 ];
-            };
-        }
+            }
+        };
 
         echo json_encode($data);
     }
@@ -210,19 +219,101 @@ class GroupController extends Controller
 
         $GroupsData = Groups::where('id', $id)->first();
         $Users = User::all();
-
-        $datause = array();
-        foreach ($Users as $v) {
-            $cek =  GroupsUsers::where('user_id', $v['id'])->count();
-            if (!$cek) {
-                $datause['id'] = $v['id'];
-                $datause['username'] = $v['username'];
-            }
-        }
-
-        $this->data['Users'] = $datause;
+        $this->data['GroupsUsers'] = GroupsUsers::where('groups_id', $GroupsData['id'])->get();
+        $this->data['Users'] = $Users;
         $this->data['GroupsData'] = $GroupsData;
         $this->data['permission'] = unserialize($GroupsData['permission']);
         return view('Edit', $this->data);
+    }
+
+
+    public function TambahEdit(Request $request)
+    {
+        $id = session('IdEdit');
+        $Groups = Groups::where('id', $id)->first();
+        if ($Groups) {
+
+            $validator = Validator::make(
+                $request->all(),
+                $rules = [
+                    'permission' => 'required',
+                    'usersedit' => 'required',
+                    'nama' => 'required'
+                ],
+                $messages  = [
+                    'required' => 'Form :attribute harus terisi',
+                    'same' => 'Form :attribute & :other tidak sama.',
+                ]
+            );
+
+            if ($Groups['nama'] == $request->input('nama')) {
+                $name = $request->input('nama');
+            } else {
+                $str = Groups::where('nama', $request->input('nama'))->count();
+                if ($str) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Nama Telah digunakan'
+                    ];
+                    $name = '';
+                } else {
+                    $name = $request->input('nama');
+                }
+            }
+
+            if ($name) {
+                if ($validator->fails()) {
+                    session()->flash('IdEdit', $id);
+                    foreach ($validator->errors()->all() as $message) {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  $message
+                        ];
+                    }
+                } else {
+
+                    $permission = serialize($request->input('permission'));
+                    $input = [
+                        'nama' => $request->input('nama'),
+                        'permission' => $permission,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                    if (Groups::where('id', $id)->update($input)) {
+                        if ($request->input('usersedit')) {
+                            foreach ($request->input('usersedit') as $v) {
+                                if (GroupsUsers::where('groups_id', $id)->delete()) {
+                                    GroupsUsers::create([
+                                        'groups_id' => $id,
+                                        'users_id' => $v,
+                                    ]);
+                                }
+                            }
+                        }
+
+                        $data = [
+                            'toast' => true,
+                            'status' => 'success',
+                            'pesan' => 'Berhasil dibuat'
+                        ];
+                    } else {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Terjadi kegagalan system'
+                        ];
+                    };
+                }
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Gagal mengambil data, Refresh Kembali'
+            ];
+        }
+
+        echo json_encode($data);
     }
 }

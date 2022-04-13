@@ -51,15 +51,15 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="name">Nama Store</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Nama Store"
-                                        name="name">
+                                    <input type="text" class="form-control" id="nama" placeholder="Nama Store"
+                                        name="nama">
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="alamat">Alamat</label>
-                                    <input type="text" class="form-control" id="alamat" placeholder="alamat"
+                                    <input type="text" class="form-control" id="alamat" placeholder="Alamat"
                                         name="alamat">
                                 </div>
                             </div>

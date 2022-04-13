@@ -30,7 +30,7 @@
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($Store as $str)
                                             @if ($str['id'] != 1)
-                                                <option value="{{ $str['id'] }}">{{ $str['name'] }}</option>
+                                                <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
                                             @endif
                                         @endforeach
                                     </select>

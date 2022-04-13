@@ -25,8 +25,8 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="NamaGroup">Nama Group</label>
-                            <input type="text" class="form-control" id="NamaGroup" name="NamaGroup"
+                            <label for="nama">Nama Group</label>
+                            <input type="text" class="form-control" id="nama" name="nama"
                                 placeholder="Masukkan Nama Group">
                         </div>
                         <br>
@@ -80,7 +80,6 @@
                             </table>
 
                         </div>
-
                         <div class="form-group">
                             <label>Users</label>
                             <select class="select2" multiple="multiple" name="users[]" id="users"

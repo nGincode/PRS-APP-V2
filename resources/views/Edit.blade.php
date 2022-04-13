@@ -280,7 +280,7 @@
                         <div class="col-12 col-sm-12" id="isi_jam_kerja_edit">
                             <div class="form-group">
                                 <label for="nama_shift">Nama Shift</label>
-                                <input type="text" class="form-control" value="{{ $v['nama'] }}" id="nama_shift"
+                                <input type="text" class="form-control" value="{{ $v['Nama'] }}" id="nama_shift"
                                     placeholder="Nama Shift" name="nama_shift[]">
                             </div>
                         </div>
@@ -410,14 +410,14 @@
 
 
 @isset($GroupsData)
-    <form id="GroupsEdit" action="{{ url('/Groups/TambahEdit') }}">
+    <form id="GroupsEdit" action="{{ url('/Group/TambahEdit') }}">
         @csrf
         <div class="modal-body">
 
             <div class="form-group">
-                <label for="NamaGroup">Nama Group</label>
-                <input type="text" class="form-control" id="NamaGroup" value="{{ $GroupsData['nama'] }}"
-                    name="NamaGroup" placeholder="Masukkan Nama Group">
+                <label for="nama">Nama Group</label>
+                <input type="text" class="form-control" id="nama" value="{{ $GroupsData['nama'] }}" name="nama"
+                    placeholder="Masukkan Nama Group">
             </div>
             <br>
             <div class="form-group">
@@ -473,10 +473,14 @@
 
             <div class="form-group">
                 <label>Users</label>
-                <select class="select2" multiple="multiple" name="users[]" id="users" data-placeholder="Pilih User"
-                    style="width: 100%;">
+                <select class="select2" multiple="multiple" name="usersedit[]" id="usersedit"
+                    data-placeholder="Pilih User" style="width: 100%;">
                     @foreach ($Users as $v)
-                        <option value="{{ $v['id'] }}">{{ $v['username'] }}</option>
+                        @if ($v['id'] != 1)
+                            <option value="{{ $v['id'] }}"
+                                @foreach ($GroupsUsers as $v1) @if ($v1['users_id'] == $v['id']) selected @endif @endforeach>
+                                {{ $v['username'] }}</option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -510,6 +514,9 @@
                         },
                         'wa': {
                             required: true
+                        },
+                        'usersedit[]': {
+                            required: true
                         }
                     },
                     messages: {
@@ -520,7 +527,7 @@
                 edit.on("submit", function(event) {
                     var isValid = edit.valid();
                     event.preventDefault();
-                    var formData = new FormData(edit);
+                    var formData = new FormData(this);
 
                     if (isValid) {
                         $.ajax({
@@ -554,6 +561,5 @@
             bsCustomFileInput.init();
         });
     </script>
-
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js">
-    @endisset
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
+@endisset
