@@ -26,49 +26,46 @@ if (Auth::check()) {
         $StoreId = request()
             ->session()
             ->get('store_id');
-        $Divisi = request()
-            ->session()
-            ->get('divisi');
         $Tipe = request()
             ->session()
             ->get('tipe');
         $Logo = request()
             ->session()
             ->get('logo');
+        $active = request()
+            ->session()
+            ->get('active');
     } else {
         $Id = Auth::id();
         $Username = $DataUsers['username'];
         $Email = $DataUsers['email'];
         $Store = $DataUsers['store'];
         $StoreId = $DataUsers['store_id'];
-        $Divisi = $DataUsers['divisi'];
         $Tipe = $DataUsers['tipe'];
         $Logo = $DataUsers['logo'];
+        $active = $DataUsers['active'];
 
         request()
             ->session()
             ->put('id', $Id);
         request()
             ->session()
-            ->get('username', $Username);
+            ->put('username', $Username);
         request()
             ->session()
-            ->get('email', $Email);
+            ->put('email', $Email);
         request()
             ->session()
-            ->get('store', $Store);
+            ->put('store', $Store);
         request()
             ->session()
-            ->get('store_id', $StoreId);
+            ->put('store_id', $StoreId);
         request()
             ->session()
-            ->get('divisi', $Divisi);
+            ->put('tipe', $Tipe);
         request()
             ->session()
-            ->get('tipe', $Tipe);
-        request()
-            ->session()
-            ->get('logo', $Logo);
+            ->put('logo', $Logo);
     }
 
     if (file_exists('/uploads/logo/' . $Logo)) {
@@ -85,6 +82,11 @@ if (Auth::check()) {
     } else {
         $user_permission = [];
         session()->put('err', 'Akun Ini Belum Memiliki Groups');
+        echo '<script>window.location.href = "' . url('/logout') . '";</script>';
+    }
+
+    if (!$active) {
+        session()->put('err', 'Store Tidak Aktif Silahkan Hub Admin');
         echo '<script>window.location.href = "' . url('/logout') . '";</script>';
     }
 } else {

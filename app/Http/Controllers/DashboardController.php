@@ -25,20 +25,24 @@ class DashboardController extends Controller
         $Tipe = request()->session()->get('tipe');
         $StoreId = request()->session()->get('store_id');
 
-        if ($Tipe == 0) {
-            $this->data['JumlahUsers'] = User::count();
+        if ($Tipe == 'Office') {
             $this->data['JumlahIvn'] = Inventaris::count();
             $this->data['JumlahOrder'] = LogistikOrder::count();
             $this->data['JumlahPengadaan'] = Pengadaan::count();
-        } else if ($Tipe == 1) {
-            $this->data['JumlahUsers'] = User::where('store_id', $StoreId)->count();
+        } else if ($Tipe == 'Outlet') {
             $this->data['JumlahIvn'] = Inventaris::where('store_id', $StoreId)->count();
             $this->data['JumlahOrder'] = LogistikOrder::where('store_id', $StoreId)->count();
             $this->data['JumlahPengadaan'] = Pengadaan::where('store_id', $StoreId)->count();
-        } else if ($Tipe == 2) {
+        } else if ($Tipe == 'Logistik') {
             $this->data['JumlahOrder'] = LogistikOrder::count();
             $this->data['JumlahBelanja'] = LogistikBelanja::count();
             $this->data['JumlahProductLogistik'] = LogistikProduk::count();
+        } else if ($Tipe == 'Khusus') {
+            $this->data['JumlahOrder'] = LogistikOrder::count();
+            $this->data['JumlahBelanja'] = LogistikBelanja::count();
+            $this->data['JumlahProductLogistik'] = LogistikProduk::count();
+        } else {
+            $this->data['JumlahUsers'] = User::count();
         }
 
 

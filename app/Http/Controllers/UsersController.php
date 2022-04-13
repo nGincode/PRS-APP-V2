@@ -27,7 +27,7 @@ class UsersController extends Controller
 
     public function Index(Request $request)
     {
-        if (Store::where('active', 1)->count()) {
+        if (Store::where('active', 1)->count() > 1) {
             $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
             $this->data['Group'] = Groups::orderBy('nama')->get();
             return view('Users', $this->data);

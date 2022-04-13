@@ -31,20 +31,15 @@ class AuthController extends Controller
         $data = User::where('username', $username)->first();
         if ($data) {
             $DataStore = Store::where('id', $data['store_id'])->first();
-            if ($DataStore) {
-                $tipe = $DataStore['tipe'];
-            } else {
-                $tipe = 0;
-            }
             $ses_data = [
                 'id' => $data['id'],
                 'username'  => $data['username'],
                 'email'     => $data['email'],
                 'store'     => $data['store'],
                 'store_id'     => $data['store_id'],
-                'group_id' => $data['group_id'],
                 'logo' => $data['logo'],
-                'tipe' => $tipe,
+                'tipe' => $DataStore['tipe'],
+                'active' => $DataStore['active'],
                 'logged_in' => TRUE
             ];
 

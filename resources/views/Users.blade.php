@@ -29,7 +29,9 @@
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($Store as $str)
-                                            <option value="{{ $str['id'] }}">{{ $str['name'] }}</option>
+                                            @if ($str['id'] != 1)
+                                                <option value="{{ $str['id'] }}">{{ $str['name'] }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

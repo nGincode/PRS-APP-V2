@@ -307,56 +307,58 @@ class StoreController extends Controller
     {
         $result = array('data' => array());
         $Data = Store::orderBy('nama')->get();
-        foreach ($Data as $key => $value) {
-            if ($value['img']) {
-                $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
-            } else {
-                $img = '<img width="30" class="rounded-circle" src="http://prs/assets/images/unnamed.png">';
-            }
+        foreach ($Data as $value) {
+            if ($value['id'] != 1) {
+                if ($value['img']) {
+                    $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
+                } else {
+                    $img = '<img width="30" class="rounded-circle" src="http://prs/assets/images/unnamed.png">';
+                }
 
-            $button = '<div class="btn-group dropleft">
+                $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
-            }
-            if (in_array('deleteUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
-            }
-
-            $button .= '</ul></div>';
-
-            if ($value['active'] == 1) {
-                $active = '<span class="badge badge-success">Active</span>';
-            } else {
-                $active = '<span class="badge badge-secondary">Not Active</span>';
-            }
-
-
-            if ($value['jam_kerja']) {
-                $jam_kerja = json_decode($value['jam_kerja'], true);
-
-                $jam = '';
-                foreach ($jam_kerja as $v) {
-                    $jam .= $v['Nama'] . ' (' . $v['Masuk'] . ' - ' . $v['Pulang'] . ')<br>';
+                if (in_array('updateUser', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
                 }
-            } else {
-                $jam = null;
-            }
+                if (in_array('deleteUser', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                }
 
-            $result['data'][$key] = array(
-                $img,
-                $value['nama'],
-                $active,
-                '<span class="badge badge-light">' . $value['tipe'] . '</span>',
-                $value['alamat'],
-                $value['wa'],
-                $jam,
-                $button
-            );
+                $button .= '</ul></div>';
+
+                if ($value['active'] == 1) {
+                    $active = '<span class="badge badge-success">Active</span>';
+                } else {
+                    $active = '<span class="badge badge-secondary">Not Active</span>';
+                }
+
+
+                if ($value['jam_kerja']) {
+                    $jam_kerja = json_decode($value['jam_kerja'], true);
+
+                    $jam = '';
+                    foreach ($jam_kerja as $v) {
+                        $jam .= $v['Nama'] . ' (' . $v['Masuk'] . ' - ' . $v['Pulang'] . ')<br>';
+                    }
+                } else {
+                    $jam = null;
+                }
+
+                $result['data'][] = array(
+                    $img,
+                    $value['nama'],
+                    $active,
+                    '<span class="badge badge-light">' . $value['tipe'] . '</span>',
+                    $value['alamat'],
+                    $value['wa'],
+                    $jam,
+                    $button
+                );
+            }
         }
         echo json_encode($result);
     }
