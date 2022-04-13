@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
         $permession = array(
             'createUser',
             'updateUser',
@@ -84,5 +82,9 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
+
+
+        \App\Models\User::factory(10)->create();
+        \App\Models\Store::factory(10)->create();
     }
 }

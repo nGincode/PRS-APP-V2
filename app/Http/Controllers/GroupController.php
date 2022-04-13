@@ -282,8 +282,8 @@ class GroupController extends Controller
                     ];
                     if (Groups::where('id', $id)->update($input)) {
                         if ($request->input('usersedit')) {
-                            foreach ($request->input('usersedit') as $v) {
-                                if (GroupsUsers::where('groups_id', $id)->delete()) {
+                            if (GroupsUsers::where('groups_id', $id)->delete()) {
+                                foreach ($request->input('usersedit') as $v) {
                                     GroupsUsers::create([
                                         'groups_id' => $id,
                                         'users_id' => $v,
