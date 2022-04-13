@@ -11,4 +11,14 @@ class GroupsUsers extends Model
 
     protected $table = 'groups_users';
     protected $guarded = ['id'];
+
+    public function Groups()
+    {
+        return $this->belongsTo(Groups::class);
+    }
+
+    public function Users()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

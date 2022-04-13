@@ -259,9 +259,6 @@ $(document).ready(function() {
             'OutletUsers': {
               required: true
             },
-            'GroupsUsers': {
-              required: true
-            },
             'Email': {
               required: true,
               email: true
@@ -325,7 +322,7 @@ $(document).ready(function() {
         });
     }
     
-      //store
+    //store
     if ($('#FormStore').length) {
         $('#FormStore').validate({
           errorClass: 'error',
@@ -372,6 +369,59 @@ $(document).ready(function() {
                 if (data.status === 'success') {
                   popup(data.status, data.toast, data.pesan);
                   $('#FormStore')[0].reset();
+                  $('#manage').DataTable().ajax.reload();
+                } else {
+                  popup(data.status, data.toast, data.pesan);
+                }
+              }
+            });
+
+          }
+        });
+    }
+
+    
+    //Group
+    if ($('#FormGroup').length) {
+        $('#FormGroup').validate({
+          errorClass: 'error',
+          rules: {
+            'NamaGroup': {
+              required: true
+            },
+            'permission': {
+              required: true
+            },
+            'users[]': {
+              required: true
+            }
+          },
+          messages: {
+            // OutletUsers : "Masih Kosong"
+          }
+        });
+
+        $('#FormGroup').on('submit', function(event) {
+          var isValid = $(this).valid();
+          event.preventDefault();
+          var formData = new FormData(this);
+
+          if (isValid) {
+            $.ajax({
+              url: $(this).attr('action'),
+              type: "POST",
+              data: formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              dataType: 'json',
+              error: function(xhr, status, error) {
+                popup(status, true, xhr.status +" "+ error );
+              },
+              success: function(data) {
+                if (data.status === 'success') {
+                  popup(data.status, data.toast, data.pesan);
+                  $('#FormGroup')[0].reset();
                   $('#manage').DataTable().ajax.reload();
                 } else {
                   popup(data.status, data.toast, data.pesan);

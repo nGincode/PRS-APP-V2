@@ -16,8 +16,8 @@ class Controller extends BaseController
     public function permission()
     {
         $Id = request()->session()->get('id');
-        $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.group_id')
-            ->where('groups_users.user_id', $Id)
+        $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.groups_id')
+            ->where('groups_users.users_id', $Id)
             ->first();
         return unserialize($DataGroup['permission']);
     }

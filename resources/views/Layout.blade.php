@@ -26,9 +26,6 @@ if (Auth::check()) {
         $StoreId = request()
             ->session()
             ->get('store_id');
-        $GroupId = request()
-            ->session()
-            ->get('group_id');
         $Divisi = request()
             ->session()
             ->get('divisi');
@@ -44,7 +41,6 @@ if (Auth::check()) {
         $Email = $DataUsers['email'];
         $Store = $DataUsers['store'];
         $StoreId = $DataUsers['store_id'];
-        $GroupId = $DataUsers['group_id'];
         $Divisi = $DataUsers['divisi'];
         $Tipe = $DataUsers['tipe'];
         $Logo = $DataUsers['logo'];
@@ -66,9 +62,6 @@ if (Auth::check()) {
             ->get('store_id', $StoreId);
         request()
             ->session()
-            ->get('group_id', $GroupId);
-        request()
-            ->session()
             ->get('divisi', $Divisi);
         request()
             ->session()
@@ -84,10 +77,16 @@ if (Auth::check()) {
         $urlLogo = url('/assets/images/unnamed.png');
     }
 
-    $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.group_id')
-        ->where('groups_users.user_id', $Id)
+    $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.groups_id')
+        ->where('groups_users.users_id', $Id)
         ->first();
-    $user_permission = unserialize($DataGroup['permission']);
+    if ($DataGroup) {
+        $user_permission = unserialize($DataGroup['permission']);
+    } else {
+        $user_permission = [];
+        session()->put('err', 'Akun Ini Belum Memiliki Groups');
+        echo '<script>window.location.href = "' . url('/logout') . '";</script>';
+    }
 } else {
     echo '<script>window.location.href = "' . url('/logout') . '";</script>';
     $urlLogo = url('/assets/images/unnamed.png');
@@ -288,6 +287,19 @@ if (Auth::check()) {
                         @endif
 
 
+                        @if (in_array('createUser', $user_permission) || in_array('updateUser', $user_permission) || in_array('viewUser', $user_permission) || in_array('deleteUser', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Users') }}"
+                                    class="nav-link @if ($title == 'Users') active @endif ">
+                                    <i class=" nav-icon fas fa-user"></i>
+                                    <p>
+                                        Users
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+
                         @if (in_array('createGrou', $user_permission) || in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Group') }}"
@@ -300,17 +312,6 @@ if (Auth::check()) {
                             </li>
                         @endif
 
-                        @if (in_array('createUser', $user_permission) || in_array('updateUser', $user_permission) || in_array('viewUser', $user_permission) || in_array('deleteUser', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Users') }}"
-                                    class="nav-link @if ($title == 'Users') active @endif ">
-                                    <i class=" nav-icon fas fa-user"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
-                            </li>
-                        @endif
 
                         <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link">
@@ -571,7 +572,7 @@ if (Auth::check()) {
                     ]
                 }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
             }
-        })
+        });
     </script>
     @include('sweetalert::alert')
 </body>

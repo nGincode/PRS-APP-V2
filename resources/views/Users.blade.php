@@ -3,7 +3,7 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            <form id="FormUsers" action="{{ url('/users') }}">
+            <form id="FormUsers" action="{{ url('/Users') }}">
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
@@ -21,18 +21,6 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>Groups Users</label>
-                                    <select name="GroupsUsers" id="GroupsUsers" class="form-control select2 select2-danger"
-                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="true" disabled="disabled">Pilih</option>
-                                        @foreach ($Group as $grp)
-                                            <option value="{{ $grp['id'] }}">{{ $grp['group_name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">

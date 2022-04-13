@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('store', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nama');
             $table->string('active');
             $table->string('tipe');
             $table->string('alamat')->nullable();
             $table->string('img')->nullable();
             $table->string('wa')->nullable();
-            $table->string('Jam_kerja')->nullable();
+            $table->string('jam_kerja')->nullable();
             $table->timestamps();
         });
     }

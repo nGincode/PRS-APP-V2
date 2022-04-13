@@ -2,25 +2,6 @@
     <form id="UsersEdit" action="{{ url('/Users/TambahEdit') }}">
         <div class="modal-body">
             <div class="row">
-                <div class="col-12 col-sm-6">
-                    <div class="form-group">
-                        <label>Groups Users</label>
-                        <select name="GroupsUsers" id="GroupsUsers" class="form-control select2 select2-danger" required
-                            data-dropdown-css-class="select2-danger" style="width: 100%;">
-                            <option selected="true" disabled="disabled">Pilih</option>
-
-                            @foreach ($Group as $grp)
-                                @if ($UsersData['group_id'] == $grp['id'])
-                                    <option value="{{ $grp['id'] }}" selected>{{ $grp['group_name'] }}
-                                    </option>
-                                @else
-                                    <option value="{{ $grp['id'] }}">{{ $grp['group_name'] }}</option>
-                                @endif
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
@@ -31,9 +12,9 @@
 
                             @foreach ($Store as $str)
                                 @if ($UsersData['store_id'] == $str['id'])
-                                    <option value="{{ $str['id'] }}" selected>{{ $str['name'] }}</option>
+                                    <option value="{{ $str['id'] }}" selected>{{ $str['nama'] }}</option>
                                 @else
-                                    <option value="{{ $str['id'] }}">{{ $str['name'] }}</option>
+                                    <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
                                 @endif
                             @endforeach
 
@@ -152,9 +133,6 @@
                         "OutletUsers": {
                             required: true
                         },
-                        "GroupsUsers": {
-                            required: true
-                        },
                         "Email": {
                             required: true,
                             email: true
@@ -260,9 +238,9 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="name">Nama Store</label>
-                        <input type="text" class="form-control" value="{{ $StoreData['name'] }}" id="name"
-                            placeholder="Nama Store" name="name">
+                        <label for="nama">Nama Store</label>
+                        <input type="text" class="form-control" value="{{ $StoreData['nama'] }}" id="nama"
+                            placeholder="Nama Store" name="nama">
                     </div>
                 </div>
 
@@ -297,31 +275,55 @@
                 $jamkerja = json_decode($StoreData['jam_kerja'], true);
                 ?>
 
-                @foreach ($jamkerja as $v)
+                @if ($jamkerja)
+                    @foreach ($jamkerja as $v)
+                        <div class="col-12 col-sm-12" id="isi_jam_kerja_edit">
+                            <div class="form-group">
+                                <label for="nama_shift">Nama Shift</label>
+                                <input type="text" class="form-control" value="{{ $v['nama'] }}" id="nama_shift"
+                                    placeholder="Nama Shift" name="nama_shift[]">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="masuk_kerja">Masuk </label>
+                                <input type="time" class="form-control" value="{{ $v['Masuk'] }}" id="masuk_kerja"
+                                    name="masuk_kerja[]">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6" id='akhir_isi_jam_kerja_edit'>
+                            <div class="form-group">
+                                <label for="pulang_kerja">Pulang </label>
+                                <input type="time" class="form-control" value="{{ $v['Pulang'] }}" id="pulang_kerja"
+                                    name="pulang_kerja[]">
+                            </div>
+                        </div>
+                    @endforeach
+                @else
                     <div class="col-12 col-sm-12" id="isi_jam_kerja_edit">
                         <div class="form-group">
                             <label for="nama_shift">Nama Shift</label>
-                            <input type="text" class="form-control" value="{{ $v['Nama'] }}" id="nama_shift"
-                                placeholder="Nama Shift" name="nama_shift[]">
+                            <input type="text" class="form-control" id="nama_shift" placeholder="Nama Shift"
+                                name="nama_shift[]">
                         </div>
                     </div>
 
                     <div class="col-12 col-sm-6">
                         <div class="form-group">
                             <label for="masuk_kerja">Masuk </label>
-                            <input type="time" class="form-control" value="{{ $v['Masuk'] }}" id="masuk_kerja"
-                                name="masuk_kerja[]">
+                            <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]">
                         </div>
                     </div>
 
                     <div class="col-12 col-sm-6" id='akhir_isi_jam_kerja_edit'>
                         <div class="form-group">
                             <label for="pulang_kerja">Pulang </label>
-                            <input type="time" class="form-control" value="{{ $v['Pulang'] }}" id="pulang_kerja"
-                                name="pulang_kerja[]">
+                            <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]">
                         </div>
                     </div>
-                @endforeach
+                @endif
 
                 <a class="col-12 col-sm-12 btn btn-success" id="add_row_jam_kerja_edit"> + Tambah Shift</a>
 
@@ -352,7 +354,7 @@
                 $("#StoreEdit").validate({
                     errorClass: "error",
                     rules: {
-                        'name': {
+                        'nama': {
                             required: true
                         },
                         'status': {
@@ -405,3 +407,153 @@
         });
     </script>
 @endisset
+
+
+@isset($GroupsData)
+    <form id="GroupsEdit" action="{{ url('/Groups/TambahEdit') }}">
+        @csrf
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label for="NamaGroup">Nama Group</label>
+                <input type="text" class="form-control" id="NamaGroup" value="{{ $GroupsData['nama'] }}"
+                    name="NamaGroup" placeholder="Masukkan Nama Group">
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="permission">Permission</label>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Jenis Izin</th>
+                            <th scope="col"><i class="fa fa-plus"></i> </th>
+                            <th scope="col"><i class="fa fa-pen"></i> </th>
+                            <th scope="col"><i class="fa fa-eye"></i> </th>
+                            <th scope="col"><i class="fa fa-trash"></i> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>User</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createUser"
+                                    @if (in_array('createUser', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateUser"
+                                    @if (in_array('updateUser', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewUser"
+                                    @if (in_array('viewUser', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteUser"
+                                    @if (in_array('deleteUser', $permission)) checked @endif class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>Store</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createStore"
+                                    @if (in_array('createStore', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateStore"
+                                    @if (in_array('updateStore', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewStore"
+                                    @if (in_array('viewStore', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteStore"
+                                    @if (in_array('deleteStore', $permission)) checked @endif class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>Group</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createGroup"
+                                    @if (in_array('createGroup', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateGroup"
+                                    @if (in_array('updateGroup', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewGroup"
+                                    @if (in_array('viewGroup', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteGroup"
+                                    @if (in_array('deleteGroup', $permission)) checked @endif class="minimal"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="form-group">
+                <label>Users</label>
+                <select class="select2" multiple="multiple" name="users[]" id="users" data-placeholder="Pilih User"
+                    style="width: 100%;">
+                    @foreach ($Users as $v)
+                        <option value="{{ $v['id'] }}">{{ $v['username'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function() {
+            var edit = $("#GroupsEdit");
+            if (edit.length) {
+                edit.validate({
+                    errorClass: "error",
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'status': {
+                            required: true
+                        },
+                        'tipe': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        },
+                        'wa': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                edit.on("submit", function(event) {
+                    var isValid = edit.valid();
+                    event.preventDefault();
+                    var formData = new FormData(edit);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: edit.attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    edit[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+
+
+        $(function() {
+            $(".select2").select2();
+            bsCustomFileInput.init();
+        });
+    </script>
+
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js">
+    @endisset

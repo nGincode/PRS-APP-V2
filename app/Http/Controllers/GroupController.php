@@ -10,6 +10,7 @@ use App\Models\LogistikProduk;
 use App\Models\LogistikBelanja;
 use App\Models\LogistikOrder;
 use App\Models\Groups;
+use App\Models\GroupsUsers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,14 +20,96 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->data['title'] = 'Store';
+        $this->data['title'] = 'Group';
         $this->title = $this->data['title'];
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
     public function Index(Request $request)
     {
-        return view('Stores', $this->data);
+        if (User::count() > 1) {
+            $this->data['Users'] = User::all();
+            return view('Group', $this->data);
+        } else {
+            return redirect('/Users')->with('toast_error', 'Membuat Group Memerlukan Users!');
+        }
+    }
+
+
+    public function Manage(Request $request)
+    {
+        $result = array('data' => array());
+        $GroupsUsers = GroupsUsers::with(['Users', 'Groups'])->latest()->get();
+
+        $id = array();
+        $usr = array();
+        $nama = array();
+        $permission = array();
+        foreach ($GroupsUsers as $v) {
+            if ($v->groups->id != 1) {
+                $usr[] = array(
+                    str_replace(" ", "_", $v->groups->nama)  => $v->users->username
+                );
+                $nama[] = $v->groups->nama;
+                $permission[] = $v->groups->permission;
+                $id[] = $v->groups->id;
+            }
+        }
+        $nama = array_unique($nama);
+
+        foreach ($nama as $key => $v1) {
+
+            $username = '';
+            foreach ($usr as $v2) {
+                if (isset($v2[str_replace(" ", "_", $v1)])) {
+                    $username .= $v2[str_replace(" ", "_", $v1)] . '<br>';
+                }
+            }
+
+
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('updateUser', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $id[$key] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+            }
+            if (in_array('deleteUser', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $id[$key] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+            }
+            $button .= '</ul></div>';
+
+            $judul = array_unique(str_replace(['create', 'update', 'view', 'delete'], '', unserialize($permission[$key])));
+            $user_permission = unserialize($permission[$key]);
+            $izin = '';
+            foreach ($judul as $v) {
+                $izin .= ' ' . $v . ' ( ';
+                if (in_array('view' . $v, $user_permission)) {
+                    $izin .= '<i class="fa fa-eye"></i> ';
+                }
+                if (in_array('create' . $v, $user_permission)) {
+                    $izin .= '<i class="fa fa-plus"></i> ';
+                }
+                if (in_array('update' . $v, $user_permission)) {
+                    $izin .= '<i class="fa fa-pen"></i> ';
+                }
+                if (in_array('delete' . $v, $user_permission)) {
+                    $izin .= '<i class="fa fa-trash"></i>';
+                }
+                $izin .= ' )<br>';
+            }
+
+            $result['data'][$key] = array(
+                $v1,
+                $izin,
+                $username,
+                $button
+            );
+        }
+
+        echo json_encode($result);
     }
 
 
@@ -36,15 +119,9 @@ class GroupController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'name' => 'required|unique:store',
-                'status' => 'required',
-                'tipe' => 'required',
-                'alamat' => 'required',
-                'wa' => 'required',
-                'nama_shift' => 'required',
-                'masuk_kerja' => 'required',
-                'pulang_kerja' => 'required',
-                'img' => 'mimes:jpeg,jpg,png'
+                'permission' => 'required',
+                'users' => 'required',
+                'NamaGroup' => 'required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -52,87 +129,75 @@ class GroupController extends Controller
             ]
         );
 
-        $hitung_shift = count($request->input('nama_shift'));
-        $input_shift = array();
-        $cekvalueinput = 0;
-        if ($hitung_shift > 1) {
-            for ($x = 0; $x < $hitung_shift; $x++) {
-                if ($request->input('nama_shift')[$x] == '' or $request->input('masuk_kerja')[$x] == '' or $request->input('pulang_kerja')[$x] == '') {
-                    $cekvalueinput += 1;
-                }
-                $input_shift[] = array(
-                    'No' => $x,
-                    'Nama' => $request->input('nama_shift')[$x],
-                    'Masuk' => $request->input('masuk_kerja')[$x],
-                    'Pulang' => $request->input('pulang_kerja')[$x]
-                );
-            }
-        } else {
-            if ($request->input('nama_shift')[0] == '' or $request->input('masuk_kerja')[0] == '' or $request->input('pulang_kerja')[0] == '') {
-                $cekvalueinput += 1;
-            }
-            $input_shift[] = array(
-                'No' => 0,
-                'Nama' => $request->input('nama_shift')[0],
-                'Masuk' => $request->input('masuk_kerja')[0],
-                'Pulang' => $request->input('pulang_kerja')[0]
-            );
-        }
-        $Jam_kerja = json_encode($input_shift);
-
-        if ($cekvalueinput == 0) {
-            if ($validator->fails()) {
-                foreach ($validator->errors()->all() as $message) {
-                    $data = [
-                        'toast' => true,
-                        'status' => 'error',
-                        'pesan' =>  $message
-                    ];
-                }
-            } else {
-
-                if ($request->hasFile('img')) {
-                    $files = $request->file('img');
-                    $imageName = $request->input('Username') . '.' . $files->getClientOriginalExtension();
-                    $files->move(public_path('uploads/stores'), $imageName);
-                    $urlimg = url('/') . '/uploads/stores/' . $imageName;
-                } else {
-                    $urlimg = '';
-                }
-
-                $input = [
-                    'name' => $request->input('name'),
-                    'active' => $request->input('status'),
-                    'tipe' => $request->input('tipe'),
-                    'alamat' => $request->input('alamat'),
-                    'wa' => $request->input('wa'),
-                    'jam_kerja' => $Jam_kerja,
-                    'img' => $urlimg,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+        $permission = serialize($request->input('permission'));
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $message) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  $message
                 ];
-                if (store::create($input)) {
-                    $data = [
-                        'toast' => true,
-                        'status' => 'success',
-                        'pesan' => 'Berhasil dibuat'
-                    ];
-                } else {
-                    $data = [
-                        'toast' => true,
-                        'status' => 'error',
-                        'pesan' =>  'Terjadi kegagalan system'
-                    ];
-                };
             }
         } else {
+            $input = [
+                'nama' => $request->input('NamaGroup'),
+                'permission' => $permission,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            if (Groups::create($input)) {
+                $grp = Groups::orderBy('id', 'desc')->first();
+                if ($grp) {
+                    foreach ($request->input('users') as $v) {
+                        GroupsUsers::create([
+                            'groups_id' => $grp['id'],
+                            'users_id' => $v,
+                        ]);
+                    }
+                }
+
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil dibuat'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Terjadi kegagalan system'
+                ];
+            };
+        }
+
+        echo json_encode($data);
+    }
+
+
+    public function Hapus(Request $request)
+    {
+        $id =  $request->input('id');
+        if (GroupsUsers::where('groups_id', $id)->count()) {
             $data = [
                 'toast' => true,
                 'status' => 'error',
-                'pesan' =>  'Form Shift Ada Yang Kosong'
+                'pesan' =>  'Group Masih Terpakai Di Users, Silahkan Ubah di User'
             ];
+        } else {
+            if (Groups::where('id', $id)->delete() && GroupsUsers::where('group_id', $id)->delete()) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil Terhapus'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Terjadi kegagalan system'
+                ];
+            };
         }
-
 
         echo json_encode($data);
     }
@@ -143,221 +208,21 @@ class GroupController extends Controller
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
-        $this->data['StoreData'] = Store::where('id', $id)->first();
+        $GroupsData = Groups::where('id', $id)->first();
+        $Users = User::all();
+
+        $datause = array();
+        foreach ($Users as $v) {
+            $cek =  GroupsUsers::where('user_id', $v['id'])->count();
+            if (!$cek) {
+                $datause['id'] = $v['id'];
+                $datause['username'] = $v['username'];
+            }
+        }
+
+        $this->data['Users'] = $datause;
+        $this->data['GroupsData'] = $GroupsData;
+        $this->data['permission'] = unserialize($GroupsData['permission']);
         return view('Edit', $this->data);
-    }
-
-    public function TambahEdit(Request $request)
-    {
-        $id = session('IdEdit');
-        $Store = Store::where('id', $id)->first();
-        if ($Store) {
-
-            $validator = Validator::make(
-                $request->all(),
-                $rules = [
-                    'name' => 'required',
-                    'status' => 'required',
-                    'tipe' => 'required',
-                    'alamat' => 'required',
-                    'wa' => 'required',
-                    'nama_shift' => 'required',
-                    'masuk_kerja' => 'required',
-                    'pulang_kerja' => 'required',
-                    'img' => 'mimes:jpeg,jpg,png'
-                ],
-                $messages  = [
-                    'required' => 'Form :attribute harus terisi',
-                    'same' => 'Form :attribute & :other tidak sama.',
-                ]
-            );
-
-            if ($Store['name'] == $request->input('name')) {
-                $name = $request->input('name');
-            } else {
-                $str = Store::where('name', $request->input('name'))->count();
-                if ($str) {
-                    $data = [
-                        'toast' => true,
-                        'status' => 'error',
-                        'pesan' =>  'Nama Telah digunakan'
-                    ];
-                    $name = '';
-                } else {
-                    $name = $request->input('name');
-                }
-            }
-
-            if ($name) {
-                if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
-                    foreach ($validator->errors()->all() as $message) {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  $message
-                        ];
-                    }
-                } else {
-
-                    if ($request->hasFile('img')) {
-                        $files = $request->file('img');
-                        $imageName = $request->input('name') . '.' . $files->getClientOriginalExtension();
-                        $files->move(public_path('uploads/stores'), $imageName);
-                        $urlimg = url('/') . '/uploads/stores/' . $imageName;
-                    } else {
-                        $urlimg = $Store['img'];
-                    }
-
-                    $hitung_shift = count($request->input('nama_shift'));
-                    $input_shift = array();
-                    $cekvalueinput = 0;
-                    if ($hitung_shift > 1) {
-                        for ($x = 0; $x < $hitung_shift; $x++) {
-                            if ($request->input('nama_shift')[$x] == '' or $request->input('masuk_kerja')[$x] == '' or $request->input('pulang_kerja')[$x] == '') {
-                                $cekvalueinput += 1;
-                            }
-                            $input_shift[] = array(
-                                'No' => $x,
-                                'Nama' => $request->input('nama_shift')[$x],
-                                'Masuk' => $request->input('masuk_kerja')[$x],
-                                'Pulang' => $request->input('pulang_kerja')[$x]
-                            );
-                        }
-                    } else {
-                        if ($request->input('nama_shift')[0] == '' or $request->input('masuk_kerja')[0] == '' or $request->input('pulang_kerja')[0] == '') {
-                            $cekvalueinput += 1;
-                        }
-                        $input_shift[] = array(
-                            'No' => 0,
-                            'Nama' => $request->input('nama_shift')[0],
-                            'Masuk' => $request->input('masuk_kerja')[0],
-                            'Pulang' => $request->input('pulang_kerja')[0]
-                        );
-                    }
-                    $Jam_kerja = json_encode($input_shift);
-
-                    if ($cekvalueinput == 0) {
-                        $input = [
-                            'name' => $request->input('name'),
-                            'active' => $request->input('status'),
-                            'tipe' => $request->input('tipe'),
-                            'alamat' => $request->input('alamat'),
-                            'wa' => $request->input('wa'),
-                            'jam_kerja' => $Jam_kerja,
-                            'img' => $urlimg,
-                            'updated_at' => date('Y-m-d H:i:s')
-                        ];
-                        if (store::where('id', $id)->update($input)) {
-                            $data = [
-                                'toast' => true,
-                                'status' => 'success',
-                                'pesan' => 'Berhasil dibuat'
-                            ];
-                        } else {
-                            $data = [
-                                'toast' => true,
-                                'status' => 'error',
-                                'pesan' =>  'Terjadi kegagalan system'
-                            ];
-                        };
-                    } else {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  'Form Shift Ada Yang Kosong'
-                        ];
-                    }
-                }
-            }
-        } else {
-            session()->flash('IdUsers', $id);
-            $data = [
-                'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Gagal mengambil data, Refresh Kembali'
-            ];
-        }
-
-        echo json_encode($data);
-    }
-
-
-    public function Hapus(Request $request)
-    {
-        $id =  $request->input('id');
-        if (Store::where('id', $id)->delete()) {
-            $data = [
-                'toast' => true,
-                'status' => 'success',
-                'pesan' => 'Berhasil Terhapus'
-            ];
-        } else {
-            $data = [
-                'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Terjadi kegagalan system'
-            ];
-        };
-
-        echo json_encode($data);
-    }
-
-    public function Manage(Request $request)
-    {
-        $result = array('data' => array());
-        $Data = Store::orderBy('name')->get();
-        foreach ($Data as $key => $value) {
-            if ($value['img']) {
-                $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
-            } else {
-                $img = '<img width="30" class="rounded-circle" src="http://prs/assets/images/unnamed.png">';
-            }
-
-            $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">';
-
-            if (in_array('updateUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
-            }
-            if (in_array('deleteUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
-            }
-
-            $button .= '</ul></div>';
-
-            if ($value['active'] == 1) {
-                $active = '<span class="badge badge-success">Active</span>';
-            } else {
-                $active = '<span class="badge badge-secondary">Not Active</span>';
-            }
-
-
-            if ($value['jam_kerja']) {
-                $jam_kerja = json_decode($value['jam_kerja'], true);
-
-                $jam = '';
-                foreach ($jam_kerja as $v) {
-                    $jam .= $v['Nama'] . ' (' . $v['Masuk'] . ' - ' . $v['Pulang'] . ')<br>';
-                }
-            } else {
-                $jam = null;
-            }
-
-            $result['data'][$key] = array(
-                $img,
-                $value['name'],
-                $active,
-                '<span class="badge badge-light">' . $value['tipe'] . '</span>',
-                $value['alamat'],
-                $value['wa'],
-                $jam,
-                $button
-            );
-        }
-        echo json_encode($result);
     }
 }

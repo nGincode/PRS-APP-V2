@@ -36,7 +36,7 @@ class StoreController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'name' => 'required|unique:store',
+                'nama' => 'required|unique:store',
                 'status' => 'required',
                 'tipe' => 'required',
                 'alamat' => 'required',
@@ -101,7 +101,7 @@ class StoreController extends Controller
                 }
 
                 $input = [
-                    'name' => $request->input('name'),
+                    'nama' => $request->input('nama'),
                     'active' => $request->input('status'),
                     'tipe' => $request->input('tipe'),
                     'alamat' => $request->input('alamat'),
@@ -156,7 +156,7 @@ class StoreController extends Controller
             $validator = Validator::make(
                 $request->all(),
                 $rules = [
-                    'name' => 'required',
+                    'nama' => 'required',
                     'status' => 'required',
                     'tipe' => 'required',
                     'alamat' => 'required',
@@ -172,10 +172,10 @@ class StoreController extends Controller
                 ]
             );
 
-            if ($Store['name'] == $request->input('name')) {
-                $name = $request->input('name');
+            if ($Store['nama'] == $request->input('nama')) {
+                $name = $request->input('nama');
             } else {
-                $str = Store::where('name', $request->input('name'))->count();
+                $str = Store::where('nama', $request->input('nama'))->count();
                 if ($str) {
                     $data = [
                         'toast' => true,
@@ -184,7 +184,7 @@ class StoreController extends Controller
                     ];
                     $name = '';
                 } else {
-                    $name = $request->input('name');
+                    $name = $request->input('nama');
                 }
             }
 
@@ -202,7 +202,7 @@ class StoreController extends Controller
 
                     if ($request->hasFile('img')) {
                         $files = $request->file('img');
-                        $imageName = $request->input('name') . '.' . $files->getClientOriginalExtension();
+                        $imageName = $request->input('nama') . '.' . $files->getClientOriginalExtension();
                         $files->move(public_path('uploads/stores'), $imageName);
                         $urlimg = url('/') . '/uploads/stores/' . $imageName;
                     } else {
@@ -239,7 +239,7 @@ class StoreController extends Controller
 
                     if ($cekvalueinput == 0) {
                         $input = [
-                            'name' => $request->input('name'),
+                            'nama' => $request->input('nama'),
                             'active' => $request->input('status'),
                             'tipe' => $request->input('tipe'),
                             'alamat' => $request->input('alamat'),
@@ -306,7 +306,7 @@ class StoreController extends Controller
     public function Manage(Request $request)
     {
         $result = array('data' => array());
-        $Data = Store::orderBy('name')->get();
+        $Data = Store::orderBy('nama')->get();
         foreach ($Data as $key => $value) {
             if ($value['img']) {
                 $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
@@ -349,7 +349,7 @@ class StoreController extends Controller
 
             $result['data'][$key] = array(
                 $img,
-                $value['name'],
+                $value['nama'],
                 $active,
                 '<span class="badge badge-light">' . $value['tipe'] . '</span>',
                 $value['alamat'],

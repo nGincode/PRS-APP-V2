@@ -25,11 +25,15 @@ class UsersController extends Controller
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
-    public function index(Request $request)
+    public function Index(Request $request)
     {
-        $this->data['Store'] = Store::all();
-        $this->data['Group'] = Groups::orderBy('group_name')->get();
-        return view('Users', $this->data);
+        if (Store::where('active', 1)->count()) {
+            $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
+            $this->data['Group'] = Groups::orderBy('nama')->get();
+            return view('Users', $this->data);
+        } else {
+            return redirect('/Store')->with('toast_error', 'Membuat Users Memerlukan Store Active!');
+        }
     }
 
     public function Tambah(Request $request)
@@ -38,7 +42,6 @@ class UsersController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'GroupsUsers' => 'required',
                 'OutletUsers' => 'required',
                 'Email' => 'required|email|unique:users',
                 'Username' => 'required|min:6|unique:users',
@@ -78,7 +81,7 @@ class UsersController extends Controller
 
             $StoreName = Store::where('id', $request->input('OutletUsers'))->first();
             $input = [
-                'store' => $StoreName['name'],
+                'store' => $StoreName['nama'],
                 'store_id' => $request->input('OutletUsers'),
                 'username' => $request->input('Username'),
                 'password' => bcrypt($request->input('PasswordUsers')),
@@ -87,7 +90,6 @@ class UsersController extends Controller
                 'lastname' => $request->input('NamaBelakangUsers'),
                 'phone' => $request->input('NoUsers'),
                 'gender' => $request->input('gender'),
-                'group_id' => $request->input('GroupsUsers'),
                 'img' => $urlimg,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'last_login' => date('Y-m-d H:i:s')
@@ -119,7 +121,6 @@ class UsersController extends Controller
 
         $this->data['UsersData'] = User::where('id', $id)->first();
         $this->data['Store'] = Store::all();
-        $this->data['Group'] = Groups::orderBy('group_name')->get();
         return view('Edit', $this->data);
     }
 
@@ -212,7 +213,7 @@ class UsersController extends Controller
 
                     $StoreName = Store::where('id', $request->input('OutletUsers'))->first();
                     $input = [
-                        'store' => $StoreName['name'],
+                        'store' => $StoreName['nama'],
                         'store_id' => $request->input('OutletUsers'),
                         'username' => $request->input('Username'),
                         'password' => bcrypt($request->input('PasswordUsersEdit')),
@@ -221,7 +222,6 @@ class UsersController extends Controller
                         'lastname' => $request->input('NamaBelakangUsers'),
                         'phone' => $request->input('NoUsers'),
                         'gender' => $request->input('gender'),
-                        'group_id' => $request->input('GroupsUsers'),
                         'img' => $urlimg,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];
@@ -287,7 +287,7 @@ class UsersController extends Controller
     {
         $result = array('data' => array());
         $Data = User::orderBy('username')->get();
-        foreach ($Data as $key => $value) {
+        foreach ($Data as $value) {
             if ($value['id'] != 1) {
                 if ($value['img']) {
                     $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
@@ -300,17 +300,15 @@ class UsersController extends Controller
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
-
                 if (in_array('updateUser', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
                 }
                 if (in_array('deleteUser', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
                 }
-
                 $button .= '</ul></div>';
 
-                $result['data'][$key] = array(
+                $result['data'][] = array(
                     $img,
                     $value['username'],
                     $value['store'],
