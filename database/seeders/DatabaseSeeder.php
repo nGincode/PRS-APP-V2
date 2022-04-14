@@ -55,9 +55,37 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
+        User::create([
+            'store' => 'CV Prima Rasa Selaras',
+            'store_id' => 2,
+            'username' => 'prsprs',
+            'password' => bcrypt('prsprs'),
+            'email' => 'primarasaselaras@gmail.com',
+            'firstname' => 'PRS',
+            'lastname' => 'Prima Rasa Selaras',
+            'phone' => '085369957606',
+            'gender' => 1,
+            'izin' => 1,
+            'img' => null,
+            'last_login' => date('Y-m-d H:i:s'),
+            'email_verified_at' => null,
+            'remember_token' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+
         Groups::create([
             'nama' => 'SUPERADMIN',
             'permission' => serialize($permession),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        $v2 = 'a:4:{i:0;s:12:"createMaster";i:1;s:12:"updateMaster";i:2;s:10:"viewMaster";i:3;s:12:"deleteMaster";}';
+        Groups::create([
+            'nama' => 'Office',
+            'permission' => $v2,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
 
@@ -66,6 +94,13 @@ class DatabaseSeeder extends Seeder
         GroupsUsers::create([
             'users_id' => 1,
             'groups_id' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        GroupsUsers::create([
+            'users_id' => 2,
+            'groups_id' => 2,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
 
@@ -79,6 +114,18 @@ class DatabaseSeeder extends Seeder
             'img' => null,
             'wa' => '085369957606',
             'jam_kerja' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        Store::create([
+            'nama' => 'CV Prima Rasa Selaras',
+            'active' => 1,
+            'tipe' => 'Nusa Indah',
+            'alamat' => 'BENGKULU',
+            'img' => null,
+            'wa' => '085369957606',
+            'jam_kerja' => '[{"No":0,"Nama":"Shift 1","Masuk":"15:16","Pulang":"15:16"}]',
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
 
