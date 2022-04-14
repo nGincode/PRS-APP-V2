@@ -391,7 +391,6 @@ if (Auth::check()) {
 
 
 
-
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Master') }}"
