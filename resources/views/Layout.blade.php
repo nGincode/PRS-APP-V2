@@ -316,7 +316,7 @@ if (Auth::check()) {
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item ">
+                            <li class="nav-item @if ($title == 'Master') menu-open" @endif">
                                 <a href="{{ url('/Master') }}"
                                     class="nav-link @if ($title == 'Master') active @endif ">
                                     <i class=" nav-icon fas fa-database"></i>
@@ -327,25 +327,29 @@ if (Auth::check()) {
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Master/Supplier') }}"
+                                            class="nav-link @if ($subtitle == 'Supplier') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Supplier</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Master/Bahan') }}"
+                                            class="nav-link @if ($subtitle == 'Bahan') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Bahan</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Master/Peralatan') }}"
+                                            class="nav-link @if ($subtitle == 'Peralatan') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Peralatan</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Master/Pegawai') }}"
+                                            class="nav-link @if ($subtitle == 'Pegawai') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Pegawai</p>
                                         </a>
@@ -359,7 +363,7 @@ if (Auth::check()) {
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    class="nav-link @if ($title == 'Foodcost') active @endif ">
                                     <i class=" nav-icon fas fa-pepper-hot"></i>
                                     <p>
                                         Foodcost
@@ -406,7 +410,7 @@ if (Auth::check()) {
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    class="nav-link @if ($title == 'Pemesanan') active @endif ">
                                     <i class=" nav-icon fas fa-shopping-cart"></i>
                                     <p>
                                         Pemesanan
@@ -446,7 +450,7 @@ if (Auth::check()) {
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    class="nav-link @if ($title == 'Inventory') active @endif ">
                                     <i class=" nav-icon fas fa-cube"></i>
                                     <p>
                                         Inventory
@@ -527,10 +531,38 @@ if (Auth::check()) {
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    class="nav-link @if ($title == 'Peralatan') active @endif ">
                                     <i class=" nav-icon fas fa-gavel"></i>
                                     <p>
                                         Peralatan
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Opname</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Produksi') }}"
+                                    class="nav-link @if ($title == 'Produksi') active @endif ">
+                                    <i class=" nav-icon fas fa-sign-language"></i>
+                                    <p>
+                                        Produksi
                                         <i class="right fas fa-angle-left"></i>
                                     </p>
                                 </a>
@@ -567,12 +599,16 @@ if (Auth::check()) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">{{ $title }}</h1>
+                            <h1 class="m-0">{{ $title }} {{ $subtitle ?? '' }}
+                            </h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
                                 <li class="breadcrumb-item active">{{ $title }}</li>
+                                @if ($subtitle)
+                                    <li class="breadcrumb-item active">{{ $subtitle }}</li>
+                                @endif
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -750,7 +786,7 @@ if (Auth::check()) {
 
                 $("#manage").DataTable({
                     "ajax": {
-                        url: "{{ url('/') }}/{{ $title }}/Manage",
+                        url: "{{ url('/') }}/{{ $title }}/Manage/{{ $subtitle }}",
                         type: "POST",
                     },
                     "responsive": true,
@@ -760,6 +796,12 @@ if (Auth::check()) {
                     "sort": true,
                     "paging": true,
                     "destroy": true,
+                    "language": {
+                        'Paginate': {
+                            'previous': '<',
+                            'next': '>'
+                        }
+                    },
 
                     // "lengthChange": true,
                     "dom": '<"dt-buttons"Bf><"clear">lirtp',

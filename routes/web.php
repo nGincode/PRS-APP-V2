@@ -8,6 +8,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\MasterController;
+
+
 
 
 use App\Models\Groups;
@@ -81,6 +84,34 @@ Route::controller(GroupController::class)->group(
         Route::post('Group/Hapus', 'Hapus')->middleware('auth');
 
         Route::post('Group/Manage', 'Manage')->middleware('auth');
+    }
+);
+
+
+//Master
+Route::controller(MasterController::class)->group(
+    function () {
+        Route::get('Master/Supplier', 'Supplier')->middleware('auth');
+        Route::post('Master/Supplier', 'SupplierTambah')->middleware('auth');
+
+        Route::post('Master/Supplier/Hapus', 'SupplierHapus')->middleware('auth');
+
+        Route::post('Master/Supplier/Edit', 'SupplierEdit')->middleware('auth');
+        Route::post('Master/Supplier/SupplierEdit', 'SupplierEditTambah')->middleware('auth');
+
+        Route::post('Master/Manage/Supplier', 'SupplierManage')->middleware('auth');
+
+
+
+        Route::get('Master/Bahan', 'Bahan')->middleware('auth');
+        Route::post('Master/Bahan', 'BahanTambah')->middleware('auth');
+
+        Route::post('Master/Bahan/Hapus', 'BahanHapus')->middleware('auth');
+
+        Route::post('Master/Bahan/Edit', 'BahanEdit')->middleware('auth');
+        Route::post('Master/Bahan/BahanEdit', 'BahanEditTambah')->middleware('auth');
+
+        Route::post('Master/Manage/Bahan', 'BahanManage')->middleware('auth');
     }
 );
 

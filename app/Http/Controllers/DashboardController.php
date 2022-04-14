@@ -17,6 +17,7 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Dashboard';
+        $this->data['subtitle'] = '';
     }
 
     public function index(Request $request)

@@ -21,6 +21,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Users';
+        $this->data['subtitle'] = '';
         $this->title = $this->data['title'];
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }

@@ -51,7 +51,7 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="name">Nama Store</label>
+                                    <label for="nama">Nama Store</label>
                                     <input type="text" class="form-control" id="nama" placeholder="Nama Store"
                                         name="nama">
                                 </div>

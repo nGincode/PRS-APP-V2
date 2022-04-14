@@ -330,7 +330,7 @@ $(document).ready(function() {
         $('#FormStore').validate({
           errorClass: 'error',
           rules: {
-            'name': {
+            'nama': {
               required: true
             },
             'status': {
@@ -382,7 +382,6 @@ $(document).ready(function() {
           }
         });
     }
-
     
     //Group
     if ($('#FormGroup').length) {
@@ -435,6 +434,53 @@ $(document).ready(function() {
           }
         });
     }
+    
+    //Supplier
+    if ($('#FormSupplier').length) {
+        $('#FormSupplier').validate({
+          errorClass: 'error',
+          rules: {
+            'nama': {
+              required: true
+            }
+          },
+          messages: {
+            // OutletUsers : "Masih Kosong"
+          }
+        });
+
+        $('#FormSupplier').on('submit', function(event) {
+          var isValid = $(this).valid();
+          event.preventDefault();
+          var formData = new FormData(this);
+
+          if (isValid) {
+            $.ajax({
+              url: $(this).attr('action'),
+              type: "POST",
+              data: formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              dataType: 'json',
+              error: function(xhr, status, error) {
+                popup(status, true, xhr.status +" "+ error );
+              },
+              success: function(data) {
+                if (data.status === 'success') {
+                  popup(data.status, data.toast, data.pesan);
+                  $('#FormSupplier')[0].reset();
+                  $('#manage').DataTable().ajax.reload();
+                } else {
+                  popup(data.status, data.toast, data.pesan);
+                }
+              }
+            });
+
+          }
+        });
+    }
+    
 });
 
 //Lainnya

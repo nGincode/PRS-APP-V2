@@ -581,3 +581,125 @@
     </script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
+
+
+@isset($SupplierData)
+    <form id="SupplierEdit" action="{{ url('/Master/Supplier/SupplierEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Supplier</label>
+                        <input type="text" class="form-control" value="{{ $SupplierData['nama'] }}" id="nama"
+                            placeholder="Nama Supplier" name="nama">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <input type="text" class="form-control" value="{{ $SupplierData['alamat'] }}" id="alamat"
+                            placeholder="Alamat" name="alamat">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Pembayaran</label>
+                        <select name="hutang" id="hutang" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="1" @if ($SupplierData['hutang'] == 1) selected @endif>Hutang</option>
+                            <option value="0" @if ($SupplierData['hutang'] == 0) selected @endif>Dimuka</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Tipe Pembayaran</label>
+                        <select name="tipe" id="tipe" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Tunai" @if ($SupplierData['tipe'] == 'Tunai') selected @endif>Tunai</option>
+                            <option value="Tranfer" @if ($SupplierData['tipe'] == 'Tranfer') selected @endif>Tranfer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="rekening">No Rekening</label>
+                        <input type="number" class="form-control" value="{{ $SupplierData['rekening'] }}"
+                            id="rekening" placeholder="No Rekening" name="rekening">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="wa">No Whatsapp</label>
+                        <input type="number" class="form-control" id="wa" value="{{ $SupplierData['wa'] }}"
+                            placeholder="No Wa" name="wa">
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function() {
+            var id = $("#SupplierEdit");
+
+            if (id.length) {
+                id.validate({
+                    errorClass: "error",
+                    rules: {
+                        'nama': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                id.on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    id[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
+@endisset
