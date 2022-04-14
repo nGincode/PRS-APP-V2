@@ -285,7 +285,7 @@ class UsersController extends Controller
     public function Manage(Request $request)
     {
         $result = array('data' => array());
-        $Data = User::orderBy('username')->get();
+        $Data = User::latest()->get();
         foreach ($Data as $value) {
             if ($value['id'] != 1) {
                 if ($value['img']) {

@@ -302,7 +302,7 @@ if (Auth::check()) {
                         @endif
 
 
-                        @if (in_array('createGrou', $user_permission) || in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission))
+                        @if (in_array('createGroup', $user_permission) || in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission))
                             <li class="nav-item ">
                                 <a href="{{ url('/Group') }}"
                                     class="nav-link @if ($title == 'Group') active @endif ">
@@ -311,6 +311,123 @@ if (Auth::check()) {
                                         Groups
                                     </p>
                                 </a>
+                            </li>
+                        @endif
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Master') }}"
+                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    <i class=" nav-icon fas fa-database"></i>
+                                    <p>
+                                        Master Data
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Supplier</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Bahan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Peralatan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Pegawai</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Master') }}"
+                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    <i class=" nav-icon fas fa-pepper-hot"></i>
+                                    <p>
+                                        Foodcost
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Bahan Olahan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Varian</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Resep Menu</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Master') }}"
+                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    <i class=" nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Pemesanan
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Purchase Request (PR)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Persetujuan (PR)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Purchase Order (PO)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock Logistik</p>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
 

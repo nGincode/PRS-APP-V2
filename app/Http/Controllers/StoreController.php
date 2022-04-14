@@ -306,7 +306,7 @@ class StoreController extends Controller
     public function Manage(Request $request)
     {
         $result = array('data' => array());
-        $Data = Store::orderBy('nama')->get();
+        $Data = Store::latest()->get();
         foreach ($Data as $value) {
             if ($value['id'] != 1) {
                 if ($value['img']) {

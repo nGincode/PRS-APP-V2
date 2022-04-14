@@ -76,6 +76,17 @@
                                         <td><input type="checkbox" name="permission[]" id="permission" value="deleteGroup"
                                                 class="minimal"></td>
                                     </tr>
+                                    <tr>
+                                        <td>Master Data</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission" value="createMaster"
+                                                class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission" value="updateMaster"
+                                                class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission" value="viewMaster"
+                                                class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission" value="deleteMaster"
+                                                class="minimal"></td>
+                                    </tr>
                                 </tbody>
                             </table>
 

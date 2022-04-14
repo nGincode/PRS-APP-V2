@@ -43,6 +43,7 @@
                                         <option value="Office">Office</option>
                                         <option value="Outlet">Outlet</option>
                                         <option value="Logistik">Logistik</option>
+                                        <option value="Dapro">Dapur Produksi</option>
                                         <option value="Khusus">Khusus</option>
                                     </select>
                                 </div>

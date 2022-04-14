@@ -231,6 +231,8 @@
                             <option value="Office" @if ($StoreData['tipe'] == 'Office') selected @endif>Office</option>
                             <option value="Outlet" @if ($StoreData['tipe'] == 'Outlet') selected @endif>Outlet</option>
                             <option value="Logistik" @if ($StoreData['tipe'] == 'Logistik') selected @endif>Logistik</option>
+                            <option value="Khusus" @if ($StoreData['tipe'] == 'Dapro') selected @endif>Dapur Produksi
+                            </option>
                             <option value="Khusus" @if ($StoreData['tipe'] == 'Khusus') selected @endif>Khusus</option>
                         </select>
                     </div>
