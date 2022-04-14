@@ -390,6 +390,17 @@ if (Auth::check()) {
                         @endif
 
 
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-th"></i>
+                                    <p>
+                                        Point Of Sales
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
@@ -432,15 +443,115 @@ if (Auth::check()) {
                         @endif
 
 
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Widgets
-                                    <span class="right badge badge-danger">New</span>
-                                </p>
-                            </a>
-                        </li>
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Master') }}"
+                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    <i class=" nav-icon fas fa-cube"></i>
+                                    <p>
+                                        Inventory
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Opname</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-camera"></i>
+                                    <p>
+                                        Absensi
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-ticket-alt"></i>
+                                    <p>
+                                        Voucher
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-shopping-bag"></i>
+                                    <p>
+                                        Belanja
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-sign-in-alt"></i>
+                                    <p>
+                                        Pengadaan
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Master') }}"
+                                    class="nav-link @if ($title == 'Master') active @endif ">
+                                    <i class=" nav-icon fas fa-gavel"></i>
+                                    <p>
+                                        Peralatan
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Opname</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="../forms/general.html" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

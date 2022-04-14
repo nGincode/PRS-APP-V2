@@ -22,6 +22,19 @@
                     </div>
                 </div>
 
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="izin">Izin Penampilan</label>
+                        <select name="izin" id="izin" class="form-control select2 select2-danger"
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="1" @if ($UsersData['id'] == 1) selected @endif>Keseluruhan</option>
+                            <option value="0" @if ($UsersData['id'] == 0) selected @endif>Khusus</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="Email">Email</label>
@@ -160,6 +173,9 @@
                             required: true
                         },
                         "NoUsers": {
+                            required: true
+                        },
+                        "izin": {
                             required: true
                         }
                     },

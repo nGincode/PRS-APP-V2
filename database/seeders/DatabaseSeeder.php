@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             'lastname' => 'Nur Ilham',
             'phone' => '085369957606',
             'gender' => 1,
+            'izin' => 1,
             'img' => null,
             'last_login' => date('Y-m-d H:i:s'),
             'email_verified_at' => null,

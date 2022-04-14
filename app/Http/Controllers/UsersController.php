@@ -50,7 +50,9 @@ class UsersController extends Controller
                 'NamaDepanUsers' => 'required',
                 'NamaBelakangUsers' => 'required',
                 'NoUsers' => 'required',
-                'img' => 'mimes:jpeg,jpg,png'
+                'img' => 'mimes:jpeg,jpg,png',
+                'izin' => 'required',
+
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -90,6 +92,7 @@ class UsersController extends Controller
                 'lastname' => $request->input('NamaBelakangUsers'),
                 'phone' => $request->input('NoUsers'),
                 'gender' => $request->input('gender'),
+                'izin' => $request->input('izin'),
                 'img' => $urlimg,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'last_login' => date('Y-m-d H:i:s')

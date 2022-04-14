@@ -18,8 +18,8 @@ class StoreFactory extends Factory
     public function definition()
     {
         return [
-            'nama' => $this->faker->userName(),
-            'tipe' => $this->faker->company(),
+            'nama' => $this->faker->company(),
+            'tipe' => 'Outlet',
             'alamat' => $this->faker->address(),
             'wa' => $this->faker->e164PhoneNumber(),
             'img' => $this->faker->imageUrl(),

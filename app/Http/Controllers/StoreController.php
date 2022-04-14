@@ -13,6 +13,7 @@ use App\Models\Groups;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 
 class StoreController extends Controller
@@ -353,7 +354,7 @@ class StoreController extends Controller
                     $value['nama'],
                     $active,
                     '<span class="badge badge-light">' . $value['tipe'] . '</span>',
-                    $value['alamat'],
+                    Str::limit($value['alamat'], 20),
                     $value['wa'],
                     $jam,
                     $button

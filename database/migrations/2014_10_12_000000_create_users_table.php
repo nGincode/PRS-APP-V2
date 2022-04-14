@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('gender')->nullable();
             $table->string('img')->nullable();
+            $table->integer('izin');
             $table->string('last_login')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

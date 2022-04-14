@@ -39,6 +39,18 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
+                                    <label for="izin">Izin Penampilan</label>
+                                    <select name="izin" id="izin" class="form-control select2 select2-danger"
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        <option value="1">Keseluruhan</option>
+                                        <option value="0">Khusus</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
                                     <label for="Email">Email</label>
                                     <input type="email" class="form-control" id="Email" placeholder="Email" name="Email">
                                 </div>

@@ -283,6 +283,9 @@ $(document).ready(function() {
             },
             'NoUsers': {
               required: true
+            },
+            'izin': {
+              required: true
             }
           },
           messages: {
