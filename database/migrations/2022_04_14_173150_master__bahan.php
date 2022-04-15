@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('store', function (Blueprint $table) {
+        Schema::create('master_bahan', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->integer('active');
-            $table->string('tipe');
-            $table->string('alamat')->nullable();
-            $table->string('img')->nullable();
-            $table->string('wa')->nullable();
-            $table->json('jam_kerja')->nullable();
+            $table->string('kategori');
+            $table->string('satuan_pembelian');
+            $table->integer('harga');
+            $table->string('satuan_pemakaian');
+            $table->string('konversi_pemakaian');
+            $table->string('satuan_pengeluaran');
+            $table->string('konversi_pengeluaran');
+            $table->boolean('delete');
             $table->timestamps();
         });
     }
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('store');
+        Schema::dropIfExists('master_bahan');
     }
 };

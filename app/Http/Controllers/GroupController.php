@@ -155,8 +155,9 @@ class GroupController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ];
-            if (Groups::create($input)) {
-                $grp = Groups::orderBy('id', 'desc')->first();
+            if ($create = Groups::create($input)) {
+                // $grp = Groups::orderBy('id', 'desc')->first();
+                $grp = $create->id;
                 if ($grp) {
                     foreach ($request->input('users') as $v) {
                         GroupsUsers::create([

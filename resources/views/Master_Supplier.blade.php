@@ -7,7 +7,7 @@
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title"><b>Tambah {{ $title }} </b></h3>
+                        <h3 class="card-title"><b>Tambah {{ $title . ' ' . $subtitle }} </b></h3>
 
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -89,7 +89,7 @@
             </form>
             <div class="card">
                 <div class="card-header text-white bg-secondary mb-3">
-                    <h3 class="card-title" style="font-weight: bolder">Data {{ $title }}</h3>
+                    <h3 class="card-title" style="font-weight: bolder">Data {{ $title . ' ' . $subtitle }}</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">

@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('master_supplier', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('alamat');
+            $table->string('alamat')->nullable();
             $table->boolean('hutang')->nullable();
             $table->string('tipe')->nullable();
             $table->string('rekening')->nullable();
             $table->string('wa')->nullable();
+            $table->boolean('delete');
             $table->timestamps();
         });
     }

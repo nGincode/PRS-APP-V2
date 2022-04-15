@@ -30,6 +30,7 @@ return array(
     'App\\Models\\LogistikBelanja' => $baseDir . '/app/Models/LogistikBelanja.php',
     'App\\Models\\LogistikOrder' => $baseDir . '/app/Models/LogistikOrder.php',
     'App\\Models\\LogistikProduk' => $baseDir . '/app/Models/LogistikProduk.php',
+    'App\\Models\\Master_Supplier' => $baseDir . '/app/Models/Master_Supplier.php',
     'App\\Models\\Pengadaan' => $baseDir . '/app/Models/Pengadaan.php',
     'App\\Models\\Store' => $baseDir . '/app/Models/Store.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',

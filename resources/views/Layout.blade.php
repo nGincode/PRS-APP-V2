@@ -599,7 +599,7 @@ if (Auth::check()) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">{{ $title }} {{ $subtitle ?? '' }}
+                            <h1 class="m-0"><b>{{ $title }} {{ $subtitle ?? '' }}</b>
                             </h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
@@ -641,7 +641,7 @@ if (Auth::check()) {
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-backdrop="static"
         data-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header text-white bg-dark mb-3">
                     <h5 class="modal-title" id="ModalLabel" style="font-weight: bolder"></h5>
@@ -760,15 +760,6 @@ if (Auth::check()) {
     </script>
 
     <script src="{{ url('/') }}/assets/js/js.js"></script>
-    <style>
-        label.error {
-            display: block;
-            float: right;
-            color: red;
-            font-size: small;
-        }
-
-    </style>
     <script>
         //DataTable
         $(function() {

@@ -539,6 +539,7 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'App\\Models\\LogistikBelanja' => __DIR__ . '/../..' . '/app/Models/LogistikBelanja.php',
         'App\\Models\\LogistikOrder' => __DIR__ . '/../..' . '/app/Models/LogistikOrder.php',
         'App\\Models\\LogistikProduk' => __DIR__ . '/../..' . '/app/Models/LogistikProduk.php',
+        'App\\Models\\Master_Supplier' => __DIR__ . '/../..' . '/app/Models/Master_Supplier.php',
         'App\\Models\\Pengadaan' => __DIR__ . '/../..' . '/app/Models/Pengadaan.php',
         'App\\Models\\Store' => __DIR__ . '/../..' . '/app/Models/Store.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',

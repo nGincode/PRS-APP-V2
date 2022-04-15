@@ -11,6 +11,7 @@ use App\Models\LogistikBelanja;
 use App\Models\LogistikOrder;
 use App\Models\Groups;
 use App\Models\Master_Supplier;
+use App\Models\Master_Bahan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,6 +24,7 @@ class MasterController extends Controller
     {
         $this->data['title'] = 'Master';
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
+        $this->jmlbahan = Master_Bahan::where('delete', false)->count();
     }
 
 
@@ -30,7 +32,6 @@ class MasterController extends Controller
     public function Supplier(Request $request)
     {
         $this->data['subtitle'] = 'Supplier';
-
         return view('Master_Supplier', $this->data);
     }
 
@@ -40,7 +41,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Supplier::latest()->get();
+        $Data = Master_Supplier::where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -83,6 +84,7 @@ class MasterController extends Controller
             $request->all(),
             $rules = [
                 'nama' => 'required|unique:master_supplier',
+                'alamat' => 'required',
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -106,6 +108,7 @@ class MasterController extends Controller
                 'tipe' => $request->input('tipe'),
                 'hutang' => $request->input('hutang'),
                 'wa' => $request->input('wa'),
+                'delete' => false,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ];
@@ -147,6 +150,7 @@ class MasterController extends Controller
                 $request->all(),
                 $rules = [
                     'nama' => 'required',
+                    'alamat' => 'required',
                 ],
                 $messages  = [
                     'required' => 'Form :attribute harus terisi',
@@ -217,7 +221,7 @@ class MasterController extends Controller
     public function SupplierHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Supplier::where('id', $id)->delete()) {
+        if (Master_Supplier::create(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',
@@ -240,8 +244,8 @@ class MasterController extends Controller
     public function Bahan(Request $request)
     {
         $this->data['subtitle'] = 'Bahan';
-
-        return view('Master_Supplier', $this->data);
+        $this->data['kode'] = 'B' . $this->jmlbahan + 1;
+        return view('Master_Bahan', $this->data);
     }
 
     public function BahanManage(Request $request)
@@ -250,7 +254,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Supplier::latest()->get();
+        $Data = Master_Bahan::where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -267,19 +271,28 @@ class MasterController extends Controller
 
             $button .= '</ul></div>';
 
-            if ($value['hutang']) {
-                $hutang = 'Hutang';
+            if ($value['kategori']) {
+                if ($value['kategori'] == 1) {
+                    $kategori = 'Bahan Baku Segar';
+                } elseif ($value['kategori'] == 2) {
+                    $kategori = 'Bahan Baku Beku';
+                } elseif ($value['kategori'] == 3) {
+                    $kategori = 'Bahan Baku Dalam Kemasan';
+                } elseif ($value['kategori'] == 4) {
+                    $kategori = 'Bahan Baku Dingin';
+                } else {
+                    $kategori = 'Not Found';
+                }
             } else {
-                $hutang = 'Dimuka';
+                $kategori = 'Not Found';
             }
 
+            $konversi = 'Pemakaian : ' . $value['konversi_pemakaian'] . ' ' . $value['satuan_pemakaian'] . '<br> Pengeluaran : ' . $value['konversi_pengeluaran'] . ' ' . $value['satuan_pengeluaran'];
             $result['data'][] = array(
                 $value['nama'],
-                $value['alamat'],
-                $hutang,
-                $value['tipe'],
-                $value['rekening'],
-                $value['wa'],
+                $kategori,
+                $value['satuan_pembelian'],
+                $this->rupiah($value['harga']), $konversi,
                 $button
             );
         }
@@ -292,7 +305,14 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:master_supplier',
+                'nama' => 'required|unique:master_bahan',
+                'kategori' => 'required',
+                'satuan_pembelian' => 'required',
+                'harga' => 'required',
+                'satuan_pemakaian' => 'required',
+                'konversi_pemakaian' => 'required',
+                'satuan_pengeluaran' => 'required',
+                'konversi_pengeluaran' => 'required',
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -312,14 +332,18 @@ class MasterController extends Controller
 
             $input = [
                 'nama' => $request->input('nama'),
-                'alamat' => $request->input('alamat'),
-                'tipe' => $request->input('tipe'),
-                'hutang' => $request->input('hutang'),
-                'wa' => $request->input('wa'),
+                'kategori' => $request->input('kategori'),
+                'satuan_pembelian' => $request->input('satuan_pembelian'),
+                'harga' => $request->input('harga'),
+                'satuan_pemakaian' => $request->input('satuan_pemakaian'),
+                'konversi_pemakaian' => $request->input('konversi_pemakaian'),
+                'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
+                'konversi_pengeluaran' => $request->input('konversi_pengeluaran'),
+                'delete' => false,
                 'updated_at' => date('Y-m-d H:i:s'),
                 'created_at' => date('Y-m-d H:i:s')
             ];
-            if (Master_Supplier::create($input)) {
+            if (Master_Bahan::create($input)) {
                 $data = [
                     'toast' => true,
                     'status' => 'success',
@@ -343,7 +367,7 @@ class MasterController extends Controller
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
-        $this->data['SupplierData'] = Master_Supplier::where('id', $id)->first();
+        $this->data['BahanData'] = Master_Bahan::where('id', $id)->first();
         return view('Edit', $this->data);
     }
 
@@ -427,7 +451,7 @@ class MasterController extends Controller
     public function BahanHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Supplier::where('id', $id)->delete()) {
+        if (Master_Bahan::create(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',

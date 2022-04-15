@@ -133,7 +133,9 @@
     </form>
     <script>
         $(function() {
-            $(".select2").select2();
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid()
+            });
             bsCustomFileInput.init();
         });
 
@@ -141,7 +143,21 @@
             //users Edit
             if ($("#UsersEdit").length) {
                 $("#UsersEdit").validate({
-                    errorClass: "error",
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
                     rules: {
                         "OutletUsers": {
                             required: true
@@ -370,7 +386,21 @@
 
             if ($("#StoreEdit").length) {
                 $("#StoreEdit").validate({
-                    errorClass: "error",
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
                     rules: {
                         'nama': {
                             required: true
@@ -516,7 +546,21 @@
             var edit = $("#GroupsEdit");
             if (edit.length) {
                 edit.validate({
-                    errorClass: "error",
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
                     rules: {
                         'nama': {
                             required: true
@@ -660,9 +704,26 @@
 
             if (id.length) {
                 id.validate({
-                    errorClass: "error",
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
                     rules: {
                         'nama': {
+                            required: true
+                        },
+                        'alamat': {
                             required: true
                         }
                     },
@@ -702,4 +763,322 @@
             }
         });
     </script>
+@endisset
+
+@isset($BahanData)
+    <form id="BahanEdit" action="{{ url('/Master/Bahan/BahanEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select name="kategori" id="kategori" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="1">Bahan Baku Segar</option>
+                            <option value="2">Bahan Baku Beku</option>
+                            <option value="3">Bahan Baku Dalam Kemasan</option>
+                            <option value="4">Bahan Baku Dingin</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Bahan</label>
+                        <input type="text" class="form-control" id="nama" placeholder="Nama Bahan" name="nama">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Satuan Pembelian</label>
+                        <select name="satuan_pembelian" onchange="pembelianedit(this.value)" id="satuan_pembelian"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Kilogram">Kilogram</option>
+                            <option value="Gram">Gram</option>
+                            <option value="Ons">Ons</option>
+                            <option value="Pack">Pack</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Potong">Potong</option>
+                            <option value="Liter">Liter</option>
+                            <option value="Mililiter">Mililiter</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Galon">Galon</option>
+                            <option value="Pouch">Pouch</option>
+                            <option value="Lembar">Lembar</option>
+                            <option value="Roll">Roll</option>
+                            <option value="Ikat">Ikat</option>
+                            <option value="Bal">Bal</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Kaleng">Kaleng</option>
+                            <option value="Dus">Dus</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Jerigen">Jerigen</option>
+                            <option value="Tabung">Tabung</option>
+                            <option value="Ekor">Ekor</option>
+                            <option value="Papan">Papan</option>
+                            <option value="Bungkus">Bungkus</option>
+                            <option value="Ember">Ember</option>
+                            <option value="Toples">Toples</option>
+                            <option value="Shot">Shot</option>
+                            <option value="Cup">Cup</option>
+                            <option value="Batang">Batang</option>
+                            <option value="Tusuk">Tusuk</option>
+                            <option value="Porsi">Porsi</option>
+                            <option value="Centimeter">Centimeter</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Slop">Slop</option>
+                            <option value="Loaf">Loaf</option>
+                            <option value="Pasang">Pasang</option>
+                            <option value="Slice">Slice</option>
+                            <option value="Sendok Teh">Sendok Teh</option>
+                            <option value="Sendok Makan">Sendok Makan</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="harga">Harga</label>
+                        <input type="text" class="form-control" id="harga" placeholder="Harga" name="harga">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Satuan Pemakaian</label>
+                        <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Kilogram">Kilogram</option>
+                            <option value="Gram">Gram</option>
+                            <option value="Ons">Ons</option>
+                            <option value="Pack">Pack</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Potong">Potong</option>
+                            <option value="Liter">Liter</option>
+                            <option value="Mililiter">Mililiter</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Galon">Galon</option>
+                            <option value="Pouch">Pouch</option>
+                            <option value="Lembar">Lembar</option>
+                            <option value="Roll">Roll</option>
+                            <option value="Ikat">Ikat</option>
+                            <option value="Bal">Bal</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Kaleng">Kaleng</option>
+                            <option value="Dus">Dus</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Jerigen">Jerigen</option>
+                            <option value="Tabung">Tabung</option>
+                            <option value="Ekor">Ekor</option>
+                            <option value="Papan">Papan</option>
+                            <option value="Bungkus">Bungkus</option>
+                            <option value="Ember">Ember</option>
+                            <option value="Toples">Toples</option>
+                            <option value="Shot">Shot</option>
+                            <option value="Cup">Cup</option>
+                            <option value="Batang">Batang</option>
+                            <option value="Tusuk">Tusuk</option>
+                            <option value="Porsi">Porsi</option>
+                            <option value="Centimeter">Centimeter</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Slop">Slop</option>
+                            <option value="Loaf">Loaf</option>
+                            <option value="Pasang">Pasang</option>
+                            <option value="Slice">Slice</option>
+                            <option value="Sendok Teh">Sendok Teh</option>
+                            <option value="Sendok Makan">Sendok Makan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Konversi Satuan Pemakaian</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend" id="konversid1edit">
+
+                            </div>
+                            <input type="text" name="konversi_pemakaian" id="konversi_pemakaian" class="form-control"
+                                placeholder="Satuan Pemakaian">
+                            <div class="input-group-append" id="konversib1edit">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Satuan Pengeluaran</label>
+                        <select name="satuan_pengeluaran" onchange="pengeluaranedit(this.value)" id="satuan_pengeluaran"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Kilogram">Kilogram</option>
+                            <option value="Gram">Gram</option>
+                            <option value="Ons">Ons</option>
+                            <option value="Pack">Pack</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Pieces">Pieces</option>
+                            <option value="Potong">Potong</option>
+                            <option value="Liter">Liter</option>
+                            <option value="Mililiter">Mililiter</option>
+                            <option value="Butir">Butir</option>
+                            <option value="Galon">Galon</option>
+                            <option value="Pouch">Pouch</option>
+                            <option value="Lembar">Lembar</option>
+                            <option value="Roll">Roll</option>
+                            <option value="Ikat">Ikat</option>
+                            <option value="Bal">Bal</option>
+                            <option value="Karung">Karung</option>
+                            <option value="Kaleng">Kaleng</option>
+                            <option value="Dus">Dus</option>
+                            <option value="Botol">Botol</option>
+                            <option value="Jerigen">Jerigen</option>
+                            <option value="Tabung">Tabung</option>
+                            <option value="Ekor">Ekor</option>
+                            <option value="Papan">Papan</option>
+                            <option value="Bungkus">Bungkus</option>
+                            <option value="Ember">Ember</option>
+                            <option value="Toples">Toples</option>
+                            <option value="Shot">Shot</option>
+                            <option value="Cup">Cup</option>
+                            <option value="Batang">Batang</option>
+                            <option value="Tusuk">Tusuk</option>
+                            <option value="Porsi">Porsi</option>
+                            <option value="Centimeter">Centimeter</option>
+                            <option value="Meter">Meter</option>
+                            <option value="Slop">Slop</option>
+                            <option value="Loaf">Loaf</option>
+                            <option value="Pasang">Pasang</option>
+                            <option value="Slice">Slice</option>
+                            <option value="Sendok Teh">Sendok Teh</option>
+                            <option value="Sendok Makan">Sendok Makan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Konversi Satuan Pengeluaran</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend" id="konversid2edit">
+                            </div>
+                            <input type="text" name="konversi_pengeluaran" id="konversi_pengeluaran" class="form-control"
+                                placeholder="Satuan Pengeluaran">
+                            <div class="input-group-append" id="konversib2edit">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <script>
+        $(function() {
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid()
+            });
+        });
+        $(document).ready(function() {
+            var id = $("#BahanEdit");
+
+            if (id.length) {
+                id.validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'kategori': {
+                            required: true
+                        },
+                        'satuan_pembelian': {
+                            required: true
+                        },
+                        'harga': {
+                            required: true
+                        },
+                        'satuan_pemakaian': {
+                            required: true
+                        },
+                        'konversi_pemakaian': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'konversi_pengeluaran': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                id.on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    id[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
