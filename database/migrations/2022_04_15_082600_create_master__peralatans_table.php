@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_bahan', function (Blueprint $table) {
+        Schema::create('master_peralatan', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
             $table->string('kode');
@@ -22,8 +22,6 @@ return new class extends Migration
             $table->integer('harga');
             $table->string('satuan_pemakaian');
             $table->integer('konversi_pemakaian');
-            $table->string('satuan_pengeluaran');
-            $table->integer('konversi_pengeluaran');
             $table->boolean('delete');
             $table->timestamps();
         });
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_bahan');
+        Schema::dropIfExists('master_peralatan');
     }
 };

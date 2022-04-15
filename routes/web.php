@@ -112,6 +112,28 @@ Route::controller(MasterController::class)->group(
         Route::post('Master/Bahan/BahanEdit', 'BahanEditTambah')->middleware('auth');
 
         Route::post('Master/Manage/Bahan', 'BahanManage')->middleware('auth');
+
+
+        Route::get('Master/Peralatan', 'Peralatan')->middleware('auth');
+        Route::post('Master/Peralatan', 'PeralatanTambah')->middleware('auth');
+
+        Route::post('Master/Peralatan/Hapus', 'PeralatanHapus')->middleware('auth');
+
+        Route::post('Master/Peralatan/Edit', 'PeralatanEdit')->middleware('auth');
+        Route::post('Master/Peralatan/PeralatanEdit', 'PeralatanEditTambah')->middleware('auth');
+
+        Route::post('Master/Manage/Peralatan', 'PeralatanManage')->middleware('auth');
+
+
+        Route::get('Master/Pegawai', 'Pegawai')->middleware('auth');
+        Route::post('Master/Pegawai', 'PegawaiTambah')->middleware('auth');
+
+        Route::post('Master/Pegawai/Hapus', 'PegawaiHapus')->middleware('auth');
+
+        Route::post('Master/Pegawai/Edit', 'PegawaiEdit')->middleware('auth');
+        Route::post('Master/Pegawai/PegawaiEdit', 'PegawaiEditTambah')->middleware('auth');
+
+        Route::post('Master/Manage/Pegawai', 'PegawaiManage')->middleware('auth');
     }
 );
 

@@ -89,6 +89,11 @@ if (Auth::check()) {
         session()->put('err', 'Store Tidak Aktif Silahkan Hub Admin');
         echo '<script>window.location.href = "' . url('/logout') . '";</script>';
     }
+    if ($title && $subtitle) {
+        $urlmanage = url('/' . $title . '/Manage' . '/' . $subtitle);
+    } else {
+        $urlmanage = url('/' . $title . '/Manage');
+    }
 } else {
     echo '<script>window.location.href = "' . url('/logout') . '";</script>';
     $urlLogo = url('/assets/images/unnamed.png');
@@ -760,6 +765,7 @@ if (Auth::check()) {
     </script>
 
     <script src="{{ url('/') }}/assets/js/js.js"></script>
+    4
     <script>
         //DataTable
         $(function() {
@@ -777,7 +783,7 @@ if (Auth::check()) {
 
                 $("#manage").DataTable({
                     "ajax": {
-                        url: "{{ url('/') }}/{{ $title }}/Manage/{{ $subtitle }}",
+                        url: "{{ $urlmanage }}",
                         type: "POST",
                     },
                     "responsive": true,

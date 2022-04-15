@@ -773,13 +773,15 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Kategori</label>
-                        <select name="kategori" id="kategori" class="form-control select2 select2-danger" required
-                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                        <select name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="1">Bahan Baku Segar</option>
-                            <option value="2">Bahan Baku Beku</option>
-                            <option value="3">Bahan Baku Dalam Kemasan</option>
-                            <option value="4">Bahan Baku Dingin</option>
+                            <option value="1" @if ($BahanData['kategori'] == 1) selected @endif>Bahan Baku Segar</option>
+                            <option value="2" @if ($BahanData['kategori'] == 2) selected @endif>Bahan Baku Beku</option>
+                            <option value="3" @if ($BahanData['kategori'] == 3) selected @endif>Bahan Baku Dalam Kemasan
+                            </option>
+                            <option value="4" @if ($BahanData['kategori'] == 4) selected @endif>Bahan Baku Dingin</option>
                         </select>
                     </div>
                 </div>
@@ -787,7 +789,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="nama">Nama Bahan</label>
-                        <input type="text" class="form-control" id="nama" placeholder="Nama Bahan" name="nama">
+                        <input type="text" class="form-control" value="{{ $BahanData['nama'] }}" id="nama"
+                            placeholder="Nama Bahan" name="nama">
                     </div>
                 </div>
 
@@ -799,47 +802,47 @@
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram">Kilogram</option>
-                            <option value="Gram">Gram</option>
-                            <option value="Ons">Ons</option>
-                            <option value="Pack">Pack</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Potong">Potong</option>
-                            <option value="Liter">Liter</option>
-                            <option value="Mililiter">Mililiter</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Galon">Galon</option>
-                            <option value="Pouch">Pouch</option>
-                            <option value="Lembar">Lembar</option>
-                            <option value="Roll">Roll</option>
-                            <option value="Ikat">Ikat</option>
-                            <option value="Bal">Bal</option>
-                            <option value="Karung">Karung</option>
-                            <option value="Kaleng">Kaleng</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Botol">Botol</option>
-                            <option value="Jerigen">Jerigen</option>
-                            <option value="Tabung">Tabung</option>
-                            <option value="Ekor">Ekor</option>
-                            <option value="Papan">Papan</option>
-                            <option value="Bungkus">Bungkus</option>
-                            <option value="Ember">Ember</option>
-                            <option value="Toples">Toples</option>
-                            <option value="Shot">Shot</option>
-                            <option value="Cup">Cup</option>
-                            <option value="Batang">Batang</option>
-                            <option value="Tusuk">Tusuk</option>
-                            <option value="Porsi">Porsi</option>
-                            <option value="Centimeter">Centimeter</option>
-                            <option value="Meter">Meter</option>
-                            <option value="Slop">Slop</option>
-                            <option value="Loaf">Loaf</option>
-                            <option value="Pasang">Pasang</option>
-                            <option value="Slice">Slice</option>
-                            <option value="Sendok Teh">Sendok Teh</option>
-                            <option value="Sendok Makan">Sendok Makan</option>
+                            <option value="Kilogram" @if ($BahanData['satuan_pembelian'] == 'Kilogram') selected @endif>Kilogram</option>
+                            <option value="Gram" @if ($BahanData['satuan_pembelian'] == 'Gram') selected @endif>Gram</option>
+                            <option value="Ons" @if ($BahanData['satuan_pembelian'] == 'Ons') selected @endif>Ons</option>
+                            <option value="Pack" @if ($BahanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
+                            <option value="Pieces" @if ($BahanData['satuan_pembelian'] == 'Pieces') selected @endif>Pieces</option>
+                            <option value="Butir" @if ($BahanData['satuan_pembelian'] == 'Butir') selected @endif>Butir</option>
+                            <option value="Potong" @if ($BahanData['satuan_pembelian'] == 'Potong') selected @endif>Potong</option>
+                            <option value="Liter" @if ($BahanData['satuan_pembelian'] == 'Liter') selected @endif>Liter</option>
+                            <option value="Mililiter" @if ($BahanData['satuan_pembelian'] == 'Mililiter') selected @endif>Mililiter</option>
+                            <option value="Galon" @if ($BahanData['satuan_pembelian'] == 'Galon') selected @endif>Galon</option>
+                            <option value="Pouch" @if ($BahanData['satuan_pembelian'] == 'Pouch') selected @endif>Pouch</option>
+                            <option value="Lembar" @if ($BahanData['satuan_pembelian'] == 'Lembar') selected @endif>Lembar</option>
+                            <option value="Roll" @if ($BahanData['satuan_pembelian'] == 'Roll') selected @endif>Roll</option>
+                            <option value="Ikat" @if ($BahanData['satuan_pembelian'] == 'Ikat') selected @endif>Ikat</option>
+                            <option value="Bal" @if ($BahanData['satuan_pembelian'] == 'Bal') selected @endif>Bal</option>
+                            <option value="Karung" @if ($BahanData['satuan_pembelian'] == 'Karung') selected @endif>Karung</option>
+                            <option value="Kaleng" @if ($BahanData['satuan_pembelian'] == 'Kaleng') selected @endif>Kaleng</option>
+                            <option value="Dus" @if ($BahanData['satuan_pembelian'] == 'Dus') selected @endif>Dus</option>
+                            <option value="Botol" @if ($BahanData['satuan_pembelian'] == 'Botol') selected @endif>Botol</option>
+                            <option value="Jerigen" @if ($BahanData['satuan_pembelian'] == 'Jerigen') selected @endif>Jerigen</option>
+                            <option value="Tabung" @if ($BahanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
+                            <option value="Ekor" @if ($BahanData['satuan_pembelian'] == 'Papan') selected @endif>Papan</option>
+                            <option value="Bungkus" @if ($BahanData['satuan_pembelian'] == 'Bungkus') selected @endif>Bungkus</option>
+                            <option value="Ember" @if ($BahanData['satuan_pembelian'] == 'Ember') selected @endif>Ember</option>
+                            <option value="Toples" @if ($BahanData['satuan_pembelian'] == 'Toples') selected @endif>Toples</option>
+                            <option value="Shot" @if ($BahanData['satuan_pembelian'] == 'Shot') selected @endif>Shot</option>
+                            <option value="Cup" @if ($BahanData['satuan_pembelian'] == 'Cup') selected @endif>Cup</option>
+                            <option value="Batang" @if ($BahanData['satuan_pembelian'] == 'Batang') selected @endif>Batang</option>
+                            <option value="Tusuk" @if ($BahanData['satuan_pembelian'] == 'Tusuk') selected @endif>Tusuk</option>
+                            <option value="Porsi" @if ($BahanData['satuan_pembelian'] == 'Porsi') selected @endif>Porsi</option>
+                            <option value="Centimeter" @if ($BahanData['satuan_pembelian'] == 'Centimeter') selected @endif>Centimeter
+                            </option>
+                            <option value="Meter" @if ($BahanData['satuan_pembelian'] == 'Meter') selected @endif>Meter</option>
+                            <option value="Slop" @if ($BahanData['satuan_pembelian'] == 'Slop') selected @endif>Slop</option>
+                            <option value="Loaf" @if ($BahanData['satuan_pembelian'] == 'Loaf') selected @endif>Loaf</option>
+                            <option value="Pasang" @if ($BahanData['satuan_pembelian'] == 'Pasang') selected @endif>Pasang</option>
+                            <option value="Slice" @if ($BahanData['satuan_pembelian'] == 'Slice') selected @endif>Slice</option>
+                            <option value="Sendok Teh" @if ($BahanData['satuan_pembelian'] == 'Sendok Teh') selected @endif>Sendok Teh
+                            </option>
+                            <option value="Sendok Makan" @if ($BahanData['satuan_pembelian'] == 'Sendok Makan') selected @endif>Sendok Makan
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -847,8 +850,9 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="harga">Harga</label>
-                        <input type="text" class="form-control" id="harga" placeholder="Harga" name="harga">
+                        <label for="hargaa">Harga</label>
+                        <input type="text" value="{{ $BahanData['harga'] }}" class="form-control" id="hargaa"
+                            placeholder="Harga" name="hargaa">
                     </div>
                 </div>
 
@@ -859,48 +863,49 @@
                         <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
+
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram">Kilogram</option>
-                            <option value="Gram">Gram</option>
-                            <option value="Ons">Ons</option>
-                            <option value="Pack">Pack</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Potong">Potong</option>
-                            <option value="Liter">Liter</option>
-                            <option value="Mililiter">Mililiter</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Galon">Galon</option>
-                            <option value="Pouch">Pouch</option>
-                            <option value="Lembar">Lembar</option>
-                            <option value="Roll">Roll</option>
-                            <option value="Ikat">Ikat</option>
-                            <option value="Bal">Bal</option>
-                            <option value="Karung">Karung</option>
-                            <option value="Kaleng">Kaleng</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Botol">Botol</option>
-                            <option value="Jerigen">Jerigen</option>
-                            <option value="Tabung">Tabung</option>
-                            <option value="Ekor">Ekor</option>
-                            <option value="Papan">Papan</option>
-                            <option value="Bungkus">Bungkus</option>
-                            <option value="Ember">Ember</option>
-                            <option value="Toples">Toples</option>
-                            <option value="Shot">Shot</option>
-                            <option value="Cup">Cup</option>
-                            <option value="Batang">Batang</option>
-                            <option value="Tusuk">Tusuk</option>
-                            <option value="Porsi">Porsi</option>
-                            <option value="Centimeter">Centimeter</option>
-                            <option value="Meter">Meter</option>
-                            <option value="Slop">Slop</option>
-                            <option value="Loaf">Loaf</option>
-                            <option value="Pasang">Pasang</option>
-                            <option value="Slice">Slice</option>
-                            <option value="Sendok Teh">Sendok Teh</option>
-                            <option value="Sendok Makan">Sendok Makan</option>
+                            <option value="Kilogram" @if ($BahanData['satuan_pemakaian'] == 'Kilogram') selected @endif>Kilogram</option>
+                            <option value="Gram" @if ($BahanData['satuan_pemakaian'] == 'Gram') selected @endif>Gram</option>
+                            <option value="Ons" @if ($BahanData['satuan_pemakaian'] == 'Ons') selected @endif>Ons</option>
+                            <option value="Pack" @if ($BahanData['satuan_pemakaian'] == 'Pack') selected @endif>Pack</option>
+                            <option value="Pieces" @if ($BahanData['satuan_pemakaian'] == 'Pieces') selected @endif>Pieces</option>
+                            <option value="Butir" @if ($BahanData['satuan_pemakaian'] == 'Butir') selected @endif>Butir</option>
+                            <option value="Potong" @if ($BahanData['satuan_pemakaian'] == 'Potong') selected @endif>Potong</option>
+                            <option value="Liter" @if ($BahanData['satuan_pemakaian'] == 'Liter') selected @endif>Liter</option>
+                            <option value="Mililiter" @if ($BahanData['satuan_pemakaian'] == 'Mililiter') selected @endif>Mililiter</option>
+                            <option value="Galon" @if ($BahanData['satuan_pemakaian'] == 'Galon') selected @endif>Galon</option>
+                            <option value="Pouch" @if ($BahanData['satuan_pemakaian'] == 'Pouch') selected @endif>Pouch</option>
+                            <option value="Lembar" @if ($BahanData['satuan_pemakaian'] == 'Lembar') selected @endif>Lembar</option>
+                            <option value="Roll" @if ($BahanData['satuan_pemakaian'] == 'Roll') selected @endif>Roll</option>
+                            <option value="Ikat" @if ($BahanData['satuan_pemakaian'] == 'Ikat') selected @endif>Ikat</option>
+                            <option value="Bal" @if ($BahanData['satuan_pemakaian'] == 'Bal') selected @endif>Bal</option>
+                            <option value="Karung" @if ($BahanData['satuan_pemakaian'] == 'Karung') selected @endif>Karung</option>
+                            <option value="Kaleng" @if ($BahanData['satuan_pemakaian'] == 'Kaleng') selected @endif>Kaleng</option>
+                            <option value="Dus" @if ($BahanData['satuan_pemakaian'] == 'Dus') selected @endif>Dus</option>
+                            <option value="Botol" @if ($BahanData['satuan_pemakaian'] == 'Botol') selected @endif>Botol</option>
+                            <option value="Jerigen" @if ($BahanData['satuan_pemakaian'] == 'Jerigen') selected @endif>Jerigen</option>
+                            <option value="Tabung" @if ($BahanData['satuan_pemakaian'] == 'Tabung') selected @endif>Tabung</option>
+                            <option value="Ekor" @if ($BahanData['satuan_pemakaian'] == 'Papan') selected @endif>Papan</option>
+                            <option value="Bungkus" @if ($BahanData['satuan_pemakaian'] == 'Bungkus') selected @endif>Bungkus</option>
+                            <option value="Ember" @if ($BahanData['satuan_pemakaian'] == 'Ember') selected @endif>Ember</option>
+                            <option value="Toples" @if ($BahanData['satuan_pemakaian'] == 'Toples') selected @endif>Toples</option>
+                            <option value="Shot" @if ($BahanData['satuan_pemakaian'] == 'Shot') selected @endif>Shot</option>
+                            <option value="Cup" @if ($BahanData['satuan_pemakaian'] == 'Cup') selected @endif>Cup</option>
+                            <option value="Batang" @if ($BahanData['satuan_pemakaian'] == 'Batang') selected @endif>Batang</option>
+                            <option value="Tusuk" @if ($BahanData['satuan_pemakaian'] == 'Tusuk') selected @endif>Tusuk</option>
+                            <option value="Porsi" @if ($BahanData['satuan_pemakaian'] == 'Porsi') selected @endif>Porsi</option>
+                            <option value="Centimeter" @if ($BahanData['satuan_pemakaian'] == 'Centimeter') selected @endif>Centimeter
+                            </option>
+                            <option value="Meter" @if ($BahanData['satuan_pemakaian'] == 'Meter') selected @endif>Meter</option>
+                            <option value="Slop" @if ($BahanData['satuan_pemakaian'] == 'Slop') selected @endif>Slop</option>
+                            <option value="Loaf" @if ($BahanData['satuan_pemakaian'] == 'Loaf') selected @endif>Loaf</option>
+                            <option value="Pasang" @if ($BahanData['satuan_pemakaian'] == 'Pasang') selected @endif>Pasang</option>
+                            <option value="Slice" @if ($BahanData['satuan_pemakaian'] == 'Slice') selected @endif>Slice</option>
+                            <option value="Sendok Teh" @if ($BahanData['satuan_pemakaian'] == 'Sendok Teh') selected @endif>Sendok Teh
+                            </option>
+                            <option value="Sendok Makan" @if ($BahanData['satuan_pemakaian'] == 'Sendok Makan') selected @endif>Sendok Makan
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -909,12 +914,13 @@
                     <div class="form-group">
                         <label>Konversi Satuan Pemakaian</label>
                         <div class="input-group">
-                            <div class="input-group-prepend" id="konversid1edit">
-
+                            <div class="input-group-prepend" id="konversid1edit"> <span
+                                    class="input-group-text">{{ $BahanData['satuan_pembelian'] }}</span>
                             </div>
-                            <input type="text" name="konversi_pemakaian" id="konversi_pemakaian" class="form-control"
-                                placeholder="Satuan Pemakaian">
-                            <div class="input-group-append" id="konversib1edit">
+                            <input type="text" value="{{ $BahanData['konversi_pemakaian'] }}" name="konversi_pemakaiann"
+                                id="konversi_pemakaiann" class="form-control" placeholder="Satuan Pemakaian">
+                            <div class="input-group-append" id="konversib1edit"> <span
+                                    class="input-group-text">{{ $BahanData['satuan_pemakaian'] }}</span>
                             </div>
                         </div>
                     </div>
@@ -926,48 +932,50 @@
                         <select name="satuan_pengeluaran" onchange="pengeluaranedit(this.value)" id="satuan_pengeluaran"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
+
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram">Kilogram</option>
-                            <option value="Gram">Gram</option>
-                            <option value="Ons">Ons</option>
-                            <option value="Pack">Pack</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Pieces">Pieces</option>
-                            <option value="Potong">Potong</option>
-                            <option value="Liter">Liter</option>
-                            <option value="Mililiter">Mililiter</option>
-                            <option value="Butir">Butir</option>
-                            <option value="Galon">Galon</option>
-                            <option value="Pouch">Pouch</option>
-                            <option value="Lembar">Lembar</option>
-                            <option value="Roll">Roll</option>
-                            <option value="Ikat">Ikat</option>
-                            <option value="Bal">Bal</option>
-                            <option value="Karung">Karung</option>
-                            <option value="Kaleng">Kaleng</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Botol">Botol</option>
-                            <option value="Jerigen">Jerigen</option>
-                            <option value="Tabung">Tabung</option>
-                            <option value="Ekor">Ekor</option>
-                            <option value="Papan">Papan</option>
-                            <option value="Bungkus">Bungkus</option>
-                            <option value="Ember">Ember</option>
-                            <option value="Toples">Toples</option>
-                            <option value="Shot">Shot</option>
-                            <option value="Cup">Cup</option>
-                            <option value="Batang">Batang</option>
-                            <option value="Tusuk">Tusuk</option>
-                            <option value="Porsi">Porsi</option>
-                            <option value="Centimeter">Centimeter</option>
-                            <option value="Meter">Meter</option>
-                            <option value="Slop">Slop</option>
-                            <option value="Loaf">Loaf</option>
-                            <option value="Pasang">Pasang</option>
-                            <option value="Slice">Slice</option>
-                            <option value="Sendok Teh">Sendok Teh</option>
-                            <option value="Sendok Makan">Sendok Makan</option>
+                            <option value="Kilogram" @if ($BahanData['satuan_pengeluaran'] == 'Kilogram') selected @endif>Kilogram</option>
+                            <option value="Gram" @if ($BahanData['satuan_pengeluaran'] == 'Gram') selected @endif>Gram</option>
+                            <option value="Ons" @if ($BahanData['satuan_pengeluaran'] == 'Ons') selected @endif>Ons</option>
+                            <option value="Pack" @if ($BahanData['satuan_pengeluaran'] == 'Pack') selected @endif>Pack</option>
+                            <option value="Pieces" @if ($BahanData['satuan_pengeluaran'] == 'Pieces') selected @endif>Pieces</option>
+                            <option value="Butir" @if ($BahanData['satuan_pengeluaran'] == 'Butir') selected @endif>Butir</option>
+                            <option value="Potong" @if ($BahanData['satuan_pengeluaran'] == 'Potong') selected @endif>Potong</option>
+                            <option value="Liter" @if ($BahanData['satuan_pengeluaran'] == 'Liter') selected @endif>Liter</option>
+                            <option value="Mililiter" @if ($BahanData['satuan_pengeluaran'] == 'Mililiter') selected @endif>Mililiter
+                            </option>
+                            <option value="Galon" @if ($BahanData['satuan_pengeluaran'] == 'Galon') selected @endif>Galon</option>
+                            <option value="Pouch" @if ($BahanData['satuan_pengeluaran'] == 'Pouch') selected @endif>Pouch</option>
+                            <option value="Lembar" @if ($BahanData['satuan_pengeluaran'] == 'Lembar') selected @endif>Lembar</option>
+                            <option value="Roll" @if ($BahanData['satuan_pengeluaran'] == 'Roll') selected @endif>Roll</option>
+                            <option value="Ikat" @if ($BahanData['satuan_pengeluaran'] == 'Ikat') selected @endif>Ikat</option>
+                            <option value="Bal" @if ($BahanData['satuan_pengeluaran'] == 'Bal') selected @endif>Bal</option>
+                            <option value="Karung" @if ($BahanData['satuan_pengeluaran'] == 'Karung') selected @endif>Karung</option>
+                            <option value="Kaleng" @if ($BahanData['satuan_pengeluaran'] == 'Kaleng') selected @endif>Kaleng</option>
+                            <option value="Dus" @if ($BahanData['satuan_pengeluaran'] == 'Dus') selected @endif>Dus</option>
+                            <option value="Botol" @if ($BahanData['satuan_pengeluaran'] == 'Botol') selected @endif>Botol</option>
+                            <option value="Jerigen" @if ($BahanData['satuan_pengeluaran'] == 'Jerigen') selected @endif>Jerigen</option>
+                            <option value="Tabung" @if ($BahanData['satuan_pengeluaran'] == 'Tabung') selected @endif>Tabung</option>
+                            <option value="Ekor" @if ($BahanData['satuan_pengeluaran'] == 'Papan') selected @endif>Papan</option>
+                            <option value="Bungkus" @if ($BahanData['satuan_pengeluaran'] == 'Bungkus') selected @endif>Bungkus</option>
+                            <option value="Ember" @if ($BahanData['satuan_pengeluaran'] == 'Ember') selected @endif>Ember</option>
+                            <option value="Toples" @if ($BahanData['satuan_pengeluaran'] == 'Toples') selected @endif>Toples</option>
+                            <option value="Shot" @if ($BahanData['satuan_pengeluaran'] == 'Shot') selected @endif>Shot</option>
+                            <option value="Cup" @if ($BahanData['satuan_pengeluaran'] == 'Cup') selected @endif>Cup</option>
+                            <option value="Batang" @if ($BahanData['satuan_pengeluaran'] == 'Batang') selected @endif>Batang</option>
+                            <option value="Tusuk" @if ($BahanData['satuan_pengeluaran'] == 'Tusuk') selected @endif>Tusuk</option>
+                            <option value="Porsi" @if ($BahanData['satuan_pengeluaran'] == 'Porsi') selected @endif>Porsi</option>
+                            <option value="Centimeter" @if ($BahanData['satuan_pengeluaran'] == 'Centimeter') selected @endif>Centimeter
+                            </option>
+                            <option value="Meter" @if ($BahanData['satuan_pengeluaran'] == 'Meter') selected @endif>Meter</option>
+                            <option value="Slop" @if ($BahanData['satuan_pengeluaran'] == 'Slop') selected @endif>Slop</option>
+                            <option value="Loaf" @if ($BahanData['satuan_pengeluaran'] == 'Loaf') selected @endif>Loaf</option>
+                            <option value="Pasang" @if ($BahanData['satuan_pengeluaran'] == 'Pasang') selected @endif>Pasang</option>
+                            <option value="Slice" @if ($BahanData['satuan_pengeluaran'] == 'Slice') selected @endif>Slice</option>
+                            <option value="Sendok Teh" @if ($BahanData['satuan_pengeluaran'] == 'Sendok Teh') selected @endif>Sendok Teh
+                            </option>
+                            <option value="Sendok Makan" @if ($BahanData['satuan_pengeluaran'] == 'Sendok Makan') selected @endif>Sendok Makan
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -976,13 +984,24 @@
                     <div class="form-group">
                         <label>Konversi Satuan Pengeluaran</label>
                         <div class="input-group">
-                            <div class="input-group-prepend" id="konversid2edit">
+                            <div class="input-group-prepend" id="konversid2edit"><span
+                                    class="input-group-text">{{ $BahanData['satuan_pembelian'] }}</span>
                             </div>
-                            <input type="text" name="konversi_pengeluaran" id="konversi_pengeluaran" class="form-control"
+                            <input type="text" value="{{ $BahanData['konversi_pengeluaran'] }}"
+                                name="konversi_pengeluarann" id="konversi_pengeluarann" class="form-control"
                                 placeholder="Satuan Pengeluaran">
-                            <div class="input-group-append" id="konversib2edit">
+                            <div class="input-group-append" id="konversib2edit"><span
+                                    class="input-group-text">{{ $BahanData['satuan_pengeluaran'] }}</span>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="kodeedit">Kode Product</label>
+                        <input type="text" disabled class="form-control" value="{{ $BahanData['kode'] }}"
+                            id="kodeedit" name="kodeedit">
                     </div>
                 </div>
 
@@ -1013,19 +1032,19 @@
                         'satuan_pembelian': {
                             required: true
                         },
-                        'harga': {
+                        'hargaa': {
                             required: true
                         },
                         'satuan_pemakaian': {
                             required: true
                         },
-                        'konversi_pemakaian': {
+                        'konversi_pemakaiann': {
                             required: true
                         },
                         'satuan_pengeluaran': {
                             required: true
                         },
-                        'konversi_pengeluaran': {
+                        'konversi_pengeluarann': {
                             required: true
                         }
                     },
@@ -1079,6 +1098,249 @@
                 });
             }
         });
+
+        function clickkategoriedit(val) {
+            if (val == 1) {
+                $('#kodeedit').val('BBS{{ $kode }}');
+            } else if (val == 2) {
+                $('#kodeedit').val('BBB{{ $kode }}');
+            } else if (val == 3) {
+                $('#kodeedit').val('BBK{{ $kode }}');
+            } else if (val == 4) {
+                $('#kodeedit').val('BBD{{ $kode }}');
+            } else {
+                $('#kodeedit').val('Gagal, Refresh Halaman');
+            }
+        }
+
+        //Format Penulisan
+        document.getElementById("hargaa").addEventListener("keyup", function(e) {
+            this.value = numeral(this.value).format('0,0');
+        });
+        document.getElementById("konversi_pemakaiann").addEventListener("keyup", function(e) {
+            this.value = numeral(this.value).format('0,0');
+        });
+        document.getElementById("konversi_pengeluarann").addEventListener("keyup", function(e) {
+            this.value = numeral(this.value).format('0,0');
+        });
     </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
+@endisset
+
+
+
+@isset($PeralatanData)
+    <form id="PeralatanEdit" action="{{ url('/Master/Peralatan/PeralatanEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="1" @if ($PeralatanData['kategori'] == 1) selected @endif>Peralatan Dapur</option>
+                            <option value="2" @if ($PeralatanData['kategori'] == 2) selected @endif>Peralatan Kasir</option>
+                            <option value="3" @if ($PeralatanData['kategori'] == 3) selected @endif>Peralatan Bar</option>
+                            <option value="4" @if ($PeralatanData['kategori'] == 4) selected @endif>Peralatan Waiter
+                            </option>
+                            <option value="5" @if ($PeralatanData['kategori'] == 5) selected @endif>Peralatan Lainnya
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Peralatan</label>
+                        <input type="text" class="form-control" value="{{ $PeralatanData['nama'] }}" id="nama"
+                            placeholder="Nama Peralatan" name="nama">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Satuan Pembelian</label>
+                        <select name="satuan_pembelian" onchange="pembelianedit(this.value)" id="satuan_pembelian"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Buah" @if ($PeralatanData['satuan_pembelian'] == 'Buah') selected @endif>Buah</option>
+                            <option value="Tabung" @if ($PeralatanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
+                            <option value="Pack" @if ($PeralatanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
+                            <option value="Helai" @if ($PeralatanData['satuan_pembelian'] == 'Helai') selected @endif>Helai</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="hargaa">Harga</label>
+                        <input type="text" value="{{ $PeralatanData['harga'] }}" class="form-control" id="hargaa"
+                            placeholder="Harga" name="hargaa">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Satuan Pemakaian</label>
+                        <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
+
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Buah" @if ($PeralatanData['satuan_pembelian'] == 'Buah') selected @endif>Buah</option>
+                            <option value="Tabung" @if ($PeralatanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
+                            <option value="Pack" @if ($PeralatanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
+                            <option value="Helai" @if ($PeralatanData['satuan_pembelian'] == 'Helai') selected @endif>Helai</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Konversi Satuan Pemakaian</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend" id="konversid1edit"> <span
+                                    class="input-group-text">{{ $PeralatanData['satuan_pembelian'] }}</span>
+                            </div>
+                            <input type="text" value="{{ $PeralatanData['konversi_pemakaian'] }}"
+                                name="konversi_pemakaiann" id="konversi_pemakaiann" class="form-control"
+                                placeholder="Satuan Pemakaian">
+                            <div class="input-group-append" id="konversib1edit"> <span
+                                    class="input-group-text">{{ $PeralatanData['satuan_pemakaian'] }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="kodeedit">Kode Product</label>
+                        <input type="text" disabled class="form-control" value="{{ $PeralatanData['kode'] }}"
+                            id="kodeedit" name="kodeedit">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <script>
+        $(function() {
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid()
+            });
+        });
+        $(document).ready(function() {
+            var id = $("#PeralatanEdit");
+
+            if (id.length) {
+                id.validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'kategori': {
+                            required: true
+                        },
+                        'satuan_pembelian': {
+                            required: true
+                        },
+                        'hargaa': {
+                            required: true
+                        },
+                        'satuan_pemakaian': {
+                            required: true
+                        },
+                        'konversi_pemakaiann': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                id.on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    id[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+
+        function clickkategoriedit(val) {
+            if (val == 1) {
+                $('#kodeedit').val('PD{{ $kode }}');
+            } else if (val == 2) {
+                $('#kodeedit').val('PK{{ $kode }}');
+            } else if (val == 3) {
+                $('#kodeedit').val('PB{{ $kode }}');
+            } else if (val == 4) {
+                $('#kodeedit').val('PW{{ $kode }}');
+            } else if (val == 5) {
+                $('#kodeedit').val('PL{{ $kode }}');
+            } else {
+                $('#kodeedit').val('Gagal, Refresh Halaman');
+            }
+        }
+
+        //Format Penulisan
+        document.getElementById("hargaa").addEventListener("keyup", function(e) {
+            this.value = numeral(this.value).format('0,0');
+        });
+        document.getElementById("konversi_pemakaiann").addEventListener("keyup", function(e) {
+            this.value = numeral(this.value).format('0,0');
+        });
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
