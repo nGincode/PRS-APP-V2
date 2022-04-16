@@ -36,6 +36,11 @@ class MasterController extends Controller
         } else {
             $this->kodealat = sprintf("%05s", 1);
         }
+        if (Master_Pegawai::latest()->first()) {
+            $this->kodepegawai = sprintf("%03s", Master_Pegawai::latest()->first()->id + 1);
+        } else {
+            $this->kodepegawai = sprintf("%03s", 1);
+        }
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
@@ -114,29 +119,37 @@ class MasterController extends Controller
             }
         } else {
 
-            $input = [
-                'nama' => $request->input('nama'),
-                'alamat' => $request->input('alamat'),
-                'tipe' => $request->input('tipe'),
-                'hutang' => $request->input('hutang'),
-                'wa' => $request->input('wa'),
-                'delete' => false,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-            if (Master_Supplier::create($input)) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' => 'Berhasil dibuat'
-                ];
-            } else {
+            if (Master_Supplier::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
-                    'pesan' =>  'Terjadi kegagalan system'
+                    'pesan' => 'Nama Telah Ada'
                 ];
-            };
+            } else {
+                $input = [
+                    'nama' => $request->input('nama'),
+                    'alamat' => $request->input('alamat'),
+                    'tipe' => $request->input('tipe'),
+                    'hutang' => $request->input('hutang'),
+                    'wa' => $request->input('wa'),
+                    'delete' => false,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if (Master_Supplier::create($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
         }
 
 
@@ -318,7 +331,7 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:master_bahan',
+                'nama' => 'required',
                 'kategori' => 'required',
                 'satuan_pembelian' => 'required',
                 'harga' => 'required',
@@ -342,48 +355,56 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if ($request->input('kategori')) {
-                if ($request->input('kategori') == 1) {
-                    $kategori = 'S' . sprintf("%05s", $this->kodebahan);
-                } elseif ($request->input('kategori') == 2) {
-                    $kategori = 'B' . sprintf("%05s", $this->kodebahan);
-                } elseif ($request->input('kategori') == 3) {
-                    $kategori = 'K' . sprintf("%05s", $this->kodebahan);
-                } elseif ($request->input('kategori') == 4) {
-                    $kategori = 'D' . sprintf("%05s", $this->kodebahan);
-                } else {
-                    $kategori = 'X' . sprintf("%05s", 0);
-                }
-            } else {
-                $kategori = 'X' . sprintf("%05s", 0);
-            }
-            $input = [
-                'nama' => $request->input('nama'),
-                'kode' => 'BB' . $kategori,
-                'kategori' => $request->input('kategori'),
-                'satuan_pembelian' => $request->input('satuan_pembelian'),
-                'harga' =>  $this->unrupiah($request->input('harga')),
-                'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
-                'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
-                'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
-                'delete' => false,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-            if (Master_Bahan::create($input)) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' => 'Berhasil dibuat'
-                ];
-            } else {
+            if (Master_Bahan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
-                    'pesan' =>  'Terjadi kegagalan system'
+                    'pesan' => 'Nama Telah Ada'
                 ];
-            };
+            } else {
+                if ($request->input('kategori')) {
+                    if ($request->input('kategori') == 1) {
+                        $kategori = 'S' . sprintf("%05s", $this->kodebahan);
+                    } elseif ($request->input('kategori') == 2) {
+                        $kategori = 'B' . sprintf("%05s", $this->kodebahan);
+                    } elseif ($request->input('kategori') == 3) {
+                        $kategori = 'K' . sprintf("%05s", $this->kodebahan);
+                    } elseif ($request->input('kategori') == 4) {
+                        $kategori = 'D' . sprintf("%05s", $this->kodebahan);
+                    } else {
+                        $kategori = 'X' . sprintf("%05s", 0);
+                    }
+                } else {
+                    $kategori = 'X' . sprintf("%05s", 0);
+                }
+                $input = [
+                    'nama' => $request->input('nama'),
+                    'kode' => 'BB' . $kategori,
+                    'kategori' => $request->input('kategori'),
+                    'satuan_pembelian' => $request->input('satuan_pembelian'),
+                    'harga' =>  $this->unrupiah($request->input('harga')),
+                    'satuan_pemakaian' => $request->input('satuan_pemakaian'),
+                    'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
+                    'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
+                    'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
+                    'delete' => false,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if (Master_Bahan::create($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
         }
 
 
@@ -596,7 +617,7 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:master_Peralatan',
+                'nama' => 'required',
                 'kategori' => 'required',
                 'satuan_pembelian' => 'required',
                 'harga' => 'required',
@@ -618,48 +639,56 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if ($request->input('kategori')) {
-                if ($request->input('kategori') == 1) {
-                    $kategori = 'D' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 2) {
-                    $kategori = 'K' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 3) {
-                    $kategori = 'B' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 4) {
-                    $kategori = 'W' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 4) {
-                    $kategori = 'L' . sprintf("%05s", $this->kodealat);
-                } else {
-                    $kategori = 'X' . sprintf("%05s", 0);
-                }
-            } else {
-                $kategori = 'X' . sprintf("%05s", 0);
-            }
-            $input = [
-                'nama' => $request->input('nama'),
-                'kode' => 'P' . $kategori,
-                'kategori' => $request->input('kategori'),
-                'satuan_pembelian' => $request->input('satuan_pembelian'),
-                'harga' =>  $this->unrupiah($request->input('harga')),
-                'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
-                'delete' => false,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-            if (Master_Peralatan::create($input)) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' => 'Berhasil dibuat'
-                ];
-            } else {
+            if (Master_Peralatan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
-                    'pesan' =>  'Terjadi kegagalan system'
+                    'pesan' => 'Nama Telah Ada'
                 ];
-            };
+            } else {
+                if ($request->input('kategori')) {
+                    if ($request->input('kategori') == 1) {
+                        $kategori = 'D' . sprintf("%05s", $this->kodealat);
+                    } elseif ($request->input('kategori') == 2) {
+                        $kategori = 'K' . sprintf("%05s", $this->kodealat);
+                    } elseif ($request->input('kategori') == 3) {
+                        $kategori = 'B' . sprintf("%05s", $this->kodealat);
+                    } elseif ($request->input('kategori') == 4) {
+                        $kategori = 'W' . sprintf("%05s", $this->kodealat);
+                    } elseif ($request->input('kategori') == 4) {
+                        $kategori = 'L' . sprintf("%05s", $this->kodealat);
+                    } else {
+                        $kategori = 'X' . sprintf("%05s", 0);
+                    }
+                } else {
+                    $kategori = 'X' . sprintf("%05s", 0);
+                }
+                $input = [
+                    'nama' => $request->input('nama'),
+                    'kode' => 'P' . $kategori,
+                    'kategori' => $request->input('kategori'),
+                    'satuan_pembelian' => $request->input('satuan_pembelian'),
+                    'harga' =>  $this->unrupiah($request->input('harga')),
+                    'satuan_pemakaian' => $request->input('satuan_pemakaian'),
+                    'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
+                    'delete' => false,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if (Master_Peralatan::create($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
         }
 
 
@@ -806,6 +835,7 @@ class MasterController extends Controller
     {
         $this->data['subtitle'] = 'Pegawai';
         $this->data['kode'] = $this->kodealat;
+        $this->data['Datastore'] = Store::where('active', 1)->get();
         return view('Master_Pegawai', $this->data);
     }
 
@@ -815,7 +845,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Pegawai::where('delete', false)->latest()->get();
+        $Data = Master_Pegawai::with('Store')->where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -832,29 +862,17 @@ class MasterController extends Controller
 
             $button .= '</ul></div>';
 
-            if ($value['kategori']) {
-                if ($value['kategori'] == 1) {
-                    $kategori = 'Pegawai Baku Segar';
-                } elseif ($value['kategori'] == 2) {
-                    $kategori = 'Pegawai Baku Beku';
-                } elseif ($value['kategori'] == 3) {
-                    $kategori = 'Pegawai Baku Dalam Kemasan';
-                } elseif ($value['kategori'] == 4) {
-                    $kategori = 'Pegawai Baku Dingin';
-                } else {
-                    $kategori = 'Not Found';
-                }
-            } else {
-                $kategori = 'Not Found';
-            }
 
-            $konversi = 'Pemakaian : ' . $value['konversi_pemakaian'] . ' ' . $value['satuan_pemakaian'];
             $result['data'][] = array(
                 $value['kode'],
+                $value['store']->nama,
                 $value['nama'],
-                $kategori,
-                $value['satuan_pembelian'],
-                $this->rupiah($value['harga']), $konversi,
+                $value['tempat_lahir'] . ',<br>' . $value['tanggal_lahir'],
+                $value['tanggal_masuk'],
+                $value['agama'],
+                $value['gender'],
+                $value['wa'],
+                $value['jabatan'] . '<br>' . $value['divisi'],
                 $button
             );
         }
@@ -867,12 +885,19 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:master_Pegawai',
-                'kategori' => 'required',
-                'satuan_pembelian' => 'required',
-                'harga' => 'required',
-                'satuan_pemakaian' => 'required',
-                'konversi_pemakaian' => 'required'
+                'nama' => 'required',
+                'store' => 'required',
+                'tempat_lahir' => 'required',
+                'tanggal_lahir' => 'required',
+                'tanggal_masuk' => 'required',
+                'agama' => 'required',
+                'gender' => 'required',
+                'alamat' => 'required',
+                'wa' => 'required',
+                'divisi' => 'required',
+                'jabatan' => 'required',
+                'status_pekerja' => 'required',
+                'img' => 'mimes:jpeg,jpg,png'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -889,48 +914,56 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if ($request->input('kategori')) {
-                if ($request->input('kategori') == 1) {
-                    $kategori = 'D' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 2) {
-                    $kategori = 'K' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 3) {
-                    $kategori = 'B' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 4) {
-                    $kategori = 'W' . sprintf("%05s", $this->kodealat);
-                } elseif ($request->input('kategori') == 4) {
-                    $kategori = 'L' . sprintf("%05s", $this->kodealat);
-                } else {
-                    $kategori = 'X' . sprintf("%05s", 0);
-                }
-            } else {
-                $kategori = 'X' . sprintf("%05s", 0);
-            }
-            $input = [
-                'nama' => $request->input('nama'),
-                'kode' => 'P' . $kategori,
-                'kategori' => $request->input('kategori'),
-                'satuan_pembelian' => $request->input('satuan_pembelian'),
-                'harga' =>  $this->unrupiah($request->input('harga')),
-                'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
-                'delete' => false,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
-            ];
-            if (Master_Pegawai::create($input)) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' => 'Berhasil dibuat'
-                ];
-            } else {
+            if (Master_Pegawai::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
-                    'pesan' =>  'Terjadi kegagalan system'
+                    'pesan' => 'Nama Telah Ada'
                 ];
-            };
+            } else {
+                $kode = $request->input('store') . date_format(date_create($request->input('tanggal_masuk')), 'ym') . date_format(date_create($request->input('tanggal_lahir')), 'ymd') . $this->kodepegawai;
+
+                if ($request->hasFile('img')) {
+                    $files = $request->file('img');
+                    $imageName = $kode . '.' . $files->getClientOriginalExtension();
+                    $files->move(public_path('uploads/pegawai'), $imageName);
+                    $urlimg = url('/') . '/uploads/pegawai/' . $imageName;
+                } else {
+                    $urlimg = '';
+                }
+                $input = [
+                    'kode' => $kode,
+                    'nama' => $request->input('nama'),
+                    'store_id' => $request->input('store'),
+                    'tempat_lahir' => $request->input('tempat_lahir'),
+                    'tanggal_lahir' => date_create($request->input('tanggal_lahir')),
+                    'tanggal_masuk' => date_create($request->input('tanggal_masuk')),
+                    'agama' => $request->input('agama'),
+                    'gender' => $request->input('gender'),
+                    'alamat' => $request->input('alamat'),
+                    'wa' => $request->input('wa'),
+                    'divisi' => $request->input('divisi'),
+                    'jabatan' => $request->input('jabatan'),
+                    'active' => $request->input('status_pekerja'),
+                    'img' => $urlimg,
+                    'delete' => false,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if (Master_Pegawai::create($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
         }
 
 
@@ -941,9 +974,10 @@ class MasterController extends Controller
     {
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
-        $this->data['kode'] = $this->kodealat;
+        $this->data['kode'] = $this->kodepegawai;
 
         $this->data['PegawaiData'] = Master_Pegawai::where('id', $id)->first();
+        $this->data['Datastore'] = Store::where('active', 1)->get();
         return view('Edit', $this->data);
     }
 
@@ -957,11 +991,18 @@ class MasterController extends Controller
                 $request->all(),
                 $rules = [
                     'nama' => 'required',
-                    'kategori' => 'required',
-                    'satuan_pembelian' => 'required',
-                    'hargaa' => 'required',
-                    'satuan_pemakaian' => 'required',
-                    'konversi_pemakaiann' => 'required'
+                    'store' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'tanggal_masuk' => 'required',
+                    'agama' => 'required',
+                    'gender' => 'required',
+                    'alamat' => 'required',
+                    'wa' => 'required',
+                    'divisi' => 'required',
+                    'jabatan' => 'required',
+                    'status_pekerja' => 'required',
+                    'img' => 'mimes:jpeg,jpg,png'
                 ],
                 $messages  = [
                     'required' => 'Form :attribute harus terisi',
@@ -998,32 +1039,32 @@ class MasterController extends Controller
                     }
                 } else {
 
-                    if ($request->input('kategori')) {
-                        if ($request->input('kategori') == 1) {
-                            $kategori = 'D' . sprintf("%05s", $Pegawai['id']);
-                        } elseif ($request->input('kategori') == 2) {
-                            $kategori = 'K' . sprintf("%05s", $Pegawai['id']);
-                        } elseif ($request->input('kategori') == 3) {
-                            $kategori = 'B' . sprintf("%05s", $Pegawai['id']);
-                        } elseif ($request->input('kategori') == 4) {
-                            $kategori = 'W' . sprintf("%05s", $Pegawai['id']);
-                        } elseif ($request->input('kategori') == 4) {
-                            $kategori = 'L' . sprintf("%05s", $Pegawai['id']);
-                        } else {
-                            $kategori = 'X' . sprintf("%05s", 0);
-                        }
+                    $kode = $request->input('store') . date_format(date_create($request->input('tanggal_masuk')), 'ym') . date_format(date_create($request->input('tanggal_lahir')), 'ymd') . sprintf("%03s",  $Pegawai['id']);
+                    if ($request->hasFile('img')) {
+                        $files = $request->file('img');
+                        $imageName = $kode . '.' . $files->getClientOriginalExtension();
+                        $files->move(public_path('uploads/pegawai'), $imageName);
+                        $urlimg = url('/') . '/uploads/pegawai/' . $imageName;
                     } else {
-                        $kategori = 'X' . sprintf("%05s", 0);
+                        $urlimg = $Pegawai['img'];
                     }
 
+
                     $input = [
+                        'kode' => $kode,
                         'nama' => $request->input('nama'),
-                        'kode' => 'P' . $kategori,
-                        'kategori' => $request->input('kategori'),
-                        'satuan_pembelian' => $request->input('satuan_pembelian'),
-                        'harga' =>  $this->unrupiah($request->input('hargaa')),
-                        'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                        'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
+                        'store_id' => $request->input('store'),
+                        'tempat_lahir' => $request->input('tempat_lahir'),
+                        'tanggal_lahir' => date_create($request->input('tanggal_lahir')),
+                        'tanggal_masuk' => date_create($request->input('tanggal_masuk')),
+                        'agama' => $request->input('agama'),
+                        'gender' => $request->input('gender'),
+                        'alamat' => $request->input('alamat'),
+                        'wa' => $request->input('wa'),
+                        'divisi' => $request->input('divisi'),
+                        'jabatan' => $request->input('jabatan'),
+                        'active' => $request->input('status_pekerja'),
+                        'img' => $urlimg,
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];

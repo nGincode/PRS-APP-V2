@@ -10,4 +10,9 @@ class Master_Pegawai extends Model
     use HasFactory;
     protected $table = 'master_pegawai';
     protected $guarded = ['id'];
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

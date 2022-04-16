@@ -30,7 +30,7 @@ class UsersController extends Controller
     {
         if (Store::where('active', 1)->count() > 1) {
             $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
-            $this->data['Group'] = Groups::orderBy('nama')->get();
+            $this->data['Group'] = Groups::latest()->get();
             return view('Users', $this->data);
         } else {
             return redirect('/Store')->with('toast_error', 'Membuat Users Memerlukan Store Active!');

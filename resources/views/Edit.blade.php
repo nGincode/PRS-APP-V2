@@ -3,6 +3,13 @@
         <div class="modal-body">
             <div class="row">
 
+                @if ($UsersData['img'])
+                    <div class="col-12 col-sm-12">
+                        <img src="{{ $UsersData['img'] }}" alt="Foto Pegawai"
+                            class="rounded mx-auto d-block img-thumbnail">
+                        <br>
+                    </div>
+                @endif
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Outlet Users</label>
@@ -242,6 +249,13 @@
         <div class="modal-body">
             <div class="row">
 
+                @if ($StoreData['img'])
+                    <div class="col-12 col-sm-12">
+                        <img src="{{ $StoreData['img'] }}" alt="Foto Pegawai"
+                            class="rounded mx-auto d-block img-thumbnail">
+                        <br>
+                    </div>
+                @endif
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Status</label>
@@ -1128,8 +1142,6 @@
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
 
-
-
 @isset($PeralatanData)
     <form id="PeralatanEdit" action="{{ url('/Master/Peralatan/PeralatanEdit') }}">
         @csrf
@@ -1342,5 +1354,292 @@
         });
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
+@endisset
+
+
+@isset($PegawaiData)
+    <form id="PegawaiEdit" action="{{ url('/Master/Pegawai/PegawaiEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+
+                @if ($PegawaiData['img'])
+                    <div class="col-12 col-sm-12">
+                        <img src="{{ $PegawaiData['img'] }}" alt="Foto Pegawai"
+                            class="rounded mx-auto d-block img-thumbnail">
+                        <br>
+                    </div>
+                @endif
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Store</label>
+                        <select name="store" id="store" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            @foreach ($Datastore as $v)
+                                @if ($v['id'] != 1)
+                                    <option value="{{ $v['id'] }}"
+                                        @if ($PegawaiData['store_id'] == $v['id']) selected @endif>
+                                        {{ $v['nama'] }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Pegawai</label>
+                        <input type="text" value="{{ $PegawaiData['nama'] }}" class="form-control" id="nama"
+                            placeholder="Nama Pegawai" name="nama">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="tempat_lahir">Tempat Lahir</label>
+                        <input type="text" value="{{ $PegawaiData['tempat_lahir'] }}" class="form-control"
+                            id="tempat_lahir" placeholder="Tempat Lahir" name="tempat_lahir">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Tanggal Lahir</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <input type="date" value="{{ $PegawaiData['tanggal_lahir'] }}" class="form-control"
+                                id="tanggal_lahir" name="tanggal_lahir" data-inputmask-alias="datetime"
+                                data-inputmask-inputformat="dd/mm/yyyy" data-mask>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Tanggal Masuk</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <input type="date" value="{{ $PegawaiData['tanggal_masuk'] }}" class="form-control"
+                                id="tanggal_masuk" name="tanggal_masuk" data-inputmask-alias="datetime"
+                                data-inputmask-inputformat="dd/mm/yyyy" data-mask>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="agama">Agama</label>
+                        <select name="agama" id="agama" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Islam" @if ($PegawaiData['agama'] == 'Islam') selected @endif>Islam</option>
+                            <option value="Kristen" @if ($PegawaiData['agama'] == 'Kristen') selected @endif>Kristen</option>
+                            <option value="Katholik" @if ($PegawaiData['agama'] == 'Katholik') selected @endif>Katholik</option>
+                            <option value="Budha" @if ($PegawaiData['agama'] == 'Budha') selected @endif>Budha</option>
+                            <option value="Hindu" @if ($PegawaiData['agama'] == 'Hindu') selected @endif>Hindu</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select name="gender" id="gender" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Pria" @if ($PegawaiData['gender'] == 'Pria') selected @endif>Pria</option>
+                            <option value="Wanita" @if ($PegawaiData['gender'] == 'Wanita') selected @endif>Wanita</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <input type="text" value="{{ $PegawaiData['alamat'] }}" class="form-control" id="alamat"
+                            placeholder="Alamat" name="alamat">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="wa">No Whatsapp</label>
+                        <input type="number" value="{{ $PegawaiData['wa'] }}" class="form-control" id="wa"
+                            placeholder="No Whatsapp" name="wa">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="divisi">Divisi</label>
+                        <select name="divisi" id="divisi" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Accounting" @if ($PegawaiData['divisi'] == 'Accounting') selected @endif>Accounting
+                            </option>
+                            <option value="Enginering" @if ($PegawaiData['divisi'] == 'Enginering') selected @endif>Enginering
+                            </option>
+                            <option value="Marketing" @if ($PegawaiData['divisi'] == 'Marketing') selected @endif>Marketing
+                            </option>
+                            <option value="HR & GA" @if ($PegawaiData['divisi'] == 'HR & GA') selected @endif>HR & GA</option>
+                            <option value="Logistik" @if ($PegawaiData['divisi'] == 'Logistik') selected @endif>Logistik</option>
+                            <option value="Dapro" @if ($PegawaiData['divisi'] == 'Dapro') selected @endif>Dapur Produksi
+                            </option>
+                            <option value="Chief Leader" @if ($PegawaiData['divisi'] == 'Chief Leader') selected @endif>Chief Leader
+                            </option>
+                            <option value="Kitchen" @if ($PegawaiData['divisi'] == 'Bar') selected @endif>Kitchen</option>
+                            <option value="Bar" @if ($PegawaiData['divisi'] == '') selected @endif>Bar</option>
+                            <option value="Service Crew" @if ($PegawaiData['divisi'] == 'Service Crew') selected @endif>Service Crew
+                            </option>
+                            <option value="Akustik" @if ($PegawaiData['divisi'] == 'Akustik') selected @endif>Akustik</option>
+                            <option value="Parkir" @if ($PegawaiData['divisi'] == 'Parkir') selected @endif>Akustik</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="jabatan">Jabatan</label>
+                        <select name="jabatan" id="jabatan" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="Supervisor" @if ($PegawaiData['jabatan'] == 'Supervisor') selected @endif>Supervisor
+                            </option>
+                            <option value="Manager" @if ($PegawaiData['jabatan'] == 'Manager') selected @endif>Manager</option>
+                            <option value="Leader" @if ($PegawaiData['jabatan'] == 'Leader') selected @endif>Leader</option>
+                            <option value="Staf" @if ($PegawaiData['jabatan'] == 'Staf') selected @endif>Staf</option>
+                            <option value="Freelance" @if ($PegawaiData['jabatan'] == 'Freelance') selected @endif>Freelance
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="status_pekerja">Status Pekerja</label>
+                        <select name="status_pekerja" id="status_pekerja" class="form-control select2 select2-success"
+                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option value="1" @if ($PegawaiData['active'] == 1) selected @endif>Active</option>
+                            <option value="0" @if ($PegawaiData['active'] == 0) selected @endif>Resign</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="img">Foto</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" accept="image/*" id="img" name="img">
+                            <label class="custom-file-label" for="img">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <script>
+        $(function() {
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid()
+            });
+            bsCustomFileInput.init();
+        });
+        $(document).ready(function() {
+            var id = $("#PegawaiEdit");
+
+            if (id.length) {
+                id.validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'store': {
+                            required: true
+                        },
+                        'tempat_lahir': {
+                            required: true
+                        },
+                        'tanggal_lahir': {
+                            required: true
+                        },
+                        'tanggal_masuk': {
+                            required: true
+                        },
+                        'agama': {
+                            required: true
+                        },
+                        'gender': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        },
+                        'wa': {
+                            required: true
+                        },
+                        'divisi': {
+                            required: true
+                        },
+                        'jabatan': {
+                            required: true
+                        },
+                        'status_pekerja': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                id.on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    id[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
