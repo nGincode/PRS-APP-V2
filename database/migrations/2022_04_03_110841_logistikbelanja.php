@@ -13,9 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups_users', function (Blueprint $table) {
-            $table->foreignId('users_id')->constrained();
-            $table->foreignId('groups_id')->constrained();
+        Schema::create('logistikbelanja', function (Blueprint $table) {
+            $table->id();
+            $table->string('store');
+            $table->integer('gudang_id');
+            $table->string('bill_no');
+            $table->string('tgl');
+            $table->string('total');
+            $table->integer('status');
+            $table->integer('upload');
             $table->timestamps();
         });
     }
@@ -27,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_users');
+        Schema::dropIfExists('logistik_belanja');
     }
 };

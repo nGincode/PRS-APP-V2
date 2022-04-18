@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'firstname' => $this->faker->firstName(),
             'lastname' => $this->faker->lastName(),
             'phone' => $this->faker->phoneNumber(),
-            'gender' => $this->faker->boolean(),
+            'gender' => 'Pria',
             'img' => $this->faker->imageUrl(),
             'store' => $this->faker->company(),
             'store_id' => mt_rand(1, 9),

@@ -886,3 +886,11 @@ function pemakaian(value) {
 function pemakaianedit(value) {
     $('#konversib1edit').html('<span class="input-group-text">' + value + '</span>');
 }
+
+function penyajian(value) {
+    $('#konversib1').html('<span class="input-group-text">' + value + '</span>');
+}
+
+function penyajianedit(value) {
+    $('#konversib1edit').html('<span class="input-group-text">' + value + '</span>');
+}

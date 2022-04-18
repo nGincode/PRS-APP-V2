@@ -10,10 +10,10 @@ use App\Models\LogistikProduk;
 use App\Models\LogistikBelanja;
 use App\Models\LogistikOrder;
 use App\Models\Groups;
-use App\Models\Master_Supplier;
-use App\Models\Master_Bahan;
-use App\Models\Master_Peralatan;
-use App\Models\Master_Pegawai;
+use App\Models\Supplier;
+use App\Models\Bahan;
+use App\Models\Peralatan;
+use App\Models\Pegawai;
 
 
 use Illuminate\Http\Request;
@@ -26,18 +26,18 @@ class MasterController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Master';
-        if (Master_Bahan::latest()->first()) {
-            $this->kodebahan = sprintf("%05s", Master_Bahan::latest()->first()->id + 1);
+        if (Bahan::latest()->first()) {
+            $this->kodebahan = sprintf("%05s", Bahan::latest()->first()->id + 1);
         } else {
             $this->kodebahan = sprintf("%05s", 1);
         }
-        if (Master_Peralatan::latest()->first()) {
-            $this->kodealat = sprintf("%05s", Master_Peralatan::latest()->first()->id + 1);
+        if (Peralatan::latest()->first()) {
+            $this->kodealat = sprintf("%05s", Peralatan::latest()->first()->id + 1);
         } else {
             $this->kodealat = sprintf("%05s", 1);
         }
-        if (Master_Pegawai::latest()->first()) {
-            $this->kodepegawai = sprintf("%03s", Master_Pegawai::latest()->first()->id + 1);
+        if (Pegawai::latest()->first()) {
+            $this->kodepegawai = sprintf("%03s", Pegawai::latest()->first()->id + 1);
         } else {
             $this->kodepegawai = sprintf("%03s", 1);
         }
@@ -49,7 +49,7 @@ class MasterController extends Controller
     public function Supplier(Request $request)
     {
         $this->data['subtitle'] = 'Supplier';
-        return view('Master_Supplier', $this->data);
+        return view('Supplier', $this->data);
     }
 
     public function SupplierManage(Request $request)
@@ -58,7 +58,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Supplier::where('delete', false)->latest()->get();
+        $Data = Supplier::where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -100,7 +100,7 @@ class MasterController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:master_supplier',
+                'nama' => 'required|unique:supplier',
                 'alamat' => 'required',
             ],
             $messages  = [
@@ -119,7 +119,7 @@ class MasterController extends Controller
             }
         } else {
 
-            if (Master_Supplier::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+            if (Supplier::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
@@ -136,7 +136,7 @@ class MasterController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
-                if (Master_Supplier::create($input)) {
+                if (Supplier::create($input)) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',
@@ -161,7 +161,7 @@ class MasterController extends Controller
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
-        $this->data['SupplierData'] = Master_Supplier::where('id', $id)->first();
+        $this->data['SupplierData'] = Supplier::where('id', $id)->first();
         return view('Edit', $this->data);
     }
 
@@ -169,7 +169,7 @@ class MasterController extends Controller
     {
 
         $id = session('IdEdit');
-        $SUpplier = Master_Supplier::where('id', $id)->first();
+        $SUpplier = Supplier::where('id', $id)->first();
         if ($SUpplier) {
             $validator = Validator::make(
                 $request->all(),
@@ -186,7 +186,7 @@ class MasterController extends Controller
             if ($SUpplier['nama'] == $request->input('nama')) {
                 $nama = $request->input('nama');
             } else {
-                $str = Master_Supplier::where('nama', $request->input('nama'))->count();
+                $str = Supplier::where('nama', $request->input('nama'))->count();
                 if ($str) {
                     $data = [
                         'toast' => true,
@@ -222,7 +222,7 @@ class MasterController extends Controller
                         'updated_at' => date('Y-m-d H:i:s'),
                         'created_at' => date('Y-m-d H:i:s')
                     ];
-                    if (Master_Supplier::where('id', $id)->update($input)) {
+                    if (Supplier::where('id', $id)->update($input)) {
                         $data = [
                             'toast' => true,
                             'status' => 'success',
@@ -246,7 +246,7 @@ class MasterController extends Controller
     public function SupplierHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Supplier::where('id', $id)->update(['delete' => true])) {
+        if (Supplier::where('id', $id)->update(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',
@@ -270,7 +270,7 @@ class MasterController extends Controller
     {
         $this->data['subtitle'] = 'Bahan';
         $this->data['kode'] = $this->kodebahan;
-        return view('Master_Bahan', $this->data);
+        return view('Bahan', $this->data);
     }
 
     public function BahanManage(Request $request)
@@ -279,7 +279,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Bahan::where('delete', false)->latest()->get();
+        $Data = Bahan::where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -355,7 +355,7 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if (Master_Bahan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+            if (Bahan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
@@ -391,7 +391,7 @@ class MasterController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
-                if (Master_Bahan::create($input)) {
+                if (Bahan::create($input)) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',
@@ -416,7 +416,7 @@ class MasterController extends Controller
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
-        $this->data['BahanData'] = Master_Bahan::where('id', $id)->first();
+        $this->data['BahanData'] = Bahan::where('id', $id)->first();
         $this->data['kode'] = sprintf("%05s", $this->data['BahanData']['id']);
         return view('Edit', $this->data);
     }
@@ -425,7 +425,7 @@ class MasterController extends Controller
     {
 
         $id = session('IdEdit');
-        $Bahan = Master_Bahan::where('id', $id)->first();
+        $Bahan = Bahan::where('id', $id)->first();
         if ($Bahan) {
             $validator = Validator::make(
                 $request->all(),
@@ -448,7 +448,7 @@ class MasterController extends Controller
             if ($Bahan['nama'] == $request->input('nama')) {
                 $nama = $request->input('nama');
             } else {
-                $str = Master_Bahan::where('nama', $request->input('nama'))->count();
+                $str = Bahan::where('nama', $request->input('nama'))->count();
                 if ($str) {
                     $data = [
                         'toast' => true,
@@ -502,7 +502,7 @@ class MasterController extends Controller
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];
-                    if (Master_Bahan::where('id', $id)->update($input)) {
+                    if (Bahan::where('id', $id)->update($input)) {
                         $data = [
                             'toast' => true,
                             'status' => 'success',
@@ -531,7 +531,7 @@ class MasterController extends Controller
     public function BahanHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Bahan::where('id', $id)->update(['delete' => true])) {
+        if (Bahan::where('id', $id)->update(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',
@@ -556,7 +556,7 @@ class MasterController extends Controller
     {
         $this->data['subtitle'] = 'Peralatan';
         $this->data['kode'] = $this->kodealat;
-        return view('Master_Peralatan', $this->data);
+        return view('Peralatan', $this->data);
     }
 
     public function PeralatanManage(Request $request)
@@ -565,7 +565,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Peralatan::where('delete', false)->latest()->get();
+        $Data = Peralatan::where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -639,7 +639,7 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if (Master_Peralatan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+            if (Peralatan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
@@ -675,7 +675,7 @@ class MasterController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
-                if (Master_Peralatan::create($input)) {
+                if (Peralatan::create($input)) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',
@@ -701,7 +701,7 @@ class MasterController extends Controller
         session()->flash('IdEdit', $id);
         $this->data['kode'] = $this->kodealat;
 
-        $this->data['PeralatanData'] = Master_Peralatan::where('id', $id)->first();
+        $this->data['PeralatanData'] = Peralatan::where('id', $id)->first();
         return view('Edit', $this->data);
     }
 
@@ -709,7 +709,7 @@ class MasterController extends Controller
     {
 
         $id = session('IdEdit');
-        $Peralatan = Master_Peralatan::where('id', $id)->first();
+        $Peralatan = Peralatan::where('id', $id)->first();
         if ($Peralatan) {
             $validator = Validator::make(
                 $request->all(),
@@ -730,7 +730,7 @@ class MasterController extends Controller
             if ($Peralatan['nama'] == $request->input('nama')) {
                 $nama = $request->input('nama');
             } else {
-                $str = Master_Peralatan::where('nama', $request->input('nama'))->count();
+                $str = Peralatan::where('nama', $request->input('nama'))->count();
                 if ($str) {
                     $data = [
                         'toast' => true,
@@ -785,7 +785,7 @@ class MasterController extends Controller
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];
-                    if (Master_Peralatan::where('id', $id)->update($input)) {
+                    if (Peralatan::where('id', $id)->update($input)) {
                         $data = [
                             'toast' => true,
                             'status' => 'success',
@@ -809,7 +809,7 @@ class MasterController extends Controller
     public function PeralatanHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Peralatan::where('id', $id)->update(['delete' => true])) {
+        if (Peralatan::where('id', $id)->update(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',
@@ -836,7 +836,7 @@ class MasterController extends Controller
         $this->data['subtitle'] = 'Pegawai';
         $this->data['kode'] = $this->kodealat;
         $this->data['Datastore'] = Store::where('active', 1)->get();
-        return view('Master_Pegawai', $this->data);
+        return view('Pegawai', $this->data);
     }
 
     public function PegawaiManage(Request $request)
@@ -845,7 +845,7 @@ class MasterController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Master_Pegawai::with('Store')->where('delete', false)->latest()->get();
+        $Data = Pegawai::with('Store')->where('delete', false)->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -914,7 +914,7 @@ class MasterController extends Controller
                 ];
             }
         } else {
-            if (Master_Pegawai::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+            if (Pegawai::where('delete', false)->where('nama', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
@@ -950,7 +950,7 @@ class MasterController extends Controller
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
-                if (Master_Pegawai::create($input)) {
+                if (Pegawai::create($input)) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',
@@ -976,7 +976,7 @@ class MasterController extends Controller
         session()->flash('IdEdit', $id);
         $this->data['kode'] = $this->kodepegawai;
 
-        $this->data['PegawaiData'] = Master_Pegawai::where('id', $id)->first();
+        $this->data['PegawaiData'] = Pegawai::where('id', $id)->first();
         $this->data['Datastore'] = Store::where('active', 1)->get();
         return view('Edit', $this->data);
     }
@@ -985,7 +985,7 @@ class MasterController extends Controller
     {
 
         $id = session('IdEdit');
-        $Pegawai = Master_Pegawai::where('id', $id)->first();
+        $Pegawai = Pegawai::where('id', $id)->first();
         if ($Pegawai) {
             $validator = Validator::make(
                 $request->all(),
@@ -1013,7 +1013,7 @@ class MasterController extends Controller
             if ($Pegawai['nama'] == $request->input('nama')) {
                 $nama = $request->input('nama');
             } else {
-                $str = Master_Pegawai::where('nama', $request->input('nama'))->count();
+                $str = Pegawai::where('nama', $request->input('nama'))->count();
                 if ($str) {
                     $data = [
                         'toast' => true,
@@ -1068,7 +1068,7 @@ class MasterController extends Controller
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];
-                    if (Master_Pegawai::where('id', $id)->update($input)) {
+                    if (Pegawai::where('id', $id)->update($input)) {
                         $data = [
                             'toast' => true,
                             'status' => 'success',
@@ -1092,7 +1092,7 @@ class MasterController extends Controller
     public function PegawaiHapus(Request $request)
     {
         $id =  $request->input('id');
-        if (Master_Pegawai::where('id', $id)->update(['delete' => true])) {
+        if (Pegawai::where('id', $id)->update(['delete' => true])) {
             $data = [
                 'toast' => true,
                 'status' => 'success',

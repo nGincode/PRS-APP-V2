@@ -9,12 +9,13 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\FoodcostController;
 
 
 
 
-use App\Models\Groups;
-use App\Models\GroupsUsers;
+use App\Models\Olahan;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,10 +138,27 @@ Route::controller(MasterController::class)->group(
     }
 );
 
+
+//Foodcost
+Route::controller(FoodcostController::class)->group(
+    function () {
+        Route::get('Foodcost/Olahan', 'Olahan')->middleware('auth');
+    }
+);
+
 Route::get('/test', function () {
 
-    $g = GroupsUsers::latest()->get();
-    foreach ($g as $key => $value) {
-        $s = $value->load('Users');
-    }
+    //Pengkondisian DB
+    // $User = User::whereRaw('id != 1')->get();
+    // $User = User::havingRaw('sum(store_id) > 1', [2])->get();
+    // dd($User);
+
+    //many to many db
+    $data = Olahan::find(1)->bahan;
+    // $data = Olahan::with('bahan')->get();
+
+    //db input ditentukan
+    // $table->enum('delete', ['pria', 'wanita']);
+
+    dd($data);
 });

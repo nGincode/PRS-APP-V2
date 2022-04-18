@@ -9,6 +9,6 @@ class LogistikOrder extends Model
 {
     use HasFactory;
 
-    protected $table = 'logistik_order';
+    protected $table = 'logistikorder';
     protected $guarded = ['id'];
 }

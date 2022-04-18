@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_supplier', function (Blueprint $table) {
+        Schema::create('peralatan', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('alamat')->nullable();
-            $table->boolean('hutang')->nullable();
-            $table->string('tipe')->nullable();
-            $table->string('rekening')->nullable();
-            $table->string('wa')->nullable();
-            $table->boolean('delete');
+            $table->string('kode');
+            $table->string('kategori');
+            $table->string('satuan_pembelian');
+            $table->integer('harga');
+            $table->string('satuan_pemakaian');
+            $table->integer('konversi_pemakaian');
+            $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_supplier');
+        Schema::dropIfExists('peralatan');
     }
 };

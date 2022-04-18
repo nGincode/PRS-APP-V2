@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_pegawai', function (Blueprint $table) {
+        Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
             $table->string('kode');
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('jabatan');
             $table->boolean('active');
             $table->string('img')->nullable();
-            $table->boolean('delete');
+            $table->boolean('delete')->default(false);
             $table->timestamps();
         });
     }
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_pegawai');
+        Schema::dropIfExists('pegawai');
     }
 };

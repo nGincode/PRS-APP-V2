@@ -367,8 +367,7 @@ if (Auth::check()) {
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item ">
-                                <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Foodcost') active @endif ">
+                                <a href="#" class="nav-link @if ($title == 'Foodcost') active @endif ">
                                     <i class=" nav-icon fas fa-pepper-hot"></i>
                                     <p>
                                         Foodcost
@@ -377,19 +376,19 @@ if (Auth::check()) {
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Foodcost/Olahan') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Bahan Olahan</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Foodcost/Varian') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Varian</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
+                                        <a href="{{ url('/Foodcost/Resep') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Resep Menu</p>
                                         </a>

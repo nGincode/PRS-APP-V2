@@ -10,6 +10,9 @@ use App\Models\Store;
 use App\Models\GroupsUsers;
 use App\Models\Groups;
 use App\Models\User;
+use App\Models\Bahan;
+use App\Models\Olahan;
+use App\Models\Olahan_Bahan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -44,7 +47,7 @@ class DatabaseSeeder extends Seeder
             'firstname' => 'Fembi',
             'lastname' => 'Nur Ilham',
             'phone' => '085369957606',
-            'gender' => 1,
+            'gender' => 'Pria',
             'izin' => 1,
             'img' => null,
             'last_login' => date('Y-m-d H:i:s'),
@@ -131,6 +134,54 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
+
+        Bahan::create([
+            'nama' => 'Ayam',
+            'kode' => 'FD22121',
+            'satuan_pembelian' => 'Pcs',
+            'satuan_pengeluaran' => 'Pcs',
+            'konversi_pengeluaran' => 100,
+            'satuan_pemakaian' => 'Gram',
+            'konversi_pemakaian' => 50,
+            'harga' => 10000,
+            'kategori' => 1
+
+        ]);
+
+        Bahan::create([
+            'nama' => 'Gula',
+            'kode' => 'FD22121',
+            'satuan_pembelian' => 'Pcs',
+            'satuan_pengeluaran' => 'Pcs',
+            'konversi_pengeluaran' => 100,
+            'satuan_pemakaian' => 'Gram',
+            'konversi_pemakaian' => 50,
+            'harga' => 10000,
+            'kategori' => 1
+        ]);
+
+        Olahan::create([
+            'nama' => 'AYam Bakar',
+            'kode' => 'FD22121',
+            'satuan_pengeluaran' => 'Pcs',
+            'konversi_pengeluaran' => 100,
+            'satuan_penyajian' => 'Gram',
+            'konversi_penyajian' => 50
+
+        ]);
+
+        Olahan_Bahan::create([
+            'olahan_id' => 1,
+            'bahan_id' => 1,
+            'pemakaian' => 100
+
+        ]);
+        Olahan_Bahan::create([
+            'olahan_id' => 1,
+            'bahan_id' => 2,
+            'pemakaian' => 10000
+
+        ]);
 
         \App\Models\User::factory(10)->create();
         \App\Models\Store::factory(10)->create();

@@ -16,16 +16,16 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('store');
-            $table->foreignId('store_id');
+            $table->foreignId('store_id')->constrained();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('email')->nullable();
+            $table->string('email')->unique();
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
             $table->string('phone')->nullable();
-            $table->string('gender')->nullable();
+            $table->enum('gender', ['Pria', 'Wanita'])->nullable();
             $table->string('img')->nullable();
-            $table->integer('izin');
+            $table->boolean('izin');
             $table->string('last_login')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

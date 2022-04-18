@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Master_Supplier extends Model
+class Pegawai extends Model
 {
     use HasFactory;
-
-    protected $table = 'master_supplier';
+    protected $table = 'pegawai';
     protected $guarded = ['id'];
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }
