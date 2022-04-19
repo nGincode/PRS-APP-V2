@@ -15,6 +15,9 @@ use App\Http\Controllers\FoodcostController;
 
 
 use App\Models\Olahan;
+use App\Models\Bahan_Olahan;
+
+
 use App\Models\User;
 
 /*
@@ -143,22 +146,38 @@ Route::controller(MasterController::class)->group(
 Route::controller(FoodcostController::class)->group(
     function () {
         Route::get('Foodcost/Olahan', 'Olahan')->middleware('auth');
+        Route::post('Foodcost/Olahan', 'OlahanTambah')->middleware('auth');
+        Route::post('Foodcost/Olahan/Edit', 'OlahanEdit')->middleware('auth');
+
+        Route::post('Foodcost/Manage/Olahan', 'OlahanManage')->middleware('auth');
+        Route::post('Foodcost/Olahan/ItemTambahEdit', 'ItemTambahEdit')->middleware('auth');
+
+        Route::post('Foodcost/Olahan/OlahanItemManage', 'OlahanItemManage')->middleware('auth');
     }
 );
+Route::get('Foodcost/Olahan/Session',  function () {
+    session()->forget('IdOlahan');
+    return redirect('Foodcost/Olahan')->withToastError('Berhasil Clear Autosave');
+})->middleware('auth');
 
-Route::get('/test', function () {
+Route::get(
+    '/test',
+    function () {
+        //Pengkondisian DB
+        // $User = User::whereRaw('id != 1')->get();
+        // $User = User::havingRaw('sum(store_id) > 1', [2])->get();
+        // dd($User);
 
-    //Pengkondisian DB
-    // $User = User::whereRaw('id != 1')->get();
-    // $User = User::havingRaw('sum(store_id) > 1', [2])->get();
-    // dd($User);
+        //many to many db
+        // $data = Olahan::find(1)->bahan;
+        // $data = Olahan::with('bahan')->get();
 
-    //many to many db
-    $data = Olahan::find(1)->bahan;
-    // $data = Olahan::with('bahan')->get();
+        //db input ditentukan
+        // $table->enum('delete', ['pria', 'wanita']);
 
-    //db input ditentukan
-    // $table->enum('delete', ['pria', 'wanita']);
+        // $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan')->get();
 
-    dd($data);
-});
+        $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan', 'Olahan')->latest()->get();
+        dd($data->toArray());
+    }
+);

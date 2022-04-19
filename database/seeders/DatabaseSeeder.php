@@ -11,8 +11,8 @@ use App\Models\GroupsUsers;
 use App\Models\Groups;
 use App\Models\User;
 use App\Models\Bahan;
+use App\Models\Bahan_Olahan;
 use App\Models\Olahan;
-use App\Models\Olahan_Bahan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -164,19 +164,18 @@ class DatabaseSeeder extends Seeder
             'nama' => 'AYam Bakar',
             'kode' => 'FD22121',
             'satuan_pengeluaran' => 'Pcs',
-            'konversi_pengeluaran' => 100,
             'satuan_penyajian' => 'Gram',
             'konversi_penyajian' => 50
 
         ]);
 
-        Olahan_Bahan::create([
+        Bahan_Olahan::create([
             'olahan_id' => 1,
             'bahan_id' => 1,
             'pemakaian' => 100
 
         ]);
-        Olahan_Bahan::create([
+        Bahan_Olahan::create([
             'olahan_id' => 1,
             'bahan_id' => 2,
             'pemakaian' => 10000

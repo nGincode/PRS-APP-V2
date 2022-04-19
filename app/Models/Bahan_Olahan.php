@@ -5,15 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Olahan extends Model
+class Bahan_Olahan extends Model
 {
     use HasFactory;
 
-    protected $table = 'olahan';
+    protected $table = 'bahan_olahan';
     protected $guarded = ['id'];
 
     public function Bahan()
     {
-        return $this->belongsToMany(Bahan::class)->withPivot('pemakaian')->withTimestamps();
+        return $this->belongsTo(Bahan::class);
+    }
+
+
+    public function Olahan()
+    {
+        return $this->belongsTo(Olahan::class);
     }
 }

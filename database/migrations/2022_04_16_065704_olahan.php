@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('nama');
             $table->string('kode');
             $table->string('satuan_pengeluaran');
-            $table->integer('konversi_pengeluaran');
             $table->string('satuan_penyajian');
             $table->integer('konversi_penyajian');
+            $table->boolean('draft')->default(true);
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bahan;
+use App\Models\Bahan_Olahan;
 use App\Models\User;
 use App\Models\Store;
 use App\Models\Ivn;
@@ -38,6 +40,10 @@ class FoodcostController extends Controller
     {
         $this->data['subtitle'] = 'Olahan';
         $this->data['kode'] = 'BO' . $this->kode;
+
+
+        $id = session('IdOlahan');
+        $this->data['Olahan'] = Olahan::where('id', $id)->first();
         return view('Olahan', $this->data);
     }
 
@@ -47,7 +53,7 @@ class FoodcostController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Olahan::where('delete', false)->latest()->get();
+        $Data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -64,19 +70,17 @@ class FoodcostController extends Controller
 
             $button .= '</ul></div>';
 
-            if ($value['hutang']) {
-                $hutang = 'Hutang';
-            } else {
-                $hutang = 'Dimuka';
+
+
+            $produksi = 0;
+            foreach ($value->bahan as $v) {
             }
 
             $result['data'][] = array(
+                $value['kode'],
                 $value['nama'],
-                $value['alamat'],
-                $hutang,
-                $value['tipe'],
-                $value['rekening'],
-                $value['wa'],
+                $value['satuan_pengeluaran'],
+                json_encode($value->bahan),
                 $button
             );
         }
@@ -89,8 +93,10 @@ class FoodcostController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:Olahan',
-                'alamat' => 'required',
+                'nama' => 'required',
+                'satuan_pengeluaran' => 'required',
+                'satuan_penyajian' => 'required',
+                'konversi_penyajian' => 'required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -108,28 +114,79 @@ class FoodcostController extends Controller
             }
         } else {
 
-            if (Olahan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'error',
-                    'pesan' => 'Nama Telah Ada'
-                ];
+            $id = session('IdOlahan');
+            $Olahan = Olahan::where('id', $id)->first();
+            if ($Olahan) {
+                if ($Olahan['nama'] == $request->input('nama')) {
+                    $nama = $request->input('nama');
+                } else {
+                    $str = Olahan::where('nama', $request->input('nama'))->count();
+                    if ($str) {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Nama Telah digunakan'
+                        ];
+                        $nama = '';
+                    } else {
+                        $nama = $request->input('nama');
+                    }
+                }
             } else {
+                if (Olahan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' => 'Nama Telah Ada'
+                    ];
+                    $nama = '';
+                } else {
+                    $nama = $request->input('nama');
+                }
+            }
+
+            if ($nama && $Olahan) {
                 $input = [
-                    'nama' => $request->input('nama'),
-                    'alamat' => $request->input('alamat'),
-                    'tipe' => $request->input('tipe'),
-                    'hutang' => $request->input('hutang'),
-                    'wa' => $request->input('wa'),
-                    'delete' => false,
+                    'nama' => $nama,
+                    'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
+                    'satuan_penyajian' => $request->input('satuan_penyajian'),
+                    'kode' => 1,
+                    'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
-                if (Olahan::create($input)) {
+                if (Olahan::where('id', $id)->update($input)) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',
-                        'pesan' => 'Berhasil dibuat'
+                        'pesan' => 'Autosave Berhasil',
+                        'id' => $id
+                    ];
+                } else {
+
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            } else if ($nama) {
+                $input = [
+                    'nama' => $nama,
+                    'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
+                    'satuan_penyajian' => $request->input('satuan_penyajian'),
+                    'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
+                    'kode' => 1,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if ($olahan = Olahan::create($input)) {
+                    request()->session()->put('IdOlahan', $olahan->id);
+                    $data = [
+                        'id' => $olahan->id,
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Autosave Berhasil'
                     ];
                 } else {
                     $data = [
@@ -138,7 +195,7 @@ class FoodcostController extends Controller
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
                 };
-            }
+            };
         }
 
 
@@ -148,86 +205,97 @@ class FoodcostController extends Controller
     public function OlahanEdit(Request $request)
     {
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
 
-        $this->data['OlahanData'] = Olahan::where('id', $id)->first();
+        $this->data['OlahanData'] = Bahan::all();
+        if ($id) {
+            session()->flash('IdEdit', $id);
+            $data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
+            $cekid = array();
+            foreach ($data as $v) {
+                $cekid[] = $v->bahan['id'];
+            }
+            $this->data['cekid'] = $cekid;
+        } else {
+            $this->data['cekid'] = null;
+        }
         return view('Edit', $this->data);
     }
 
-    public function OlahanEditTambah(Request $request)
+    public function OlahanItemManage(Request $request)
     {
-
-        $id = session('IdEdit');
-        $Olahan = Olahan::where('id', $id)->first();
-        if ($Olahan) {
-            $validator = Validator::make(
-                $request->all(),
-                $rules = [
-                    'nama' => 'required',
-                    'alamat' => 'required',
-                ],
-                $messages  = [
-                    'required' => 'Form :attribute harus terisi',
-                    'same' => 'Form :attribute & :other tidak sama.',
-                ]
-            );
-
-            if ($Olahan['nama'] == $request->input('nama')) {
-                $nama = $request->input('nama');
-            } else {
-                $str = Olahan::where('nama', $request->input('nama'))->count();
-                if ($str) {
-                    $data = [
-                        'toast' => true,
-                        'status' => 'error',
-                        'pesan' =>  'Nama Telah digunakan'
-                    ];
-                    $nama = '';
-                } else {
-                    $nama = $request->input('nama');
-                }
-            }
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
 
 
-            if ($nama) {
-                if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
-                    foreach ($validator->errors()->all() as $message) {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  $message
-                        ];
-                    }
-                } else {
-
-                    $input = [
-                        'nama' => $request->input('nama'),
-                        'alamat' => $request->input('alamat'),
-                        'tipe' => $request->input('tipe'),
-                        'rekening' => $request->input('rekening'),
-                        'hutang' => $request->input('hutang'),
-                        'wa' => $request->input('wa'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
-                    ];
-                    if (Olahan::where('id', $id)->update($input)) {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'success',
-                            'pesan' => 'Berhasil dibuat'
-                        ];
-                    } else {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  'Terjadi kegagalan system'
-                        ];
-                    };
-                }
-            }
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->latest()->get();
+        } else {
+            $Data = array();
         }
 
+        $result = array('data' => array());
+        foreach ($Data as $value) {
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('updateMaster', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+            }
+            if (in_array('deleteMaster', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+            }
+            $button .= '</ul></div>';
+
+
+
+            $produksi = 0;
+            foreach ($value->bahan as $v) {
+            }
+
+            $result['data'][] = array(
+                $value->bahan['nama'],
+                $value->olahan['nama'],
+                $value->olahan['nama'],
+                $value->olahan['nama'],
+                $value->olahan['nama'],
+                $button
+            );
+        }
+        echo json_encode($result);
+    }
+
+    public function ItemTambahEdit(Request $request)
+    {
+
+
+        $id = $request->input('id');
+
+        $input = array();
+        foreach ($id as $v) {
+            $input[] = array(
+                'olahan_id' => session('IdEdit'),
+                'bahan_id' => $v,
+                'pemakaian' => 0
+            );
+        }
+
+        if (Bahan_Olahan::insert($input)) {
+            $data = [
+                'toast' => true,
+                'status' => 'success',
+                'pesan' => 'Berhasil'
+            ];
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'errror',
+                'pesan' => 'Gagal'
+            ];
+        }
 
         echo json_encode($data);
     }

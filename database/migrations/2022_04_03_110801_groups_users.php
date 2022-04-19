@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('groups_users', function (Blueprint $table) {
-            $table->foreignId('users_id')->constrained();
-            $table->foreignId('groups_id')->constrained();
+            $table->foreignId('users_id')->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->foreignId('groups_id')->references('id')->on('groups')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

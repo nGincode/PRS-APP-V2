@@ -155,6 +155,8 @@ if (Auth::check()) {
     <link rel="stylesheet"
         href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/summernote/summernote-bs4.min.css">
 
+    <!-- animated -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- DataTables -->
     <link rel="stylesheet"
@@ -366,17 +368,18 @@ if (Auth::check()) {
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item ">
-                                <a href="#" class="nav-link @if ($title == 'Foodcost') active @endif ">
-                                    <i class=" nav-icon fas fa-pepper-hot"></i>
-                                    <p>
-                                        Foodcost
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                            <li class="nav-item @if ($title == 'Foodcost') menu-open" @endif"">
+                                <a href=" #" class="nav-link @if ($title == 'Foodcost') active @endif ">
+                                <i class=" nav-icon fas fa-pepper-hot"></i>
+                                <p>
+                                    Foodcost
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ url('/Foodcost/Olahan') }}" class="nav-link">
+                                        <a href="{{ url('/Foodcost/Olahan') }}"
+                                            class="nav-link @if ($subtitle == 'Olahan') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Bahan Olahan</p>
                                         </a>
@@ -735,7 +738,7 @@ if (Auth::check()) {
     </script>
 
     <!-- Validate -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="{{ url('/') }}/assets/js/jquery.validate.min.js"></script>
 
     <!-- Sweetalert -->
     <script src="{{ url('/vendor/sweetalert/sweetalert.all.js') }}"></script>
@@ -840,6 +843,195 @@ if (Auth::check()) {
                     ]
                 }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
             }
+
+
+            if ($("#managebahanbaku").length) {
+                $("#managebahanbaku").DataTable({
+                    "ajax": {
+                        url: "/Foodcost/Olahan/OlahanItemManage",
+                        type: "POST"
+                    },
+                    "responsive": true,
+                    "autoWidth": true,
+                    "processing": true,
+                    "searching": false,
+                    "sort": true,
+                    "paging": false,
+                    'info': false,
+                    "destroy": true
+                });
+            }
+        });
+
+
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {
+                    once: true
+                });
+            });
+
+        $(document).ready(function() {
+            //users
+            if ($('#FormOlahan').length) {
+                $('#FormOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'satuan_penyajian': {
+                            required: true
+                        },
+                        'konversi_penyajian': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#FormOlahan').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    popup(data.status, data.toast, data.pesan);
+                                    $('#FormOlahan')[0].reset();
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            $('#FormOlahan').on('change', function(event) {
+
+                $('#FormOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'satuan_penyajian': {
+                            required: true
+                        },
+                        'konversi_penyajian': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#manage').DataTable().ajax.reload();
+                                $('#autosave').html(
+                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'flash');
+
+                                $('#olahanitem').html(
+                                    '<a onclick="Edit(' + data.id +
+                                    ',' + "'" + "Olahan" + "'" +
+                                    ')" class="btn-sm btn-success" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a>'
+                                );
+                            } else {
+                                $('#autosave').html(
+                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'shakeX');
+                            }
+                        }
+                    });
+                }
+
+            });
         });
     </script>
     @include('sweetalert::alert')

@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('olahan_bahan', function (Blueprint $table) {
-            $table->foreignId('olahan_id')->constrained();
-            $table->foreignId('bahan_id')->constrained();
+        Schema::create('bahan_olahan', function (Blueprint $table) {
+            $table->foreignId('olahan_id')->references('id')->on('olahan')
+                ->onDelete('cascade');
+            $table->foreignId('bahan_id')->references('id')->on('bahan')
+                ->onDelete('cascade');
+            $table->boolean('draft')->default(true);
             $table->string('pemakaian');
             $table->timestamps();
         });
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('olahan_bahan');
+        Schema::dropIfExists('bahan_olahan');
     }
 };

@@ -1643,3 +1643,123 @@
     </script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
+
+
+@isset($OlahanData)
+    <form id="OlahanItem" action="{{ url('Foodcost/Olahan/ItemTambahEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <table id="manageolahan" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="check" id="checkAll"></th>
+                        <th>Kode Bahan</th>
+                        <th>Nama Bahan</th>
+                        <th>Kategori</th>
+                        <th>Harga Beli</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($OlahanData as $v)
+                        <tr>
+                            <td><input @if (in_array($v['id'], $cekid)) checked @endif type="checkbox" name="id[]"
+                                    value="{{ $v['id'] }}" class="check">
+                            </td>
+                            <td>{{ $v['kode'] }}</td>
+                            <td>{{ $v['nama'] }}</td>
+                            <td>
+                                @if ($v['kategori'] == 1)
+                                    Bahan Baku Segar
+                                @endif
+                                @if ($v['kategori'] == 2)
+                                    Bahan Baku Beku
+                                @endif
+                                @if ($v['kategori'] == 3)
+                                    Bahan Baku Dalam Kemasan
+                                @endif
+                                @if ($v['kategori'] == 4)
+                                    Bahan Baku Dingin
+                                @endif
+                            </td>
+                            <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Buat</button>
+        </div>
+        </div>
+    </form>
+    <script>
+        //DataTable
+        $("#checkAll").click(function() {
+            $(".check").prop('checked', $(this).prop('checked'));
+        });
+
+
+
+        $(document).ready(function() {
+            if ($('#OlahanItem').length) {
+                $('#OlahanItem').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#OlahanItem').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanbaku').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
+@endisset
