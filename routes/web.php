@@ -153,6 +153,7 @@ Route::controller(FoodcostController::class)->group(
         Route::post('Foodcost/Olahan/ItemTambahEdit', 'ItemTambahEdit')->middleware('auth');
 
         Route::post('Foodcost/Olahan/OlahanItemManage', 'OlahanItemManage')->middleware('auth');
+        Route::post('Foodcost/Olahan/OlahanItemHapus', 'ItemOlahanHapus')->middleware('auth');
     }
 );
 Route::get('Foodcost/Olahan/Session',  function () {
@@ -177,7 +178,7 @@ Route::get(
 
         // $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan')->get();
 
-        $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan', 'Olahan')->latest()->get();
+        $data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
         dd($data->toArray());
     }
 );

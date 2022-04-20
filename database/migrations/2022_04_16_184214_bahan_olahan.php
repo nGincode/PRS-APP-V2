@@ -14,12 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bahan_olahan', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('olahan_id')->references('id')->on('olahan')
                 ->onDelete('cascade');
             $table->foreignId('bahan_id')->references('id')->on('bahan')
                 ->onDelete('cascade');
             $table->boolean('draft')->default(true);
-            $table->string('pemakaian');
+            $table->string('pemakaian')->default(0);
+            $table->string('hasil')->default(0);
             $table->timestamps();
         });
     }

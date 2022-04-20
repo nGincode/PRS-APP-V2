@@ -1661,34 +1661,35 @@
                 </thead>
                 <tbody>
                     @foreach ($OlahanData as $v)
-                        <tr>
-                            <td><input @if (in_array($v['id'], $cekid)) checked @endif type="checkbox" name="id[]"
-                                    value="{{ $v['id'] }}" class="check">
-                            </td>
-                            <td>{{ $v['kode'] }}</td>
-                            <td>{{ $v['nama'] }}</td>
-                            <td>
-                                @if ($v['kategori'] == 1)
-                                    Bahan Baku Segar
-                                @endif
-                                @if ($v['kategori'] == 2)
-                                    Bahan Baku Beku
-                                @endif
-                                @if ($v['kategori'] == 3)
-                                    Bahan Baku Dalam Kemasan
-                                @endif
-                                @if ($v['kategori'] == 4)
-                                    Bahan Baku Dingin
-                                @endif
-                            </td>
-                            <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
-                        </tr>
+                        @if (!in_array($v['id'], $cekid))
+                            <tr>
+                                <td><input type="checkbox" name="id[]" value="{{ $v['id'] }}" class="check">
+                                </td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td>{{ $v['nama'] }}</td>
+                                <td>
+                                    @if ($v['kategori'] == 1)
+                                        Bahan Baku Segar
+                                    @endif
+                                    @if ($v['kategori'] == 2)
+                                        Bahan Baku Beku
+                                    @endif
+                                    @if ($v['kategori'] == 3)
+                                        Bahan Baku Dalam Kemasan
+                                    @endif
+                                    @if ($v['kategori'] == 4)
+                                        Bahan Baku Dingin
+                                    @endif
+                                </td>
+                                <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Buat</button>
+            <button type="submit" class="btn btn-primary btn-block">Tambah</button>
         </div>
         </div>
     </form>
@@ -1698,8 +1699,21 @@
             $(".check").prop('checked', $(this).prop('checked'));
         });
 
+        if ($("#manageolahan").length) {
+            $("#manageolahan").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+        }
 
 
+        $('#ModalLabel').html('Pilih Item Bahan Baku');
         $(document).ready(function() {
             if ($('#OlahanItem').length) {
                 $('#OlahanItem').validate({

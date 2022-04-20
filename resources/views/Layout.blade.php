@@ -767,7 +767,7 @@ if (Auth::check()) {
     </script>
 
     <script src="{{ url('/') }}/assets/js/js.js"></script>
-    4
+
     <script>
         //DataTable
         $(function() {
@@ -855,12 +855,13 @@ if (Auth::check()) {
                     "autoWidth": true,
                     "processing": true,
                     "searching": false,
-                    "sort": true,
+                    "sort": false,
                     "paging": false,
                     'info': false,
                     "destroy": true
                 });
             }
+
         });
 
 
@@ -885,7 +886,7 @@ if (Auth::check()) {
             });
 
         $(document).ready(function() {
-            //users
+            //Olahan
             if ($('#FormOlahan').length) {
                 $('#FormOlahan').validate({
                     errorElement: 'span',
@@ -914,6 +915,10 @@ if (Auth::check()) {
                         },
                         'konversi_penyajian': {
                             required: true
+                        },
+                        'pakai[]': {
+                            required: true
+
                         }
                     },
                     messages: {
@@ -925,7 +930,7 @@ if (Auth::check()) {
                     var isValid = $(this).valid();
                     event.preventDefault();
                     var formData = new FormData(this);
-
+                    formData.append('submit', true);
                     if (isValid) {
                         $.ajax({
                             url: $(this).attr('action'),
@@ -940,9 +945,11 @@ if (Auth::check()) {
                             },
                             success: function(data) {
                                 if (data.status === 'success') {
-                                    popup(data.status, data.toast, data.pesan);
-                                    $('#FormOlahan')[0].reset();
-                                    $('#manage').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, 'Berhasil dibuat');
+                                    window.setTimeout(function() {
+                                        location.reload()
+                                    }, 2000);
+
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }
@@ -1015,9 +1022,9 @@ if (Auth::check()) {
                                 animateCSS('#autosave', 'flash');
 
                                 $('#olahanitem').html(
-                                    '<a onclick="Edit(' + data.id +
+                                    '<td colspan="6"><a onclick="Edit(' + data.id +
                                     ',' + "'" + "Olahan" + "'" +
-                                    ')" class="btn-sm btn-success" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a>'
+                                    ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a></td>'
                                 );
                             } else {
                                 $('#autosave').html(
@@ -1033,6 +1040,85 @@ if (Auth::check()) {
 
             });
         });
+
+        function hapusitemoalahan(id) {
+            Swal.fire({
+                title: 'Yakin Menghapus?',
+                text: "Data Akan Dihapus Permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/Foodcost/Olahan/OlahanItemHapus',
+                        data: {
+                            id: id
+                        },
+                        type: "POST",
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#managebahanbaku').DataTable().ajax.reload();
+                                $('#autosave').html(
+                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'flash');
+
+                                popup(data.status, data.toast, data.pesan);
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                                $('#autosave').html(
+                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'shakeX');
+                            }
+                        }
+                    });
+                }
+            })
+        }
+
+
+
+        /* Fungsi formatRupiah */
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString(),
+                split = number_string.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
+        }
+
+        function itemolahanpakai(id, no) {
+            let pakai = $('#pakai_' + no).val();
+            let konversi = $('#itemolahanpakaikonversi_' + no).html();
+            let harga = $('#itemolahanpakaiharga_' + no).val();
+            let jumlah = formatRupiah((harga / konversi) * pakai, true);
+            let satuan = $('#itemolahanpakaisatuan_' + no).html();
+
+            $('#itemolahanpakaihasil_' + no).html(jumlah + '/' + satuan);
+
+        }
     </script>
     @include('sweetalert::alert')
 </body>

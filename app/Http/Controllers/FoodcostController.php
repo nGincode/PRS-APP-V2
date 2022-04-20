@@ -71,16 +71,16 @@ class FoodcostController extends Controller
             $button .= '</ul></div>';
 
 
-
             $produksi = 0;
             foreach ($value->bahan as $v) {
+                $produksi += $v['pivot']['pemakaian'];
             }
 
             $result['data'][] = array(
                 $value['kode'],
                 $value['nama'],
-                $value['satuan_pengeluaran'],
-                json_encode($value->bahan),
+                $this->rupiah($produksi),
+                1,
                 $button
             );
         }
@@ -89,6 +89,7 @@ class FoodcostController extends Controller
 
     public function OlahanTambah(Request $request)
     {
+
 
         $validator = Validator::make(
             $request->all(),
@@ -145,6 +146,26 @@ class FoodcostController extends Controller
                 }
             }
 
+            $pakai =  $request->input('pakai');
+            if ($Olahan && $pakai) {
+
+
+                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->get();
+                foreach ($cekolahan as $no => $v) {
+
+                    if (!Bahan_Olahan::where('id', $v['id'])->update([
+                        'pemakaian' => $pakai[$no]
+                    ])) {
+
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Terjadi kegagalan system'
+                        ];
+                    };
+                }
+            }
+
             if ($nama && $Olahan) {
                 $input = [
                     'nama' => $nama,
@@ -196,6 +217,14 @@ class FoodcostController extends Controller
                     ];
                 };
             };
+
+
+            if ($request->input('submit')) {
+                Olahan::where('id', $id)->update(['draft' => false]);
+                Bahan_Olahan::where('olahan_id', $id)->update(['draft' => false]);
+
+                session()->forget('IdOlahan');
+            }
         }
 
 
@@ -229,39 +258,23 @@ class FoodcostController extends Controller
 
         $id = session('IdOlahan');
         if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->latest()->get();
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
         } else {
             $Data = array();
         }
 
         $result = array('data' => array());
-        foreach ($Data as $value) {
-            $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">';
+        foreach ($Data as $key => $value) {
 
-            if (in_array('updateMaster', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
-            }
-            if (in_array('deleteMaster', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
-            }
-            $button .= '</ul></div>';
+            $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
 
-
-
-            $produksi = 0;
-            foreach ($value->bahan as $v) {
-            }
-
-            $result['data'][] = array(
+            $result['data'][$key] = array(
                 $value->bahan['nama'],
-                $value->olahan['nama'],
-                $value->olahan['nama'],
-                $value->olahan['nama'],
-                $value->olahan['nama'],
+                '<font id="itemolahanpakaikonversi_' . $key . '">' . $value->bahan['konversi_pemakaian'] . '</font>/' . '<font id="itemolahanpakaisatuan_' . $key . '">' . $value->bahan['satuan_pemakaian'] . '</font>',
+                $this->rupiah($value->bahan['harga']),
+                '<div class="input-group"><input onkeydown="itemolahanpakai(this.value, ' . $key . ')" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>
+                <input type="hidden" id="itemolahanpakaiharga_' . $key . '" value="' . $value->bahan['harga'] . '" />',
+                '<font id="itemolahanpakaihasil_' . $key . '">' . $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'] . '</font>',
                 $button
             );
         }
@@ -274,26 +287,33 @@ class FoodcostController extends Controller
 
         $id = $request->input('id');
 
-        $input = array();
-        foreach ($id as $v) {
-            $input[] = array(
-                'olahan_id' => session('IdEdit'),
-                'bahan_id' => $v,
-                'pemakaian' => 0
-            );
-        }
-
-        if (Bahan_Olahan::insert($input)) {
-            $data = [
-                'toast' => true,
-                'status' => 'success',
-                'pesan' => 'Berhasil'
-            ];
+        if ($id) {
+            $input = array();
+            foreach ($id as $v) {
+                $input[] = array(
+                    'olahan_id' => session('IdEdit'),
+                    'bahan_id' => $v,
+                    'pemakaian' => 0
+                );
+            }
+            if (Bahan_Olahan::insert($input)) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'errror',
+                    'pesan' => 'Gagal Saat Menambah Data'
+                ];
+            }
         } else {
             $data = [
                 'toast' => true,
                 'status' => 'errror',
-                'pesan' => 'Gagal'
+                'pesan' => 'Belum memilih item'
             ];
         }
 
@@ -314,6 +334,34 @@ class FoodcostController extends Controller
                 'toast' => true,
                 'status' => 'error',
                 'pesan' =>  'Terjadi kegagalan system'
+            ];
+        };
+
+        echo json_encode($data);
+    }
+
+    public function ItemOlahanHapus(Request $request)
+    {
+        $id =  $request->input('id');
+        if ($id) {
+            if (Bahan_Olahan::where('id', $id)->delete()) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil Terhapus'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Terjadi kegagalan system saat hapus'
+                ];
+            };
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Id tak ditemukan'
             ];
         };
 

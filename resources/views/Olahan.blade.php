@@ -355,6 +355,11 @@
                                             name="konversi_penyajian" id="konversi_penyajian" class="form-control"
                                             placeholder="Satuan Pengeluaran">
                                         <div class="input-group-append" id="konversib1">
+                                            @isset($Olahan['satuan_penyajian'])
+                                                <span class="input-group-text">
+                                                    {{ $Olahan['satuan_penyajian'] }}
+                                                </span>
+                                            @endisset
                                         </div>
                                     </div>
                                 </div>
@@ -378,21 +383,25 @@
                                             <th scope="col">Satuan Pemakaian
                                             </th>
                                             <th scope="col">Harga</th>
-                                            <th scope="col">Pemakaian</th>
-                                            <th scope="col">Total Harga</th>
-                                            <th scope="col" id="olahanitem">
-                                                @isset($Olahan['id'])
-                                                    <a class="btn-sm btn-success" data-toggle='modal' data-target='#Modal'
-                                                        onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
-                                                            class="fas fa-plus"></i></a>
-                                                @else
-                                                    <i class="fas fa-plus"></i>
-                                                @endisset
+                                            <th scope="col" style="min-width: 200px">Hasil</th>
+                                            <th scope="col" style="min-width: 250px">Total Harga</th>
+                                            <th scope="col">
+                                                <i class="fas fa-trash"></i>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     </tbody>
+                                    <tr id="olahanitem">
+                                        @isset($Olahan['id'])
+                                            <td colspan="6">
+                                                <a class="btn btn-sm btn-success btn-block" data-toggle='modal'
+                                                    data-target='#Modal'
+                                                    onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
+                                                        class="fas fa-plus"></i></a>
+                                            </td>
+                                        @endisset
+                                    </tr>
                                 </table>
                             </div>
 
