@@ -43,7 +43,16 @@ class FoodcostController extends Controller
 
 
         $id = session('IdOlahan');
-        $this->data['Olahan'] = Olahan::where('id', $id)->first();
+        $this->data['Olahan'] = Olahan::where('id', $id)->with('Bahan')->first();
+
+        $jumlah = 0;
+        $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        if ($Data) {
+            foreach ($Data as $value) {
+                $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+            }
+        }
+        $this->data['Jmlbb'] = $this->rupiah($jumlah);
         return view('Olahan', $this->data);
     }
 
@@ -62,12 +71,11 @@ class FoodcostController extends Controller
                 <ul class="dropdown-menu">';
 
             if (in_array('updateMaster', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+                $button .= "<li><a class='dropdown-item' href='Olahan/SessionCreate?id=" . $value['id'] . "'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
             if (in_array('deleteMaster', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
-
             $button .= '</ul></div>';
 
 
@@ -76,11 +84,17 @@ class FoodcostController extends Controller
                 $produksi += $v['pivot']['pemakaian'];
             }
 
+            if ($value['draft']) {
+                $draft = 'Draft';
+            } else {
+                $draft = '';
+            }
+
             $result['data'][] = array(
                 $value['kode'],
-                $value['nama'],
+                $value['nama']  . ' <span class="badge badge-info">' . $draft . '</span>',
                 $this->rupiah($produksi),
-                1,
+                $this->unrupiah($value['hasil']) . ' ' . $value['satuan_penyajian'],
                 $button
             );
         }
@@ -116,6 +130,16 @@ class FoodcostController extends Controller
         } else {
 
             $id = session('IdOlahan');
+
+            $jumlah = 0;
+            $bhnolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+            if ($bhnolh) {
+                foreach ($bhnolh as $value) {
+                    $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                }
+            }
+
+
             $Olahan = Olahan::where('id', $id)->first();
             if ($Olahan) {
                 if ($Olahan['nama'] == $request->input('nama')) {
@@ -160,6 +184,7 @@ class FoodcostController extends Controller
                         $data = [
                             'toast' => true,
                             'status' => 'error',
+                            'jumlah' => $jumlah,
                             'pesan' =>  'Terjadi kegagalan system'
                         ];
                     };
@@ -169,6 +194,7 @@ class FoodcostController extends Controller
             if ($nama && $Olahan) {
                 $input = [
                     'nama' => $nama,
+                    'hasil' => $request->input('hasil'),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'kode' => 1,
@@ -177,10 +203,12 @@ class FoodcostController extends Controller
                     'created_at' => date('Y-m-d H:i:s')
                 ];
                 if (Olahan::where('id', $id)->update($input)) {
+
                     $data = [
                         'toast' => true,
                         'status' => 'success',
                         'pesan' => 'Autosave Berhasil',
+                        'jumlah' => $jumlah,
                         'id' => $id
                     ];
                 } else {
@@ -188,12 +216,14 @@ class FoodcostController extends Controller
                     $data = [
                         'toast' => true,
                         'status' => 'error',
+                        'jumlah' => $jumlah,
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
                 };
             } else if ($nama) {
                 $input = [
                     'nama' => $nama,
+                    'hasil' => $request->input('hasil'),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
@@ -205,6 +235,7 @@ class FoodcostController extends Controller
                     request()->session()->put('IdOlahan', $olahan->id);
                     $data = [
                         'id' => $olahan->id,
+                        'jumlah' => $jumlah,
                         'toast' => true,
                         'status' => 'success',
                         'pesan' => 'Autosave Berhasil'
@@ -212,6 +243,7 @@ class FoodcostController extends Controller
                 } else {
                     $data = [
                         'toast' => true,
+                        'jumlah' => $jumlah,
                         'status' => 'error',
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
@@ -264,19 +296,57 @@ class FoodcostController extends Controller
         }
 
         $result = array('data' => array());
-        foreach ($Data as $key => $value) {
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value->bahan) {
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
 
-            $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+                $result['data'][$key] = array(
+                    $value->bahan['nama'],
+                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
+                    $this->rupiah($value->bahan['harga']),
+                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'],
+                    $button
+                );
 
-            $result['data'][$key] = array(
-                $value->bahan['nama'],
-                '<font id="itemolahanpakaikonversi_' . $key . '">' . $value->bahan['konversi_pemakaian'] . '</font>/' . '<font id="itemolahanpakaisatuan_' . $key . '">' . $value->bahan['satuan_pemakaian'] . '</font>',
-                $this->rupiah($value->bahan['harga']),
-                '<div class="input-group"><input onkeydown="itemolahanpakai(this.value, ' . $key . ')" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>
-                <input type="hidden" id="itemolahanpakaiharga_' . $key . '" value="' . $value->bahan['harga'] . '" />',
-                '<font id="itemolahanpakaihasil_' . $key . '">' . $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'] . '</font>',
-                $button
-            );
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+
+
+    public function OlahanOlahanManage(Request $request)
+    {
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array('data' => array());
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value->bahan) {
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+
+                $result['data'][$key] = array(
+                    $value->bahan['nama'],
+                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
+                    $this->rupiah($value->bahan['harga']),
+                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'],
+                    $button
+                );
+
+                $key++;
+            }
         }
         echo json_encode($result);
     }

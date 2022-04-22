@@ -17,11 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('olahan_id')->references('id')->on('olahan')
                 ->onDelete('cascade');
-            $table->foreignId('bahan_id')->references('id')->on('bahan')
-                ->onDelete('cascade');
-            $table->boolean('draft')->default(true);
+            $table->foreignId('bahan_id')->nullable();
+            $table->foreignId('olahan')->nullable();
             $table->string('pemakaian')->default(0);
-            $table->string('hasil')->default(0);
+            $table->boolean('draft')->default(true);
             $table->timestamps();
         });
     }

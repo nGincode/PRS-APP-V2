@@ -149,16 +149,29 @@ Route::controller(FoodcostController::class)->group(
         Route::post('Foodcost/Olahan', 'OlahanTambah')->middleware('auth');
         Route::post('Foodcost/Olahan/Edit', 'OlahanEdit')->middleware('auth');
 
+        Route::post('Foodcost/Olahan/Hapus', 'OlahanHapus')->middleware('auth');
+
         Route::post('Foodcost/Manage/Olahan', 'OlahanManage')->middleware('auth');
         Route::post('Foodcost/Olahan/ItemTambahEdit', 'ItemTambahEdit')->middleware('auth');
 
         Route::post('Foodcost/Olahan/OlahanItemManage', 'OlahanItemManage')->middleware('auth');
+        Route::post('Foodcost/Olahan/OlahanOlahanManage', 'OlahanOlahanManage')->middleware('auth');
+
         Route::post('Foodcost/Olahan/OlahanItemHapus', 'ItemOlahanHapus')->middleware('auth');
     }
 );
 Route::get('Foodcost/Olahan/Session',  function () {
     session()->forget('IdOlahan');
-    return redirect('Foodcost/Olahan')->withToastError('Berhasil Clear Autosave');
+    return redirect('Foodcost/Olahan')->withToastSuccess('Berhasil Clear Autosave');
+})->middleware('auth');
+Route::get('Foodcost/Olahan/SessionCreate',  function () {
+    $id = request()->input('id');
+    if ($id) {
+        session()->put('IdOlahan', $id);
+        return redirect('Foodcost/Olahan')->withToastSuccess('Berhasil Mengambil ID');
+    } else {
+        return redirect('Foodcost/Olahan')->withToastError('Terjadi Kegagalan Mengambil ID');
+    }
 })->middleware('auth');
 
 Route::get(
@@ -178,7 +191,7 @@ Route::get(
 
         // $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan')->get();
 
-        $data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
+        $data = Bahan_Olahan::where('olahan_id', 2)->with('Bahan', 'Olahan')->latest()->get();
         dd($data->toArray());
     }
 );

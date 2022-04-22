@@ -169,6 +169,40 @@ if (Auth::check()) {
     {{-- Admin LTE BASE TAMPLATE --}}
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/dist/css/adminlte.min.css">
 
+
+    <!-- jQuery -->
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jquery/jquery.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script
+        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js">
+    </script>
+    <script
+        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js">
+    </script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js">
+    </script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js">
+    </script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jszip/jszip.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js">
+    </script>
+    <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -662,9 +696,6 @@ if (Auth::check()) {
     </div>
 
 
-    <!-- jQuery -->
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jquery/jquery.min.js"></script>
-
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jquery-ui/jquery-ui.min.js"></script>
 
@@ -744,29 +775,7 @@ if (Auth::check()) {
     <script src="{{ url('/vendor/sweetalert/sweetalert.all.js') }}"></script>
 
 
-    <!-- DataTables  & Plugins -->
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js">
-    </script>
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js">
-    </script>
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js">
-    </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js">
-    </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.bootstrap4.min.js">
-    </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jszip/jszip.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js">
-    </script>
 
-    <script src="{{ url('/') }}/assets/js/js.js"></script>
 
     <script>
         //DataTable
@@ -787,6 +796,7 @@ if (Auth::check()) {
                     "ajax": {
                         url: "{{ $urlmanage }}",
                         type: "POST",
+                        contentType: "application/json; charset=utf-8",
                     },
                     "responsive": true,
                     "autoWidth": true,
@@ -844,252 +854,7 @@ if (Auth::check()) {
                 }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
             }
 
-
-            if ($("#managebahanbaku").length) {
-                $("#managebahanbaku").DataTable({
-                    "ajax": {
-                        url: "/Foodcost/Olahan/OlahanItemManage",
-                        type: "POST"
-                    },
-                    "responsive": true,
-                    "autoWidth": true,
-                    "processing": true,
-                    "searching": false,
-                    "sort": false,
-                    "paging": false,
-                    'info': false,
-                    "destroy": true
-                });
-            }
-
         });
-
-
-        const animateCSS = (element, animation, prefix = 'animate__') =>
-            // We create a Promise and return it
-            new Promise((resolve, reject) => {
-                const animationName = `${prefix}${animation}`;
-                const node = document.querySelector(element);
-
-                node.classList.add(`${prefix}animated`, animationName);
-
-                // When the animation ends, we clean the classes and resolve the Promise
-                function handleAnimationEnd(event) {
-                    event.stopPropagation();
-                    node.classList.remove(`${prefix}animated`, animationName);
-                    resolve('Animation ended');
-                }
-
-                node.addEventListener('animationend', handleAnimationEnd, {
-                    once: true
-                });
-            });
-
-        $(document).ready(function() {
-            //Olahan
-            if ($('#FormOlahan').length) {
-                $('#FormOlahan').validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'satuan_pengeluaran': {
-                            required: true
-                        },
-                        'satuan_penyajian': {
-                            required: true
-                        },
-                        'konversi_penyajian': {
-                            required: true
-                        },
-                        'pakai[]': {
-                            required: true
-
-                        }
-                    },
-                    messages: {
-                        // id : "pesan"
-                    }
-                });
-
-                $('#FormOlahan').on('submit', function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-                    formData.append('submit', true);
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr('action'),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: 'json',
-                            error: function(xhr, status, error) {
-                                popup(status, true, xhr.status + " " + error);
-                            },
-                            success: function(data) {
-                                if (data.status === 'success') {
-                                    popup(data.status, data.toast, 'Berhasil dibuat');
-                                    window.setTimeout(function() {
-                                        location.reload()
-                                    }, 2000);
-
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-
-            $('#FormOlahan').on('change', function(event) {
-
-                $('#FormOlahan').validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'satuan_pengeluaran': {
-                            required: true
-                        },
-                        'satuan_penyajian': {
-                            required: true
-                        },
-                        'konversi_penyajian': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // id : "pesan"
-                    }
-                });
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: 'json',
-                        error: function(xhr, status, error) {
-                            popup(status, true, xhr.status + " " + error);
-                        },
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $('#manage').DataTable().ajax.reload();
-                                $('#autosave').html(
-                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
-                                    data.pesan +
-                                    '</small>'
-                                );
-                                animateCSS('#autosave', 'flash');
-
-                                $('#olahanitem').html(
-                                    '<td colspan="6"><a onclick="Edit(' + data.id +
-                                    ',' + "'" + "Olahan" + "'" +
-                                    ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a></td>'
-                                );
-                            } else {
-                                $('#autosave').html(
-                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
-                                    data.pesan +
-                                    '</small>'
-                                );
-                                animateCSS('#autosave', 'shakeX');
-                            }
-                        }
-                    });
-                }
-
-            });
-        });
-
-        function hapusitemoalahan(id) {
-            Swal.fire({
-                title: 'Yakin Menghapus?',
-                text: "Data Akan Dihapus Permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Hapus'
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: '/Foodcost/Olahan/OlahanItemHapus',
-                        data: {
-                            id: id
-                        },
-                        type: "POST",
-                        dataType: 'json',
-                        error: function(xhr, status, error) {
-                            popup(status, true, xhr.status + " " + error);
-                        },
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $('#managebahanbaku').DataTable().ajax.reload();
-                                $('#autosave').html(
-                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
-                                    data.pesan +
-                                    '</small>'
-                                );
-                                animateCSS('#autosave', 'flash');
-
-                                popup(data.status, data.toast, data.pesan);
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                                $('#autosave').html(
-                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
-                                    data.pesan +
-                                    '</small>'
-                                );
-                                animateCSS('#autosave', 'shakeX');
-                            }
-                        }
-                    });
-                }
-            })
-        }
-
-
 
         /* Fungsi formatRupiah */
         function formatRupiah(angka, prefix) {
@@ -1108,18 +873,8 @@ if (Auth::check()) {
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
             return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
         }
-
-        function itemolahanpakai(id, no) {
-            let pakai = $('#pakai_' + no).val();
-            let konversi = $('#itemolahanpakaikonversi_' + no).html();
-            let harga = $('#itemolahanpakaiharga_' + no).val();
-            let jumlah = formatRupiah((harga / konversi) * pakai, true);
-            let satuan = $('#itemolahanpakaisatuan_' + no).html();
-
-            $('#itemolahanpakaihasil_' + no).html(jumlah + '/' + satuan);
-
-        }
     </script>
+    <script src="{{ url('/') }}/assets/js/js.js"></script>
     @include('sweetalert::alert')
 </body>
 

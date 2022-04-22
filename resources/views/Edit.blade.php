@@ -238,8 +238,6 @@
             }
         });
     </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js">
-    </script>
 @endisset
 
 
@@ -637,7 +635,6 @@
             bsCustomFileInput.init();
         });
     </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
 
 
@@ -1138,8 +1135,6 @@
             this.value = numeral(this.value).format('0,0');
         });
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
 
 @isset($PeralatanData)
@@ -1353,8 +1348,6 @@
             this.value = numeral(this.value).format('0,0');
         });
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
 
 
@@ -1641,7 +1634,6 @@
             }
         });
     </script>
-    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 @endisset
 
 

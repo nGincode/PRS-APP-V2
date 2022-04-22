@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('konversi_penyajian');
             $table->boolean('draft')->default(true);
             $table->boolean('delete')->default(false);
+            $table->string('hasil')->nullable();
             $table->timestamps();
         });
     }

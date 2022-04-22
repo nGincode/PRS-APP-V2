@@ -390,19 +390,75 @@
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                    </tbody>
-                                    <tr id="olahanitem">
-                                        @isset($Olahan['id'])
-                                            <td colspan="6">
-                                                <a class="btn btn-sm btn-success btn-block" data-toggle='modal'
-                                                    data-target='#Modal'
-                                                    onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
-                                                        class="fas fa-plus"></i></a>
-                                            </td>
-                                        @endisset
+                                </table>
+                                <div id="olahanitem">
+                                    @isset($Olahan['id'])
+                                        <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
+                                            onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
+                                                class="fas fa-plus"></i></a>
+                                        <hr>
+                                    @endisset
+                                </div>
+
+                                <div id="totalbahanbaku" class="float-right font-weight-bold">Total : {{ $Jmlbb }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12">
+                                <label>Bahan Dari Olahan</label>
+                                <table id="managebahanolahan" class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Bahan Baku</th>
+                                            <th scope="col">Satuan Pemakaian
+                                            </th>
+                                            <th scope="col">Harga</th>
+                                            <th scope="col" style="min-width: 200px">Hasil</th>
+                                            <th scope="col" style="min-width: 250px">Total Harga</th>
+                                            <th scope="col">
+                                                <i class="fas fa-trash"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div id="olahanitem">
+                                    @isset($Olahan['id'])
+                                        <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
+                                            onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
+                                                class="fas fa-plus"></i></a>
+                                        <hr>
+                                    @endisset
+                                </div>
+
+                                <div id="totalolahan" class="float-right font-weight-bold">Total : Rp 800</div>
+                                <br><br>
+                            </div>
+
+                            <div class="col-12 col-sm-12 ">
+                                <table class="table float-right font-weight-bold text-right">
+                                    <tr>
+                                        <td>Biaya Produksi : </td>
+                                        <td id="biayaproduksi">Rp. 0</td>
                                     </tr>
                                 </table>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="hasil">Hasil Jadi</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control"
+                                            @isset($Olahan['hasil']) value="{{ $Olahan['hasil'] }}" @endisset
+                                            id="hasil" placeholder="Hasil Jadi" name="hasil">
+
+                                        <div class="input-group-append" id="konversib2">
+                                            @isset($Olahan['satuan_penyajian'])
+                                                <span class="input-group-text">
+                                                    {{ $Olahan['satuan_penyajian'] }}
+                                                </span>
+                                            @endisset
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -445,6 +501,284 @@
         document.getElementById("konversi_penyajian").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
         });
+
+
+        if ($("#managebahanbaku").length) {
+            $("#managebahanbaku").DataTable({
+                "ajax": {
+                    url: "/Foodcost/Olahan/OlahanItemManage",
+                    type: "POST"
+                },
+                "responsive": true,
+                "autoWidth": true,
+                "processing": true,
+                "searching": false,
+                "sort": false,
+                "paging": false,
+                'info': false,
+                "destroy": true,
+            });
+        }
+
+        if ($("#managebahanolahan").length) {
+            $("#managebahanolahan").DataTable({
+                "ajax": {
+                    url: "/Foodcost/Olahan/OlahanOlahanManage",
+                    type: "POST"
+                },
+                "responsive": true,
+                "autoWidth": true,
+                "processing": true,
+                "searching": false,
+                "sort": false,
+                "paging": false,
+                'info': false,
+                "destroy": true,
+            });
+        }
+
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {
+                    once: true
+                });
+            });
+
+        $(document).ready(function() {
+            //Olahan
+            if ($('#FormOlahan').length) {
+                $('#FormOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'satuan_penyajian': {
+                            required: true
+                        },
+                        'konversi_penyajian': {
+                            required: true
+                        },
+                        'pakai[]': {
+                            required: true
+
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#FormOlahan').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+                    formData.append('submit', true);
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    popup(data.status, data.toast, 'Berhasil dibuat');
+                                    window.setTimeout(function() {
+                                        location.reload()
+                                    }, 2000);
+
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+
+            $('#FormOlahan').on('change', function(event) {
+
+                $('#FormOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'satuan_penyajian': {
+                            required: true
+                        },
+                        'konversi_penyajian': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#manage').DataTable().ajax.reload();
+                                $('#autosave').html(
+                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'flash');
+
+                                $('#olahanitem').html(
+                                    '<a onclick="Edit(' + data.id +
+                                    ',' + "'" + "Olahan" + "'" +
+                                    ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'
+                                );
+
+                                $('#totalbahanbaku').html('Total : ' + formatRupiah(data.jumlah,
+                                    true));
+
+                                jumlah();
+
+                            } else {
+                                $('#autosave').html(
+                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'shakeX');
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+
+        jumlah();
+
+        function jumlah() {
+
+            var totalolahan = parseInt($('#totalolahan').html().replace(
+                'Total : Rp',
+                ''));
+            var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace(
+                'Total : Rp',
+                ''));
+
+            $('#biayaproduksi').html(totalolahan);
+        }
+
+        function hapusitemoalahan(id) {
+            Swal.fire({
+                title: 'Yakin Menghapus?',
+                text: "Data Akan Dihapus Permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Hapus'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: '/Foodcost/Olahan/OlahanItemHapus',
+                        data: {
+                            id: id
+                        },
+                        type: "POST",
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#managebahanbaku').DataTable().ajax.reload();
+                                $('#autosave').html(
+                                    '<small style="color:green;"> <i class="fas fa-check"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'flash');
+
+                                popup(data.status, data.toast, data.pesan);
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                                $('#autosave').html(
+                                    '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
+                                    data.pesan +
+                                    '</small>'
+                                );
+                                animateCSS('#autosave', 'shakeX');
+                            }
+                        }
+                    });
+                }
+            })
+        }
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 @endsection
