@@ -406,7 +406,7 @@
 
                             <div class="col-12 col-sm-12">
                                 <label>Bahan Dari Olahan</label>
-                                <table id="managebahanolahan" class="table table-striped table-hover">
+                                <table id="managebahanolahan1" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th scope="col">Bahan Baku</th>
@@ -430,7 +430,7 @@
                                     @endisset
                                 </div>
 
-                                <div id="totalolahan" class="float-right font-weight-bold">Total : Rp 800</div>
+                                <div id="totalolahan" class="float-right font-weight-bold">Total : Rp 1</div>
                                 <br><br>
                             </div>
 
@@ -699,11 +699,6 @@
                                     ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'
                                 );
 
-                                $('#totalbahanbaku').html('Total : ' + formatRupiah(data.jumlah,
-                                    true));
-
-                                jumlah();
-
                             } else {
                                 $('#autosave').html(
                                     '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
@@ -719,19 +714,59 @@
             });
         });
 
+        function jumlahbahan(id, value) {
+
+            harga = $('#hargabahan_' + id).val();
+            konversi = $('#konversi_pemakaian_' + id).val();
+
+            jml = (harga / konversi) * value;
+            $('#jmlbahan_' + id).html('Rp ' + formatRupiah(jml) + ',00');
+            $('#totalbahan_' + id).val(jml);
+
+            total = 0;
+            row = $('.totalbahan').length;
+            for (let i = 0; i < row; i++) {
+                if (i == id) {
+                    total += jml;
+                } else {
+                    total += parseInt($('#totalbahan_' + i).val());
+                }
+            }
+            $('#totalbahanbaku').html('Total : Rp ' + formatRupiah(total) + ',00 ');
+
+            jumlah(0, total);
+
+        }
+
+        function jumlah(olahan, totalbahanbaku) {
+
+            if (totalbahanbaku) {
+                var totalolahan = parseInt($('#totalolahan').html().replace(
+                    'Total : Rp',
+                    ''));
+                j = formatRupiah(totalolahan + totalbahanbaku);
+                $('#biayaproduksi').html('Rp. ' + j + ',00');
+            } else if (olahan) {
+                var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace(
+                    'Total : Rp',
+                    ''));
+                j = formatRupiah(olahan + totalbahanbaku);
+                $('#biayaproduksi').html('Rp. ' + j + ',00');
+            } else {
+
+                var totalolahan = parseInt($('#totalolahan').html().replace(
+                    'Total : Rp',
+                    ''));
+                var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace(
+                    'Total : Rp',
+                    ''));
+                j = formatRupiah(totalbahanbaku + totalolahan);
+                $('#biayaproduksi').html('Rp. ' + j + ',00');
+            }
+
+        }
         jumlah();
 
-        function jumlah() {
-
-            var totalolahan = parseInt($('#totalolahan').html().replace(
-                'Total : Rp',
-                ''));
-            var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace(
-                'Total : Rp',
-                ''));
-
-            $('#biayaproduksi').html(totalolahan);
-        }
 
         function hapusitemoalahan(id) {
             Swal.fire({

@@ -134,8 +134,8 @@ class FoodcostController extends Controller
             $jumlah = 0;
             $bhnolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
             if ($bhnolh) {
-                foreach ($bhnolh as $value) {
-                    $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                foreach ($bhnolh as $bo) {
+                    $jumlah += ($bo->bahan['harga'] / $bo->bahan['konversi_pemakaian']) * $bo['pemakaian'];
                 }
             }
 
@@ -184,7 +184,6 @@ class FoodcostController extends Controller
                         $data = [
                             'toast' => true,
                             'status' => 'error',
-                            'jumlah' => $jumlah,
                             'pesan' =>  'Terjadi kegagalan system'
                         ];
                     };
@@ -208,7 +207,6 @@ class FoodcostController extends Controller
                         'toast' => true,
                         'status' => 'success',
                         'pesan' => 'Autosave Berhasil',
-                        'jumlah' => $jumlah,
                         'id' => $id
                     ];
                 } else {
@@ -216,7 +214,6 @@ class FoodcostController extends Controller
                     $data = [
                         'toast' => true,
                         'status' => 'error',
-                        'jumlah' => $jumlah,
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
                 };
@@ -235,7 +232,6 @@ class FoodcostController extends Controller
                     request()->session()->put('IdOlahan', $olahan->id);
                     $data = [
                         'id' => $olahan->id,
-                        'jumlah' => $jumlah,
                         'toast' => true,
                         'status' => 'success',
                         'pesan' => 'Autosave Berhasil'
@@ -243,7 +239,6 @@ class FoodcostController extends Controller
                 } else {
                     $data = [
                         'toast' => true,
-                        'jumlah' => $jumlah,
                         'status' => 'error',
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
@@ -305,9 +300,13 @@ class FoodcostController extends Controller
                     $value->bahan['nama'],
                     $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
                     $this->rupiah($value->bahan['harga']),
-                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
-                    $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'],
-                    $button
+                    '<div class="input-group"><input onkeyup="jumlahbahan(' . $key . ', this.value)" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    '<font id="jmlbahan_' . $key . '">' . $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '</font>/' . $value->bahan['satuan_pemakaian'],
+                    $button . '
+                    <input type="hidden" class="totalbahan" id="hargabahan_' . $key . '" value="' . $value->bahan['harga'] . '" >
+                    <input type="hidden" id="konversi_pemakaian_' . $key . '" value="' . $value->bahan['konversi_pemakaian'] . '" >
+                    <input type="hidden" id="totalbahan_' . $key . '" value="' . ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'] . '" >
+                    '
                 );
 
                 $key++;
