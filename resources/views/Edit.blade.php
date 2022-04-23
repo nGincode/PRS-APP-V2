@@ -1637,11 +1637,11 @@
 @endisset
 
 
-@isset($OlahanData)
-    <form id="OlahanItem" action="{{ url('Foodcost/Olahan/ItemTambahEdit') }}">
+@isset($OlahanDataBahanBaku)
+    <form id="formItemBahanBaku" action="{{ url('Foodcost/Olahan/TambahItemBahanBaku') }}">
         @csrf
         <div class="modal-body">
-            <table id="manageolahan" class="table table-bordered table-striped">
+            <table id="pilihbahanolahan" class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th><input type="checkbox" class="check" id="checkAll"></th>
@@ -1652,7 +1652,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($OlahanData as $v)
+                    @foreach ($OlahanDataBahanBaku as $v)
                         @if (!in_array($v['id'], $cekid))
                             <tr>
                                 <td><input type="checkbox" name="id[]" value="{{ $v['id'] }}" class="check">
@@ -1691,8 +1691,15 @@
             $(".check").prop('checked', $(this).prop('checked'));
         });
 
-        if ($("#manageolahan").length) {
-            $("#manageolahan").DataTable({
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
                 "responsive": true,
                 "autoWidth": false,
                 "processing": true,
@@ -1707,8 +1714,8 @@
 
         $('#ModalLabel').html('Pilih Item Bahan Baku');
         $(document).ready(function() {
-            if ($('#OlahanItem').length) {
-                $('#OlahanItem').validate({
+            if ($('#formItemBahanBaku').length) {
+                $('#formItemBahanBaku').validate({
                     errorElement: 'span',
                     errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
@@ -1733,7 +1740,150 @@
                     }
                 });
 
-                $('#OlahanItem').on('submit', function(event) {
+                $('#formItemBahanBaku').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanbaku').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
+@endisset
+
+
+
+@isset($OlahanDataBahanOlahan)
+    <form id="formItemBahanOlahan" action="{{ url('Foodcost/Olahan/TambahItemBahanOlahan') }}">
+        @csrf
+        <div class="modal-body">
+            <table id="pilihbahanolahan" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="check" id="checkAll"></th>
+                        <th>Kode Bahan</th>
+                        <th>Nama Olahan</th>
+                        <th>Hasil Jadi</th>
+                        <th>Biaya Produksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($OlahanDataBahanOlahan as $v)
+                        @if (!in_array($v['id'], $cekid) && session('IdEdit') != $v['id'])
+                            <tr>
+                                <td><input type="checkbox" name="id[]" value="{{ $v['id'] }}" class="check">
+                                </td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td>{{ $v['nama'] }}</td>
+                                <td>
+                                    @if ($v['kategori'] == 1)
+                                        Bahan Baku Segar
+                                    @endif
+                                    @if ($v['kategori'] == 2)
+                                        Bahan Baku Beku
+                                    @endif
+                                    @if ($v['kategori'] == 3)
+                                        Bahan Baku Dalam Kemasan
+                                    @endif
+                                    @if ($v['kategori'] == 4)
+                                        Bahan Baku Dingin
+                                    @endif
+                                </td>
+                                <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+        </div>
+        </div>
+    </form>
+    <script>
+        //DataTable
+        $("#checkAll").click(function() {
+            $(".check").prop('checked', $(this).prop('checked'));
+        });
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+        }
+
+
+        $('#ModalLabel').html('Pilih Item Bahan Olahan');
+
+        $(document).ready(function() {
+            if ($('#formItemBahanBaku').length) {
+                $('#formItemBahanBaku').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#formItemBahanBaku').on('submit', function(event) {
                     var isValid = $(this).valid();
                     event.preventDefault();
                     var formData = new FormData(this);

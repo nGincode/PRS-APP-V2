@@ -391,11 +391,10 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <div id="olahanitem">
+                                <div id="idpilihitembahan">
                                     @isset($Olahan['id'])
                                         <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
-                                                class="fas fa-plus"></i></a>
+                                            onclick="pilihbahanbaku({{ $Olahan['id'] }})"><i class="fas fa-plus"></i></a>
                                         <hr>
                                     @endisset
                                 </div>
@@ -406,25 +405,25 @@
 
                             <div class="col-12 col-sm-12">
                                 <label>Bahan Dari Olahan</label>
-                                <table id="managebahanolahan1" class="table table-striped table-hover">
+                                <table id="managebahanolahan" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th scope="col">Bahan Baku</th>
-                                            <th scope="col">Satuan Pemakaian
+                                            <th scope="col">Hasil Jadi
                                             </th>
-                                            <th scope="col">Harga</th>
-                                            <th scope="col" style="min-width: 200px">Hasil</th>
-                                            <th scope="col" style="min-width: 250px">Total Harga</th>
+                                            <th scope="col">Biaya Produksi</th>
+                                            <th scope="col" style="min-width: 200px">Penyajian</th>
+                                            <th scope="col" style="min-width: 250px">Harga</th>
                                             <th scope="col">
                                                 <i class="fas fa-trash"></i>
                                             </th>
                                         </tr>
                                     </thead>
                                 </table>
-                                <div id="olahanitem">
+                                <div id="olahanitemolahan">
                                     @isset($Olahan['id'])
                                         <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="Edit( {{ $Olahan['id'] . ',' }} 'Olahan' )"><i
+                                            onclick="pilihbahanolahan({{ $Olahan['id'] }})"><i
                                                 class="fas fa-plus"></i></a>
                                         <hr>
                                     @endisset
@@ -502,11 +501,11 @@
             this.value = numeral(this.value).format('0,0');
         });
 
-
+        //item bahan baku
         if ($("#managebahanbaku").length) {
             $("#managebahanbaku").DataTable({
                 "ajax": {
-                    url: "/Foodcost/Olahan/OlahanItemManage",
+                    url: "/Foodcost/Olahan/OlahanItemBahanBaku",
                     type: "POST"
                 },
                 "responsive": true,
@@ -520,6 +519,27 @@
             });
         }
 
+        function pilihbahanbaku(id) {
+            $.ajax({
+                url: 'Olahan/PilihBahanBaku',
+                type: "POST",
+                data: {
+                    id: id
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    popup('error', true, err.Message);
+                },
+                success: function(data) {
+                    $('#ModalLabel').html('Pilih Bahan Baku');
+                    $('#ModelView').html(data);
+                }
+            })
+
+        }
+
+
+        //Bahan Olahan
         if ($("#managebahanolahan").length) {
             $("#managebahanolahan").DataTable({
                 "ajax": {
@@ -537,25 +557,25 @@
             });
         }
 
-        const animateCSS = (element, animation, prefix = 'animate__') =>
-            // We create a Promise and return it
-            new Promise((resolve, reject) => {
-                const animationName = `${prefix}${animation}`;
-                const node = document.querySelector(element);
-
-                node.classList.add(`${prefix}animated`, animationName);
-
-                // When the animation ends, we clean the classes and resolve the Promise
-                function handleAnimationEnd(event) {
-                    event.stopPropagation();
-                    node.classList.remove(`${prefix}animated`, animationName);
-                    resolve('Animation ended');
+        function pilihbahanolahan(id) {
+            $.ajax({
+                url: 'Olahan/PilihBahanOlahan',
+                type: "POST",
+                data: {
+                    id: id
+                },
+                error: function(xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    popup('error', true, err.Message);
+                },
+                success: function(data) {
+                    $('#ModalLabel').html('Pilih Bahan Olahan');
+                    $('#ModelView').html(data);
                 }
+            })
 
-                node.addEventListener('animationend', handleAnimationEnd, {
-                    once: true
-                });
-            });
+        }
+
 
         $(document).ready(function() {
             //Olahan
@@ -693,7 +713,12 @@
                                 );
                                 animateCSS('#autosave', 'flash');
 
-                                $('#olahanitem').html(
+                                $('#idpilihitembahan').html(
+                                    '<a onclick="pilihbahanbaku(' + data.id +
+                                    ',' + "'" + "Olahan" + "'" +
+                                    ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'
+                                );
+                                $('#olahanitemolahan').html(
                                     '<a onclick="Edit(' + data.id +
                                     ',' + "'" + "Olahan" + "'" +
                                     ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'

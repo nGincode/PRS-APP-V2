@@ -203,6 +203,126 @@ if (Auth::check()) {
         });
     </script>
 
+
+
+    <script>
+        //DataTable
+        $(function() {
+            if ($("#manage").length) {
+                var cells = document.getElementById('manage').getElementsByTagName('th').length - 1;
+
+                var jmlcolm = '';
+                for (let index = 0; index < cells; index++) {
+                    if (cells - 1 == index) {
+                        jmlcolm += index;
+                    } else {
+                        jmlcolm += index + ',';
+                    }
+                }
+
+                $("#manage").DataTable({
+                    "ajax": {
+                        url: "{{ $urlmanage }}",
+                        type: "POST",
+                    },
+                    "responsive": true,
+                    "autoWidth": true,
+                    "processing": false,
+                    "searching": true,
+                    "sort": true,
+                    "paging": true,
+                    "destroy": false,
+                    "language": {
+                        'Paginate': {
+                            'previous': '<',
+                            'next': '>'
+                        }
+                    },
+
+                    // "lengthChange": true,
+                    "dom": '<"dt-buttons"Bf><"clear">lirtp',
+                    "buttons": [{
+                            extend: 'copyHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        }
+                    ]
+                }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
+            }
+
+        });
+
+        /* Fungsi formatRupiah */
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString(),
+                split = number_string.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
+        }
+
+
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {
+                    once: true
+                });
+            });
+    </script>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -776,104 +896,6 @@ if (Auth::check()) {
 
 
 
-
-    <script>
-        //DataTable
-        $(function() {
-            if ($("#manage").length) {
-                var cells = document.getElementById('manage').getElementsByTagName('th').length - 1;
-
-                var jmlcolm = '';
-                for (let index = 0; index < cells; index++) {
-                    if (cells - 1 == index) {
-                        jmlcolm += index;
-                    } else {
-                        jmlcolm += index + ',';
-                    }
-                }
-
-                $("#manage").DataTable({
-                    "ajax": {
-                        url: "{{ $urlmanage }}",
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                    },
-                    "responsive": true,
-                    "autoWidth": true,
-                    "processing": true,
-                    "searching": true,
-                    "sort": true,
-                    "paging": true,
-                    "destroy": true,
-                    "language": {
-                        'Paginate': {
-                            'previous': '<',
-                            'next': '>'
-                        }
-                    },
-
-                    // "lengthChange": true,
-                    "dom": '<"dt-buttons"Bf><"clear">lirtp',
-                    "buttons": [{
-                            extend: 'copyHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'csvHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'print',
-                            messageTop: '',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        }
-                    ]
-                }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
-            }
-
-        });
-
-        /* Fungsi formatRupiah */
-        function formatRupiah(angka, prefix) {
-            var number_string = angka.toString(),
-                split = number_string.split(","),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-            // tambahkan titik jika yang di input sudah menjadi angka ribuan
-            if (ribuan) {
-                separator = sisa ? "." : "";
-                rupiah += separator + ribuan.join(".");
-            }
-
-            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-            return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
-        }
-    </script>
     <script src="{{ url('/') }}/assets/js/js.js"></script>
     @include('sweetalert::alert')
 </body>

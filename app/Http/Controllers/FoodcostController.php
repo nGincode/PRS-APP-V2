@@ -49,7 +49,9 @@ class FoodcostController extends Controller
         $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
         if ($Data) {
             foreach ($Data as $value) {
-                $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                if ($value->bahan) {
+                    $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                }
             }
         }
         $this->data['Jmlbb'] = $this->rupiah($jumlah);
@@ -64,39 +66,43 @@ class FoodcostController extends Controller
         $result = array('data' => array());
         $Data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
         foreach ($Data as $value) {
-            $button = '<div class="btn-group dropleft">
+
+            $id = session('IdOlahan');
+            if ($id != $value['id']) {
+                $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' href='Olahan/SessionCreate?id=" . $value['id'] . "'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
-            }
-            if (in_array('deleteMaster', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
-            }
-            $button .= '</ul></div>';
+                if (in_array('updateMaster', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' href='Olahan/SessionCreate?id=" . $value['id'] . "'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+                }
+                if (in_array('deleteMaster', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                }
+                $button .= '</ul></div>';
 
 
-            $produksi = 0;
-            foreach ($value->bahan as $v) {
-                $produksi += $v['pivot']['pemakaian'];
-            }
+                $produksi = 0;
+                foreach ($value->bahan as $v) {
+                    $produksi += $v['pivot']['pemakaian'];
+                }
 
-            if ($value['draft']) {
-                $draft = 'Draft';
-            } else {
-                $draft = '';
-            }
+                if ($value['draft']) {
+                    $draft = 'Draft';
+                } else {
+                    $draft = '';
+                }
 
-            $result['data'][] = array(
-                $value['kode'],
-                $value['nama']  . ' <span class="badge badge-info">' . $draft . '</span>',
-                $this->rupiah($produksi),
-                $this->unrupiah($value['hasil']) . ' ' . $value['satuan_penyajian'],
-                $button
-            );
+                $result['data'][] = array(
+                    $value['kode'],
+                    $value['nama']  . ' <span class="badge badge-info">' . $draft . '</span>',
+                    $this->rupiah($produksi),
+                    $this->unrupiah($value['hasil']) . ' ' . $value['satuan_penyajian'],
+                    $button
+                );
+            }
         }
         echo json_encode($result);
     }
@@ -135,7 +141,9 @@ class FoodcostController extends Controller
             $bhnolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
             if ($bhnolh) {
                 foreach ($bhnolh as $bo) {
-                    $jumlah += ($bo->bahan['harga'] / $bo->bahan['konversi_pemakaian']) * $bo['pemakaian'];
+                    if ($bo['bahan']) {
+                        $jumlah += ($bo->bahan['harga'] / $bo->bahan['konversi_pemakaian']) * $bo['pemakaian'];
+                    }
                 }
             }
 
@@ -258,17 +266,21 @@ class FoodcostController extends Controller
         echo json_encode($data);
     }
 
-    public function OlahanEdit(Request $request)
+
+    //bahan baku
+    public function PilihBahanBaku(Request $request)
     {
         $id = $request->input('id');
 
-        $this->data['OlahanData'] = Bahan::all();
+        $this->data['OlahanDataBahanBaku'] = Bahan::all();
         if ($id) {
             session()->flash('IdEdit', $id);
             $data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
             $cekid = array();
             foreach ($data as $v) {
-                $cekid[] = $v->bahan['id'];
+                if (isset($v->bahan['id'])) {
+                    $cekid[] = $v->bahan['id'];
+                }
             }
             $this->data['cekid'] = $cekid;
         } else {
@@ -277,80 +289,7 @@ class FoodcostController extends Controller
         return view('Edit', $this->data);
     }
 
-    public function OlahanItemManage(Request $request)
-    {
-        $this->data['subtitle'] = 'Olahan';
-        $this->subtitle = $this->data['subtitle'];
-
-
-        $id = session('IdOlahan');
-        if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
-        } else {
-            $Data = array();
-        }
-
-        $result = array('data' => array());
-        $key = 0;
-        foreach ($Data as $value) {
-            if ($value->bahan) {
-                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
-
-                $result['data'][$key] = array(
-                    $value->bahan['nama'],
-                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
-                    $this->rupiah($value->bahan['harga']),
-                    '<div class="input-group"><input onkeyup="jumlahbahan(' . $key . ', this.value)" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
-                    '<font id="jmlbahan_' . $key . '">' . $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '</font>/' . $value->bahan['satuan_pemakaian'],
-                    $button . '
-                    <input type="hidden" class="totalbahan" id="hargabahan_' . $key . '" value="' . $value->bahan['harga'] . '" >
-                    <input type="hidden" id="konversi_pemakaian_' . $key . '" value="' . $value->bahan['konversi_pemakaian'] . '" >
-                    <input type="hidden" id="totalbahan_' . $key . '" value="' . ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'] . '" >
-                    '
-                );
-
-                $key++;
-            }
-        }
-        echo json_encode($result);
-    }
-
-
-    public function OlahanOlahanManage(Request $request)
-    {
-        $this->data['subtitle'] = 'Olahan';
-        $this->subtitle = $this->data['subtitle'];
-
-
-        $id = session('IdOlahan');
-        if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
-        } else {
-            $Data = array();
-        }
-
-        $result = array('data' => array());
-        $key = 0;
-        foreach ($Data as $value) {
-            if ($value->bahan) {
-                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
-
-                $result['data'][$key] = array(
-                    $value->bahan['nama'],
-                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
-                    $this->rupiah($value->bahan['harga']),
-                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
-                    $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'],
-                    $button
-                );
-
-                $key++;
-            }
-        }
-        echo json_encode($result);
-    }
-
-    public function ItemTambahEdit(Request $request)
+    public function TambahItemBahanBaku(Request $request)
     {
 
 
@@ -388,6 +327,142 @@ class FoodcostController extends Controller
 
         echo json_encode($data);
     }
+    //bahan baku
+
+    public function OlahanItemBahanBaku(Request $request)
+    {
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array('data' => array());
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value->bahan) {
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+
+                $result['data'][$key] = array(
+                    $value->bahan['nama'],
+                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
+                    $this->rupiah($value->bahan['harga']),
+                    '<div class="input-group"><input onkeyup="jumlahbahan(' . $key . ', this.value)" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    '<font id="jmlbahan_' . $key . '">' . $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '</font>/' . $value->bahan['satuan_pemakaian'],
+                    $button . '
+                    <input type="hidden" class="totalbahan" id="hargabahan_' . $key . '" value="' . $value->bahan['harga'] . '" >
+                    <input type="hidden" id="konversi_pemakaian_' . $key . '" value="' . $value->bahan['konversi_pemakaian'] . '" >
+                    <input type="hidden" id="totalbahan_' . $key . '" value="' . ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'] . '" >
+                    '
+                );
+
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+
+    public function PilihBahanOlahan(Request $request)
+    {
+        $id = $request->input('id');
+
+        $this->data['OlahanDataBahanOlahan'] = Olahan::all();
+        if ($id) {
+            session()->flash('IdEdit', $id);
+            $data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
+            $cekid = array();
+            foreach ($data as $v) {
+                if (isset($v->olahan['id'])) {
+                    $cekid[] = $v->olahan['id'];
+                }
+            }
+            $this->data['cekid'] = $cekid;
+        } else {
+            $this->data['cekid'] = null;
+        }
+        return view('Edit', $this->data);
+    }
+
+    public function OlahanBahanManage(Request $request)
+    {
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array('data' => array());
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value->bahan) {
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+
+                $result['data'][$key] = array(
+                    $value->bahan['nama'],
+                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
+                    $this->rupiah($value->bahan['harga']),
+                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    $this->rupiah(($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian']) . '/' . $value->bahan['satuan_pemakaian'],
+                    $button
+                );
+
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+
+
+    public function OlahanOlahanManage(Request $request)
+    {
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array('data' => array());
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value['olahan']) {
+                $olhan =  Olahan::where('id', $value['olahan'])->first();
+                $byproduksi =  Bahan_Olahan::where('olahan_id', $value['olahan'])->with('Bahan')->get();
+                $produksi = 0;
+                foreach ($byproduksi as $v) {
+                    $produksi += ($v->Bahan['harga'] / $v->Bahan['konversi_pemakaian']) * $v['pemakaian'];
+                }
+
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+                $result['data'][$key] = array(
+                    $olhan['nama'],
+                    $olhan['hasil'] . ' ' . $olhan['satuan_penyajian'],
+                    $this->rupiah($produksi),
+                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $olhan['satuan_penyajian'] . '</span></div></div>',
+                    $this->rupiah(($olhan['harga'] / $olhan['konversi_penyajian']) * $value['pemakaian']),
+                    $button
+                );
+
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+
 
     public function OlahanHapus(Request $request)
     {

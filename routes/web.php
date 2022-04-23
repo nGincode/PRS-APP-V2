@@ -145,17 +145,24 @@ Route::controller(MasterController::class)->group(
 //Foodcost
 Route::controller(FoodcostController::class)->group(
     function () {
+
+        //OLAHAN
         Route::get('Foodcost/Olahan', 'Olahan')->middleware('auth');
         Route::post('Foodcost/Olahan', 'OlahanTambah')->middleware('auth');
-        Route::post('Foodcost/Olahan/Edit', 'OlahanEdit')->middleware('auth');
-
+        Route::post('Foodcost/Manage/Olahan', 'OlahanManage')->middleware('auth');
         Route::post('Foodcost/Olahan/Hapus', 'OlahanHapus')->middleware('auth');
 
-        Route::post('Foodcost/Manage/Olahan', 'OlahanManage')->middleware('auth');
-        Route::post('Foodcost/Olahan/ItemTambahEdit', 'ItemTambahEdit')->middleware('auth');
+        //bahan baku
+        Route::post('Foodcost/Olahan/OlahanItemBahanBaku', 'OlahanItemBahanBaku')->middleware('auth');
+        Route::post('Foodcost/Olahan/PilihBahanBaku', 'PilihBahanBaku')->middleware('auth');
+        Route::post('Foodcost/Olahan/TambahItemBahanBaku', 'TambahItemBahanBaku')->middleware('auth');
+        //bahan baku
 
-        Route::post('Foodcost/Olahan/OlahanItemManage', 'OlahanItemManage')->middleware('auth');
+        //bahan olahan
+        Route::post('Foodcost/Olahan/OlahanBahanManage', 'OlahanBahanManage')->middleware('auth');
+        Route::post('Foodcost/Olahan/PilihBahanOlahan', 'PilihBahanOlahan')->middleware('auth');
         Route::post('Foodcost/Olahan/OlahanOlahanManage', 'OlahanOlahanManage')->middleware('auth');
+
 
         Route::post('Foodcost/Olahan/OlahanItemHapus', 'ItemOlahanHapus')->middleware('auth');
     }
