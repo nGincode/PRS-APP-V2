@@ -522,13 +522,13 @@ if (Auth::check()) {
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item @if ($title == 'Foodcost') menu-open" @endif"">
+                            <li class="nav-item @if ($title == 'Foodcost') menu-open @endif ">
                                 <a href=" #" class="nav-link @if ($title == 'Foodcost') active @endif ">
-                                <i class=" nav-icon fas fa-pepper-hot"></i>
-                                <p>
-                                    Foodcost
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
+                                    <i class=" nav-icon fas fa-pepper-hot"></i>
+                                    <p>
+                                        Foodcost
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
@@ -897,6 +897,7 @@ if (Auth::check()) {
 
 
     <script src="{{ url('/') }}/assets/js/js.js"></script>
+
     @include('sweetalert::alert')
 </body>
 

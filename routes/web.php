@@ -198,7 +198,52 @@ Route::get(
 
         // $data = Bahan_Olahan::where('olahan_id', 1)->with('Bahan')->get();
 
-        $data = Bahan_Olahan::where('olahan_id', 2)->with('Bahan', 'Olahan')->latest()->get();
-        dd($data->toArray());
+        // $data = Bahan_Olahan::with('Bahan', 'Olahan')->latest()->get();
+        // echo json_encode($data->toArray());
+
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array();
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value->bahan) {
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+
+                $result[] = array(
+                    $value->bahan['nama'],
+                    $value->bahan['konversi_pemakaian'] . '/' . $value->bahan['satuan_pemakaian'],
+                    $value->bahan['harga'],
+                    '<div class="input-group"><input onkeyup="jumlahbahan(' . $key . ', this.value)" class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $value->bahan['satuan_pemakaian'] . '</span></div></div>',
+                    '<font id="jmlbahan_' . $key . '">' . ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'] . '</font>/' . $value->bahan['satuan_pemakaian'],
+                    $button . '
+                    <input type="hidden" class="totalbahan" id="hargabahan_' . $key . '" value="' . $value->bahan['harga'] . '" >
+                    <input type="hidden" id="konversi_pemakaian_' . $key . '" value="' . $value->bahan['konversi_pemakaian'] . '" >
+                    <input type="hidden" id="totalbahan_' . $key . '" value="' . ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'] . '" >
+                    '
+                );
+
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+);
+
+
+Route::get(
+    '/test1',
+    function () {
+        $this->data['title'] = 'Dashboard';
+        $this->data['subtitle'] = '';
+        return view('test', $this->data);
     }
 );
