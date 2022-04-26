@@ -45,16 +45,24 @@ class FoodcostController extends Controller
         $id = session('IdOlahan');
         $this->data['Olahan'] = Olahan::where('id', $id)->with('Bahan')->first();
 
-        $jumlah = 0;
+        $jumlahbb = 0;
+        $jumlahb0 = 0;
         $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
         if ($Data) {
             foreach ($Data as $value) {
                 if ($value->bahan) {
-                    $jumlah += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                    $jumlahbb += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
+                }
+
+                if ($value['olahan']) {
+                    $dtol = Olahan::where('id', $value['olahan'])->first();
+                    $jumlahb0 += $dtol['produksi'];
                 }
             }
         }
-        $this->data['Jmlbb'] = $this->rupiah($jumlah);
+        $this->data['Jmlbb'] = $this->rupiah($jumlahbb);
+        $this->data['Jmlbo'] = $this->rupiah($jumlahb0);
+        $this->data['totaljml'] = $this->rupiah($jumlahb0 + $jumlahbb);
         return view('Olahan', $this->data);
     }
 
@@ -84,11 +92,6 @@ class FoodcostController extends Controller
                 $button .= '</ul></div>';
 
 
-                $produksi = 0;
-                foreach ($value->bahan as $v) {
-                    $produksi += $v['pivot']['pemakaian'];
-                }
-
                 if ($value['draft']) {
                     $draft = 'Draft';
                 } else {
@@ -98,7 +101,7 @@ class FoodcostController extends Controller
                 $result['data'][] = array(
                     $value['kode'],
                     $value['nama']  . ' <span class="badge badge-info">' . $draft . '</span>',
-                    $this->rupiah($produksi),
+                    $this->rupiah($value['produksi']),
                     $this->unrupiah($value['hasil']) . ' ' . $value['satuan_penyajian'],
                     $button
                 );
@@ -138,14 +141,20 @@ class FoodcostController extends Controller
             $id = session('IdOlahan');
 
             $jumlah = 0;
-            $bhnolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
-            if ($bhnolh) {
-                foreach ($bhnolh as $bo) {
-                    if ($bo['bahan']) {
-                        $jumlah += ($bo->bahan['harga'] / $bo->bahan['konversi_pemakaian']) * $bo['pemakaian'];
+            $jmlolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
+            if ($jmlolh) {
+                foreach ($jmlolh as $jmlpro) {
+                    if ($jmlpro['bahan']) {
+                        $jumlah += ($jmlpro->bahan['harga'] / $jmlpro->bahan['konversi_pemakaian']) * $jmlpro['pemakaian'];
+                    }
+
+                    if ($jmlpro['olahan']) {
+                        $dtol = Olahan::where('id', $jmlpro['olahan'])->first();
+                        $jumlah += $dtol['produksi'];
                     }
                 }
             }
+
 
 
             $Olahan = Olahan::where('id', $id)->first();
@@ -178,15 +187,33 @@ class FoodcostController extends Controller
                 }
             }
 
+            $pakaiolahan =  $request->input('pakaiolahan');
             $pakai =  $request->input('pakai');
             if ($Olahan && $pakai) {
-
-
-                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->get();
+                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->where('olahan', null)->get();
                 foreach ($cekolahan as $no => $v) {
 
                     if (!Bahan_Olahan::where('id', $v['id'])->update([
                         'pemakaian' => $pakai[$no]
+                    ])) {
+
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Terjadi kegagalan system'
+                        ];
+                    };
+                }
+            }
+
+
+            if ($Olahan && $pakaiolahan) {
+
+                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->where('bahan_id', null)->get();
+                foreach ($cekolahan as $no => $v) {
+
+                    if (!Bahan_Olahan::where('id', $v['id'])->update([
+                        'pemakaian' => $pakaiolahan[$no]
                     ])) {
 
                         $data = [
@@ -204,7 +231,7 @@ class FoodcostController extends Controller
                     'hasil' => $request->input('hasil'),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
-                    'kode' => 1,
+                    'produksi' => $jumlah,
                     'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
@@ -232,7 +259,8 @@ class FoodcostController extends Controller
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
-                    'kode' => 1,
+                    'kode' => 'BO' . $this->kode,
+                    'produksi' => $jumlah,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
@@ -289,46 +317,6 @@ class FoodcostController extends Controller
         return view('Edit', $this->data);
     }
 
-    public function TambahItemBahanBaku(Request $request)
-    {
-
-
-        $id = $request->input('id');
-
-        if ($id) {
-            $input = array();
-            foreach ($id as $v) {
-                $input[] = array(
-                    'olahan_id' => session('IdEdit'),
-                    'bahan_id' => $v,
-                    'pemakaian' => 0
-                );
-            }
-            if (Bahan_Olahan::insert($input)) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' => 'Berhasil'
-                ];
-            } else {
-                $data = [
-                    'toast' => true,
-                    'status' => 'errror',
-                    'pesan' => 'Gagal Saat Menambah Data'
-                ];
-            }
-        } else {
-            $data = [
-                'toast' => true,
-                'status' => 'errror',
-                'pesan' => 'Belum memilih item'
-            ];
-        }
-
-        echo json_encode($data);
-    }
-    //bahan baku
-
     public function OlahanItemBahanBaku(Request $request)
     {
         $this->data['subtitle'] = 'Olahan';
@@ -367,26 +355,159 @@ class FoodcostController extends Controller
         echo json_encode($result);
     }
 
+    public function TambahItemBahanBaku(Request $request)
+    {
+
+
+        $id = $request->input('id');
+
+        if ($id) {
+            $input = array();
+            foreach ($id as $v) {
+                $input[] = array(
+                    'olahan_id' => session('IdEdit'),
+                    'bahan_id' => $v,
+                    'pemakaian' => 0,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+            if (Bahan_Olahan::insert($input)) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'errror',
+                    'pesan' => 'Gagal Saat Menambah Data'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'errror',
+                'pesan' => 'Belum memilih item'
+            ];
+        }
+
+        echo json_encode($data);
+    }
+    //bahan baku
+
+    //Olahan
     public function PilihBahanOlahan(Request $request)
     {
         $id = $request->input('id');
 
-        $this->data['OlahanDataBahanOlahan'] = Olahan::all();
+        $this->data['OlahanDataBahanOlahan'] = Olahan::where('delete', 0)->where('draft', false)->get();
         if ($id) {
             session()->flash('IdEdit', $id);
             $data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
             $cekid = array();
             foreach ($data as $v) {
-                if (isset($v->olahan['id'])) {
-                    $cekid[] = $v->olahan['id'];
+                if ($v['olahan']) {
+                    $cekid[] = $v['olahan'];
                 }
             }
             $this->data['cekid'] = $cekid;
         } else {
             $this->data['cekid'] = null;
         }
+
+
         return view('Edit', $this->data);
     }
+    public function OlahanItemBahanOlahan(Request $request)
+    {
+        $this->data['subtitle'] = 'Olahan';
+        $this->subtitle = $this->data['subtitle'];
+
+
+        $id = session('IdOlahan');
+        if ($id) {
+            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+        } else {
+            $Data = array();
+        }
+
+        $result = array('data' => array());
+        $key = 0;
+        foreach ($Data as $value) {
+            if ($value['olahan']) {
+                $olhan =  Olahan::where('id', $value['olahan'])->first();
+                $byproduksi =  Bahan_Olahan::where('olahan_id', $value['olahan'])->with('Bahan')->get();
+                $produksi = 0;
+                foreach ($byproduksi as $v) {
+                    $produksi += ($v->Bahan['harga'] / $v->Bahan['konversi_pemakaian']) * $v['pemakaian'];
+                }
+
+                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+                $result['data'][$key] = array(
+                    $olhan['nama'],
+                    $olhan['hasil'] . ' ' . $olhan['satuan_penyajian'],
+                    $this->rupiah($produksi),
+                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" onkeyup="jumlaholahan(' . $key . ', this.value)" name="pakaiolahan[]" id="pakaiolahan_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $olhan['satuan_penyajian'] . '</span></div></div>',
+                    '<font id="jmlolah_' . $key . '">' . $this->rupiah(($olhan['produksi'] / $olhan['hasil']) * $value['pemakaian']) . '</font>',
+                    $button . '
+                    <input type="hidden" class="totalolah" id="hargaolah_' . $key . '" value="' . $olhan['produksi'] . '" >
+                    <input type="hidden" id="hasil_' . $key . '" value="' . $olhan['hasil'] . '" >
+                    <input type="hidden" id="totalolah_' . $key . '" value="' . ($olhan['produksi'] / $olhan['hasil']) * $value['pemakaian'] . '" >
+                    '
+                );
+
+                $key++;
+            }
+        }
+        echo json_encode($result);
+    }
+    public function TambahItemBahanOlahan(Request $request)
+    {
+
+
+        $id = $request->input('id');
+
+        if ($id) {
+            $input = array();
+            foreach ($id as $v) {
+                $input[] = array(
+                    'olahan_id' => session('IdEdit'),
+                    'olahan' => $v,
+                    'pemakaian' => 0,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                );
+            }
+            if (Bahan_Olahan::insert($input)) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' => 'Berhasil'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'errror',
+                    'pesan' => 'Gagal Saat Menambah Data'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'errror',
+                'pesan' => 'Belum memilih item'
+            ];
+        }
+
+        echo json_encode($data);
+    }
+    //Olahan
+
+
+
+
 
     public function OlahanBahanManage(Request $request)
     {
@@ -423,45 +544,6 @@ class FoodcostController extends Controller
     }
 
 
-    public function OlahanOlahanManage(Request $request)
-    {
-        $this->data['subtitle'] = 'Olahan';
-        $this->subtitle = $this->data['subtitle'];
-
-
-        $id = session('IdOlahan');
-        if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
-        } else {
-            $Data = array();
-        }
-
-        $result = array('data' => array());
-        $key = 0;
-        foreach ($Data as $value) {
-            if ($value['olahan']) {
-                $olhan =  Olahan::where('id', $value['olahan'])->first();
-                $byproduksi =  Bahan_Olahan::where('olahan_id', $value['olahan'])->with('Bahan')->get();
-                $produksi = 0;
-                foreach ($byproduksi as $v) {
-                    $produksi += ($v->Bahan['harga'] / $v->Bahan['konversi_pemakaian']) * $v['pemakaian'];
-                }
-
-                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
-                $result['data'][$key] = array(
-                    $olhan['nama'],
-                    $olhan['hasil'] . ' ' . $olhan['satuan_penyajian'],
-                    $this->rupiah($produksi),
-                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" name="pakai[]" id="pakai_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $olhan['satuan_penyajian'] . '</span></div></div>',
-                    $this->rupiah(($olhan['harga'] / $olhan['konversi_penyajian']) * $value['pemakaian']),
-                    $button
-                );
-
-                $key++;
-            }
-        }
-        echo json_encode($result);
-    }
 
 
     public function OlahanHapus(Request $request)

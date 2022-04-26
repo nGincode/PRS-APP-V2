@@ -20,9 +20,10 @@ return new class extends Migration
             $table->string('satuan_pengeluaran');
             $table->string('satuan_penyajian');
             $table->integer('konversi_penyajian');
+            $table->string('hasil')->nullable();
+            $table->string('produksi')->nullable();
             $table->boolean('draft')->default(true);
             $table->boolean('delete')->default(false);
-            $table->string('hasil')->nullable();
             $table->timestamps();
         });
     }

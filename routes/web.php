@@ -159,9 +159,10 @@ Route::controller(FoodcostController::class)->group(
         //bahan baku
 
         //bahan olahan
-        Route::post('Foodcost/Olahan/OlahanBahanManage', 'OlahanBahanManage')->middleware('auth');
         Route::post('Foodcost/Olahan/PilihBahanOlahan', 'PilihBahanOlahan')->middleware('auth');
-        Route::post('Foodcost/Olahan/OlahanOlahanManage', 'OlahanOlahanManage')->middleware('auth');
+        Route::post('Foodcost/Olahan/OlahanItemBahanOlahan', 'OlahanItemBahanOlahan')->middleware('auth');
+        Route::post('Foodcost/Olahan/TambahItemBahanOlahan', 'TambahItemBahanOlahan')->middleware('auth');
+        //bahan olahan
 
 
         Route::post('Foodcost/Olahan/OlahanItemHapus', 'ItemOlahanHapus')->middleware('auth');

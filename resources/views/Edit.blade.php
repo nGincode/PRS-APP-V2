@@ -1857,8 +1857,8 @@
         $('#ModalLabel').html('Pilih Item Bahan Olahan');
 
         $(document).ready(function() {
-            if ($('#formItemBahanBaku').length) {
-                $('#formItemBahanBaku').validate({
+            if ($('#formItemBahanOlahan').length) {
+                $('#formItemBahanOlahan').validate({
                     errorElement: 'span',
                     errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
@@ -1883,7 +1883,7 @@
                     }
                 });
 
-                $('#formItemBahanBaku').on('submit', function(event) {
+                $('#formItemBahanOlahan').on('submit', function(event) {
                     var isValid = $(this).valid();
                     event.preventDefault();
                     var formData = new FormData(this);
@@ -1903,7 +1903,7 @@
                             success: function(data) {
                                 if (data.status === 'success') {
                                     $('#Modal').modal('hide');
-                                    $('#managebahanbaku').DataTable().ajax.reload();
+                                    $('#managebahanolahan').DataTable().ajax.reload();
                                     popup(data.status, data.toast, data.pesan);
                                 } else {
                                     popup(data.status, data.toast, data.pesan);

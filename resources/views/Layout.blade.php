@@ -227,19 +227,11 @@ if (Auth::check()) {
                     },
                     "responsive": true,
                     "autoWidth": true,
-                    "processing": false,
+                    "processing": true,
                     "searching": true,
                     "sort": true,
                     "paging": true,
-                    "destroy": false,
-                    "language": {
-                        'Paginate': {
-                            'previous': '<',
-                            'next': '>'
-                        }
-                    },
-
-                    // "lengthChange": true,
+                    "destroy": true,
                     "dom": '<"dt-buttons"Bf><"clear">lirtp',
                     "buttons": [{
                             extend: 'copyHtml5',
@@ -250,7 +242,7 @@ if (Auth::check()) {
                         },
                         {
                             extend: 'excelHtml5',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage . $subtitle }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }

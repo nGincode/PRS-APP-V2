@@ -20,13 +20,15 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div class="text-right" id="autosave">
-                            @if ($Olahan)
-                                <small> <i class="fas fa-check"></i> Autosave dari nama olahan
-                                    {{ $Olahan['nama'] }}</small>
-                            @else
-                                <small> <i class="fas fa-check"></i> Autosave on</small>
-                            @endif
+                        <div id="divautosave">
+                            <div class="text-right" id="autosave">
+                                @if ($Olahan)
+                                    <small> <i class="fas fa-check"></i> Autosave dari nama olahan
+                                        {{ $Olahan['nama'] }}</small>
+                                @else
+                                    <small> <i class="fas fa-check"></i> Autosave on</small>
+                                @endif
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-sm-6">
@@ -379,12 +381,12 @@
                                 <table id="managebahanbaku" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Bahan Baku</th>
+                                            <th scope="col">Nama Bahan</th>
                                             <th scope="col">Satuan Pemakaian
                                             </th>
                                             <th scope="col">Harga</th>
-                                            <th scope="col" style="min-width: 200px">Hasil</th>
-                                            <th scope="col" style="min-width: 250px">Total Harga</th>
+                                            <th scope="col">Hasil Pemakaian</th>
+                                            <th scope="col">Total Harga</th>
                                             <th scope="col">
                                                 <i class="fas fa-trash"></i>
                                             </th>
@@ -408,12 +410,12 @@
                                 <table id="managebahanolahan" class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Bahan Baku</th>
+                                            <th scope="col">Nama Olahan</th>
                                             <th scope="col">Hasil Jadi
                                             </th>
                                             <th scope="col">Biaya Produksi</th>
-                                            <th scope="col" style="min-width: 200px">Penyajian</th>
-                                            <th scope="col" style="min-width: 250px">Harga</th>
+                                            <th scope="col">Penyajian</th>
+                                            <th scope="col">Harga</th>
                                             <th scope="col">
                                                 <i class="fas fa-trash"></i>
                                             </th>
@@ -429,7 +431,8 @@
                                     @endisset
                                 </div>
 
-                                <div id="totalolahan" class="float-right font-weight-bold">Total : Rp 1</div>
+                                <div id="totalolahan" class="float-right font-weight-bold">Total : {{ $Jmlbo }}
+                                </div>
                                 <br><br>
                             </div>
 
@@ -437,7 +440,7 @@
                                 <table class="table float-right font-weight-bold text-right">
                                     <tr>
                                         <td>Biaya Produksi : </td>
-                                        <td id="biayaproduksi">Rp. 0</td>
+                                        <td id="biayaproduksi">{{ $totaljml }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -537,13 +540,14 @@
             })
 
         }
+        //item bahan baku
 
 
-        //Bahan Olahan
+        //item bahan Olahan
         if ($("#managebahanolahan").length) {
             $("#managebahanolahan").DataTable({
                 "ajax": {
-                    url: "/Foodcost/Olahan/OlahanOlahanManage",
+                    url: "/Foodcost/Olahan/OlahanItemBahanOlahan",
                     type: "POST"
                 },
                 "responsive": true,
@@ -575,8 +579,9 @@
             })
 
         }
+        //item bahan Olahan
 
-
+        //Input
         $(document).ready(function() {
             //Olahan
             if ($('#FormOlahan').length) {
@@ -719,7 +724,7 @@
                                     ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'
                                 );
                                 $('#olahanitemolahan').html(
-                                    '<a onclick="Edit(' + data.id +
+                                    '<a onclick="pilihbahanolahan(' + data.id +
                                     ',' + "'" + "Olahan" + "'" +
                                     ')" class="btn btn-sm btn-success btn-block" data-toggle="modal" data-target="#Modal"><i class="fas fa-plus"></i></a><hr>'
                                 );
@@ -739,6 +744,8 @@
             });
         });
 
+
+        //calculasi
         function jumlahbahan(id, value) {
 
             harga = $('#hargabahan_' + id).val();
@@ -762,6 +769,32 @@
             jumlah(0, total);
 
         }
+
+        function jumlaholahan(id, value) {
+
+            harga = $('#hargaolah_' + id).val();
+            konversi = $('#hasil_' + id).val();
+
+
+            jml = (harga / konversi) * value;
+            $('#jmlolah_' + id).html('Rp ' + formatRupiah(jml) + ',00');
+            $('#totalolah_' + id).val(jml);
+
+            total = 0;
+            row = $('.totalolah').length;
+            for (let i = 0; i < row; i++) {
+                if (i == id) {
+                    total += jml;
+                } else {
+                    total += parseInt($('#totalolah_' + i).val());
+                }
+            }
+            $('#totalolahan').html('Total : Rp ' + formatRupiah(total) + ',00 ');
+
+            jumlah(0, total);
+
+        }
+
 
         function jumlah(olahan, totalbahanbaku) {
 
@@ -790,9 +823,8 @@
             }
 
         }
-        jumlah();
 
-
+        //delete
         function hapusitemoalahan(id) {
             Swal.fire({
                 title: 'Yakin Menghapus?',
@@ -818,6 +850,7 @@
                         success: function(data) {
                             if (data.status === 'success') {
                                 $('#managebahanbaku').DataTable().ajax.reload();
+                                $('#managebahanolahan').DataTable().ajax.reload();
                                 $('#autosave').html(
                                     '<small style="color:green;"> <i class="fas fa-check"></i> ' +
                                     data.pesan +
@@ -840,5 +873,49 @@
                 }
             })
         }
+
+        $(document).ready(function() {
+
+            var stickyNavTop = $('#divautosave').offset().top;
+
+            var stickyNav = function() {
+
+                var scrollTop = $(window).scrollTop();
+
+                if (scrollTop > stickyNavTop) {
+
+                    $('#divautosave').css({
+                        'position': 'fixed',
+                        'top': 0,
+                        'right': 0,
+                        'padding': '10px',
+                        'z-index': 9999,
+                        'background': 'white',
+                        'border-radius': '10px 0px 10px 0px',
+                        'box-shadow': '5px 0px 5px 5px #888888'
+                    });
+
+                } else {
+
+                    $('#divautosave').css({
+                        'position': 'relative',
+                        'background': 'unset',
+                        'border-radius': 'unset',
+                        'box-shadow': 'unset'
+                    });
+
+                }
+
+            };
+
+            stickyNav();
+
+            $(window).scroll(function() {
+
+                stickyNav();
+
+            });
+
+        });
     </script>
 @endsection
