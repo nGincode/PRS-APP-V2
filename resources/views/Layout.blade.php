@@ -242,7 +242,7 @@ if (Auth::check()) {
                         },
                         {
                             extend: 'excelHtml5',
-                            title: '{{ $manage . $subtitle }}',
+                            title: '{{ $manage ?? '' }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }
@@ -469,7 +469,7 @@ if (Auth::check()) {
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item @if ($title == 'Master') menu-open" @endif">
+                            <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
                                 <a href="{{ url('/Master') }}"
                                     class="nav-link @if ($title == 'Master') active @endif ">
                                     <i class=" nav-icon fas fa-database"></i>
@@ -511,6 +511,77 @@ if (Auth::check()) {
                             </li>
                         @endif
 
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
+                                <a href="{{ url('/Inventory') }}"
+                                    class="nav-link @if ($title == 'Inventory') active @endif ">
+                                    <i class=" nav-icon fas fa-cube"></i>
+                                    <p>
+                                        Inventory
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item ">
+                                        <a href="{{ url('/Inventory/Opname') }}"
+                                            class="nav-link  @if ($subtitle == 'Opname') active @endif">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Opname</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item  ">
+                                        <a href="{{ url('/Inventory/Stock') }}"
+                                            class="nav-link @if ($subtitle == 'Stock') active @endif">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
+
+                        {{-- @if (in_array('createPemesanan', $user_permission) || in_array('updatePemesanan', $user_permission) || in_array('viewPemesanan', $user_permission) || in_array('deletePemesanan', $user_permission)) --}}
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item @if ($title == 'Pemesanan') menu-open @endif ">
+                                <a href="
+                                {{ url('/Pemesanan') }}"
+                                    class="nav-link @if ($title == 'Pemesanan') active @endif ">
+                                    <i class=" nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Pemesanan
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ url('/Pemesanan/PR') }}"
+                                            class="nav-link @if ($subtitle == '(PR)') active @endif">
+                                            <i class="far fa-circle nav-icon "></i>
+                                            <p>Purchase Request (PR)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/Pemesanan/PRAgree') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Persetujuan (PR)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/Pemesanan/PO') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Purchase Order (PO)</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('/Pemesanan/Supplier') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Stock Logistik</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
 
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
@@ -560,72 +631,6 @@ if (Auth::check()) {
                         @endif
 
 
-                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Pemesanan') active @endif ">
-                                    <i class=" nav-icon fas fa-shopping-cart"></i>
-                                    <p>
-                                        Pemesanan
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Purchase Request (PR)</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Persetujuan (PR)</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Purchase Order (PO)</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Stock Logistik</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
-
-
-                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Master') }}"
-                                    class="nav-link @if ($title == 'Inventory') active @endif ">
-                                    <i class=" nav-icon fas fa-cube"></i>
-                                    <p>
-                                        Inventory
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Opname</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Stock</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endif
 
 
 

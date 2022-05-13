@@ -10,6 +10,8 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\FoodcostController;
+use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\InventoryController;
 
 
 
@@ -181,6 +183,28 @@ Route::get('Foodcost/Olahan/SessionCreate',  function () {
         return redirect('Foodcost/Olahan')->withToastError('Terjadi Kegagalan Mengambil ID');
     }
 })->middleware('auth');
+
+
+
+//Pemesanan
+Route::controller(PemesananController::class)->group(
+    function () {
+
+        //OLAHAN
+        Route::get('Pemesanan/PR', 'Olahan')->middleware('auth');
+    }
+);
+
+
+
+//Pemesanan
+Route::controller(InventoryController::class)->group(
+    function () {
+
+        //OLAHAN
+        Route::get('Inventory/Stock', 'Stock')->middleware('auth');
+    }
+);
 
 Route::get(
     '/test',
