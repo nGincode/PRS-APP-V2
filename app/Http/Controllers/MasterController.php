@@ -270,6 +270,7 @@ class MasterController extends Controller
     {
         $this->data['subtitle'] = 'Bahan';
         $this->data['kode'] = $this->kodebahan;
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         return view('Bahan', $this->data);
     }
 
@@ -313,12 +314,27 @@ class MasterController extends Controller
             }
 
             $konversi = 'Pemakaian : ' . $value['konversi_pemakaian'] . ' ' . $value['satuan_pemakaian'] . '<br> Pengeluaran : ' . $value['konversi_pengeluaran'] . ' ' . $value['satuan_pengeluaran'];
+
+            $str = json_decode($value['pengguna']);
+            $pengguna = '';
+            if ($str) {
+                foreach ($str as $v) {
+                    $dtstr = Store::where('id', $v)->first();
+                    if ($dtstr) {
+                        $pengguna .= '<font size="2px">' . $dtstr['nama'] . '</font>, ';
+                    }
+                }
+            } else {
+                $pengguna .= '-';
+            }
+
             $result['data'][] = array(
                 $value['kode'],
                 $value['nama'],
                 $kategori,
-                $value['satuan_pembelian'],
-                $this->rupiah($value['harga']), $konversi,
+                $this->rupiah($value['harga']) . '/' . $value['satuan_pembelian'],
+                $konversi,
+                $pengguna,
                 $button
             );
         }
@@ -387,6 +403,7 @@ class MasterController extends Controller
                     'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
+                    'pengguna' => json_encode($request->input('pengguna')),
                     'delete' => false,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
@@ -417,6 +434,7 @@ class MasterController extends Controller
         session()->flash('IdEdit', $id);
 
         $this->data['BahanData'] = Bahan::where('id', $id)->first();
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         $this->data['kode'] = sprintf("%05s", $this->data['BahanData']['id']);
         return view('Edit', $this->data);
     }
@@ -499,6 +517,7 @@ class MasterController extends Controller
                         'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
                         'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                         'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluarann')),
+                        'pengguna' => json_encode($request->input('pengguna')),
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];
@@ -556,6 +575,7 @@ class MasterController extends Controller
     {
         $this->data['subtitle'] = 'Peralatan';
         $this->data['kode'] = $this->kodealat;
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         return view('Peralatan', $this->data);
     }
 
@@ -598,13 +618,27 @@ class MasterController extends Controller
                 $kategori = 'Not Found';
             }
 
+            $str = json_decode($value['pengguna']);
+            $pengguna = '';
+            if ($str) {
+                foreach ($str as $v) {
+                    $dtstr = Store::where('id', $v)->first();
+                    if ($dtstr) {
+                        $pengguna .= '<font size="2px">' . $dtstr['nama'] . '</font>, ';
+                    }
+                }
+            } else {
+                $pengguna .= '-';
+            }
+
             $konversi = 'Pemakaian : ' . $value['konversi_pemakaian'] . ' ' . $value['satuan_pemakaian'];
             $result['data'][] = array(
                 $value['kode'],
                 $value['nama'],
                 $kategori,
-                $value['satuan_pembelian'],
-                $this->rupiah($value['harga']), $konversi,
+                $this->rupiah($value['harga']) . '/' . $value['satuan_pembelian'],
+                $konversi,
+                $pengguna,
                 $button
             );
         }
@@ -671,6 +705,7 @@ class MasterController extends Controller
                     'harga' =>  $this->unrupiah($request->input('harga')),
                     'satuan_pemakaian' => $request->input('satuan_pemakaian'),
                     'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
+                    'pengguna' => json_encode($request->input('pengguna')),
                     'delete' => false,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
@@ -700,6 +735,7 @@ class MasterController extends Controller
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
         $this->data['kode'] = $this->kodealat;
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
 
         $this->data['PeralatanData'] = Peralatan::where('id', $id)->first();
         return view('Edit', $this->data);
@@ -781,6 +817,7 @@ class MasterController extends Controller
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
                         'harga' =>  $this->unrupiah($request->input('hargaa')),
                         'satuan_pemakaian' => $request->input('satuan_pemakaian'),
+                        'pengguna' => json_encode($request->input('pengguna')),
                         'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')

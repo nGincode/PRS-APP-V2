@@ -20,51 +20,22 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <div id="divautosave">
-                            <div class="text-right" id="autosave">
-                                @isset($Olahan)
-                                    <small> <i class="fas fa-check"></i> Autosave dari nama olahan
-                                        {{ $Olahan['nama'] }}</small>
-                                @else
-                                    <small> <i class="fas fa-check"></i> Autosave on</small>
-                                @endisset
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="nama">Nama Pengorder</label>
-                                    <input type="text" class="form-control"
-                                        @isset($Olahan['nama']) value="{{ $Olahan['nama'] }}" @endisset
-                                        id="nama" placeholder="Nama Olahan" name="nama">
+                                    <label for="nama">Qty</label>
+                                    <input type="number" class="form-control" id="nama" placeholder="Nama Olahan"
+                                        name="nama">
                                 </div>
                             </div>
-
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="outlet">Outlet</label>
-                                    <select name="outlet" id="outlet" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="true" disabled="disabled">Pilih</option>
-                                        {{-- @foreach ($store as $str)
-                                            <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
-                                        @endforeach --}}
-                                    </select>
+                                    <label for="nama">Qty</label>
+                                    <input type="number" class="form-control" id="nama" placeholder="Nama Olahan"
+                                        name="nama">
                                 </div>
                             </div>
-
-
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="nama">No Hp</label>
-                                    <input type="number" class="form-control"
-                                        @isset($Olahan['nama']) value="{{ $Olahan['nama'] }}" @endisset
-                                        id="nama" placeholder="Nama Olahan" name="nama">
-                                </div>
-                            </div>
-
-
 
                             <div class="col-12 col-sm-12">
                                 <label>Bahan Baku</label>
@@ -82,16 +53,6 @@
                                         </tr>
                                     </thead>
                                 </table>
-                                <div id="idpilihitembahan">
-                                    @isset($Olahan['id'])
-                                        <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="pilihbahanbaku({{ $Olahan['id'] }})"><i class="fas fa-plus"></i></a>
-                                        <hr>
-                                    @endisset
-                                </div>
-
-                                <div id="totalbahanbaku" class="float-right font-weight-bold">Total :
-                                </div>
                             </div>
                         </div>
                         <!-- /.row -->
@@ -128,6 +89,5 @@
 
         <!-- /.container-fluid -->
     </section>
-    <script>
-    </script>
+    <script></script>
 @endsection

@@ -110,6 +110,19 @@
                                 </div>
                             </div>
 
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Penggunaan Ke</label>
+                                    <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna"
+                                        data-placeholder="Pilih Outlet" style="width: 100%;">
+                                        @foreach ($Store as $v)
+                                            <option value="{{ $v['id'] }}">{{ $v['nama'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                         </div>
                         <!-- /.row -->
                     </div>
@@ -131,9 +144,9 @@
                                 <th>#</th>
                                 <th>Nama Peralatan</th>
                                 <th>Kategori</th>
-                                <th>Pembelian</th>
-                                <th>Harga</th>
+                                <th>Harga Pembelian</th>
                                 <th>Konversi Satuan</th>
+                                <th>Pengguna</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

@@ -1016,6 +1016,21 @@
                     </div>
                 </div>
 
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Penggunaan Ke</label>
+                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna"
+                            data-placeholder="Pilih Outlet" style="width: 100%;">
+                            @foreach ($Store as $v)
+                                <option value="{{ $v['id'] }}" @if (in_array($v['id'], json_decode($BahanData['pengguna']))) selected @endif>
+                                    {{ $v['nama'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
         <div class="modal-footer">
@@ -1235,6 +1250,21 @@
                             id="kodeedit" name="kodeedit">
                     </div>
                 </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Penggunaan Ke</label>
+                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna"
+                            data-placeholder="Pilih Outlet" style="width: 100%;">
+                            @foreach ($Store as $v)
+                                <option value="{{ $v['id'] }}" @if (in_array($v['id'], json_decode($PeralatanData['pengguna']))) selected @endif>
+                                    {{ $v['nama'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
 
             </div>
         </div>

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('harga');
             $table->string('satuan_pemakaian');
             $table->integer('konversi_pemakaian');
+            $table->json('pengguna')->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

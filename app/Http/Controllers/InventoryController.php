@@ -37,11 +37,6 @@ class InventoryController extends Controller
         return view('Stock', $this->data);
     }
     /////////////////////////////////// SUPLIER //////////////////////////
-    
 
-    // 
-    // 
-    // bill
-    // tgl
 
 }

@@ -511,6 +511,18 @@ if (Auth::check()) {
                             </li>
                         @endif
 
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item @if ($title == 'Belanja')  @endif ">
+                                <a href="{{ url('/Belanja') }}"
+                                    class="nav-link @if ($title == 'Belanja') active @endif "">
+                                    <i class="     nav-icon fas fa-shopping-bag "></i>
+                                    <p>
+                                        Belanja
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">

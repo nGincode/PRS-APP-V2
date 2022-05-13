@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('konversi_pemakaian');
             $table->string('satuan_pengeluaran');
             $table->integer('konversi_pengeluaran');
+            $table->json('pengguna')->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });
