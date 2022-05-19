@@ -14,6 +14,7 @@ use App\Models\Supplier;
 use App\Models\Bahan;
 use App\Models\Peralatan;
 use App\Models\Pegawai;
+use App\Models\Satuan;
 
 
 use Illuminate\Http\Request;
@@ -271,6 +272,7 @@ class MasterController extends Controller
         $this->data['subtitle'] = 'Bahan';
         $this->data['kode'] = $this->kodebahan;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
+        $this->data['satuan'] = Satuan::all();
         return view('Bahan', $this->data);
     }
 
@@ -436,6 +438,7 @@ class MasterController extends Controller
         $this->data['BahanData'] = Bahan::where('id', $id)->first();
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         $this->data['kode'] = sprintf("%05s", $this->data['BahanData']['id']);
+        $this->data['satuan'] = Satuan::all();
         return view('Edit', $this->data);
     }
 
@@ -576,6 +579,7 @@ class MasterController extends Controller
         $this->data['subtitle'] = 'Peralatan';
         $this->data['kode'] = $this->kodealat;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
+        $this->data['satuan'] = Satuan::all();
         return view('Peralatan', $this->data);
     }
 
@@ -737,6 +741,7 @@ class MasterController extends Controller
         $this->data['kode'] = $this->kodealat;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
 
+        $this->data['satuan'] = Satuan::all();
         $this->data['PeralatanData'] = Peralatan::where('id', $id)->first();
         return view('Edit', $this->data);
     }
@@ -1146,4 +1151,211 @@ class MasterController extends Controller
         echo json_encode($data);
     }
     ////////////////////////////////// PERALATAN ///////////////////////////
+
+
+
+
+    /////////////////////////////////// SUPLIER //////////////////////////
+    public function Satuan(Request $request)
+    {
+        $this->data['subtitle'] = 'Satuan';
+        return view('Satuan', $this->data);
+    }
+
+    public function SatuanManage(Request $request)
+    {
+        $this->data['subtitle'] = 'Satuan';
+        $this->subtitle = $this->data['subtitle'];
+
+        $result = array('data' => array());
+        $Data = Satuan::where('delete', false)->latest()->get();
+        foreach ($Data as $value) {
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('updateMaster', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+            }
+            if (in_array('deleteMaster', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+            }
+
+            $button .= '</ul></div>';
+
+
+            $result['data'][] = array(
+                $value['nama'],
+                $value['singkat'],
+                $button
+            );
+        }
+        echo json_encode($result);
+    }
+
+    public function SatuanTambah(Request $request)
+    {
+
+        $validator = Validator::make(
+            $request->all(),
+            $rules = [
+                'nama' => 'required',
+                'singkat' => 'required',
+            ],
+            $messages  = [
+                'required' => 'Form :attribute harus terisi',
+                'same' => 'Form :attribute & :other tidak sama.',
+            ]
+        );
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $message) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  $message
+                ];
+            }
+        } else {
+
+            if (Satuan::where('delete', false)->where('nama', $request->input('nama'))->count()) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' => 'Nama Telah Ada'
+                ];
+            } else {
+                $input = [
+                    'nama' => $request->input('nama'),
+                    'singkat' => $request->input('singkat'),
+                    'delete' => false,
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ];
+                if (Satuan::create($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
+        }
+
+
+        echo json_encode($data);
+    }
+
+    public function SatuanEdit(Request $request)
+    {
+        $id = $request->input('id');
+        session()->flash('IdEdit', $id);
+
+        $this->data['SatuanData'] = Satuan::where('id', $id)->first();
+        return view('Edit', $this->data);
+    }
+
+    public function SatuanEditTambah(Request $request)
+    {
+
+        $id = session('IdEdit');
+        $Satuan = Satuan::where('id', $id)->first();
+        if ($Satuan) {
+            $validator = Validator::make(
+                $request->all(),
+                $rules = [
+                    'nama' => 'required',
+                    'singkat' => 'required',
+                ],
+                $messages  = [
+                    'required' => 'Form :attribute harus terisi',
+                    'same' => 'Form :attribute & :other tidak sama.',
+                ]
+            );
+
+            if ($Satuan['nama'] == $request->input('nama')) {
+                $nama = $request->input('nama');
+            } else {
+                $str = Satuan::where('nama', $request->input('nama'))->count();
+                if ($str) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Nama Telah digunakan'
+                    ];
+                    $nama = '';
+                } else {
+                    $nama = $request->input('nama');
+                }
+            }
+
+
+            if ($nama) {
+                if ($validator->fails()) {
+                    session()->flash('IdEdit', $id);
+                    foreach ($validator->errors()->all() as $message) {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  $message
+                        ];
+                    }
+                } else {
+
+                    $input = [
+                        'nama' => $request->input('nama'),
+                        'singkat' => $request->input('singkat'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ];
+                    if (Satuan::where('id', $id)->update($input)) {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'success',
+                            'pesan' => 'Berhasil dibuat'
+                        ];
+                    } else {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Terjadi kegagalan system'
+                        ];
+                    };
+                }
+            }
+        }
+
+
+        echo json_encode($data);
+    }
+
+    public function SatuanHapus(Request $request)
+    {
+        $id =  $request->input('id');
+        if (Satuan::where('id', $id)->update(['delete' => true])) {
+            $data = [
+                'toast' => true,
+                'status' => 'success',
+                'pesan' => 'Berhasil Terhapus'
+            ];
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Terjadi kegagalan system'
+            ];
+        };
+
+        echo json_encode($data);
+    }
+    /////////////////////////////////// SUPLIER //////////////////////////
+
 }

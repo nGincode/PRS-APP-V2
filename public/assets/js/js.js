@@ -531,6 +531,68 @@ $(document).ready(function() {
         });
     }
 
+    //Satuan
+    if ($('#FormSatuan').length) {
+        $('#FormSatuan').validate({
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            success: function(validClass, element) {
+                $(element).addClass('is-valid');
+            },
+            rules: {
+                'nama': {
+                    required: true
+                },
+                'singkat': {
+                    required: true
+                }
+            },
+            messages: {
+                // OutletUsers : "Masih Kosong"
+            }
+        });
+
+        $('#FormSatuan').on('submit', function(event) {
+            var isValid = $(this).valid();
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            if (isValid) {
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            popup(data.status, data.toast, data.pesan);
+                            $('#FormSatuan')[0].reset();
+                            $('#manage').DataTable().ajax.reload();
+                        } else {
+                            popup(data.status, data.toast, data.pesan);
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
     //Bahan
     if ($('#FormBahan').length) {
         $('#FormBahan').validate({
@@ -791,6 +853,47 @@ $(document).ready(function() {
         if (row_id >= 2) {
             $(".row #akhir_isi_jam_kerja:last").after(html);
         }
+    });
+
+
+    //Tambah Belanja
+    $("#add_row_belanja").unbind('click').bind('click', function() {
+        $.ajax({
+            url: 'Belanja/Namabarang',
+            type: "POST",
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function(data) {
+
+                var row_id = $("#tambahbelanja tbody tr").length + 1;
+                var html = '<tr> <td> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option>';
+
+                for (let x = 0; x <= data.bahan.length - 1; x++) {
+                    html += '<option value="' + data.bahan[x]['id'] + '">' + data.bahan[x]['nama'] + '</option>';
+                }
+
+                html += '</select> </td><td> <select name="kategori[]" id="kategori_' + row_id + '" disabled class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih Nama</option> <option value="Item">Item</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option> </select> </td><td> <div class="row"> <div class="col"> <input type="number"  class="form-control" id="qty_' + row_id + '" onkeyup="hitung_belanja(this.value, ' + row_id + ')" placeholder="Qty"  name="qty[]"> </div><div class="col"> <select name="uombelanja[]" onchange="konversi_belanja(' + row_id + ')" id="uombelanja_' + row_id + '" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">UOM</option>';
+
+                for (let y = 0; y <= data.satuan.length - 1; y++) {
+                    html += '<option value="' + data.satuan[y]['singkat'] + '">' + data.satuan[y]['nama'] + '</option>';
+                }
+
+                html += '</select> </div><div class="col"> <input type="text" class="form-control" onkeyup="hitung_belanja(this.value, ' + row_id + ')" id="harga_' + row_id + '" placeholder="Harga" name="harga[]"> </div></div></td><td id="master_' + row_id + '"> Rp. 100/Pcs </td><td id="total_' + row_id + '"> - </td><td> <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]"> </td><td><input class="form-control" type="checkbox" value="1"></td></tr>';
+
+                if (row_id >= 2) {
+                    $("#tambahbelanja tbody tr:last").after(html);
+                }
+
+                $('.select2').select2().on("change", function(e) {
+                    $(this).valid()
+                });
+
+
+            }
+        });
+
     });
 });
 

@@ -54,47 +54,9 @@
                                         class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Kilogram">Kilogram</option>
-                                        <option value="Gram">Gram</option>
-                                        <option value="Ons">Ons</option>
-                                        <option value="Pack">Pack</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Potong">Potong</option>
-                                        <option value="Liter">Liter</option>
-                                        <option value="Mililiter">Mililiter</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Galon">Galon</option>
-                                        <option value="Pouch">Pouch</option>
-                                        <option value="Lembar">Lembar</option>
-                                        <option value="Roll">Roll</option>
-                                        <option value="Ikat">Ikat</option>
-                                        <option value="Bal">Bal</option>
-                                        <option value="Karung">Karung</option>
-                                        <option value="Kaleng">Kaleng</option>
-                                        <option value="Dus">Dus</option>
-                                        <option value="Botol">Botol</option>
-                                        <option value="Jerigen">Jerigen</option>
-                                        <option value="Tabung">Tabung</option>
-                                        <option value="Ekor">Ekor</option>
-                                        <option value="Papan">Papan</option>
-                                        <option value="Bungkus">Bungkus</option>
-                                        <option value="Ember">Ember</option>
-                                        <option value="Toples">Toples</option>
-                                        <option value="Shot">Shot</option>
-                                        <option value="Cup">Cup</option>
-                                        <option value="Batang">Batang</option>
-                                        <option value="Tusuk">Tusuk</option>
-                                        <option value="Porsi">Porsi</option>
-                                        <option value="Centimeter">Centimeter</option>
-                                        <option value="Meter">Meter</option>
-                                        <option value="Slop">Slop</option>
-                                        <option value="Loaf">Loaf</option>
-                                        <option value="Pasang">Pasang</option>
-                                        <option value="Slice">Slice</option>
-                                        <option value="Sendok Teh">Sendok Teh</option>
-                                        <option value="Sendok Makan">Sendok Makan</option>
+                                        @foreach ($satuan as $s1)
+                                            <option value="{{ $s1['singkat'] }}">{{ $s1['nama'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -115,47 +77,9 @@
                                         class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Kilogram">Kilogram</option>
-                                        <option value="Gram">Gram</option>
-                                        <option value="Ons">Ons</option>
-                                        <option value="Pack">Pack</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Potong">Potong</option>
-                                        <option value="Liter">Liter</option>
-                                        <option value="Mililiter">Mililiter</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Galon">Galon</option>
-                                        <option value="Pouch">Pouch</option>
-                                        <option value="Lembar">Lembar</option>
-                                        <option value="Roll">Roll</option>
-                                        <option value="Ikat">Ikat</option>
-                                        <option value="Bal">Bal</option>
-                                        <option value="Karung">Karung</option>
-                                        <option value="Kaleng">Kaleng</option>
-                                        <option value="Dus">Dus</option>
-                                        <option value="Botol">Botol</option>
-                                        <option value="Jerigen">Jerigen</option>
-                                        <option value="Tabung">Tabung</option>
-                                        <option value="Ekor">Ekor</option>
-                                        <option value="Papan">Papan</option>
-                                        <option value="Bungkus">Bungkus</option>
-                                        <option value="Ember">Ember</option>
-                                        <option value="Toples">Toples</option>
-                                        <option value="Shot">Shot</option>
-                                        <option value="Cup">Cup</option>
-                                        <option value="Batang">Batang</option>
-                                        <option value="Tusuk">Tusuk</option>
-                                        <option value="Porsi">Porsi</option>
-                                        <option value="Centimeter">Centimeter</option>
-                                        <option value="Meter">Meter</option>
-                                        <option value="Slop">Slop</option>
-                                        <option value="Loaf">Loaf</option>
-                                        <option value="Pasang">Pasang</option>
-                                        <option value="Slice">Slice</option>
-                                        <option value="Sendok Teh">Sendok Teh</option>
-                                        <option value="Sendok Makan">Sendok Makan</option>
+                                        @foreach ($satuan as $s2)
+                                            <option value="{{ $s2['singkat'] }}">{{ $s2['nama'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -182,47 +106,9 @@
                                         id="satuan_pengeluaran" class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Kilogram">Kilogram</option>
-                                        <option value="Gram">Gram</option>
-                                        <option value="Ons">Ons</option>
-                                        <option value="Pack">Pack</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Pieces">Pieces</option>
-                                        <option value="Potong">Potong</option>
-                                        <option value="Liter">Liter</option>
-                                        <option value="Mililiter">Mililiter</option>
-                                        <option value="Butir">Butir</option>
-                                        <option value="Galon">Galon</option>
-                                        <option value="Pouch">Pouch</option>
-                                        <option value="Lembar">Lembar</option>
-                                        <option value="Roll">Roll</option>
-                                        <option value="Ikat">Ikat</option>
-                                        <option value="Bal">Bal</option>
-                                        <option value="Karung">Karung</option>
-                                        <option value="Kaleng">Kaleng</option>
-                                        <option value="Dus">Dus</option>
-                                        <option value="Botol">Botol</option>
-                                        <option value="Jerigen">Jerigen</option>
-                                        <option value="Tabung">Tabung</option>
-                                        <option value="Ekor">Ekor</option>
-                                        <option value="Papan">Papan</option>
-                                        <option value="Bungkus">Bungkus</option>
-                                        <option value="Ember">Ember</option>
-                                        <option value="Toples">Toples</option>
-                                        <option value="Shot">Shot</option>
-                                        <option value="Cup">Cup</option>
-                                        <option value="Batang">Batang</option>
-                                        <option value="Tusuk">Tusuk</option>
-                                        <option value="Porsi">Porsi</option>
-                                        <option value="Centimeter">Centimeter</option>
-                                        <option value="Meter">Meter</option>
-                                        <option value="Slop">Slop</option>
-                                        <option value="Loaf">Loaf</option>
-                                        <option value="Pasang">Pasang</option>
-                                        <option value="Slice">Slice</option>
-                                        <option value="Sendok Teh">Sendok Teh</option>
-                                        <option value="Sendok Makan">Sendok Makan</option>
+                                        @foreach ($satuan as $s3)
+                                            <option value="{{ $s3['singkat'] }}">{{ $s3['nama'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

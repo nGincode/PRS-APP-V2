@@ -12,6 +12,7 @@ use App\Http\Controllers\MasterController;
 use App\Http\Controllers\FoodcostController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\BelanjaController;
 
 
 
@@ -45,7 +46,7 @@ Route::controller(AuthController::class)->group(
 ###################################### Login System ##########################################
 
 
-//Belanja
+//Dashbooard
 Route::get('/', [DashboardController::class, 'Index'])->middleware('auth')->name('dashboard');
 
 //Users
@@ -106,6 +107,17 @@ Route::controller(MasterController::class)->group(
         Route::post('Master/Supplier/SupplierEdit', 'SupplierEditTambah')->middleware('auth');
 
         Route::post('Master/Manage/Supplier', 'SupplierManage')->middleware('auth');
+
+
+        Route::get('Master/Satuan', 'Satuan')->middleware('auth');
+        Route::post('Master/Satuan', 'SatuanTambah')->middleware('auth');
+
+        Route::post('Master/Satuan/Hapus', 'SatuanHapus')->middleware('auth');
+
+        Route::post('Master/Satuan/Edit', 'SatuanEdit')->middleware('auth');
+        Route::post('Master/Satuan/SatuanEdit', 'SatuanEditTambah')->middleware('auth');
+
+        Route::post('Master/Manage/Satuan', 'SatuanManage')->middleware('auth');
 
 
 
@@ -184,7 +196,14 @@ Route::get('Foodcost/Olahan/SessionCreate',  function () {
     }
 })->middleware('auth');
 
-
+//Belanja
+Route::controller(BelanjaController::class)->group(
+    function () {
+        Route::get('Belanja', 'Index')->middleware('auth');
+        Route::post('Belanja/Namabarang', 'Namabarang')->middleware('auth');
+        Route::post('Belanja/Masterbahan', 'Masterbahan')->middleware('auth');
+    }
+);
 
 //Pemesanan
 Route::controller(PemesananController::class)->group(

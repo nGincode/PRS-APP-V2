@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Bahan;
 use App\Models\Bahan_Olahan;
 use App\Models\Olahan;
+use App\Models\Satuan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -124,7 +125,7 @@ class DatabaseSeeder extends Seeder
         Store::create([
             'nama' => 'CV Prima Rasa Selaras',
             'active' => 1,
-            'tipe' => 'Nusa Indah',
+            'tipe' => 'Outlet',
             'alamat' => 'BENGKULU',
             'img' => null,
             'wa' => '085369957606',
@@ -181,6 +182,78 @@ class DatabaseSeeder extends Seeder
             'pemakaian' => 10000
 
         ]);
+
+        $satuan = [
+            [
+                'nama' => 'Kilogram',
+                'singkat' => 'Kg',
+            ],
+            [
+                'nama' => 'Gram',
+                'singkat' => 'Gr',
+            ],
+            [
+                'nama' => 'Ons',
+                'singkat' => 'Ons',
+            ],
+            [
+                'nama' => 'Pack',
+                'singkat' => 'Pck',
+            ],
+            [
+                'nama' => 'Pieces',
+                'singkat' => 'Pcs',
+            ],
+            [
+                'nama' => 'Potong',
+                'singkat' => 'Ptg',
+            ],
+            [
+                'nama' => 'Liter',
+                'singkat' => 'Ltr',
+            ],
+            [
+                'nama' => 'Mililiter',
+                'singkat' => 'Mil',
+            ],
+            [
+                'nama' => 'Butir',
+                'singkat' => 'Btr',
+            ],
+            [
+                'nama' => 'Galon',
+                'singkat' => 'Gln',
+            ],
+            [
+                'nama' => 'Pouch',
+                'singkat' => 'Poc',
+            ],
+            [
+                'nama' => 'Lembar',
+                'singkat' => 'Lbr',
+            ],
+            [
+                'nama' => 'Roll',
+                'singkat' => 'Rll',
+            ],
+            [
+                'nama' => 'Ikat',
+                'singkat' => 'Ikt',
+            ],
+            [
+                'nama' => 'Bal',
+                'singkat' => 'Bal',
+            ],
+            [
+                'nama' => 'Karung',
+                'singkat' => 'Krg',
+            ],
+
+        ];
+
+        foreach ($satuan as $s) {
+            Satuan::create($s);
+        }
 
         \App\Models\User::factory(10)->create();
         \App\Models\Store::factory(10)->create();

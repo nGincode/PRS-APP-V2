@@ -538,7 +538,8 @@
                     @foreach ($Users as $v)
                         @if ($v['id'] != 1)
                             <option value="{{ $v['id'] }}"
-                                @foreach ($GroupsUsers as $v1) @if ($v1['users_id'] == $v['id']) selected @endif @endforeach>
+                                @foreach ($GroupsUsers as $v1) @if ($v1['users_id'] == $v['id']) selected @endif
+                                @endforeach>
                                 {{ $v['username'] }}</option>
                         @endif
                     @endforeach
@@ -776,6 +777,105 @@
     </script>
 @endisset
 
+
+
+@isset($SatuanData)
+    <form id="SatuanEdit" action="{{ url('/Master/Satuan/SatuanEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Satuan</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $SatuanData['nama'] }}" id="nama" placeholder="Kilogram" name="nama">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="singkat">Singkatan</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $SatuanData['singkat'] }}" id="singkat" placeholder="Kg" name="singkat">
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </div>
+    </form>
+    <script>
+        $(document).ready(function() {
+            var id = $("#SatuanEdit");
+
+            if (id.length) {
+                id.validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'singkat': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                id.on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    id[0].reset();
+                                    $('#Modal').modal('hide');
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
+@endisset
+
 @isset($BahanData)
     <form id="BahanEdit" action="{{ url('/Master/Bahan/BahanEdit') }}">
         @csrf
@@ -813,47 +913,11 @@
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram" @if ($BahanData['satuan_pembelian'] == 'Kilogram') selected @endif>Kilogram</option>
-                            <option value="Gram" @if ($BahanData['satuan_pembelian'] == 'Gram') selected @endif>Gram</option>
-                            <option value="Ons" @if ($BahanData['satuan_pembelian'] == 'Ons') selected @endif>Ons</option>
-                            <option value="Pack" @if ($BahanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
-                            <option value="Pieces" @if ($BahanData['satuan_pembelian'] == 'Pieces') selected @endif>Pieces</option>
-                            <option value="Butir" @if ($BahanData['satuan_pembelian'] == 'Butir') selected @endif>Butir</option>
-                            <option value="Potong" @if ($BahanData['satuan_pembelian'] == 'Potong') selected @endif>Potong</option>
-                            <option value="Liter" @if ($BahanData['satuan_pembelian'] == 'Liter') selected @endif>Liter</option>
-                            <option value="Mililiter" @if ($BahanData['satuan_pembelian'] == 'Mililiter') selected @endif>Mililiter</option>
-                            <option value="Galon" @if ($BahanData['satuan_pembelian'] == 'Galon') selected @endif>Galon</option>
-                            <option value="Pouch" @if ($BahanData['satuan_pembelian'] == 'Pouch') selected @endif>Pouch</option>
-                            <option value="Lembar" @if ($BahanData['satuan_pembelian'] == 'Lembar') selected @endif>Lembar</option>
-                            <option value="Roll" @if ($BahanData['satuan_pembelian'] == 'Roll') selected @endif>Roll</option>
-                            <option value="Ikat" @if ($BahanData['satuan_pembelian'] == 'Ikat') selected @endif>Ikat</option>
-                            <option value="Bal" @if ($BahanData['satuan_pembelian'] == 'Bal') selected @endif>Bal</option>
-                            <option value="Karung" @if ($BahanData['satuan_pembelian'] == 'Karung') selected @endif>Karung</option>
-                            <option value="Kaleng" @if ($BahanData['satuan_pembelian'] == 'Kaleng') selected @endif>Kaleng</option>
-                            <option value="Dus" @if ($BahanData['satuan_pembelian'] == 'Dus') selected @endif>Dus</option>
-                            <option value="Botol" @if ($BahanData['satuan_pembelian'] == 'Botol') selected @endif>Botol</option>
-                            <option value="Jerigen" @if ($BahanData['satuan_pembelian'] == 'Jerigen') selected @endif>Jerigen</option>
-                            <option value="Tabung" @if ($BahanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
-                            <option value="Ekor" @if ($BahanData['satuan_pembelian'] == 'Papan') selected @endif>Papan</option>
-                            <option value="Bungkus" @if ($BahanData['satuan_pembelian'] == 'Bungkus') selected @endif>Bungkus</option>
-                            <option value="Ember" @if ($BahanData['satuan_pembelian'] == 'Ember') selected @endif>Ember</option>
-                            <option value="Toples" @if ($BahanData['satuan_pembelian'] == 'Toples') selected @endif>Toples</option>
-                            <option value="Shot" @if ($BahanData['satuan_pembelian'] == 'Shot') selected @endif>Shot</option>
-                            <option value="Cup" @if ($BahanData['satuan_pembelian'] == 'Cup') selected @endif>Cup</option>
-                            <option value="Batang" @if ($BahanData['satuan_pembelian'] == 'Batang') selected @endif>Batang</option>
-                            <option value="Tusuk" @if ($BahanData['satuan_pembelian'] == 'Tusuk') selected @endif>Tusuk</option>
-                            <option value="Porsi" @if ($BahanData['satuan_pembelian'] == 'Porsi') selected @endif>Porsi</option>
-                            <option value="Centimeter" @if ($BahanData['satuan_pembelian'] == 'Centimeter') selected @endif>Centimeter
-                            </option>
-                            <option value="Meter" @if ($BahanData['satuan_pembelian'] == 'Meter') selected @endif>Meter</option>
-                            <option value="Slop" @if ($BahanData['satuan_pembelian'] == 'Slop') selected @endif>Slop</option>
-                            <option value="Loaf" @if ($BahanData['satuan_pembelian'] == 'Loaf') selected @endif>Loaf</option>
-                            <option value="Pasang" @if ($BahanData['satuan_pembelian'] == 'Pasang') selected @endif>Pasang</option>
-                            <option value="Slice" @if ($BahanData['satuan_pembelian'] == 'Slice') selected @endif>Slice</option>
-                            <option value="Sendok Teh" @if ($BahanData['satuan_pembelian'] == 'Sendok Teh') selected @endif>Sendok Teh
-                            </option>
-                            <option value="Sendok Makan" @if ($BahanData['satuan_pembelian'] == 'Sendok Makan') selected @endif>Sendok Makan
-                            </option>
+                            @foreach ($satuan as $s1)
+                                <option value="{{ $s1['singkat'] }}" @if ($BahanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                    {{ $s1['nama'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -876,47 +940,11 @@
                             style="width: 100%;">
 
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram" @if ($BahanData['satuan_pemakaian'] == 'Kilogram') selected @endif>Kilogram</option>
-                            <option value="Gram" @if ($BahanData['satuan_pemakaian'] == 'Gram') selected @endif>Gram</option>
-                            <option value="Ons" @if ($BahanData['satuan_pemakaian'] == 'Ons') selected @endif>Ons</option>
-                            <option value="Pack" @if ($BahanData['satuan_pemakaian'] == 'Pack') selected @endif>Pack</option>
-                            <option value="Pieces" @if ($BahanData['satuan_pemakaian'] == 'Pieces') selected @endif>Pieces</option>
-                            <option value="Butir" @if ($BahanData['satuan_pemakaian'] == 'Butir') selected @endif>Butir</option>
-                            <option value="Potong" @if ($BahanData['satuan_pemakaian'] == 'Potong') selected @endif>Potong</option>
-                            <option value="Liter" @if ($BahanData['satuan_pemakaian'] == 'Liter') selected @endif>Liter</option>
-                            <option value="Mililiter" @if ($BahanData['satuan_pemakaian'] == 'Mililiter') selected @endif>Mililiter</option>
-                            <option value="Galon" @if ($BahanData['satuan_pemakaian'] == 'Galon') selected @endif>Galon</option>
-                            <option value="Pouch" @if ($BahanData['satuan_pemakaian'] == 'Pouch') selected @endif>Pouch</option>
-                            <option value="Lembar" @if ($BahanData['satuan_pemakaian'] == 'Lembar') selected @endif>Lembar</option>
-                            <option value="Roll" @if ($BahanData['satuan_pemakaian'] == 'Roll') selected @endif>Roll</option>
-                            <option value="Ikat" @if ($BahanData['satuan_pemakaian'] == 'Ikat') selected @endif>Ikat</option>
-                            <option value="Bal" @if ($BahanData['satuan_pemakaian'] == 'Bal') selected @endif>Bal</option>
-                            <option value="Karung" @if ($BahanData['satuan_pemakaian'] == 'Karung') selected @endif>Karung</option>
-                            <option value="Kaleng" @if ($BahanData['satuan_pemakaian'] == 'Kaleng') selected @endif>Kaleng</option>
-                            <option value="Dus" @if ($BahanData['satuan_pemakaian'] == 'Dus') selected @endif>Dus</option>
-                            <option value="Botol" @if ($BahanData['satuan_pemakaian'] == 'Botol') selected @endif>Botol</option>
-                            <option value="Jerigen" @if ($BahanData['satuan_pemakaian'] == 'Jerigen') selected @endif>Jerigen</option>
-                            <option value="Tabung" @if ($BahanData['satuan_pemakaian'] == 'Tabung') selected @endif>Tabung</option>
-                            <option value="Ekor" @if ($BahanData['satuan_pemakaian'] == 'Papan') selected @endif>Papan</option>
-                            <option value="Bungkus" @if ($BahanData['satuan_pemakaian'] == 'Bungkus') selected @endif>Bungkus</option>
-                            <option value="Ember" @if ($BahanData['satuan_pemakaian'] == 'Ember') selected @endif>Ember</option>
-                            <option value="Toples" @if ($BahanData['satuan_pemakaian'] == 'Toples') selected @endif>Toples</option>
-                            <option value="Shot" @if ($BahanData['satuan_pemakaian'] == 'Shot') selected @endif>Shot</option>
-                            <option value="Cup" @if ($BahanData['satuan_pemakaian'] == 'Cup') selected @endif>Cup</option>
-                            <option value="Batang" @if ($BahanData['satuan_pemakaian'] == 'Batang') selected @endif>Batang</option>
-                            <option value="Tusuk" @if ($BahanData['satuan_pemakaian'] == 'Tusuk') selected @endif>Tusuk</option>
-                            <option value="Porsi" @if ($BahanData['satuan_pemakaian'] == 'Porsi') selected @endif>Porsi</option>
-                            <option value="Centimeter" @if ($BahanData['satuan_pemakaian'] == 'Centimeter') selected @endif>Centimeter
-                            </option>
-                            <option value="Meter" @if ($BahanData['satuan_pemakaian'] == 'Meter') selected @endif>Meter</option>
-                            <option value="Slop" @if ($BahanData['satuan_pemakaian'] == 'Slop') selected @endif>Slop</option>
-                            <option value="Loaf" @if ($BahanData['satuan_pemakaian'] == 'Loaf') selected @endif>Loaf</option>
-                            <option value="Pasang" @if ($BahanData['satuan_pemakaian'] == 'Pasang') selected @endif>Pasang</option>
-                            <option value="Slice" @if ($BahanData['satuan_pemakaian'] == 'Slice') selected @endif>Slice</option>
-                            <option value="Sendok Teh" @if ($BahanData['satuan_pemakaian'] == 'Sendok Teh') selected @endif>Sendok Teh
-                            </option>
-                            <option value="Sendok Makan" @if ($BahanData['satuan_pemakaian'] == 'Sendok Makan') selected @endif>Sendok Makan
-                            </option>
+                            @foreach ($satuan as $s2)
+                                <option value="{{ $s2['singkat'] }}" @if ($BahanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                    {{ $s2['nama'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -945,48 +973,12 @@
                             style="width: 100%;">
 
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Kilogram" @if ($BahanData['satuan_pengeluaran'] == 'Kilogram') selected @endif>Kilogram</option>
-                            <option value="Gram" @if ($BahanData['satuan_pengeluaran'] == 'Gram') selected @endif>Gram</option>
-                            <option value="Ons" @if ($BahanData['satuan_pengeluaran'] == 'Ons') selected @endif>Ons</option>
-                            <option value="Pack" @if ($BahanData['satuan_pengeluaran'] == 'Pack') selected @endif>Pack</option>
-                            <option value="Pieces" @if ($BahanData['satuan_pengeluaran'] == 'Pieces') selected @endif>Pieces</option>
-                            <option value="Butir" @if ($BahanData['satuan_pengeluaran'] == 'Butir') selected @endif>Butir</option>
-                            <option value="Potong" @if ($BahanData['satuan_pengeluaran'] == 'Potong') selected @endif>Potong</option>
-                            <option value="Liter" @if ($BahanData['satuan_pengeluaran'] == 'Liter') selected @endif>Liter</option>
-                            <option value="Mililiter" @if ($BahanData['satuan_pengeluaran'] == 'Mililiter') selected @endif>Mililiter
-                            </option>
-                            <option value="Galon" @if ($BahanData['satuan_pengeluaran'] == 'Galon') selected @endif>Galon</option>
-                            <option value="Pouch" @if ($BahanData['satuan_pengeluaran'] == 'Pouch') selected @endif>Pouch</option>
-                            <option value="Lembar" @if ($BahanData['satuan_pengeluaran'] == 'Lembar') selected @endif>Lembar</option>
-                            <option value="Roll" @if ($BahanData['satuan_pengeluaran'] == 'Roll') selected @endif>Roll</option>
-                            <option value="Ikat" @if ($BahanData['satuan_pengeluaran'] == 'Ikat') selected @endif>Ikat</option>
-                            <option value="Bal" @if ($BahanData['satuan_pengeluaran'] == 'Bal') selected @endif>Bal</option>
-                            <option value="Karung" @if ($BahanData['satuan_pengeluaran'] == 'Karung') selected @endif>Karung</option>
-                            <option value="Kaleng" @if ($BahanData['satuan_pengeluaran'] == 'Kaleng') selected @endif>Kaleng</option>
-                            <option value="Dus" @if ($BahanData['satuan_pengeluaran'] == 'Dus') selected @endif>Dus</option>
-                            <option value="Botol" @if ($BahanData['satuan_pengeluaran'] == 'Botol') selected @endif>Botol</option>
-                            <option value="Jerigen" @if ($BahanData['satuan_pengeluaran'] == 'Jerigen') selected @endif>Jerigen</option>
-                            <option value="Tabung" @if ($BahanData['satuan_pengeluaran'] == 'Tabung') selected @endif>Tabung</option>
-                            <option value="Ekor" @if ($BahanData['satuan_pengeluaran'] == 'Papan') selected @endif>Papan</option>
-                            <option value="Bungkus" @if ($BahanData['satuan_pengeluaran'] == 'Bungkus') selected @endif>Bungkus</option>
-                            <option value="Ember" @if ($BahanData['satuan_pengeluaran'] == 'Ember') selected @endif>Ember</option>
-                            <option value="Toples" @if ($BahanData['satuan_pengeluaran'] == 'Toples') selected @endif>Toples</option>
-                            <option value="Shot" @if ($BahanData['satuan_pengeluaran'] == 'Shot') selected @endif>Shot</option>
-                            <option value="Cup" @if ($BahanData['satuan_pengeluaran'] == 'Cup') selected @endif>Cup</option>
-                            <option value="Batang" @if ($BahanData['satuan_pengeluaran'] == 'Batang') selected @endif>Batang</option>
-                            <option value="Tusuk" @if ($BahanData['satuan_pengeluaran'] == 'Tusuk') selected @endif>Tusuk</option>
-                            <option value="Porsi" @if ($BahanData['satuan_pengeluaran'] == 'Porsi') selected @endif>Porsi</option>
-                            <option value="Centimeter" @if ($BahanData['satuan_pengeluaran'] == 'Centimeter') selected @endif>Centimeter
-                            </option>
-                            <option value="Meter" @if ($BahanData['satuan_pengeluaran'] == 'Meter') selected @endif>Meter</option>
-                            <option value="Slop" @if ($BahanData['satuan_pengeluaran'] == 'Slop') selected @endif>Slop</option>
-                            <option value="Loaf" @if ($BahanData['satuan_pengeluaran'] == 'Loaf') selected @endif>Loaf</option>
-                            <option value="Pasang" @if ($BahanData['satuan_pengeluaran'] == 'Pasang') selected @endif>Pasang</option>
-                            <option value="Slice" @if ($BahanData['satuan_pengeluaran'] == 'Slice') selected @endif>Slice</option>
-                            <option value="Sendok Teh" @if ($BahanData['satuan_pengeluaran'] == 'Sendok Teh') selected @endif>Sendok Teh
-                            </option>
-                            <option value="Sendok Makan" @if ($BahanData['satuan_pengeluaran'] == 'Sendok Makan') selected @endif>Sendok Makan
-                            </option>
+
+                            @foreach ($satuan as $s3)
+                                <option value="{{ $s3['singkat'] }}" @if ($BahanData['satuan_pengeluaran'] == $s3['singkat']) selected @endif>
+                                    {{ $s3['nama'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -1021,10 +1013,12 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Penggunaan Ke</label>
-                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna"
+                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna_edit"
                             data-placeholder="Pilih Outlet" style="width: 100%;">
                             @foreach ($Store as $v)
-                                <option value="{{ $v['id'] }}" @if (in_array($v['id'], json_decode($BahanData['pengguna']))) selected @endif>
+                                <option value="{{ $v['id'] }}"
+                                    @if ($BahanData['pengguna']) @if (in_array($v['id'], json_decode($BahanData['pengguna']))) selected @endif
+                                    @endif>
                                     {{ $v['nama'] }}</option>
                             @endforeach
                         </select>
@@ -1192,10 +1186,12 @@
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Buah" @if ($PeralatanData['satuan_pembelian'] == 'Buah') selected @endif>Buah</option>
-                            <option value="Tabung" @if ($PeralatanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
-                            <option value="Pack" @if ($PeralatanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
-                            <option value="Helai" @if ($PeralatanData['satuan_pembelian'] == 'Helai') selected @endif>Helai</option>
+
+                            @foreach ($satuan as $s1)
+                                <option value="{{ $s1['singkat'] }}" @if ($PeralatanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                    {{ $s1['nama'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -1218,10 +1214,12 @@
                             style="width: 100%;">
 
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="Buah" @if ($PeralatanData['satuan_pembelian'] == 'Buah') selected @endif>Buah</option>
-                            <option value="Tabung" @if ($PeralatanData['satuan_pembelian'] == 'Tabung') selected @endif>Tabung</option>
-                            <option value="Pack" @if ($PeralatanData['satuan_pembelian'] == 'Pack') selected @endif>Pack</option>
-                            <option value="Helai" @if ($PeralatanData['satuan_pembelian'] == 'Helai') selected @endif>Helai</option>
+
+                            @foreach ($satuan as $s2)
+                                <option value="{{ $s2['singkat'] }}" @if ($PeralatanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                    {{ $s2['nama'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -1255,10 +1253,12 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Penggunaan Ke</label>
-                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna"
+                        <select class="select2" multiple="multiple" name="pengguna[]" id="pengguna_edit"
                             data-placeholder="Pilih Outlet" style="width: 100%;">
                             @foreach ($Store as $v)
-                                <option value="{{ $v['id'] }}" @if (in_array($v['id'], json_decode($PeralatanData['pengguna']))) selected @endif>
+                                <option value="{{ $v['id'] }}"
+                                    @if ($PeralatanData['pengguna']) @if (in_array($v['id'], json_decode($PeralatanData['pengguna']))) selected @endif
+                                    @endif>
                                     {{ $v['nama'] }}</option>
                             @endforeach
                         </select>

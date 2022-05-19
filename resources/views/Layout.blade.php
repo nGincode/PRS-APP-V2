@@ -317,7 +317,7 @@ if (Auth::check()) {
 
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
     <div class="wrapper">
 
         <!-- Preloader -->
@@ -487,6 +487,13 @@ if (Auth::check()) {
                                         </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="{{ url('/Master/Satuan') }}"
+                                            class="nav-link @if ($subtitle == 'Satuan') active @endif">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Satuan</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="{{ url('/Master/Bahan') }}"
                                             class="nav-link @if ($subtitle == 'Bahan') active @endif">
                                             <i class="far fa-circle nav-icon"></i>
@@ -515,7 +522,7 @@ if (Auth::check()) {
                             <li class="nav-item @if ($title == 'Belanja')  @endif ">
                                 <a href="{{ url('/Belanja') }}"
                                     class="nav-link @if ($title == 'Belanja') active @endif "">
-                                    <i class="     nav-icon fas fa-shopping-bag "></i>
+                                    <i class="       nav-icon fas fa-shopping-bag "></i>
                                     <p>
                                         Belanja
                                         <span class="right badge badge-danger">New</span>

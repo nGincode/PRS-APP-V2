@@ -55,10 +55,9 @@
                                         class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Buah">Buah</option>
-                                        <option value="Tabung">Tabung</option>
-                                        <option value="Pack">Pack</option>
-                                        <option value="Helai">Helai</option>
+                                        @foreach ($satuan as $s1)
+                                            <option value="{{ $s1['singkat'] }}">{{ $s1['nama'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -79,10 +78,9 @@
                                         class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Buah">Buah</option>
-                                        <option value="Tabung">Tabung</option>
-                                        <option value="Pack">Pack</option>
-                                        <option value="Helai">Helai</option>
+                                        @foreach ($satuan as $s2)
+                                            <option value="{{ $s2['singkat'] }}">{{ $s2['nama'] }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
