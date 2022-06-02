@@ -519,10 +519,23 @@ if (Auth::check()) {
                         @endif
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                            <li class="nav-item @if ($title == 'POS')  @endif ">
+                                <a href="{{ url('/POS') }}"
+                                    class="nav-link @if ($title == 'POS') active @endif "">
+                                    <i class="  nav-icon fas fa-th"></i>
+                                    <p>
+                                        Poin Of Sales (POS)
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item @if ($title == 'Belanja')  @endif ">
                                 <a href="{{ url('/Belanja') }}"
                                     class="nav-link @if ($title == 'Belanja') active @endif "">
-                                    <i class="       nav-icon fas fa-shopping-bag "></i>
+                                    <i class="             nav-icon fas fa-shopping-bag "></i>
                                     <p>
                                         Belanja
                                         <span class="right badge badge-danger">New</span>
@@ -559,6 +572,7 @@ if (Auth::check()) {
                                 </ul>
                             </li>
                         @endif
+
 
                         {{-- @if (in_array('createPemesanan', $user_permission) || in_array('updatePemesanan', $user_permission) || in_array('viewPemesanan', $user_permission) || in_array('deletePemesanan', $user_permission)) --}}
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))

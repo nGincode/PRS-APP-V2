@@ -18,6 +18,7 @@ use App\Http\Controllers\BelanjaController;
 
 
 use App\Models\Olahan;
+use App\Models\Belanja;
 use App\Models\Bahan_Olahan;
 
 
@@ -202,6 +203,9 @@ Route::controller(BelanjaController::class)->group(
         Route::get('Belanja', 'Index')->middleware('auth');
         Route::post('Belanja/Namabarang', 'Namabarang')->middleware('auth');
         Route::post('Belanja/Masterbahan', 'Masterbahan')->middleware('auth');
+        Route::post('Belanja', 'Input')->middleware('auth');
+        Route::post('Belanja/HapusItem', 'HapusItem')->middleware('auth');
+        Route::post('Belanja/Manage', 'Manage')->middleware('auth');
     }
 );
 
@@ -216,12 +220,15 @@ Route::controller(PemesananController::class)->group(
 
 
 
-//Pemesanan
+//Inventory
 Route::controller(InventoryController::class)->group(
     function () {
-
-        //OLAHAN
+        //Stock
         Route::get('Inventory/Stock', 'Stock')->middleware('auth');
+        Route::post('Inventory/Stock', 'Tambah')->middleware('auth');
+
+        Route::post('Inventory/Manage/Stock', 'Manage')->middleware('auth');
+        Route::post('Inventory/Stock/Hapus', 'Hapus')->middleware('auth');
     }
 );
 
@@ -286,8 +293,10 @@ Route::get(
 Route::get(
     '/test1',
     function () {
-        $this->data['title'] = 'Dashboard';
-        $this->data['subtitle'] = '';
-        return view('test', $this->data);
+
+        $tgl = Belanja::select('tgl')->where('delete', false)->get();
+        // $Data = array_unique($tgl);
+
+        dd($tgl);
     }
 );

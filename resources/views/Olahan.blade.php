@@ -48,147 +48,13 @@
                                         id="satuan_pengeluaran" class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-                                        <option value="Kilogram"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Kilogram') selected @endif @endisset>
-                                            Kilogram</option>
-                                        <option value="Gram"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Gram') selected @endif @endisset>
-                                            Gram
-                                        </option>
-                                        <option value="Ons"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Ons') selected @endif @endisset>
-                                            Ons
-                                        </option>
-                                        <option value="Pack"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Pack') selected @endif @endisset>
-                                            Pack
-                                        </option>
-                                        <option value="Pieces"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Pieces') selected @endif @endisset>
-                                            Pieces
-                                        </option>
-                                        <option value="Butir"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Butir') selected @endif @endisset>
-                                            Butir
-                                        </option>
-                                        <option value="Potong"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Potong') selected @endif @endisset>
-                                            Potong
-                                        </option>
-                                        <option value="Liter"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Liter') selected @endif @endisset>
-                                            Liter
-                                        </option>
-                                        <option value="Mililiter"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Mililiter') selected @endif @endisset>
-                                            Mililiter</option>
-                                        <option value="Galon"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Galon') selected @endif @endisset>
-                                            Galon
-                                        </option>
-                                        <option value="Pouch"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Pouch') selected @endif @endisset>
-                                            Pouch
-                                        </option>
-                                        <option value="Lembar"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Lembar') selected @endif @endisset>
-                                            Lembar</option>
-                                        <option value="Roll"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Roll') selected @endif @endisset>
-                                            Roll
-                                        </option>
-                                        <option value="Ikat"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Ikat') selected @endif @endisset>
-                                            Ikat
-                                        </option>
-                                        <option value="Bal"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Bal') selected @endif @endisset>
-                                            Bal
-                                        </option>
-                                        <option value="Karung"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Karung') selected @endif @endisset>
-                                            Karung</option>
-                                        <option value="Kaleng"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Kaleng') selected @endif @endisset>
-                                            Kaleng</option>
-                                        <option value="Dus"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Dus') selected @endif @endisset>
-                                            Dus
-                                        </option>
-                                        <option value="Botol"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Botol') selected @endif @endisset>
-                                            Botol
-                                        </option>
-                                        <option value="Jerigen"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Jerigen') selected @endif @endisset>
-                                            Jerigen</option>
-                                        <option value="Tabung"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Tabung') selected @endif @endisset>
-                                            Tabung</option>
-                                        <option value="Ekor"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Papan') selected @endif @endisset>
-                                            Papan
-                                        </option>
-                                        <option value="Bungkus"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Bungkus') selected @endif @endisset>
-                                            Bungkus</option>
-                                        <option value="Ember"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Ember') selected @endif @endisset>
-                                            Ember
-                                        </option>
-                                        <option value="Toples"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Toples') selected @endif @endisset>
-                                            Toples</option>
-                                        <option value="Shot"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Shot') selected @endif @endisset>
-                                            Shot
-                                        </option>
-                                        <option value="Cup"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Cup') selected @endif @endisset>
-                                            Cup
-                                        </option>
-                                        <option value="Batang"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Batang') selected @endif @endisset>
-                                            Batang</option>
-                                        <option value="Tusuk"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Tusuk') selected @endif @endisset>
-                                            Tusuk
-                                        </option>
-                                        <option value="Porsi"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Porsi') selected @endif @endisset>
-                                            Porsi
-                                        </option>
-                                        <option value="Centimeter"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Centimeter') selected @endif @endisset>
-                                            Centimeter
-                                        </option>
-                                        <option value="Meter"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Meter') selected @endif @endisset>
-                                            Meter
-                                        </option>
-                                        <option value="Slop"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Slop') selected @endif @endisset>
-                                            Slop
-                                        </option>
-                                        <option value="Loaf"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Loaf') selected @endif @endisset>
-                                            Loaf
-                                        </option>
-                                        <option value="Pasang"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Pasang') selected @endif @endisset>
-                                            Pasang</option>
-                                        <option value="Slice"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Slice') selected @endif @endisset>
-                                            Slice
-                                        </option>
-                                        <option value="Sendok Teh"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Sendok Teh') selected @endif @endisset>
-                                            Sendok Teh
-                                        </option>
-                                        <option value="Sendok Makan"
-                                            @isset($Olahan['satuan_pengeluaran']) @if ($Olahan['satuan_pengeluaran'] == 'Sendok Makan') selected @endif @endisset>
-                                            Sendok Makan
-                                        </option>
+                                        @foreach ($satuan as $s1)
+                                            <option value="{{ $s1['singkat'] }}"
+                                                @if (isset($Olahan['satuan_pengeluaran'])) @if ($Olahan['satuan_pengeluaran'] == $s1['singkat']) selected @endif
+                                                @endif>
+                                                {{ $s1['nama'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -200,148 +66,13 @@
                                         class="form-control select2 select2-danger" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
-
-                                        <option value="Kilogram"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Kilogram') selected @endif @endisset>
-                                            Kilogram</option>
-                                        <option value="Gram"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Gram') selected @endif @endisset>
-                                            Gram
-                                        </option>
-                                        <option value="Ons"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Ons') selected @endif @endisset>
-                                            Ons
-                                        </option>
-                                        <option value="Pack"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Pack') selected @endif @endisset>
-                                            Pack
-                                        </option>
-                                        <option value="Pieces"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Pieces') selected @endif @endisset>
-                                            Pieces
-                                        </option>
-                                        <option value="Butir"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Butir') selected @endif @endisset>
-                                            Butir
-                                        </option>
-                                        <option value="Potong"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Potong') selected @endif @endisset>
-                                            Potong
-                                        </option>
-                                        <option value="Liter"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Liter') selected @endif @endisset>
-                                            Liter
-                                        </option>
-                                        <option value="Mililiter"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Mililiter') selected @endif @endisset>
-                                            Mililiter</option>
-                                        <option value="Galon"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Galon') selected @endif @endisset>
-                                            Galon
-                                        </option>
-                                        <option value="Pouch"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Pouch') selected @endif @endisset>
-                                            Pouch
-                                        </option>
-                                        <option value="Lembar"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Lembar') selected @endif @endisset>
-                                            Lembar</option>
-                                        <option value="Roll"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Roll') selected @endif @endisset>
-                                            Roll
-                                        </option>
-                                        <option value="Ikat"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Ikat') selected @endif @endisset>
-                                            Ikat
-                                        </option>
-                                        <option value="Bal"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Bal') selected @endif @endisset>
-                                            Bal
-                                        </option>
-                                        <option value="Karung"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Karung') selected @endif @endisset>
-                                            Karung</option>
-                                        <option value="Kaleng"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Kaleng') selected @endif @endisset>
-                                            Kaleng</option>
-                                        <option value="Dus"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Dus') selected @endif @endisset>
-                                            Dus
-                                        </option>
-                                        <option value="Botol"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Botol') selected @endif @endisset>
-                                            Botol
-                                        </option>
-                                        <option value="Jerigen"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Jerigen') selected @endif @endisset>
-                                            Jerigen</option>
-                                        <option value="Tabung"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Tabung') selected @endif @endisset>
-                                            Tabung</option>
-                                        <option value="Ekor"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Papan') selected @endif @endisset>
-                                            Papan
-                                        </option>
-                                        <option value="Bungkus"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Bungkus') selected @endif @endisset>
-                                            Bungkus</option>
-                                        <option value="Ember"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Ember') selected @endif @endisset>
-                                            Ember
-                                        </option>
-                                        <option value="Toples"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Toples') selected @endif @endisset>
-                                            Toples</option>
-                                        <option value="Shot"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Shot') selected @endif @endisset>
-                                            Shot
-                                        </option>
-                                        <option value="Cup"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Cup') selected @endif @endisset>
-                                            Cup
-                                        </option>
-                                        <option value="Batang"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Batang') selected @endif @endisset>
-                                            Batang</option>
-                                        <option value="Tusuk"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Tusuk') selected @endif @endisset>
-                                            Tusuk
-                                        </option>
-                                        <option value="Porsi"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Porsi') selected @endif @endisset>
-                                            Porsi
-                                        </option>
-                                        <option value="Centimeter"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Centimeter') selected @endif @endisset>
-                                            Centimeter
-                                        </option>
-                                        <option value="Meter"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Meter') selected @endif @endisset>
-                                            Meter
-                                        </option>
-                                        <option value="Slop"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Slop') selected @endif @endisset>
-                                            Slop
-                                        </option>
-                                        <option value="Loaf"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Loaf') selected @endif @endisset>
-                                            Loaf
-                                        </option>
-                                        <option value="Pasang"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Pasang') selected @endif @endisset>
-                                            Pasang</option>
-                                        <option value="Slice"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Slice') selected @endif @endisset>
-                                            Slice
-                                        </option>
-                                        <option value="Sendok Teh"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Sendok Teh') selected @endif @endisset>
-                                            Sendok Teh
-                                        </option>
-                                        <option value="Sendok Makan"
-                                            @isset($Olahan['satuan_penyajian']) @if ($Olahan['satuan_penyajian'] == 'Sendok Makan') selected @endif @endisset>
-                                            Sendok Makan
-                                        </option>
+                                        @foreach ($satuan as $s2)
+                                            <option value="{{ $s2['singkat'] }}"
+                                                @if (isset($Olahan['satuan_penyajian'])) @if ($Olahan['satuan_penyajian'] == $s2['singkat']) selected @endif
+                                                @endif>
+                                                {{ $s2['nama'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -874,48 +605,48 @@
             })
         }
 
-        $(document).ready(function() {
+        // $(document).ready(function() {
 
-            var stickyNavTop = $('#divautosave').offset().top;
+        //     var stickyNavTop = $('#divautosave').offset().top;
 
-            var stickyNav = function() {
+        //     var stickyNav = function() {
 
-                var scrollTop = $(window).scrollTop();
+        //         var scrollTop = $(window).scrollTop();
 
-                if (scrollTop > stickyNavTop) {
+        //         if (scrollTop > stickyNavTop) {
 
-                    $('#divautosave').css({
-                        'position': 'fixed',
-                        'top': 0,
-                        'right': 0,
-                        'padding': '10px',
-                        'z-index': 9999,
-                        'background': 'white',
-                        'border-radius': '10px 0px 10px 0px',
-                        'box-shadow': '5px 0px 5px 5px #888888'
-                    });
+        //             $('#divautosave').css({
+        //                 'position': 'fixed',
+        //                 'top': 0,
+        //                 'right': 0,
+        //                 'padding': '10px',
+        //                 'z-index': 9999,
+        //                 'background': 'white',
+        //                 'border-radius': '10px 0px 10px 0px',
+        //                 'box-shadow': '5px 0px 5px 5px #888888'
+        //             });
 
-                } else {
+        //         } else {
 
-                    $('#divautosave').css({
-                        'position': 'relative',
-                        'background': 'unset',
-                        'border-radius': 'unset',
-                        'box-shadow': 'unset'
-                    });
+        //             $('#divautosave').css({
+        //                 'position': 'relative',
+        //                 'background': 'unset',
+        //                 'border-radius': 'unset',
+        //                 'box-shadow': 'unset'
+        //             });
 
-                }
+        //         }
 
-            };
+        //     };
 
-            stickyNav();
+        //     stickyNav();
 
-            $(window).scroll(function() {
+        //     $(window).scroll(function() {
 
-                stickyNav();
+        //         stickyNav();
 
-            });
+        //     });
 
-        });
+        // });
     </script>
 @endsection

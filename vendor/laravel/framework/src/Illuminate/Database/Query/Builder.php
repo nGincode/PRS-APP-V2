@@ -678,7 +678,7 @@ class Builder implements BuilderContract
      *
      * @param  array  $wheres
      * @param  array  $bindings
-     * @return void
+     * @return $this
      */
     public function mergeWheres($wheres, $bindings)
     {
@@ -2003,8 +2003,8 @@ class Builder implements BuilderContract
      * Add a "having" clause to the query.
      *
      * @param  \Closure|string  $column
-     * @param  string|null  $operator
-     * @param  string|null  $value
+     * @param  mixed  $operator
+     * @param  mixed  $value
      * @param  string  $boolean
      * @return $this
      */
@@ -2047,8 +2047,8 @@ class Builder implements BuilderContract
      * Add an "or having" clause to the query.
      *
      * @param  \Closure|string  $column
-     * @param  string|null  $operator
-     * @param  string|null  $value
+     * @param  mixed  $operator
+     * @param  mixed  $value
      * @return $this
      */
     public function orHaving($column, $operator = null, $value = null)
@@ -2634,7 +2634,7 @@ class Builder implements BuilderContract
     /**
      * Paginate the given query into a simple paginator.
      *
-     * @param  int  $perPage
+     * @param  int|\Closure  $perPage
      * @param  array  $columns
      * @param  string  $pageName
      * @param  int|null  $page
@@ -2645,6 +2645,8 @@ class Builder implements BuilderContract
         $page = $page ?: Paginator::resolveCurrentPage($pageName);
 
         $total = $this->getCountForPagination();
+
+        $perPage = $perPage instanceof Closure ? $perPage($total) : $perPage;
 
         $results = $total ? $this->forPage($page, $perPage)->get($columns) : collect();
 

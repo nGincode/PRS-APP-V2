@@ -15,16 +15,20 @@ return new class extends Migration
     {
         Schema::create('belanja', function (Blueprint $table) {
             $table->id();
+            $table->date('tgl');
             $table->string('nama');
-            $table->integer('bahan_id')->nullable();
             $table->string('kategori');
-            $table->integer('qty');
-            $table->string('uom');
-            $table->string('harga');
-            $table->string('master_uom')->nullable();
-            $table->string('master_harga')->nullable();
-            $table->string('total');
-            $table->string('ket');
+            $table->integer('qty')->nullable();
+            $table->string('uom')->nullable();
+            $table->string('harga')->nullable();
+            $table->integer('store_id');
+            $table->integer('bahan_id')->nullable();
+            $table->string('konversi')->nullable();
+            $table->string('item_qty')->nullable();
+            $table->string('item_uom')->nullable();
+            $table->string('item_harga')->nullable();
+            $table->string('total')->nullable();
+            $table->string('ket')->nullable();
             $table->boolean('hutang')->default(false);
             $table->boolean('delete')->default(false);
             $table->timestamps();

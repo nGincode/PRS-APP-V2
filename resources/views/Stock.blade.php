@@ -3,7 +3,7 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            <form id="FormOlahan" action="{{ url('/Foodcost/Olahan') }}">
+            <form id="FormInventory" action="{{ url('/Inventory/Stock') }}">
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
@@ -23,37 +23,65 @@
                         <div class="row">
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="nama">Qty</label>
-                                    <input type="number" class="form-control" id="nama" placeholder="Nama Olahan"
-                                        name="nama">
+                                    <label for="nama">Nama Bahan</label>
+                                    <select class="select2" name="nama" id="nama" data-placeholder="Pilih Nama Bahan"
+                                        style="width: 100%;">
+                                        @if ($bahan)
+                                            <option selected="true" disabled="disabled">Pilih</option>
+                                            @foreach ($bahan as $v)
+                                                <option value="{{ $v['id'] }}">
+                                                    {{ $v['nama'] . ' (' . $v['satuan'] . ')' }}
+                                                </option>
+                                            @endforeach
+                                        @else
+                                            <option selected="true" disabled="disabled">Master Bahan Kosong</option>
+                                        @endif
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="nama">Qty</label>
-                                    <input type="number" class="form-control" id="nama" placeholder="Nama Olahan"
-                                        name="nama">
+                                    <label for="qty">Qty</label>
+                                    <input type="number" class="form-control" id="qty" placeholder="QTY" name="qty">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-12">
-                                <label>Bahan Baku</label>
-                                <table id="managebahanbaku" class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Nama Bahan</th>
-                                            <th scope="col">Qty
-                                            </th>
-                                            <th scope="col">Harga</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">
-                                                <i class="fas fa-trash"></i>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                </table>
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Satuan</label>
+                                    <select name="satuan" id="satuan" class="form-control select2 select2-danger" required
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        @foreach ($satuan as $s1)
+                                            <option value="{{ $s1['singkat'] }}">{{ $s1['nama'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="auto_harga">Auto Harga</label>
+                                    <select class="select2" name="auto_harga" id="auto_harga"
+                                        data-placeholder="Pilih" style="width: 100%;">
+                                        <option value="1">True</option>
+                                        <option value="0">False</option>
+                                    </select>
+                                    <span>*Harga akan berubah menyesuiakan belanja</span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="harga">Harga Sekarang</label>
+                                    <input type="number" class="form-control" id="harga" placeholder="Harga" name="harga">
+                                </div>
+                            </div>
+
                         </div>
                         <!-- /.row -->
                     </div>
@@ -70,13 +98,13 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <table id="manage2" class="table table-bordered table-striped">
+                    <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>
-                                <th>Biaya Produksi</th>
-                                <th>Hasil Jadi</th>
+                                <th>Qty</th>
+                                <th>Harga</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

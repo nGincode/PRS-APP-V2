@@ -13,6 +13,7 @@ use App\Models\LogistikBelanja;
 use App\Models\LogistikOrder;
 use App\Models\Groups;
 use App\Models\Olahan;
+use App\Models\Satuan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,6 +41,7 @@ class FoodcostController extends Controller
     {
         $this->data['subtitle'] = 'Olahan';
         $this->data['kode'] = 'BO' . $this->kode;
+        $this->data['satuan'] = Satuan::all();
 
 
         $id = session('IdOlahan');

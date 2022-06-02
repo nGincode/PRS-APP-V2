@@ -66,11 +66,10 @@ class ChainAdapter implements AdapterInterface, CacheInterface, PruneableInterfa
         $this->adapterCount = \count($this->adapters);
         $this->defaultLifetime = $defaultLifetime;
 
-        self::$syncItem ?? self::$syncItem = \Closure::bind(
+        self::$syncItem ??= \Closure::bind(
             static function ($sourceItem, $item, $defaultLifetime, $sourceMetadata = null) {
                 $sourceItem->isTaggable = false;
-                $sourceMetadata = $sourceMetadata ?? $sourceItem->metadata;
-                unset($sourceMetadata[CacheItem::METADATA_TAGS]);
+                $sourceMetadata ??= $sourceItem->metadata;
 
                 $item->value = $sourceItem->value;
                 $item->isHit = $sourceItem->isHit;
@@ -108,7 +107,7 @@ class ChainAdapter implements AdapterInterface, CacheInterface, PruneableInterfa
                 $value = $this->doGet($adapter, $key, $callback, $beta, $metadata);
             }
             if (null !== $item) {
-                (self::$syncItem)($lastItem = $lastItem ?? $item, $item, $this->defaultLifetime, $metadata);
+                (self::$syncItem)($lastItem ??= $item, $item, $this->defaultLifetime, $metadata);
             }
 
             return $value;
