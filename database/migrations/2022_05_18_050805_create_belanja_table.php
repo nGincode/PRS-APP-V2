@@ -24,12 +24,11 @@ return new class extends Migration
             $table->integer('store_id');
             $table->integer('bahan_id')->nullable();
             $table->string('konversi')->nullable();
-            $table->string('item_qty')->nullable();
             $table->string('item_uom')->nullable();
-            $table->string('item_harga')->nullable();
             $table->string('total')->nullable();
             $table->string('ket')->nullable();
             $table->boolean('hutang')->default(false);
+            $table->boolean('up')->default(false);
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

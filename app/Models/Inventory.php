@@ -17,4 +17,9 @@ class Inventory extends Model
     {
         return $this->belongsTo(Bahan::class);
     }
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

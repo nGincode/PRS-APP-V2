@@ -15,6 +15,7 @@ use App\Models\Groups;
 use App\Models\Inventory;
 use App\Models\Olahan;
 use App\Models\Satuan;
+use App\Models\OpnameStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -187,6 +188,126 @@ class InventoryController extends Controller
                 'pesan' =>  'Terjadi kegagalan system'
             ];
         };
+
+        echo json_encode($data);
+    }
+
+
+    public function Opname(Request $request)
+    {
+        $this->data['subtitle'] = 'Opname';
+
+        $bahan = [];
+        $inv = [];
+        $inventory = Inventory::where('delete', false)->get();
+        foreach ($inventory as $v) {
+            $inv[] = $v['bahan_id'];
+        }
+
+        foreach (Bahan::where('delete', false)->get() as $key => $value) {
+            if (in_array($value['id'], $inv)) {
+                $bahan[] = array(
+                    'nama' => $value['nama'],
+                    'id' => $value['id'],
+                    'satuan' => $value['satuan_pengeluaran'],
+                );
+            }
+        }
+        $this->data['bahan'] = $bahan;
+
+        return view('OpnameStock', $this->data);
+    }
+    public function ManageOpname(Request $request)
+    {
+
+        $this->data['subtitle'] = 'Stock';
+        $this->subtitle = $this->data['subtitle'];
+
+        $result = array('data' => array());
+        $Data = OpnameStock::where('delete', false)->latest()->get();
+        foreach ($Data as $value) {
+
+            if ($value['status'] == 'Tambah') {
+                $qtyjml = $value['qty'] +  $value['qty_sebelum'];
+            } elseif ($value['status'] == 'Kurang') {
+                $qtyjml =  $value['qty_sebelum'] - $value['qty'];
+            } else {
+                $qtyjml = '';
+            }
+
+            $result['data'][] = array(
+                $value['tgl'],
+                $value['nama'],
+                $value['status'],
+                $value['qty'],
+                $value['qty_sebelum'],
+                $qtyjml,
+                $value['ket'],
+            );
+        }
+        echo json_encode($result);
+    }
+    public function TambahOpname(Request $request)
+    {
+        $nama = $request->input('nama');
+        $status = $request->input('status');
+        $qty = $request->input('qty');
+
+        $bahan = Inventory::where('bahan_id', $nama)->with('Bahan', 'Store')->first();
+
+        if ($bahan) {
+            if ($status == 'Tambah') {
+                $qtyjml = $qty + $bahan['qty'];
+            } elseif ($status == 'Kurang') {
+                $qtyjml = $bahan['qty'] - $qty;
+            } else {
+                $qtyjml = '';
+            }
+            $input = [
+                'bahan_id' => $nama,
+                'nama' => $bahan['bahan']->nama,
+                'status' => $status,
+                'qty' => $qty,
+                'store_id' => $request->session()->get('store_id'),
+                'qty_sebelum' => $bahan['qty']
+            ];
+
+            if ($qtyjml) {
+                if (Inventory::where('id', $bahan['id'])->update(['qty' => $qtyjml, 'updated_at' => date('Y-m-d H:i:s')])) {
+                    if (OpnameStock::insert($input)) {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'success',
+                            'pesan' =>  'Berhasil Menambah Stock'
+                        ];
+                    } else {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Terjadi kegagalan system'
+                        ];
+                    };
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                }
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Status Tidak didukung'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Inventory Tidak Ditemukan'
+            ];
+        }
 
         echo json_encode($data);
     }

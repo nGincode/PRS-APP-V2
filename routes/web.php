@@ -13,12 +13,14 @@ use App\Http\Controllers\FoodcostController;
 use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\BelanjaController;
+use App\Http\Controllers\POSController;
 
 
 
 
 use App\Models\Olahan;
 use App\Models\Belanja;
+use App\Models\Inventory;
 use App\Models\Bahan_Olahan;
 
 
@@ -202,10 +204,13 @@ Route::controller(BelanjaController::class)->group(
     function () {
         Route::get('Belanja', 'Index')->middleware('auth');
         Route::post('Belanja/Namabarang', 'Namabarang')->middleware('auth');
-        Route::post('Belanja/Masterbahan', 'Masterbahan')->middleware('auth');
+        Route::post('Belanja/Inventorybahanid', 'Inventorybahanid')->middleware('auth');
         Route::post('Belanja', 'Input')->middleware('auth');
         Route::post('Belanja/HapusItem', 'HapusItem')->middleware('auth');
         Route::post('Belanja/Manage', 'Manage')->middleware('auth');
+
+
+        Route::post('Belanja/Upload', 'Upload')->middleware('auth');
     }
 );
 
@@ -219,6 +224,12 @@ Route::controller(PemesananController::class)->group(
 );
 
 
+//POS
+Route::controller(POSController::class)->group(
+    function () {
+        Route::get('POS/', 'index')->middleware('auth');
+    }
+);
 
 //Inventory
 Route::controller(InventoryController::class)->group(
@@ -229,6 +240,11 @@ Route::controller(InventoryController::class)->group(
 
         Route::post('Inventory/Manage/Stock', 'Manage')->middleware('auth');
         Route::post('Inventory/Stock/Hapus', 'Hapus')->middleware('auth');
+
+
+        Route::get('Inventory/Opname', 'Opname')->middleware('auth');
+        Route::post('Inventory/Opname', 'TambahOpname')->middleware('auth');
+        Route::post('Inventory/Manage/Opname', 'ManageOpname')->middleware('auth');
     }
 );
 
@@ -294,9 +310,9 @@ Route::get(
     '/test1',
     function () {
 
-        $tgl = Belanja::select('tgl')->where('delete', false)->get();
+        $tgl = Inventory::where('bahan_id', 1)->with('Bahan', 'Store')->first();
         // $Data = array_unique($tgl);
-
-        dd($tgl);
+        echo $tgl['bahan']->nama;
+        // dd($tgl);
     }
 );

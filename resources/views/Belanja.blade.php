@@ -43,7 +43,7 @@
                                             <th>Nama Barang</th>
                                             <th>Kategori</th>
                                             <th style="min-width: 300px">Qty Belanja</th>
-                                            <th style="min-width: 150px">Konversi</th>
+                                            <th style="min-width: 150px">Qty UOM</th>
                                             <th>Total</th>
                                             <th>Keterangan</th>
                                             <th>Hutang</th>
@@ -53,13 +53,17 @@
                                         <tr>
                                         </tr>
                                         @foreach ($Data as $key => $v)
-                                            <tr>
+                                            <tr id="tr_{{ $key }}"
+                                                @if ($v['up']) style="background-color: #a9a9a966;" @endif>
                                                 <td style="padding-left: 15px;">
-                                                    <a class="btn btn-danger btn-sm" onclick="hapus({{ $v['id'] }})"
-                                                        style="margin-top: 3px;position: absolute;z-index: 9;left: -10px;"><i
-                                                            class="fa fa-times"></i>
-                                                    </a>
-                                                    <select name="nama[]"
+                                                    @if (!$v['up'])
+                                                        <a class="btn btn-danger btn-sm"
+                                                            onclick="hapusbelanja({{ $v['id'] }}, {{ $key }})"
+                                                            style="margin-top: 3px;position: absolute;z-index: 9;left: -10px;"><i
+                                                                class="fa fa-times"></i>
+                                                        </a>
+                                                    @endif
+                                                    <select @if ($v['up']) disabled @endif name="nama[]"
                                                         onchange="clicknama(this.value, {{ $key }})"
                                                         id="nama_{{ $key }}"
                                                         class="form-control select2 select2-danger"
@@ -78,8 +82,15 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    @if (!$v['up'])
+                                                        <input type="hidden" value="{{ $v['id'] }}"
+                                                            id="id_{{ $key }}" name="id[]">
+                                                        <input type="hidden" value="{{ $key }}"
+                                                            id="key_{{ $key }}" name="key[]">
+                                                    @endif
                                                 </td>
-                                                <td> <select name="kategori[]" id="kategori_{{ $key }}" disabled
+                                                <td> <select @if ($v['up']) disabled @endif
+                                                        name="kategori[]" id="kategori_{{ $key }}" disabled
                                                         class="form-control select2 select2-danger"
                                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                                         <option selected="true" disabled="disabled">Pilih Nama</option>
@@ -96,13 +107,15 @@
                                                 <td>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <input type="number" class="form-control"
+                                                            <input @if ($v['up']) disabled @endif
+                                                                type="number" class="form-control"
                                                                 id="qty_{{ $key }}" value="{{ $v['qty'] }}"
                                                                 onkeyup="hitung_belanja(this.value, {{ $key }})"
                                                                 placeholder="Qty" name="qty[]">
                                                         </div>
                                                         <div class="col">
-                                                            <select name="uombelanja[]"
+                                                            <select @if ($v['up']) disabled @endif
+                                                                name="uombelanja[]"
                                                                 onchange="konversi_belanja({{ $key }})"
                                                                 id="uombelanja_{{ $key }}"
                                                                 class="form-control select2 select2-danger"
@@ -118,7 +131,8 @@
                                                             </select>
                                                         </div>
                                                         <div class="col">
-                                                            <input type="text" class="form-control"
+                                                            <input @if ($v['up']) disabled @endif
+                                                                type="text" class="form-control"
                                                                 onkeyup="hitung_belanja(this.value, {{ $key }})"
                                                                 id="harga_{{ $key }}" value="{{ $v['harga'] }}"
                                                                 placeholder="Harga" name="harga[]">
@@ -128,11 +142,8 @@
                                                 <td id="item_{{ $key }}">
                                                     @if ($v['bahan_id'])
                                                         <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text">{{ $v['item_uom'] }}
-                                                                </span>
-                                                            </div>
-                                                            <input onkeyup="hitung_belanja(this.value,{{ $key }})"
+                                                            <input @if ($v['up']) disabled @endif
+                                                                onkeyup="hitung_belanja(this.value,{{ $key }})"
                                                                 style="text-align: right;max-width:50px;" type="text"
                                                                 @if ($v['item_uom'] == $v['uom']) disabled value="1" @else value="{{ $v['konversi'] }}" @endif
                                                                 name="konversi[]" id="konversi_{{ $key }}"
@@ -153,11 +164,13 @@
                                                         -
                                                     @endif
                                                 </td>
-                                                <td> <input type="text" class="form-control" value="{{ $v['ket'] }}"
-                                                        id="ket" placeholder="Keterangan" name="ket[]"
+                                                <td> <input @if ($v['up']) disabled @endif type="text"
+                                                        class="form-control" value="{{ $v['ket'] }}" id="ket"
+                                                        placeholder="Keterangan" name="ket[]"
                                                         onchange="$('#FormBelanja').submit()">
                                                 </td>
-                                                <td><input name="hutang[]" class="form-control"
+                                                <td><input @if ($v['up']) disabled @endif
+                                                        name="hutang[]" class="form-control"
                                                         @if ($v['hutang']) checked @endif type="checkbox"
                                                         value="1" onchange="$('#FormBelanja').submit()">
                                                 </td>
@@ -180,7 +193,8 @@
                     </div>
 
                     <div class="card-footer">
-                        *Belanja hanya dapat input sesuai tanggal sekarang
+                        <a onclick="uploadbelanja()" class="btn btn-primary">Upload</a>
+                        <font color="red">*</font> Upload akan menambah inventory dan akan terkunci
                     </div>
                 </div>
             </form>
@@ -215,6 +229,8 @@
                 $('#kategori_' + row).trigger('change');
                 $('#item_' + row).html('-');
                 $('#uombelanja_' + row).prop('disabled', false);
+                $('#qty_' + row).val('');
+                $('#total_' + row).html('-');
                 $('#FormBelanja').submit();
 
             } else if (id === 'Supplay') {
@@ -222,13 +238,15 @@
                 $('#kategori_' + row).trigger('change');
                 $('#item_' + row).html('-');
                 $('#uombelanja_' + row).prop('disabled', false);
+                $('#qty_' + row).val('');
+                $('#total_' + row).html('-');
                 $('#FormBelanja').submit();
             } else {
                 $('#kategori_' + row).val('Item');
                 $('#kategori_' + row).trigger('change');
 
                 $.ajax({
-                    url: 'Belanja/Masterbahan',
+                    url: 'Belanja/Inventorybahanid',
                     type: "POST",
                     data: {
                         id: id
@@ -236,17 +254,16 @@
                     dataType: "JSON",
                     success: function(data) {
                         $('#item_' + row).html(
-                            '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text">1 ' +
-                            data.satuan_pembelian +
-                            '</span></div><input onkeyup="hitung_belanja(this.value,' + row +
-                            ')" style="text-align: right;max-width:50px;" type="text" disabled value="1" name="konversi[]" id="konversi_' +
+                            '<div class="input-group"><input onkeyup="hitung_belanja(this.value,' + row +
+                            ')" style="text-align: right;max-width:50px;" type="number" value="1" name="konversi[]" id="konversi_' +
                             row +
-                            '" class="form-control" placeholder="Konversi"><div class="input-group-append"><span class="input-group-text" id="belanja_uom_' +
-                            row + '">' +
-                            data.satuan_pembelian + '</span></div></div><input type="hidden" value="' + data
-                            .satuan_pembelian + '" id="konversi_satuan_' + row + '">'
+                            '" class="form-control" placeholder="Konversi"><div class="input-group-append"><span class="input-group-text">' +
+                            data.satuan + '</span></div></div><input type="hidden" value="' + data
+                            .satuan + '" id="konversi_satuan_' + row + '">'
                         );
-                        $('#uombelanja_' + row).val(data.satuan_pembelian);
+                        $('#qty_' + row).val('');
+                        $('#total_' + row).html('-');
+                        $('#uombelanja_' + row).val(data.satuan);
                         $('#uombelanja_' + row).trigger('change.select2');
                         $('#harga_' + row).val(data.harga);
                     }
@@ -261,9 +278,8 @@
             konversi = parseInt($('#konversi_' + row).val());
             if (qty && harga) {
                 if (konversi) {
-                    total = qty * harga;
-                    jmlttl = total * konversi;
-                    $('#total_' + row).html('Rp. ' + jmlttl);
+                    total = konversi * harga;
+                    $('#total_' + row).html('Rp. ' + total);
                 } else {
                     total = qty * harga;
                     $('#total_' + row).html('Rp. ' + total);
@@ -277,12 +293,6 @@
             let uom = $('#uombelanja_' + row).val();
 
             $('#belanja_uom_' + row).html(uom);
-
-            if (satuan == uom) {
-                $('#konversi_' + row).prop('disabled', true);
-            } else {
-                $('#konversi_' + row).prop('disabled', false);
-            }
 
             $('#FormBelanja').submit();
         }
@@ -307,13 +317,18 @@
                     },
                     success: function(data) {
                         if (data.status === 'success') {
+                            hapus = '<a class="btn btn-danger btn-sm" onclick="hapusbelanja(' +
+                                data.id + ',' + data.row +
+                                ')" style="margin-top: 3px;position: absolute;z-index: 9;left: -10px;"><i class="fa fa-times"></i> </a>';
+                            $('#id_' + data.row).val(data.id);
+                            $('#nama_' + data.row).before(hapus);
                             $('#autosave').html(
                                 '<small style="color:green;"> <i class="fas fa-check"></i> ' +
                                 data.pesan +
                                 '</small>'
                             );
                             animateCSS('#autosave', 'flash');
-                        } else {
+                        } else if (data.status === 'error') {
                             $('#autosave').html(
                                 '<small  style="color:red;"> <i class="fas fa-times"></i> ' +
                                 data.pesan +
@@ -327,46 +342,5 @@
             });
 
         });
-
-
-        function hapus(id) {
-            Swal.fire({
-                title: 'Yakin Menghapus?',
-                text: "Data Akan Dihapus Permanen!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Hapus'
-            }).then((result) => {
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        url: "Belanja/HapusItem",
-                        type: "POST",
-                        data: {
-                            id: id
-                        },
-                        dataType: 'json',
-                        error: function(xhr, status, error) {
-                            popup(status, true, xhr.status + " " + error);
-                        },
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                popup(data.status, data.toast, data.pesan);
-                                $('#manage').DataTable().ajax.reload();
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    })
-                }
-            })
-
-
-        }
     </script>
 @endsection

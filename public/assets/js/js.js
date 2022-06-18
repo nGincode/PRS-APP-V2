@@ -247,45 +247,48 @@ function popup($icon, $toast, $pesan) {
 //autosave panel
 $(document).ready(function() {
 
-    var stickyNavTop = $('#divautosave').offset().top;
+    if ($('#divautosave').length) {
 
-    var stickyNav = function() {
+        var stickyNavTop = $('#divautosave').offset().top;
 
-        var scrollTop = $(window).scrollTop();
+        var stickyNav = function() {
 
-        if (scrollTop > stickyNavTop) {
+            var scrollTop = $(window).scrollTop();
 
-            $('#divautosave').css({
-                'position': 'fixed',
-                'top': 0,
-                'right': 0,
-                'padding': '10px',
-                'z-index': 9999,
-                'background': 'white',
-                'border-radius': '10px 0px 10px 0px',
-                'box-shadow': '5px 0px 5px 5px #888888'
-            });
+            if (scrollTop > stickyNavTop) {
 
-        } else {
+                $('#divautosave').css({
+                    'position': 'fixed',
+                    'top': 0,
+                    'right': 0,
+                    'padding': '10px',
+                    'z-index': 9999,
+                    'background': 'white',
+                    'border-radius': '10px 0px 10px 0px',
+                    'box-shadow': '5px 0px 5px 5px #888888'
+                });
 
-            $('#divautosave').css({
-                'position': 'relative',
-                'background': 'unset',
-                'border-radius': 'unset',
-                'box-shadow': 'unset'
-            });
+            } else {
 
-        }
+                $('#divautosave').css({
+                    'position': 'relative',
+                    'background': 'unset',
+                    'border-radius': 'unset',
+                    'box-shadow': 'unset'
+                });
 
-    };
+            }
 
-    stickyNav();
-
-    $(window).scroll(function() {
+        };
 
         stickyNav();
 
-    });
+        $(window).scroll(function() {
+
+            stickyNav();
+
+        });
+    }
 
 });
 
@@ -960,6 +963,96 @@ $(document).ready(function() {
         });
     }
 
+
+
+    //Opname Tambah Stock
+    if ($('#FormInventoryOpname').length) {
+        $('#FormInventoryOpname').validate({
+            rules: {
+                'nama': {
+                    required: true
+                },
+                'qty': {
+                    required: true
+                },
+                'status': {
+                    required: true
+                },
+                'ket': {
+                    required: true
+                }
+            },
+            messages: {
+                // OutletUsers : "Masih Kosong"
+            },
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+                $(element).removeClass('is-valid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            success: function(validClass, element) {
+                $(element).addClass('is-valid');
+            },
+        });
+
+        $('#FormInventoryOpname').on('submit', function(event) {
+            var isValid = $(this).valid();
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            if ($('#status').val() == 'Tambah') {
+                var status = 'Menambah';
+            } else {
+                var status = 'Mengurangi';
+            }
+
+            if (isValid) {
+
+                Swal.fire({
+                    title: 'Yakin Ingin ' + status + ' ?',
+                    text: "Anda Akan " + status + " Kedalam Inventory Stock",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: status
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    popup(data.status, data.toast, data.pesan);
+                                    $('#FormInventoryOpname')[0].reset();
+                                    $('#manage').DataTable().ajax.reload();
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+                    }
+                })
+
+            }
+        });
+    }
+
 });
 
 //Lainnya
@@ -986,7 +1079,7 @@ $(document).ready(function() {
             success: function(data) {
                 var row_id = $("#tambahbelanja tbody tr").length - 1;
 
-                var html = '<tr> <td style="padding-left: 15px;"> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option>';
+                var html = '<tr id="tr_' + row_id + '"> <td style="padding-left: 15px;"><input type="hidden" value="" id="id_' + row_id + '" name="id[]"><input type="hidden" value="' + row_id + '" id="key_' + row_id + '" name="key[]"> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option>';
 
                 for (let x = 0; x <= data.bahan.length - 1; x++) {
                     html += '<option value="' + data.bahan[x]['id'] + '">' + data.bahan[x]['nama'] + '</option>';
@@ -998,7 +1091,7 @@ $(document).ready(function() {
                     html += '<option value="' + data.satuan[y]['singkat'] + '">' + data.satuan[y]['nama'] + '</option>';
                 }
 
-                html += '</select> </div><div class="col"> <input type="text" class="form-control" onkeyup="hitung_belanja(this.value, ' + row_id + ')" id="harga_' + row_id + '" placeholder="Harga" name="harga[]"> </div></div></td><td id="item_' + row_id + '"> - </td><td id="total_' + row_id + '"> - </td><td> <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"> </td><td><input name="hutang[]" class="form-control" type="checkbox" value="1" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"></td></tr>';
+                html += '</select> </div><div class="col"> <input type="number" class="form-control" onkeyup="hitung_belanja(this.value, ' + row_id + ')" id="harga_' + row_id + '" placeholder="Harga" name="harga[]"> </div></div></td><td id="item_' + row_id + '"> - </td><td id="total_' + row_id + '"> - </td><td> <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"> </td><td><input name="hutang[]" class="form-control" type="checkbox" value="1" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"></td></tr>';
 
                 if (row_id >= 0) {
                     $("#tambahbelanja tbody tr:last").after(html);
@@ -1109,4 +1202,85 @@ function penyajian(value) {
 function penyajianedit(value) {
     $('#konversib1edit').html('<span class="input-group-text">' + value + '</span>');
     $('#konversib2edit').html('<span class="input-group-text">' + value + '</span>');
+}
+
+
+function hapusbelanja(id, row) {
+    Swal.fire({
+        title: 'Yakin Menghapus?',
+        text: "Data Akan Dihapus Permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Hapus'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: "Belanja/HapusItem",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        popup(data.status, data.toast, data.pesan);
+                        $('#manage').DataTable().ajax.reload();
+                        $('#tr_' + row).html('');
+                    } else {
+                        popup(data.status, data.toast, data.pesan);
+                    }
+                }
+            })
+        }
+    })
+
+
+}
+
+function uploadbelanja() {
+
+    Swal.fire({
+        title: 'Yakin Upload?',
+        text: "Data Tidak Akan Berubah & Item Akan Langsung Menambah Inventory!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Upload'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                url: "Belanja/Upload",
+                type: "POST",
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    if (data.status === 'success') {
+                        popup(data.status, data.toast, data.pesan);
+                        setTimeout(
+                            function() {
+                                location.reload();
+                            },
+                            1000);
+                    } else {
+                        popup(data.status, data.toast, data.pesan);
+                        setTimeout(
+                            function() {
+                                location.reload();
+                            },
+                            1500);
+                    }
+                }
+            })
+        }
+    })
 }
