@@ -228,6 +228,9 @@ Route::controller(PemesananController::class)->group(
 Route::controller(POSController::class)->group(
     function () {
         Route::get('POS/', 'index')->middleware('auth');
+        Route::post('POS/Layar', 'layar')->middleware('auth');
+        Route::post('POS/Pilih', 'pilih')->middleware('auth');
+        Route::post('POS/positemhapus', 'positemhapus')->middleware('auth');
     }
 );
 

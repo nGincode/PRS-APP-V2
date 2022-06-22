@@ -13,8 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('p_o_s', function (Blueprint $table) {
+        Schema::create('posbill', function (Blueprint $table) {
             $table->id();
+            $table->date('tgl');
+            $table->string('bill');
+            $table->string('namabill');
+            $table->string('gross_total');
+            $table->string('disc');
+            $table->string('tax');
+            $table->string('total');
+            $table->boolean('paid');
             $table->timestamps();
         });
     }
@@ -26,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p_o_s');
+        Schema::dropIfExists('posbill');
     }
 };
