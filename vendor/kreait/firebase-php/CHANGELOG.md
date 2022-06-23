@@ -2,6 +2,71 @@
 
 ## [Unreleased]
 
+## [6.5.0] - 2022-06-22
+
+### Added
+
+* Problems while fetching Dynamic Link statistics now result in more helpful exception messages.
+  ([#707](https://github.com/kreait/firebase-php/issues/707)
+
+### Changed
+
+* Raised minimum version of Guzzle to address [CVE-2022-31090](https://github.com/advisories/GHSA-25mq-v84q-4j7r)
+  and [CVE-2022-31091](https://github.com/advisories/GHSA-q559-8m2m-g699)
+
+## [6.4.1 - 2022-06-15]
+
+### Fixed
+
+* Updating a Realtime Database Ruleset converted lists to objects with numeric keys.
+  ([#706](https://github.com/kreait/firebase-php/pull/706))
+
+### Changed
+
+* Raised minimum version of Guzzle to address [CVE-2022-31042](https://github.com/advisories/GHSA-f2wf-25xc-69c9)
+
+## [6.4.0] - 2022-06-08
+
+### Added
+
+* If not already set, APNs configs are enriched with the necessary headers and fields to ensure the delivery of
+  iOS background messages and alerts.
+  * The `apns-push-type` header is set to `background` or `alert`
+  * The `content-available` field is set to `1` in case of a background message
+* FCM Messages are now annotated for better PHPStan/Psalm resolution
+* Added methods
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withMinimalNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withLowNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withDefaultNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withHighNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withMaximalNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withUnspecifiedNotificationPriority()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withPrivateNotificationVisibility()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withPublicNotificationVisibility()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withSecretNotificationVisibility()`
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withNotificationVisibility()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::data()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::hasHeader()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::isAlert()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::toArray()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::withApsField()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::withDataField()`
+  * `\Kreait\Firebase\Messaging\ApnsConfig::withHeader()`
+
+### Changed
+
+* FCM notifications (`Kreait\Firebase\Messaging\Notification`) can now be created with null values. 
+  If a notification has _only_ null values, the notification payload will be removed on 
+  serialization as if it wasn't provided at all.
+* Deprecations
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withHighPriority()`, 
+    use `\Kreait\Firebase\Messaging\AndroidConfig::withHighMessagePriority()` instead
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withNormalPriority()`, 
+    use `\Kreait\Firebase\Messaging\AndroidConfig::withNormalMessagePriority()` instead
+  * `\Kreait\Firebase\Messaging\AndroidConfig::withPriority()`, 
+    use `\Kreait\Firebase\Messaging\AndroidConfig::withMessagePriority()` instead
+
 ## [6.3.1] - 2022-05-07
 
 ### Fixed
@@ -154,7 +219,10 @@ methods.
     * `Kreait\Firebase\Value\Uid`
     * `Kreait\Firebase\Value\Url`
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/6.3.1...6.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/6.5.0...6.x
+[6.5.0]: https://github.com/kreait/firebase-php/compare/6.4.1...6.5.0
+[6.4.1]: https://github.com/kreait/firebase-php/compare/6.4.0...6.4.1
+[6.4.0]: https://github.com/kreait/firebase-php/compare/6.3.1...6.4.0
 [6.3.1]: https://github.com/kreait/firebase-php/compare/6.3.0...6.3.1
 [6.3.0]: https://github.com/kreait/firebase-php/compare/6.2.0...6.3.0
 [6.2.0]: https://github.com/kreait/firebase-php/compare/6.1.0...6.2.0
