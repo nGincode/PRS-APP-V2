@@ -48,17 +48,52 @@ class POSController extends Controller
 
         $inventory = Inventory::where('id', $inventory_id)->first();
 
-        POS::insert([
-            'inventory_id' => $inventory_id,
-            'bahan_id' => $bahan_id,
-            'qty' => 1,
-            'satuan' => $inventory['satuan'],
-            'harga' => $inventory['auto_harga'],
-            'updated_at' => date('Y-m-d H:i:s'),
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
+        $cek = POS::where('inventory_id', $inventory_id)->first();
+
+        if ($inventory_id && $bahan_id) {
+            if ($cek) {
+                POS::where('inventory_id', $inventory_id)->update([
+                    'inventory_id' => $inventory_id,
+                    'bahan_id' => $bahan_id,
+                    'qty' => 1 + $cek['qty'],
+                    'satuan' => $inventory['satuan'],
+                    'harga' => $inventory['harga_last'],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            } else {
+                POS::insert([
+                    'inventory_id' => $inventory_id,
+                    'bahan_id' => $bahan_id,
+                    'qty' => 1,
+                    'satuan' => $inventory['satuan'],
+                    'harga' => $inventory['harga_last'],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+
+        $dtpos = POS::all();
+        $jumlah = 0;
+        foreach ($dtpos as $key => $value) {
+            $jumlah += $value['qty'] * $value['harga'];
+        }
+
+        echo json_encode($this->rupiah($jumlah));
     }
 
+
+    public function Totalbill(Request $request)
+    {
+        $dtpos = POS::all();
+        $jumlah = 0;
+        foreach ($dtpos as $key => $value) {
+            $jumlah += $value['qty'] * $value['harga'];
+        }
+
+        echo json_encode(['rp' => $this->rupiah($jumlah), 'no' => $jumlah]);
+    }
 
     public function layar()
     {
@@ -66,11 +101,28 @@ class POSController extends Controller
         $pos = POS::with('Bahan')->latest()->get();
 
         foreach ($pos as $key => $value) {
-            echo  $data = ' <div><div class="float-right">
-            <button class="btn btn-danger" onclick="positemhapus(' . $value['id'] . ')"><i class="fa fa-trash"></i></button>
-            </div>
-                 <h5 class="card-title">' . $value['bahan']->nama . ' x' . $value['harga'] . '</h5>
-                <p class="card-text">' . $this->rupiah($value['harga']) . '</p><hr></div>';
+            echo  $data = ' <div>
+                <div class="float-right">
+
+                    <button class="btn btn-danger btn-sm"  onclick="positemhapus(' . $value['id'] . ')">
+                    <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <p style="float:right"><b>' . $this->rupiah($value['qty'] * $value['harga']) . ' &nbsp</b></p>
+                 <h5 class="card-title">' . $value['bahan']->nama . ' x' . $value['qty'] . '</h5>
+                <p class="card-text" style="margin-bottom:2px">' . $this->rupiah($value['harga']) . '</p>
+                    <div style="float: right;margin-top: -1.5rem;">
+                    <button class="btn btn-warning btn-sm" id="TblMinus_' . $value['id'] . '"  onclick="positemminus(' . $value['id'] . ')">
+                    <i class="fa fa-minus"></i>
+                    </button>
+                    
+                    <button class="btn btn-success btn-sm" id="TblPlus_' . $value['id'] . '"  onclick="positemplus(' . $value['id'] . ')">
+                    <i class="fa fa-plus"></i>
+                    </button>
+                    </div>
+                <hr>
+                
+                </div>';
         }
     }
 
@@ -91,5 +143,49 @@ class POSController extends Controller
             ];
         };
         echo json_encode($data);
+    }
+
+
+    public function positemplus(Request $request)
+    {
+        $id = $request->input('id');
+
+        $data = POS::where('id', $id)->first();
+
+        if (POS::where('id', $id)->update(['qty' => $data['qty'] + 1])) {
+            echo json_encode([]);
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Gagal Menambah Data ' . $id
+            ];
+            echo json_encode($data);
+        };
+    }
+
+
+    public function positemminus(Request $request)
+    {
+        $id = $request->input('id');
+
+        $data = POS::where('id', $id)->first();
+
+        if ($data) {
+            if ($data['qty'] <= 1) {
+                echo json_encode([]);
+            } else {
+                if (POS::where('id', $id)->update(['qty' => $data['qty'] - 1])) {
+                    echo json_encode([]);
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Gagal Mengurangi Data ' . $id
+                    ];
+                    echo json_encode($data);
+                };
+            }
+        }
     }
 }

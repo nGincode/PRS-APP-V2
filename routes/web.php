@@ -231,6 +231,9 @@ Route::controller(POSController::class)->group(
         Route::post('POS/Layar', 'layar')->middleware('auth');
         Route::post('POS/Pilih', 'pilih')->middleware('auth');
         Route::post('POS/positemhapus', 'positemhapus')->middleware('auth');
+        Route::post('POS/positemminus', 'positemminus')->middleware('auth');
+        Route::post('POS/positemplus', 'positemplus')->middleware('auth');
+        Route::post('POS/Totalbill', 'Totalbill')->middleware('auth');
     }
 );
 
