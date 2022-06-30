@@ -170,6 +170,8 @@ return [
 
         //custom sendiri
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        Laravel\Scout\ScoutServiceProvider::class,
 
 
 

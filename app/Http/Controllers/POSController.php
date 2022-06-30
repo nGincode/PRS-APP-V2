@@ -126,6 +126,52 @@ class POSController extends Controller
         }
     }
 
+
+    public function Search(Request $request)
+    {
+
+        $id = $request->input('id');
+        if ($id) {
+            // $pos = Inventory::search($id)->get()->toArray();
+
+            // // $data = '';
+            // foreach ($pos as $key => $v) {
+            //     $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
+            //                                 onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
+            //                                 <div class="float-right"><b>';
+
+            //     if ($v['qty'] < 5) {
+            //         $data .= '<i class="fa fa-exclamation-triangle"></i>';
+            //     }
+            //     $data .= $v['qty'] . ' ' . $v['satuan'];
+            //     $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
+            //                                 <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
+            //                                 <hr>
+            //                             </div>';
+            // }
+            // echo $data;
+        } else {
+            $data = '';
+            foreach (Inventory::with('Bahan')->where('delete', false)->get() as $key => $v) {
+                $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
+                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
+                                            <div class="float-right"><b>';
+
+                if ($v['qty'] < 5) {
+                    $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                }
+                $data .= $v['qty'] . ' ' . $v['satuan'];
+                $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
+                                            <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
+                                            <hr>
+                                        </div>';
+            }
+
+            echo $data;
+        }
+    }
+
+
     public function positemhapus(Request $request)
     {
         $id = $request->input('id');

@@ -170,6 +170,9 @@ if (Auth::check()) {
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/dist/css/adminlte.min.css">
 
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
     <!-- jQuery -->
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jquery/jquery.min.js"></script>
     <!-- DataTables  & Plugins -->
@@ -545,7 +548,8 @@ if (Auth::check()) {
                         @endif
 
                         @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
+                            <li
+                                class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
                                 <a href="{{ url('/Inventory') }}"
                                     class="nav-link @if ($title == 'Inventory') active @endif ">
                                     <i class=" nav-icon fas fa-cube"></i>

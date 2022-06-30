@@ -40,14 +40,15 @@
 
                                     <div class="float-right" style="position: absolute; right:0px;">
                                         <div class="form-group col-md-12">
-                                            <input type="text" class="form-control" id="search"
-                                                placeholder="Search..">
+                                            <input type="text" class="form-control" onkeyup="search(this.value)"
+                                                id="search" placeholder="Search..">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-body" style="max-height: 500px;overflow-y:auto;" id="item">
                                     @foreach ($item as $v)
-                                        <div class="item" id="pilihan_<?= $v['id'] ?>"
+                                        <div class="animate__animated animate__backInDown animate__faster item"
+                                            id="pilihan_<?= $v['id'] ?>"
                                             onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
                                             <div class="float-right"><b>
                                                     @if ($v['qty'] < 5)
@@ -298,6 +299,22 @@
                     $('#pilihan_' + id).removeClass('waiting');
                     layar();
 
+                }
+            });
+        }
+
+        function search(value) {
+            $.ajax({
+                url: "POS/Search",
+                type: "POST",
+                data: {
+                    id: value
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    $('#item').html(data);
                 }
             });
         }
