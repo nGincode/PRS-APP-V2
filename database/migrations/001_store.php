@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('store', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->integer('active');
+            $table->boolean('active');
             $table->string('tipe');
             $table->string('alamat')->nullable();
             $table->string('img')->nullable();

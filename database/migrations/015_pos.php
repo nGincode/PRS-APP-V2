@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('inventory_id');
             $table->foreign('inventory_id')->references('id')->on('inventory');
 
-
             $table->unsignedBigInteger('bahan_id');
             $table->foreign('bahan_id')->references('id')->on('bahan');
 

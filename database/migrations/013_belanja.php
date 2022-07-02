@@ -21,8 +21,13 @@ return new class extends Migration
             $table->integer('qty')->nullable();
             $table->string('uom')->nullable();
             $table->string('harga')->nullable();
-            $table->integer('store_id');
-            $table->integer('bahan_id')->nullable();
+
+            $table->unsignedBigInteger('store_id');
+            $table->foreignId('store_id')->references('id')->on('store');
+
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreignId('bahan_id')->nullable()->references('id')->on('bahan');
+
             $table->string('konversi')->nullable();
             $table->string('item_uom')->nullable();
             $table->string('total')->nullable();

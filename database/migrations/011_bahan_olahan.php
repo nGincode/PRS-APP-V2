@@ -17,11 +17,11 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('olahan_id');
-            $table->foreignId('olahan_id')->references('id')->on('olahan')
-                ->onDelete('cascade');
+            $table->foreignId('olahan_id')->references('id')->on('olahan');
 
-            $table->foreignId('bahan_id')->nullable();
-            $table->foreignId('olahan')->nullable();
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreignId('bahan_id')->references('id')->on('bahan');
+
             $table->string('pemakaian')->default(0);
             $table->boolean('draft')->default(true);
             $table->timestamps();
