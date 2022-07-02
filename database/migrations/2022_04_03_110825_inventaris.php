@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('inventaris', function (Blueprint $table) {
             $table->id();
             $table->string('store');
-            $table->integer('store_id');
+            $table->foreignId('store_id')->constrained('store');
+            $table->foreignId('user_id')->constrained('users');
             $table->integer('user_id');
             $table->string('nama');
             $table->integer('divisi');
