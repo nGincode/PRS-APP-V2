@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->date('tgl');
             $table->integer('store_id');
-            $table->foreignId('bahan_id')->constrained();
+            $table->integer('bahan_id');
             $table->string('status')->nullable();
             $table->string('nama')->nullable();
             $table->string('qty')->nullable();

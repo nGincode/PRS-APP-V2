@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('pos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_id')->constrained();
-            $table->foreignId('bahan_id')->constrained();
+            $table->integer('inventory_id');
+            $table->integer('bahan_id');
             $table->string('qty');
             $table->string('harga');
             $table->string('satuan');

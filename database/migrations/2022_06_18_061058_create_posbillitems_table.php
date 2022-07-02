@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('posbillitem', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pos_id')->constrained();
-            $table->foreignId('bahan_id')->constrained();
+            $table->integer('pos_id');
+            $table->integer('bahan_id');
             $table->date('tgl');
             $table->string('nama');
             $table->string('qty');
