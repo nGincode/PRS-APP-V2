@@ -16,8 +16,13 @@ return new class extends Migration
         Schema::create('opnamestock', function (Blueprint $table) {
             $table->id();
             $table->date('tgl');
-            $table->integer('store_id');
-            $table->integer('bahan_id');
+
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreign('bahan_id')->references('id')->on('bahan');
+
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
             $table->string('status')->nullable();
             $table->string('nama')->nullable();
             $table->string('qty')->nullable();

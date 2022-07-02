@@ -13,17 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posbillitem', function (Blueprint $table) {
+        Schema::create('pos', function (Blueprint $table) {
             $table->id();
-            $table->integer('pos_id');
-            $table->integer('bahan_id');
-            $table->date('tgl');
-            $table->string('nama');
+
+            $table->unsignedBigInteger('inventory_id');
+            $table->foreign('inventory_id')->references('id')->on('inventory');
+
+
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreign('bahan_id')->references('id')->on('bahan');
+
             $table->string('qty');
-            $table->string('satuan');
             $table->string('harga');
-            $table->string('total');
-            $table->boolean('paid');
+            $table->string('satuan');
             $table->timestamps();
         });
     }
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posbillitem');
+        Schema::dropIfExists('pos');
     }
 };

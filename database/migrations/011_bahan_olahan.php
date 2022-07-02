@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('bahan_olahan', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('olahan_id');
             $table->foreignId('olahan_id')->references('id')->on('olahan')
                 ->onDelete('cascade');
+
             $table->foreignId('bahan_id')->nullable();
             $table->foreignId('olahan')->nullable();
             $table->string('pemakaian')->default(0);

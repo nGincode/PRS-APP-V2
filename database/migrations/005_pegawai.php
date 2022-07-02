@@ -17,7 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('kode');
-            $table->foreignId('store_id');
+
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->date('tanggal_masuk');

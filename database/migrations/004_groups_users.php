@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('groups_id');
             $table->foreign('groups_id')->references('id')->on('groups')
                 ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

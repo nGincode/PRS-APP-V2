@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('inventory', function (Blueprint $table) {
             $table->id();
-            $table->integer('bahan_id');
-            $table->integer('store_id');
+
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreign('bahan_id')->references('id')->on('bahan');
+
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
             $table->string('qty')->nullable();
             $table->string('satuan')->nullable();
             $table->boolean('auto_harga')->nullable();

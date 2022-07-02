@@ -17,10 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('store');
 
-            // $table->unsignedBigInteger('store_id');
-            // $table->foreign('store_id')->references('id')->on('store');
-
-            $table->foreignId('store_id')->constrained();
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
 
             $table->string('username')->unique();
             $table->string('password');
