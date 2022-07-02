@@ -16,7 +16,12 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('store');
-            $table->integer('store_id');
+
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
+            // $table->foreignId('store_id')->constrained();
+
             $table->string('username')->unique();
             $table->string('password');
             $table->string('email')->unique();
