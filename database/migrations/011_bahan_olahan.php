@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('olahan_id');
-            $table->foreignId('olahan_id')->references('id')->on('olahan');
+            $table->foreign('olahan_id')->references('id')->on('olahan');
 
             $table->unsignedBigInteger('bahan_id');
-            $table->foreignId('bahan_id')->references('id')->on('bahan');
+            $table->foreign('bahan_id')->references('id')->on('bahan');
 
             $table->string('pemakaian')->default(0);
             $table->boolean('draft')->default(true);
