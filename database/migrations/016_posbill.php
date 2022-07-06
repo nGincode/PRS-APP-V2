@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('posbill', function (Blueprint $table) {
             $table->id();
-            $table->date('tgl');
-            $table->string('bill');
-            $table->string('namabill');
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+            $table->dateTime('tgl');
+            $table->string('no_bill');
+            $table->string('no_hp')->nullable();
+            $table->string('nama_bill')->nullable();
             $table->string('gross_total');
-            $table->string('disc');
-            $table->string('tax');
+            $table->string('disc')->nullable();
+            $table->string('tax')->nullable();
             $table->string('total');
             $table->boolean('paid');
             $table->timestamps();

@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('pos', function (Blueprint $table) {
             $table->id();
 
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
             $table->unsignedBigInteger('inventory_id');
             $table->foreign('inventory_id')->references('id')->on('inventory');
 

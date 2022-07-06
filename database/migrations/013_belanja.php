@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('belanja', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
+
+            $table->unsignedBigInteger('bahan_id');
+            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
+
             $table->date('tgl');
             $table->string('nama');
             $table->string('kategori');
@@ -22,11 +28,6 @@ return new class extends Migration
             $table->string('uom')->nullable();
             $table->string('harga')->nullable();
 
-            $table->unsignedBigInteger('store_id');
-            $table->foreign('store_id')->references('id')->on('store');
-
-            $table->unsignedBigInteger('bahan_id');
-            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
 
             $table->string('konversi')->nullable();
             $table->string('item_uom')->nullable();

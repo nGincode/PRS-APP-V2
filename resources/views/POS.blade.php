@@ -76,14 +76,13 @@
 
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-primary btn-lg btn-block" data-toggle="modal"
-                                data-target="#transaksi"><B>--| SUBMIT |--</B></a>
+                            <button href="#" id="submit" disabled class="btn btn-primary btn-lg btn-block"
+                                data-toggle="modal" data-target="#transaksi"><B>--| SUBMIT |--</B></button>
                         </div>
 
                     </div>
                     <!-- /.row -->
                 </div>
-                </form>
 
 
                 <div class="card">
@@ -129,7 +128,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form id="transaksi">
+                    <form>
                         <center>
                             <h4><b>IDENTITAS</b></h4>
                         </center>
@@ -168,11 +167,33 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-                    <button type="button" class="btn btn-primary"><b>Bayar</b></button>
+                    <button type="button" onclick="bayar()" class="btn btn-primary"><b>Bayar</b></button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="kembalian" tabindex="-1" role="dialog" style="width:100%"
+        aria-labelledby="transaksiLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Kembalian</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="StatusKembalian">
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-block"><b>Print</b></button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -330,54 +351,60 @@
                 success: function(data) {
                     $('#totalbelanja').html(data.rp);
                     $('#totalbelanja1').html(data.rp);
+                    if (data.no) {
+                        $("#submit").prop('disabled', false);
+                    } else {
+                        $("#submit").prop('disabled', true);
+                    }
 
                     var html = '';
                     if (data.no > 100000) {
                         html += '<label  onclick="inputkosong()" class="container">' + data.no +
-                            ' <input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            ' <input type="radio" name="duit" value="' + data.no +
+                            '" id="duit"> <span class="checkmark"></span> </label>';
 
 
                         if (data.no < 150000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">150.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">150.000<input type="radio" name="duit" value="150000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 200000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">200.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">200.000<input type="radio" name="duit" value="200000"  id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 500000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">500.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">500.000<input type="radio" name="duit" value="500000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 1000000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">1.000.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">1.000.000<input type="radio" name="duit" value="1000000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                     }
 
                     if (data.no < 100000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">100.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">100.000<input type="radio" name="duit" value="100000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 50000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">50.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">50.000<input type="radio" name="duit" value="50000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 20000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">20.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">20.000<input type="radio" name="duit" value="20000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 10000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">10.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">10.000<input type="radio" name="duit" value="10000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 5000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">5.000<input type="radio" name="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">5.000<input type="radio" name="duit" value="5000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     $('.duit').html(html);
@@ -484,6 +511,44 @@
                     });
                 }
             })
+        }
+
+        function bayar() {
+            $.ajax({
+                url: "POS/Input",
+                type: "POST",
+                data: {
+                    pengorder: $('#pengorder').val(),
+                    no: $('#no').val(),
+                    jumlah: $('#jumlah').val(),
+                    duit: $("input[name='duit']:checked").val()
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    layar();
+                    if (data.status) {
+                        popup(data.status, data.toast, data.pesan);
+                    }
+
+                    $('#transaksi').modal('hide');
+                    $('#kembalian').modal('show');
+                    if (data.kembalian) {
+                        if (data.kembalian === 0) {
+                            $('#StatusKembalian').html(
+                                '<center><h2><b style="color: green">~ LUNAS ~</b></h2></center>');
+                        } else {
+                            $('#StatusKembalian').html(
+                                '<center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' + data
+                                .kembalian + '</b></h4></center>'
+                            );
+                        }
+                    }
+
+                }
+            });
         }
     </script>
 @endsection

@@ -235,6 +235,7 @@ Route::controller(POSController::class)->group(
         Route::post('POS/positemplus', 'positemplus')->middleware('auth');
         Route::post('POS/Totalbill', 'Totalbill')->middleware('auth');
         Route::post('POS/Search', 'Search')->middleware('auth');
+        Route::post('POS/Input', 'Input')->middleware('auth');
     }
 );
 

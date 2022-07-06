@@ -13,7 +13,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function permission()
+    function permission()
     {
         $Id = request()->session()->get('id');
         $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.groups_id')

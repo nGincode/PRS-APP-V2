@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('posbillitem', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('pos_id');
-            $table->foreign('pos_id')->references('id')->on('pos');
+            $table->unsignedBigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('store');
 
+            $table->unsignedBigInteger('posbill_id');
+            $table->foreign('posbill_id')->references('id')->on('posbill')->onDelete('cascade');
 
             $table->unsignedBigInteger('bahan_id');
             $table->foreign('bahan_id')->references('id')->on('bahan');

@@ -45,6 +45,7 @@ class POSController extends Controller
     {
         $bahan_id = $request->input('bahan');
         $inventory_id = $request->input('id');
+        $id_store = request()->session()->get('store_id');
 
         $inventory = Inventory::where('id', $inventory_id)->first();
 
@@ -53,6 +54,7 @@ class POSController extends Controller
         if ($inventory_id && $bahan_id) {
             if ($cek) {
                 POS::where('inventory_id', $inventory_id)->update([
+                    'store_id' => $id_store,
                     'inventory_id' => $inventory_id,
                     'bahan_id' => $bahan_id,
                     'qty' => 1 + $cek['qty'],
@@ -63,6 +65,7 @@ class POSController extends Controller
                 ]);
             } else {
                 POS::insert([
+                    'store_id' => $id_store,
                     'inventory_id' => $inventory_id,
                     'bahan_id' => $bahan_id,
                     'qty' => 1,
@@ -132,24 +135,26 @@ class POSController extends Controller
 
         $id = $request->input('id');
         if ($id) {
-            // $pos = Inventory::search($id)->get()->toArray();
 
-            // // $data = '';
-            // foreach ($pos as $key => $v) {
-            //     $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
-            //                                 onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
-            //                                 <div class="float-right"><b>';
+            $pos = Inventory::search($id)->where('delete', false)->get()->toArray();
 
-            //     if ($v['qty'] < 5) {
-            //         $data .= '<i class="fa fa-exclamation-triangle"></i>';
-            //     }
-            //     $data .= $v['qty'] . ' ' . $v['satuan'];
-            //     $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
-            //                                 <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
-            //                                 <hr>
-            //                             </div>';
-            // }
-            // echo $data;
+            $data = '';
+            foreach ($pos as $key => $v) {
+                $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
+                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
+                                            <div class="float-right"><b>';
+                if ($v['qty'] < 5) {
+                    $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                }
+                $data .= $v['qty'] . ' ' . $v['satuan'];
+
+                $bahan = Bahan::where('id', $v['bahan_id'])->first();
+                $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
+                                            <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
+                                            <hr>
+                                        </div>';
+            }
+            echo $data;
         } else {
             $data = '';
             foreach (Inventory::with('Bahan')->where('delete', false)->get() as $key => $v) {
@@ -233,5 +238,95 @@ class POSController extends Controller
                 };
             }
         }
+    }
+
+
+    public function Input(Request $request)
+    {
+
+        if (!in_array('createPOS', $this->permission())) {
+            redirect('dashboard', 'refresh');
+        }
+
+        $pengorder = $request->input('pengorder');
+        $no = $request->input('no');
+        $jumlah = $request->input('jumlah');
+        $duit = $request->input('duit');
+
+        $id_store = request()->session()->get('store_id');
+
+
+        $dtpos = POS::with('Bahan', 'Inventory')->get();
+        $jumlahbelanja = 0;
+        foreach ($dtpos as $value) {
+            $jumlahbelanja += $value['qty'] * $value['harga'];
+        }
+
+        if ($jumlah) {
+            $jumlahqty = $jumlah;
+        } else {
+            $jumlahqty = $duit;
+        }
+
+        if ($jumlahbelanja <= $jumlahqty) {
+            $bill_no = 'BILL-' . $id_store . '-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+            $data = [
+                'store_id' => $id_store,
+                'tgl' => date('Y-m-d H:i:s'),
+                'no_bill' => $bill_no,
+                'no_hp' => $no,
+                'nama_bill' => $pengorder,
+                'gross_total' => $jumlahbelanja,
+                'disc' => null,
+                'tax' => null,
+                'paid' => 1,
+                'total' => $jumlahbelanja,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            if ($id = POSBill::insertGetId($data)) {
+
+                $dataitem = [];
+                foreach ($dtpos as $value1) {
+                    $dataitem[] = [
+                        'store_id' => $id_store,
+                        'posbill_id' => $id,
+                        'bahan_id' => $value1['bahan_id'],
+                        'tgl' => date('Y-m-d'),
+                        'nama' => $value1['bahan']->nama,
+                        'qty' => $value1['qty'],
+                        'satuan' => $value1['satuan'],
+                        'harga' => $value1['harga'],
+                        'total' => $value1['qty'] * $value1['harga'],
+                        'paid' => 1,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+
+                $kembalian = $this->rupiah($jumlahqty - $jumlahbelanja);
+
+                if (POSBillItem::insert($dataitem)) {
+                    POS::where('store_id', $id_store)->delete();
+                    $data = [
+                        'kembalian' => $kembalian
+                    ];
+                }
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Pembayaran Tidak Mencukupi'
+                ];
+            };
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Pembayaran Tidak Mencukupi'
+            ];
+        }
+        echo json_encode($data);
     }
 }
