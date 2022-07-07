@@ -1204,7 +1204,6 @@ function penyajianedit(value) {
     $('#konversib2edit').html('<span class="input-group-text">' + value + '</span>');
 }
 
-
 function hapusbelanja(id, row) {
     Swal.fire({
         title: 'Yakin Menghapus?',

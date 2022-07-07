@@ -310,7 +310,8 @@ class POSController extends Controller
                 if (POSBillItem::insert($dataitem)) {
                     POS::where('store_id', $id_store)->delete();
                     $data = [
-                        'kembalian' => $kembalian
+                        'kembalian' => $kembalian,
+                        'id' => $id
                     ];
                 }
             } else {
@@ -328,5 +329,158 @@ class POSController extends Controller
             ];
         }
         echo json_encode($data);
+    }
+
+
+    public function Manage(Request $request)
+    {
+        $result = array('data' => array());
+        $id_store = request()->session()->get('store_id');
+        $Data = POSBill::where('store_id', $id_store)->orderBy('id', 'DESC')->get();
+        foreach ($Data as $value) {
+            if ($value['id'] != 1) {
+
+                $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+                $button .= "<li><a class='dropdown-item' onclick='Print(" . $value['id'] . "," . '"' . $this->title . '"' . ")' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
+
+                if (in_array('viewPOS', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
+                }
+
+                $button .= '</ul></div>';
+
+                if ($value['paid'] == 1) {
+                    $paid = '<span class="badge badge-success">Paid</span>';
+                } else {
+                    $paid = '<span class="badge badge-danger">Unpaid</span>';
+                }
+
+                $result['data'][] = array(
+                    $this->tanggal($value['tgl']),
+                    $value['no_bill'],
+                    $value['nama_bill'] ?? '-',
+                    $value['no_hp'] ?? '-',
+                    $value['total'],
+                    $paid,
+                    $button
+                );
+            }
+        }
+        echo json_encode($result);
+    }
+
+    public function LihatBill(Request $request)
+    {
+        $id = $request->input('id');
+        $judul = $request->input('judul');
+        $id_store = request()->session()->get('store_id');
+
+        $variable = POSBillItem::where('store_id', $id_store)->where('posbill_id', $id)->get();
+        $bill = POSBill::where('id', $id)->first();
+
+        $html = ' 
+        <h5 style="float:right"><b>' . $bill['no_bill'] . '</b></h5>
+        <h6><b>' . $this->tanggal($bill['tgl']) . '</b></h6>
+        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Qty</th>
+                                    <th>Harga</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>';
+
+        foreach ($variable as $key => $value) {
+            $html .= '
+                    <tr>
+                        <td>' . $value['nama'] . '</td>
+                        <td>' . $value['qty'] . ' ' . $value['satuan'] . '</td>
+                        <td>' . $this->rupiah($value['harga']) . '</td>
+                        <td>' . $this->rupiah($value['qty'] * $value['harga']) . '</td>
+                    </tr>
+                       
+            ';
+        }
+        $html .= '
+                        <tr style="background-color:#607d8b7a;">
+                            <td colspan="3"><b>Total</b> </td>
+                            <td><b>' . $this->rupiah($bill['total']) . '</b></td>
+                        </tr>
+                        </table>';
+
+        echo $html;
+    }
+
+    public function Print(Request $request)
+    {
+        $id = $request->input('id');
+
+        $BillItem = POSBillItem::where('posbill_id', $id)->get();
+        $Bill = POSBill::where('id', $id)->first();
+
+        $store = Store::where('id', $request->session()->get('store_id'))->first();
+
+        $html = '';
+        if ($BillItem && $Bill) {
+            $jumlah = 0;
+            $html .= '<div class="wrapper" style="width: 55mm;height:unset;font-size: 12px;">
+                    <div style="border-bottom:dashed 1px black;">
+                    <center >
+                    <h5><b>' . $request->session()->get('store') . '</b></h5>
+                    ' . $store['alamat'] . '<br>' . $store['wa'] . '
+                    </center>
+                    </div>
+                    <div style="padding-left: 5px; border-bottom:solid 1px black;">
+                        <p style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</p>
+                        <br> No Bill : ' . $Bill['no_bill'] . ' 
+                        <br>A/N     : ' . $Bill['nama_bill'] . ' 
+                        <br>No Hp   : ' . $Bill['no_hp'] . ' 
+                    </div>
+                    <div style="padding-left:5px;margin-top:5px;border-bottom:solid 1px black;">
+            ';
+            foreach ($BillItem as $key => $value) {
+                $jumlah += $value['qty'] * $value['harga'];
+                $html .=
+                    $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br>';
+            }
+            $html .= '</div>
+
+            <div style="padding-left: 5px;margin-top:5px;border-bottom:solid 1px black;">
+            <b>
+            Jumlah
+            <font style="float:right">' . $this->rupiah($jumlah) . '</font><br>
+            </b>
+            Disc
+            <font style="float:right">' . 0 . '</font><br>
+            Tax
+            <b>
+            <font style="float:right">' . 0 . '</font><br>
+            Total 
+            <font style="float:right">' . $this->rupiah($jumlah) . '</font>
+            </b>
+            </div>
+            <div style="float:left;text-align: center;padding-left: 5px;">
+            Pengirim<br><br><br>_________
+            </div> 
+            
+            <div style="float:right;text-align: center;padding-left: 5px">
+            Penerima<br><br><br>_________
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="padding-left: 5px">
+			Note:<div style=" border: 1px solid;height: 60px;border-radius: 0px 10px;"></div>
+            </div>
+            </div>
+            ';
+        }
+        echo $html;
     }
 }

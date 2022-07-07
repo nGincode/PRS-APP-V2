@@ -228,6 +228,7 @@ if (Auth::check()) {
                         url: "{{ $urlmanage }}",
                         type: "POST",
                     },
+                    "order": [],
                     "responsive": true,
                     "autoWidth": true,
                     "processing": true,

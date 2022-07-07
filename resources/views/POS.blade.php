@@ -92,16 +92,16 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table id="manage1" class="table table-bordered table-striped">
+                        <table id="manage" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th>Tanggal</th>
+                                    <th>No Bill</th>
                                     <th>Nama</th>
+                                    <th>No Hp</th>
+                                    <th>Total</th>
                                     <th>Status</th>
-                                    <th>Qty</th>
-                                    <th>Qty Sebelumnya</th>
-                                    <th>Total Qty</th>
-                                    <th>Ket</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -183,18 +183,38 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div id="StatusKembalian">
-                    </div>
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-block"><b>Print</b></button>
+                <div id="StatusKembalian">
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="lihat" tabindex="-1" role="dialog" style="width:100%"
+        aria-labelledby="transaksiLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Bill Transaksi</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="BillTransaksi">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="printaera" style="position: absolute;top:0; z-index: -9;"></div>
 
     <style>
         .duit {
@@ -298,7 +318,49 @@
         .item:hover {
             color: #007bff;
         }
+
+        .loading-bg {
+            width: 100%;
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
+
+    <script src="assets/js/jQuery.print.min.js"></script>
     <script>
         layar();
 
@@ -534,19 +596,77 @@
                     }
 
                     $('#transaksi').modal('hide');
-                    $('#kembalian').modal('show');
                     if (data.kembalian) {
                         if (data.kembalian === 0) {
                             $('#StatusKembalian').html(
-                                '<center><h2><b style="color: green">~ LUNAS ~</b></h2></center>');
+                                '<div class="modal-body"><center><h2><b style="color: green">~ LUNAS ~</b></h2></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
+                                data.id + ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
+                            );
                         } else {
                             $('#StatusKembalian').html(
-                                '<center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' + data
-                                .kembalian + '</b></h4></center>'
+                                '<div class="modal-body"><center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' +
+                                data
+                                .kembalian +
+                                '</b></h4></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
+                                data.id + ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
                             );
                         }
                     }
+                    $('#kembalian').modal('show');
+                    $('#manage').DataTable().ajax.reload();
 
+                }
+            });
+        }
+
+        function lihat(id, judul) {
+            $.ajax({
+                url: "POS/LihatBill",
+                type: "POST",
+                data: {
+                    id: id,
+                    judul: judul
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                beforeSend: function(xhr) {
+                    $('#BillTransaksi').html('<div class="loading-bg"><div class="loading"></div></div>');
+                },
+                success: function(data) {
+                    $('#BillTransaksi').html(data);
+                }
+            });
+        }
+
+
+        function Print(id) {
+            $.ajax({
+                url: "POS/Print",
+                type: "POST",
+                data: {
+                    id: id,
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    $('#printaera').html(data);
+
+                    $("#printaera").print({
+                        globalStyles: true,
+                        mediaPrint: false,
+                        stylesheet: null,
+                        noPrintSelector: ".no-print",
+                        iframe: true,
+                        append: null,
+                        prepend: null,
+                        manuallyCopyFormValues: true,
+                        deferred: $.Deferred(),
+                        timeout: 750,
+                        title: null,
+                        doctype: '<!doctype html>'
+                    });
                 }
             });
         }

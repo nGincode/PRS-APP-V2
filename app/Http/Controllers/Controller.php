@@ -34,4 +34,33 @@ class Controller extends BaseController
     {
         return str_replace(',', '', $val);
     }
+
+    function tanggal($tanggal, $hanyatgl = null)
+    {
+        $ambiltgl = date('Y-m-d', strtotime($tanggal));
+
+        $ambiljam = date('H:i:s', strtotime($tanggal));
+
+        $bulan = array(
+            1 =>   'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        );
+        $pecahkan = explode('-', $ambiltgl);
+
+        if ($hanyatgl) {
+            return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+        } else {
+            return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0] . ' (' . $ambiljam . ')';
+        }
+    }
 }
