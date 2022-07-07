@@ -52,6 +52,7 @@ return array(
     'App\\Models\\Olahan' => $baseDir . '/app/Models/Olahan.php',
     'App\\Models\\OpnameStock' => $baseDir . '/app/Models/OpnameStock.php',
     'App\\Models\\POS' => $baseDir . '/app/Models/POS.php',
+    'App\\Models\\POSBill' => $baseDir . '/app/Models/POSBill.php',
     'App\\Models\\Pegawai' => $baseDir . '/app/Models/Pegawai.php',
     'App\\Models\\Pengadaan' => $baseDir . '/app/Models/Pengadaan.php',
     'App\\Models\\Peralatan' => $baseDir . '/app/Models/Peralatan.php',

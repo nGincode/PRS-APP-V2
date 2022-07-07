@@ -697,6 +697,7 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'App\\Models\\Olahan' => __DIR__ . '/../..' . '/app/Models/Olahan.php',
         'App\\Models\\OpnameStock' => __DIR__ . '/../..' . '/app/Models/OpnameStock.php',
         'App\\Models\\POS' => __DIR__ . '/../..' . '/app/Models/POS.php',
+        'App\\Models\\POSBill' => __DIR__ . '/../..' . '/app/Models/POSBill.php',
         'App\\Models\\Pegawai' => __DIR__ . '/../..' . '/app/Models/Pegawai.php',
         'App\\Models\\Pengadaan' => __DIR__ . '/../..' . '/app/Models/Pengadaan.php',
         'App\\Models\\Peralatan' => __DIR__ . '/../..' . '/app/Models/Peralatan.php',

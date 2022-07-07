@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('store_id')->references('id')->on('store');
 
             $table->unsignedBigInteger('bahan_id');
-            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
+            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan')->nullable();
 
             $table->date('tgl');
             $table->string('nama');
