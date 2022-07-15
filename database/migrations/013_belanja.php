@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');
 
-            $table->unsignedBigInteger('bahan_id');
-            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan')->nullable();
+            $table->unsignedBigInteger('bahan_id')->nullable();
+            $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
 
             $table->date('tgl');
             $table->string('nama');

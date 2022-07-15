@@ -28,13 +28,19 @@ class StoreController extends Controller
 
     public function Index(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         return view('Stores', $this->data);
     }
 
 
     public function Tambah(Request $request)
     {
-
+        if (!in_array('createStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -142,6 +148,9 @@ class StoreController extends Controller
 
     public function Edit(Request $request)
     {
+        if (!in_array('updateStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
@@ -151,6 +160,10 @@ class StoreController extends Controller
 
     public function TambahEdit(Request $request)
     {
+
+        if (!in_array('updateStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $Store = Store::where('id', $id)->first();
         if ($Store) {
@@ -287,6 +300,9 @@ class StoreController extends Controller
 
     public function Hapus(Request $request)
     {
+        if (!in_array('deleteStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Store::where('id', $id)->delete()) {
             $data = [
@@ -307,6 +323,9 @@ class StoreController extends Controller
 
     public function Manage(Request $request)
     {
+        if (!in_array('viewStore', $this->permission())) {
+            return redirect()->to('/');
+        }
         $result = array('data' => array());
         $Data = Store::latest()->get();
         foreach ($Data as $value) {

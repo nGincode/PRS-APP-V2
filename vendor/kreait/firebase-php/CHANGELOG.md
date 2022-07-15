@@ -2,6 +2,32 @@
 
 ## [Unreleased]
 
+## [6.6.1] - 2022-07-12
+
+### Fixed
+
+* The `WebPushConfig` class is now more lenient with TTL values, and urgencies are checked if they are valid
+  ([#716](https://github.com/kreait/firebase-php/issues/716))
+* The `AndroidConfig` didn't allow the TTL to be `null`)
+  ([#719](https://github.com/kreait/firebase-php/issues/719))
+
+## [6.6.0] - 2022-07-07
+
+### Fixed
+
+* The `AndroidConfig` class is now more lenient with TTL values
+  ([#713](https://github.com/kreait/firebase-php/issues/713))
+
+### Added
+
+* The maximum amount of messages that can be sent in batches can be accessed 
+  `Kreait\Firebase\Contract\Messaging::BATCH_MESSAGE_LIMIT`
+
+### Deprecated
+
+* `Kreait\Firebase\Messaging\Http\Request\SendMessages::MAX_AMOUNT_OF_MESSAGES`
+* `Kreait\Firebase\Messaging\Http\Request\SendMessageToTokens::MAX_AMOUNT_OF_TOKENS`
+
 ## [6.5.1] - 2022-06-27
 
 ### Fixed
@@ -226,7 +252,9 @@ methods.
     * `Kreait\Firebase\Value\Uid`
     * `Kreait\Firebase\Value\Url`
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/6.5.1...6.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/6.6.1...6.x
+[6.6.1]: https://github.com/kreait/firebase-php/compare/6.6.0...6.6.1
+[6.6.0]: https://github.com/kreait/firebase-php/compare/6.5.1...6.6.0
 [6.5.1]: https://github.com/kreait/firebase-php/compare/6.5.0...6.5.1
 [6.5.0]: https://github.com/kreait/firebase-php/compare/6.4.1...6.5.0
 [6.4.1]: https://github.com/kreait/firebase-php/compare/6.4.0...6.4.1

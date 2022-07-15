@@ -614,6 +614,7 @@
                     }
                     $('#kembalian').modal('show');
                     $('#manage').DataTable().ajax.reload();
+                    search();
 
                 }
             });

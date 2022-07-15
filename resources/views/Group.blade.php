@@ -79,6 +79,54 @@
                                         <td><input type="checkbox" name="permission[]" id="permission" value="deleteGroup"
                                                 class="minimal"></td>
                                     </tr>
+
+                                    <tr>
+                                        <td style="border: none;"><b>Report</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Penjualan</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createReportPenjualan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateReportPenjualan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewReportPenjualan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteReportPenjualan" class="minimal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Belanja</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createReportBelanja" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateReportBelanja" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewReportBelanja" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteReporBelanja" class="minimal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Inventory</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createReportInventory" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateReportInventory" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewReportInventory" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteReportInventory" class="minimal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Foodcost</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createReportFoodcost" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateReportFoodcost" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewReportFoodcost" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteReportFoodcost" class="minimal"></td>
+                                    </tr>
                                     <tr>
                                         <td style="border: none;"><b>Master Data</b></td>
                                     </tr>

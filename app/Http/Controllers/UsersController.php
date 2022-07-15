@@ -28,6 +28,10 @@ class UsersController extends Controller
 
     public function Index(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         if (Store::where('active', 1)->count() > 1) {
             $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
             $this->data['Group'] = Groups::latest()->get();
@@ -40,6 +44,9 @@ class UsersController extends Controller
     public function Tambah(Request $request)
     {
 
+        if (!in_array('createUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -120,6 +127,10 @@ class UsersController extends Controller
 
     public function Edit(Request $request)
     {
+
+        if (!in_array('updateUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
@@ -130,6 +141,9 @@ class UsersController extends Controller
 
     public function TambahEdit(Request $request)
     {
+        if (!in_array('updateUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $pass = $request->input('PasswordUsersLama');
 
@@ -266,6 +280,9 @@ class UsersController extends Controller
 
     public function Hapus(Request $request)
     {
+        if (!in_array('deleteUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (user::where('id', $id)->delete()) {
             $data = [
@@ -288,6 +305,9 @@ class UsersController extends Controller
 
     public function Manage(Request $request)
     {
+        if (!in_array('viewUser', $this->permission())) {
+            return redirect()->to('/');
+        }
         $result = array('data' => array());
         $Data = User::latest()->get();
         foreach ($Data as $value) {

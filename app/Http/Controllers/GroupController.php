@@ -28,6 +28,10 @@ class GroupController extends Controller
 
     public function Index(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewGroup', $this->permission())) {
+            return redirect()->to('/');
+        }
         if (User::count() > 1) {
             $this->data['Users'] = User::all();
             return view('Group', $this->data);
@@ -39,6 +43,9 @@ class GroupController extends Controller
 
     public function Manage(Request $request)
     {
+        if (!in_array('viewGroup', $this->permission())) {
+            return redirect()->to('/');
+        }
         $result = array('data' => array());
         $GroupsUsers = GroupsUsers::with(['Users', 'Groups'])->latest()->get();
 
@@ -126,6 +133,9 @@ class GroupController extends Controller
     public function Tambah(Request $request)
     {
 
+        if (!in_array('createGroup', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -187,6 +197,9 @@ class GroupController extends Controller
 
     public function Hapus(Request $request)
     {
+        if (!in_array('deleteGroup', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Groups::where('id', $id)->delete() && GroupsUsers::where('groups_id', $id)->delete()) {
             $data = [

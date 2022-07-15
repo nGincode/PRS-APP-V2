@@ -90,7 +90,7 @@ $(function() {
 
 
 //alert
-function popup($icon, $toast, $pesan) {
+function popup($icon, $toast, $pesan, reset = null) {
     if ($toast == true) {
         if ($icon === 'success') {
             Swal.fire({
@@ -242,6 +242,27 @@ function popup($icon, $toast, $pesan) {
 
     }
 
+    if (reset) {
+        $(".select2").val("").trigger("change.select2");
+        $(".select2").select2({
+            placeholder: "Pilih",
+        });
+        $('.form-control').removeClass('is-valid');
+        $(reset)[0].reset();
+
+        if ($('.input-group-prepend')) {
+            $('.input-group-prepend').html('');
+        }
+        if ($('.input-group-append')) {
+            $('.input-group-append').html('');
+        }
+
+    }
+
+    if ($('#manage')) {
+        $('#manage').DataTable().ajax.reload();
+    }
+
 }
 
 //autosave panel
@@ -368,9 +389,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormUsers')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormUsers');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -439,9 +458,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormStore')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormStore');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -504,9 +521,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormGroup')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormGroup');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -566,9 +581,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormSupplier')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormSupplier');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -628,9 +641,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormSatuan')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormSatuan');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -709,9 +720,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormBahan')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormBahan');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -784,9 +793,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormPeralatan')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormPeralatan');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -877,9 +884,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormPegawai')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormPegawai');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -891,7 +896,7 @@ $(document).ready(function() {
     }
 
 
-    //Pegawai
+    //Inventory
     if ($('#FormInventory').length) {
         $('#FormInventory').validate({
             rules: {
@@ -950,9 +955,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan);
-                            $('#FormInventory')[0].reset();
-                            $('#manage').DataTable().ajax.reload();
+                            popup(data.status, data.toast, data.pesan, '#FormInventory');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }
@@ -1038,9 +1041,7 @@ $(document).ready(function() {
                             },
                             success: function(data) {
                                 if (data.status === 'success') {
-                                    popup(data.status, data.toast, data.pesan);
-                                    $('#FormInventoryOpname')[0].reset();
-                                    $('#manage').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan, '#FormInventoryOpname');
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }
@@ -1155,7 +1156,6 @@ function Hapus(id, title) {
                 success: function(data) {
                     if (data.status === 'success') {
                         popup(data.status, data.toast, data.pesan);
-                        $('#manage').DataTable().ajax.reload();
                     } else {
                         popup(data.status, data.toast, data.pesan);
                     }
@@ -1229,7 +1229,6 @@ function hapusbelanja(id, row) {
                 success: function(data) {
                     if (data.status === 'success') {
                         popup(data.status, data.toast, data.pesan);
-                        $('#manage').DataTable().ajax.reload();
                         $('#tr_' + row).html('');
                     } else {
                         popup(data.status, data.toast, data.pesan);

@@ -49,12 +49,22 @@ class MasterController extends Controller
     /////////////////////////////////// SUPLIER //////////////////////////
     public function Supplier(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Supplier';
         return view('Supplier', $this->data);
     }
 
     public function SupplierManage(Request $request)
     {
+
+        if (!in_array('viewSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Supplier';
         $this->subtitle = $this->data['subtitle'];
 
@@ -67,10 +77,10 @@ class MasterController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
+            if (in_array('updateSupplier', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deleteSupplier', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -98,10 +108,14 @@ class MasterController extends Controller
     public function SupplierTambah(Request $request)
     {
 
+        if (!in_array('createSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required|unique:supplier',
+                'nama' => 'required',
                 'alamat' => 'required',
             ],
             $messages  = [
@@ -159,6 +173,11 @@ class MasterController extends Controller
 
     public function SupplierEdit(Request $request)
     {
+
+        if (!in_array('updateSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
@@ -168,6 +187,10 @@ class MasterController extends Controller
 
     public function SupplierEditTambah(Request $request)
     {
+
+        if (!in_array('updateSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $id = session('IdEdit');
         $SUpplier = Supplier::where('id', $id)->first();
@@ -246,6 +269,10 @@ class MasterController extends Controller
 
     public function SupplierHapus(Request $request)
     {
+        if (!in_array('deleteSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id =  $request->input('id');
         if (Supplier::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -266,9 +293,14 @@ class MasterController extends Controller
     /////////////////////////////////// SUPLIER //////////////////////////
 
 
-    ////////////////////////////////// BARANG ///////////////////////////
+    ////////////////////////////////// BAHAN ///////////////////////////
     public function Bahan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Bahan';
         $this->data['kode'] = $this->kodebahan;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
@@ -278,6 +310,11 @@ class MasterController extends Controller
 
     public function BahanManage(Request $request)
     {
+
+        if (!in_array('viewBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Bahan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -290,10 +327,10 @@ class MasterController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
+            if (in_array('updateBahan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deleteBahan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -346,6 +383,9 @@ class MasterController extends Controller
     public function BahanTambah(Request $request)
     {
 
+        if (!in_array('createBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -432,6 +472,11 @@ class MasterController extends Controller
 
     public function BahanEdit(Request $request)
     {
+
+        if (!in_array('updateBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
@@ -445,6 +490,9 @@ class MasterController extends Controller
     public function BahanEditTambah(Request $request)
     {
 
+        if (!in_array('updateBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $Bahan = Bahan::where('id', $id)->first();
         if ($Bahan) {
@@ -552,6 +600,9 @@ class MasterController extends Controller
 
     public function BahanHapus(Request $request)
     {
+        if (!in_array('deleteBahan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Bahan::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -569,13 +620,17 @@ class MasterController extends Controller
 
         echo json_encode($data);
     }
-    ////////////////////////////////// BARANG ///////////////////////////
+    ////////////////////////////////// BAHAN ///////////////////////////
 
 
 
     ////////////////////////////////// PERALATAN ///////////////////////////
     public function Peralatan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewPeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Peralatan';
         $this->data['kode'] = $this->kodealat;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
@@ -585,6 +640,9 @@ class MasterController extends Controller
 
     public function PeralatanManage(Request $request)
     {
+        if (!in_array('viewPeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Peralatan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -597,10 +655,10 @@ class MasterController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
+            if (in_array('updatePeralatan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deletePeralatan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -652,6 +710,9 @@ class MasterController extends Controller
     public function PeralatanTambah(Request $request)
     {
 
+        if (!in_array('createPeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -736,6 +797,9 @@ class MasterController extends Controller
 
     public function PeralatanEdit(Request $request)
     {
+        if (!in_array('updatePeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
         $this->data['kode'] = $this->kodealat;
@@ -749,6 +813,9 @@ class MasterController extends Controller
     public function PeralatanEditTambah(Request $request)
     {
 
+        if (!in_array('updatePeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $Peralatan = Peralatan::where('id', $id)->first();
         if ($Peralatan) {
@@ -850,6 +917,9 @@ class MasterController extends Controller
 
     public function PeralatanHapus(Request $request)
     {
+        if (!in_array('deletePeralatan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Peralatan::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -875,6 +945,10 @@ class MasterController extends Controller
     ////////////////////////////////// Pegawai ///////////////////////////
     public function Pegawai(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewPegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Pegawai';
         $this->data['kode'] = $this->kodealat;
         $this->data['Datastore'] = Store::where('active', 1)->get();
@@ -883,6 +957,9 @@ class MasterController extends Controller
 
     public function PegawaiManage(Request $request)
     {
+        if (!in_array('viewPegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Pegawai';
         $this->subtitle = $this->data['subtitle'];
 
@@ -895,10 +972,10 @@ class MasterController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
+            if (in_array('updatePegawai', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deletePegawai', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -924,6 +1001,9 @@ class MasterController extends Controller
     public function PegawaiTambah(Request $request)
     {
 
+        if (!in_array('createPegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -1014,6 +1094,9 @@ class MasterController extends Controller
 
     public function PegawaiEdit(Request $request)
     {
+        if (!in_array('updatePegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
         $this->data['kode'] = $this->kodepegawai;
@@ -1026,6 +1109,9 @@ class MasterController extends Controller
     public function PegawaiEditTambah(Request $request)
     {
 
+        if (!in_array('updatePegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $Pegawai = Pegawai::where('id', $id)->first();
         if ($Pegawai) {
@@ -1133,6 +1219,9 @@ class MasterController extends Controller
 
     public function PegawaiHapus(Request $request)
     {
+        if (!in_array('deletePegawai', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Pegawai::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -1155,15 +1244,22 @@ class MasterController extends Controller
 
 
 
-    /////////////////////////////////// SUPLIER //////////////////////////
+    /////////////////////////////////// SATUAN //////////////////////////
     public function Satuan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Satuan';
         return view('Satuan', $this->data);
     }
 
     public function SatuanManage(Request $request)
     {
+        if (!in_array('viewSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['subtitle'] = 'Satuan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -1176,10 +1272,10 @@ class MasterController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('updateMaster', $this->permission())) {
+            if (in_array('updateSatuan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deleteSatuan', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -1197,6 +1293,9 @@ class MasterController extends Controller
 
     public function SatuanTambah(Request $request)
     {
+        if (!in_array('createSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $validator = Validator::make(
             $request->all(),
@@ -1256,6 +1355,9 @@ class MasterController extends Controller
 
     public function SatuanEdit(Request $request)
     {
+        if (!in_array('updateSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
 
@@ -1266,6 +1368,9 @@ class MasterController extends Controller
     public function SatuanEditTambah(Request $request)
     {
 
+        if (!in_array('updateSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = session('IdEdit');
         $Satuan = Satuan::where('id', $id)->first();
         if ($Satuan) {
@@ -1339,6 +1444,9 @@ class MasterController extends Controller
 
     public function SatuanHapus(Request $request)
     {
+        if (!in_array('deleteSatuan', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id =  $request->input('id');
         if (Satuan::where('id', $id)->update(['delete' => true])) {
             $data = [

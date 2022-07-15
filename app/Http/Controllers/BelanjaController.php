@@ -25,13 +25,17 @@ class BelanjaController extends Controller
 
     public function index(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['Belanja'] = Inventory::with('Bahan')->first();
 
         $bhn = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->get();
         $bahan = [];
         foreach ($bhn as $key => $value) {
             $bahan[] = array(
-                'id' => $value['id'],
+                'id' => $value['bahan']->id,
                 'nama' => $value['bahan']->nama
             );
         }
@@ -44,6 +48,10 @@ class BelanjaController extends Controller
 
     public function Input(Request $request)
     {
+
+        if (!in_array('createBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $validator = Validator::make(
             $request->all(),
@@ -120,18 +128,23 @@ class BelanjaController extends Controller
                             };
                         }
                     } else {
-                        $bahan = Bahan::where('id', $nama)->first();
+                        $inventory = Inventory::with('Bahan')->where('id', $nama)->first();
                         $harga =  $request->input('harga')[$key] ?? 0;
                         $konversi = $request->input('konversi')[$key] ?? 1;
                         $total = $harga * $konversi;
                         $id = $request->input('id')[$key] ?? 0;
 
-                        $jml = Belanja::where('bahan_id', $nama)->where('tgl', date('Y-m-d'))->where('store_id', $request->session()->get('store_id'))->count();
+                        $jml = Belanja::where('bahan_id', $inventory['bahan']->id)
+                            ->where('tgl', date('Y-m-d'))
+                            ->where('store_id', $request->session()->get('store_id'))
+                            ->where('up', false)
+                            ->count();
+
                         if (!$jml or $id) {
                             $input = [
-                                'nama' => $bahan['nama'],
-                                'bahan_id' => $bahan['id'],
-                                'item_uom' => $bahan['satuan_pembelian'],
+                                'nama' => $inventory['bahan']->nama,
+                                'bahan_id' => $inventory['bahan_id'],
+                                'item_uom' => $inventory['satuan'],
                                 'tgl' => date('Y-m-d'),
                                 'kategori' => 'Item',
                                 'total' => $total,
@@ -162,13 +175,12 @@ class BelanjaController extends Controller
                                     ];
                                 };
                             } else {
-                                if (Belanja::insert($input)) {
-                                    $idbelanja = Belanja::select('id')->latest()->first();
+                                if ($idbelanja = Belanja::insertGetId($input)) {
                                     $data = [
                                         'toast' => true,
                                         'status' => 'success',
                                         'pesan' => 'Autosave Berhasil',
-                                        'id' => $idbelanja['id'],
+                                        'id' => $idbelanja,
                                         'row' => $request->input('key')[$key]
                                     ];
                                 } else {
@@ -184,7 +196,7 @@ class BelanjaController extends Controller
                             $data = [
                                 'toast' => true,
                                 'status' => 'error',
-                                'pesan' =>  '<b>' . $bahan['nama'] . '</b> Telah ada, Silahkan cek kembali'
+                                'pesan' =>  '<b>' . $inventory['bahan']->nama . '</b> Telah ada, Silahkan cek kembali'
                             ];
                         }
                     }
@@ -201,6 +213,11 @@ class BelanjaController extends Controller
 
     public function Upload(Request $request)
     {
+
+        if (!in_array('createBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $belanja = Belanja::where('up', false)->where('store_id', $request->session()->get('store_id'))->where('tgl', date('Y-m-d'))->get();
         if ($belanja) {
             $cek = true;
@@ -264,6 +281,11 @@ class BelanjaController extends Controller
 
     public function Namabarang(Request $request)
     {
+
+        if (!in_array('viewBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $bhn = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->get();
         $bahan = [];
         foreach ($bhn as $key => $value) {
@@ -279,6 +301,10 @@ class BelanjaController extends Controller
 
     public function Inventorybahanid(Request $request)
     {
+        if (!in_array('viewBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id = $request->input('id');
         if ($id) {
             $bhn = Inventory::where('id', $id)->first();
@@ -286,9 +312,12 @@ class BelanjaController extends Controller
         }
     }
 
-
     public function HapusItem(Request $request)
     {
+        if (!in_array('deleteBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id =  $request->input('id');
         if (Belanja::where('id', $id)->delete()) {
             $data = [
@@ -307,9 +336,12 @@ class BelanjaController extends Controller
         echo json_encode($data);
     }
 
-
     public function Manage(Request $request)
     {
+        if (!in_array('viewBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Belanja';
         $this->subtitle = $this->data['subtitle'];
 

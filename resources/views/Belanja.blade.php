@@ -30,8 +30,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="tgl">Tanggal Laporan</label>
-                                    <input type="date" disabled class="form-control" id="tgl" value="<?= date('Y-m-d') ?>"
-                                        name="tgl">
+                                    <input type="date" disabled class="form-control" id="tgl"
+                                        value="<?= date('Y-m-d') ?>" name="tgl">
                                 </div>
                             </div>
 
@@ -42,7 +42,7 @@
                                         <tr>
                                             <th>Nama Barang</th>
                                             <th>Kategori</th>
-                                            <th style="min-width: 300px">Qty Belanja</th>
+                                            <th style="min-width: 300px">Qty Nota</th>
                                             <th style="min-width: 150px">Qty UOM</th>
                                             <th>Total</th>
                                             <th>Keterangan</th>
@@ -145,9 +145,9 @@
                                                             <input @if ($v['up']) disabled @endif
                                                                 onkeyup="hitung_belanja(this.value,{{ $key }})"
                                                                 style="text-align: right;max-width:50px;" type="text"
-                                                                @if ($v['item_uom'] == $v['uom']) disabled value="1" @else value="{{ $v['konversi'] }}" @endif
-                                                                name="konversi[]" id="konversi_{{ $key }}"
-                                                                class="form-control" placeholder="Konversi">
+                                                                value="{{ $v['konversi'] }}" name="konversi[]"
+                                                                id="konversi_{{ $key }}" class="form-control"
+                                                                placeholder="Konversi">
                                                             <div class="input-group-append"><span class="input-group-text"
                                                                     id="belanja_uom_{{ $key }}">
                                                                     {{ $v['uom'] }}</span></div>
@@ -164,9 +164,9 @@
                                                         -
                                                     @endif
                                                 </td>
-                                                <td> <input @if ($v['up']) disabled @endif type="text"
-                                                        class="form-control" value="{{ $v['ket'] }}" id="ket"
-                                                        placeholder="Keterangan" name="ket[]"
+                                                <td> <input @if ($v['up']) disabled @endif
+                                                        type="text" class="form-control" value="{{ $v['ket'] }}"
+                                                        id="ket" placeholder="Keterangan" name="ket[]"
                                                         onchange="$('#FormBelanja').submit()">
                                                 </td>
                                                 <td><input @if ($v['up']) disabled @endif
@@ -231,6 +231,8 @@
                 $('#uombelanja_' + row).prop('disabled', false);
                 $('#qty_' + row).val('');
                 $('#total_' + row).html('-');
+
+                html = '<input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" >';
                 $('#FormBelanja').submit();
 
             } else if (id === 'Supplay') {

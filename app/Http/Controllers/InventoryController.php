@@ -34,6 +34,11 @@ class InventoryController extends Controller
 
     public function Stock(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Stock';
 
         $bahan = [];
@@ -70,6 +75,9 @@ class InventoryController extends Controller
     public function Tambah(Request $request)
     {
 
+        if (!in_array('createInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
         $validator = Validator::make(
             $request->all(),
             $rules = [
@@ -134,6 +142,10 @@ class InventoryController extends Controller
 
     public function Manage(Request $request)
     {
+        if (!in_array('viewInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Stock';
         $this->subtitle = $this->data['subtitle'];
 
@@ -146,7 +158,7 @@ class InventoryController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('deleteMaster', $this->permission())) {
+            if (in_array('deleteInventoryStock', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
@@ -165,7 +177,7 @@ class InventoryController extends Controller
                 $value['bahan']->kode,
                 $value['bahan']->nama,
                 $qty,
-                $value['harga_last'] ?? 'Rp. 0',
+                ($this->rupiah($value['harga_last']) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
                 $button
             );
         }
@@ -174,6 +186,10 @@ class InventoryController extends Controller
 
     public function Hapus(Request $request)
     {
+        if (!in_array('deleteInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id =  $request->input('id');
         if (Inventory::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -195,6 +211,11 @@ class InventoryController extends Controller
 
     public function Opname(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewInventoryOpname', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Opname';
 
         $bahan = [];
@@ -219,6 +240,10 @@ class InventoryController extends Controller
     }
     public function ManageOpname(Request $request)
     {
+
+        if (!in_array('viewInventoryOpname', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $this->data['subtitle'] = 'Stock';
         $this->subtitle = $this->data['subtitle'];
@@ -249,6 +274,10 @@ class InventoryController extends Controller
     }
     public function TambahOpname(Request $request)
     {
+        if (!in_array('createInventoryOpname', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $nama = $request->input('nama');
         $status = $request->input('status');
         $qty = $request->input('qty');
@@ -264,6 +293,7 @@ class InventoryController extends Controller
                 $qtyjml = '';
             }
             $input = [
+                'tgl' => date('Y-m-d'),
                 'bahan_id' => $nama,
                 'nama' => $bahan['bahan']->nama,
                 'status' => $status,

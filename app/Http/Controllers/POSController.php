@@ -308,6 +308,14 @@ class POSController extends Controller
                 $kembalian = $this->rupiah($jumlahqty - $jumlahbelanja);
 
                 if (POSBillItem::insert($dataitem)) {
+
+                    foreach ($dtpos as $value2) {
+                        $dtinven = Inventory::where('bahan_id', $value2['bahan_id'])->first();
+                        if ($dtinven) {
+                            $qty = $dtinven['qty'] - $value2['qty'];
+                            Inventory::where('bahan_id', $value2['bahan_id'])->update(['qty' => $qty]);
+                        }
+                    }
                     POS::where('store_id', $id_store)->delete();
                     $data = [
                         'kembalian' => $kembalian,
