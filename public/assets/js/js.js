@@ -1079,14 +1079,13 @@ $(document).ready(function() {
             dataType: "json",
             success: function(data) {
                 var row_id = $("#tambahbelanja tbody tr").length - 1;
-
-                var html = '<tr id="tr_' + row_id + '"> <td style="padding-left: 15px;"><input type="hidden" value="" id="id_' + row_id + '" name="id[]"><input type="hidden" value="' + row_id + '" id="key_' + row_id + '" name="key[]"> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option>';
+                var html = '<tr id="tr_' + row_id + '"> <td style="padding-left: 50px;"><a class="btn btn-warning btn-sm" id="hapus_' + row_id + '" onclick="hapusbelanja(false,' + row_id + ')" style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i class="fa fa-times"></i> </a><input type="hidden" value="" id="id_' + row_id + '" name="id[]"><input type="hidden" value="' + row_id + '" id="key_' + row_id + '" name="key[]"> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option> <option value="ART">ART</option>';
 
                 for (let x = 0; x <= data.bahan.length - 1; x++) {
-                    html += '<option value="' + data.bahan[x]['id'] + '">' + data.bahan[x]['nama'] + '</option>';
+                    html += '<option value="' + data.bahan[x]['bahan_id'] + '">' + data.bahan[x]['nama'] + '</option>';
                 }
 
-                html += '</select> </td><td> <select name="kategori[]" id="kategori_' + row_id + '" disabled class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih Nama</option> <option value="Item">Item</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option> </select> </td><td> <div class="row"> <div class="col"> <input type="number"  class="form-control" id="qty_' + row_id + '" onkeyup="hitung_belanja(this.value, ' + row_id + ')" placeholder="Qty"  name="qty[]"> </div><div class="col"> <select name="uombelanja[]" onchange="konversi_belanja(' + row_id + ')" id="uombelanja_' + row_id + '" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">UOM</option>';
+                html += '</select> </td><td> <input type="hidden" name="kategori[]" id="kategori_val_' + row_id + '" value=""> <select disabled name="kategori[]" id="kategori_' + row_id + '" readonly class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Item">Item</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option> <option value="ART">ART</option> </select> </td><td> <div class="row"> <div class="col"> <input type="number"  class="form-control" id="qty_' + row_id + '" onkeyup="hitung_belanja(this.value, ' + row_id + ')" placeholder="Qty"  name="qty[]"> </div><div class="col"> <select name="uombelanja[]" onchange="konversi_belanja(' + row_id + ')" id="uombelanja_' + row_id + '" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">UOM</option>';
 
                 for (let y = 0; y <= data.satuan.length - 1; y++) {
                     html += '<option value="' + data.satuan[y]['singkat'] + '">' + data.satuan[y]['nama'] + '</option>';
@@ -1205,38 +1204,42 @@ function penyajianedit(value) {
 }
 
 function hapusbelanja(id, row) {
-    Swal.fire({
-        title: 'Yakin Menghapus?',
-        text: "Data Akan Dihapus Permanen!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Hapus'
-    }).then((result) => {
-        if (result.isConfirmed) {
+    if (id == false) {
+        $('#tr_' + row).html('');
+    } else {
+        Swal.fire({
+            title: 'Yakin Menghapus?',
+            text: "Data Akan Dihapus Permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Hapus'
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-            $.ajax({
-                url: "Belanja/HapusItem",
-                type: "POST",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
-                },
-                success: function(data) {
-                    if (data.status === 'success') {
-                        popup(data.status, data.toast, data.pesan);
-                        $('#tr_' + row).html('');
-                    } else {
-                        popup(data.status, data.toast, data.pesan);
+                $.ajax({
+                    url: "Belanja/HapusItem",
+                    type: "POST",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            popup(data.status, data.toast, data.pesan);
+                            $('#tr_' + row).html('');
+                        } else {
+                            popup(data.status, data.toast, data.pesan);
+                        }
                     }
-                }
-            })
-        }
-    })
+                })
+            }
+        })
+    }
 
 
 }

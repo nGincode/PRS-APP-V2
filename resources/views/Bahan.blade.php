@@ -26,9 +26,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Kategori</label>
-                                    <select name="kategori" onchange="clickkategori(this.value)" id="kategori"
-                                        class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="kategori" id="kategori" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="1">Bahan Baku Segar</option>
                                         <option value="2">Bahan Baku Beku</option>
@@ -65,7 +64,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="harga">Harga</label>
-                                    <input type="text" class="form-control" id="harga" placeholder="Harga" name="harga">
+                                    <input type="text" class="form-control" id="harga" placeholder="Harga"
+                                        name="harga">
                                 </div>
                             </div>
 
@@ -127,16 +127,6 @@
                                 </div>
                             </div>
 
-
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="kode">Kode Product</label>
-                                    <input type="text" disabled class="form-control" value="Pilih Kategori" id="kode"
-                                        name="kode">
-                                </div>
-                            </div>
-
-
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Penggunaan Ke</label>
@@ -196,20 +186,6 @@
         document.getElementById("konversi_pengeluaran").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
         });
-
-        function clickkategori(val) {
-            if (val == 1) {
-                $('#kode').val('BBS{{ $kode }}');
-            } else if (val == 2) {
-                $('#kode').val('BBB{{ $kode }}');
-            } else if (val == 3) {
-                $('#kode').val('BBK{{ $kode }}');
-            } else if (val == 4) {
-                $('#kode').val('BBD{{ $kode }}');
-            } else {
-                $('#kode').val('Gagal, Refresh Halaman');
-            }
-        }
     </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 @endsection

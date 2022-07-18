@@ -37,12 +37,19 @@ class POSController extends Controller
     }
     public function index()
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $this->data['item'] = Inventory::with('Bahan')->where('delete', false)->get();
         return view('POS', $this->data);
     }
 
     public function pilih(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $bahan_id = $request->input('bahan');
         $inventory_id = $request->input('id');
         $id_store = request()->session()->get('store_id');
@@ -89,6 +96,9 @@ class POSController extends Controller
 
     public function Totalbill(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $dtpos = POS::all();
         $jumlah = 0;
         foreach ($dtpos as $key => $value) {
@@ -101,6 +111,9 @@ class POSController extends Controller
     public function layar()
     {
 
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $pos = POS::with('Bahan')->latest()->get();
 
         foreach ($pos as $key => $value) {
@@ -132,6 +145,9 @@ class POSController extends Controller
 
     public function Search(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $id = $request->input('id');
         if ($id) {
@@ -179,6 +195,9 @@ class POSController extends Controller
 
     public function positemhapus(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         if (POS::where('id', $id)->delete()) {
             $data = [
@@ -199,6 +218,9 @@ class POSController extends Controller
 
     public function positemplus(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
 
         $data = POS::where('id', $id)->first();
@@ -218,6 +240,9 @@ class POSController extends Controller
 
     public function positemminus(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
 
         $data = POS::where('id', $id)->first();
@@ -342,47 +367,63 @@ class POSController extends Controller
 
     public function Manage(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $result = array('data' => array());
         $id_store = request()->session()->get('store_id');
         $Data = POSBill::where('store_id', $id_store)->orderBy('id', 'DESC')->get();
-        foreach ($Data as $value) {
-            if ($value['id'] != 1) {
-
-                $button = '<div class="btn-group dropleft">
+        foreach ($Data as $key => $value) {
+            $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
-                $button .= "<li><a class='dropdown-item' onclick='Print(" . $value['id'] . "," . '"' . $this->title . '"' . ")' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
+            $button .= "<li><a class='dropdown-item' onclick='Print(" . $value['id'] . "," . '"' . $this->title . '"' . ")' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
 
-                if (in_array('viewPOS', $this->permission())) {
-                    $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
-                }
-
-                $button .= '</ul></div>';
-
-                if ($value['paid'] == 1) {
-                    $paid = '<span class="badge badge-success">Paid</span>';
-                } else {
-                    $paid = '<span class="badge badge-danger">Unpaid</span>';
-                }
-
-                $result['data'][] = array(
-                    $this->tanggal($value['tgl']),
-                    $value['no_bill'],
-                    $value['nama_bill'] ?? '-',
-                    $value['no_hp'] ?? '-',
-                    $value['total'],
-                    $paid,
-                    $button
-                );
+            if (in_array('viewPOS', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
             }
+
+            $button .= '</ul></div>';
+
+            if ($value['paid'] == 1) {
+                $paid = '<span class="badge badge-success">Paid</span>';
+            } else {
+                $paid = '<span class="badge badge-danger">Unpaid</span>';
+            }
+
+            if ($value['nama_bill']) {
+                $nama_bill = $value['nama_bill'];
+            } else {
+                $nama_bill = '-';
+            }
+
+
+            if ($value['no_hp']) {
+                $no_hp = $value['no_hp'];
+            } else {
+                $no_hp = '-';
+            }
+
+            $result['data'][$key] = array(
+                $this->tanggal($value['tgl']),
+                $value['no_bill'],
+                $nama_bill,
+                $no_hp,
+                $value['total'],
+                $paid,
+                $button
+            );
         }
         echo json_encode($result);
     }
 
     public function LihatBill(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
         $judul = $request->input('judul');
         $id_store = request()->session()->get('store_id');
@@ -426,6 +467,9 @@ class POSController extends Controller
 
     public function Print(Request $request)
     {
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
         $id = $request->input('id');
 
         $BillItem = POSBillItem::where('posbill_id', $id)->get();

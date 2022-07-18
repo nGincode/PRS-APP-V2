@@ -74,28 +74,11 @@ if (Auth::check()) {
         $urlLogo = url('/assets/images/unnamed.png');
     }
 
-    // $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.groups_id')
-    //     ->where('groups_users.users_id', $Id)
-    //     ->first();
-    // if ($DataGroup) {
-    //     $user_permission = unserialize($DataGroup['permission']);
-    // } else {
-    //     $user_permission = [];
-    //     session()->put('err', 'Akun Ini Belum Memiliki Groups');
-    //     echo '<script>window.location.href = "' . url('/logout') . '";</script>';
-    // }
-
-    if (isset($user_permission)) {
-        if (!$user_permission) {
-            session()->put('err', 'Akun Ini Belum Memiliki Groups');
-            echo '<script>window.location.href = "' . url('/logout') . '";</script>';
-        }
+    if ($user_permission == false) {
+        session()->put('err', 'Akun Ini Belum Memiliki Groups');
+        echo '<script>window.location.href = "' . url('/logout') . '";</script>';
+        $user_permission = [];
     }
-    // else {
-    //     session()->put('err', 'Permission Gagal');
-    //     echo '<script>window.location.href = "' . url('/logout') . '";</script>';
-    // $user_permission = [];
-    // }
 
     if (!$active) {
         session()->put('err', 'Store Tidak Aktif Silahkan Hub Admin');

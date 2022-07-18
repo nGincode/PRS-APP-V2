@@ -20,7 +20,11 @@ class Controller extends BaseController
         $DataGroup = GroupsUsers::join('groups', 'groups.id', '=', 'groups_users.groups_id')
             ->where('groups_users.users_id', $Id)
             ->first();
-        return unserialize($DataGroup['permission']);
+        if ($DataGroup) {
+            return unserialize($DataGroup['permission']);
+        } else {
+            return false;
+        }
     }
 
 

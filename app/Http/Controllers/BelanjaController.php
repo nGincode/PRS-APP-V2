@@ -56,7 +56,9 @@ class BelanjaController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required'
+                'nama' => 'required',
+                'kategori' => 'required',
+                'qty' => 'required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -74,13 +76,13 @@ class BelanjaController extends Controller
                 ];
             }
         } else {
-            foreach ($request->input('nama') as $key => $nama) {
-                if ($request->input('qty')[$key]) {
-                    if ($nama == 'Supplay' or $nama == 'Oprasional') {
+            foreach ($request->input('kategori') as $key => $kategori) {
+                if (isset($request->input('qty')[$key])) {
+                    if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART') {
                         $input = [
-                            'nama' => $nama,
+                            'nama' => $request->input('nama')[$key],
                             'tgl' => date('Y-m-d'),
-                            'kategori' => $nama,
+                            'kategori' => $kategori,
                             'store_id' => $request->session()->get('store_id'),
                             'qty' => $request->input('qty')[$key],
                             'harga' => $request->input('harga')[$key] ?? null,
@@ -109,13 +111,12 @@ class BelanjaController extends Controller
                                 ];
                             };
                         } else {
-                            if (Belanja::insert($input)) {
-                                $idbelanja = Belanja::select('id')->latest()->first();
+                            if ($idbelanja = Belanja::insertGetId($input)) {
                                 $data = [
                                     'toast' => true,
                                     'status' => 'success',
                                     'pesan' => 'Autosave Berhasil',
-                                    'id' => $idbelanja['id'],
+                                    'id' => $idbelanja,
                                     'row' => $request->input('key')[$key]
                                 ];
                             } else {
@@ -128,7 +129,7 @@ class BelanjaController extends Controller
                             };
                         }
                     } else {
-                        $inventory = Inventory::with('Bahan')->where('id', $nama)->first();
+                        $inventory = Inventory::with('Bahan')->where('bahan_id', $request->input('nama')[$key])->first();
                         $harga =  $request->input('harga')[$key] ?? 0;
                         $konversi = $request->input('konversi')[$key] ?? 1;
                         $total = $harga * $konversi;
@@ -291,6 +292,7 @@ class BelanjaController extends Controller
         foreach ($bhn as $key => $value) {
             $bahan[] = array(
                 'id' => $value['id'],
+                'bahan_id' => $value['bahan']->id,
                 'nama' => $value['bahan']->nama
             );
         }
@@ -307,7 +309,7 @@ class BelanjaController extends Controller
 
         $id = $request->input('id');
         if ($id) {
-            $bhn = Inventory::where('id', $id)->first();
+            $bhn = Inventory::where('bahan_id', $id)->first();
             echo json_encode($bhn);
         }
     }

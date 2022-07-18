@@ -35,8 +35,8 @@
                         <select name="izin" id="izin" class="form-control select2 select2-danger"
                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
-                            <option value="1" @if ($UsersData['id'] == 1) selected @endif>Keseluruhan</option>
-                            <option value="0" @if ($UsersData['id'] == 0) selected @endif>Khusus</option>
+                            <option value="1" @if ($UsersData['izin'] == 1) selected @endif>Keseluruhan</option>
+                            <option value="0" @if ($UsersData['izin'] == 0) selected @endif>Khusus</option>
                         </select>
                     </div>
                 </div>
@@ -121,12 +121,12 @@
                         <label>Gender</label><br>
                         <div class="icheck-primary d-inline">
                             <input type="radio" id="GenderUsersPerempuanedit" name="gender" value="1"
-                                @if ($UsersData['gender'] == 1) checked @endif>
+                                @if ($UsersData['gender'] == 'Wanita') checked @endif>
                             <label for="GenderUsersPerempuanedit"> Perempuan</label>
                         </div>
                         <div class="icheck-primary d-inline">
                             <input type="radio" id="GenderUsersPriaedit" value="2" name="gender"
-                                @if ($UsersData['gender'] == 2) checked @endif>
+                                @if ($UsersData['gender'] == 'Pria') checked @endif>
                             <label for="GenderUsersPriaedit"> Laki-Laki</label>
                         </div>
                     </div>
@@ -1030,7 +1030,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Kategori</label>
-                        <select name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
+                        <select disabled name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
@@ -1200,9 +1200,6 @@
                         'nama': {
                             required: true
                         },
-                        'kategori': {
-                            required: true
-                        },
                         'satuan_pembelian': {
                             required: true
                         },
@@ -1272,21 +1269,6 @@
                 });
             }
         });
-
-        function clickkategoriedit(val) {
-            if (val == 1) {
-                $('#kodeedit').val('BBS{{ $kode }}');
-            } else if (val == 2) {
-                $('#kodeedit').val('BBB{{ $kode }}');
-            } else if (val == 3) {
-                $('#kodeedit').val('BBK{{ $kode }}');
-            } else if (val == 4) {
-                $('#kodeedit').val('BBD{{ $kode }}');
-            } else {
-                $('#kodeedit').val('Gagal, Refresh Halaman');
-            }
-        }
-
         //Format Penulisan
         document.getElementById("hargaa").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
@@ -1308,7 +1290,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Kategori</label>
-                        <select name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
+                        <select disabled name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
@@ -1339,9 +1321,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Satuan Pembelian</label>
-                        <select name="satuan_pembelian" onchange="pembelianedit(this.value)" id="satuan_pembelian"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                        <select name="satuan_pembelian" id="satuan_pembelian" class="form-control select2 select2-danger"
+                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s1)
@@ -1446,9 +1427,6 @@
                         'nama': {
                             required: true
                         },
-                        'kategori': {
-                            required: true
-                        },
                         'satuan_pembelian': {
                             required: true
                         },
@@ -1513,21 +1491,6 @@
             }
         });
 
-        function clickkategoriedit(val) {
-            if (val == 1) {
-                $('#kodeedit').val('PD{{ $kode }}');
-            } else if (val == 2) {
-                $('#kodeedit').val('PK{{ $kode }}');
-            } else if (val == 3) {
-                $('#kodeedit').val('PB{{ $kode }}');
-            } else if (val == 4) {
-                $('#kodeedit').val('PW{{ $kode }}');
-            } else if (val == 5) {
-                $('#kodeedit').val('PL{{ $kode }}');
-            } else {
-                $('#kodeedit').val('Gagal, Refresh Halaman');
-            }
-        }
 
         //Format Penulisan
         document.getElementById("hargaa").addEventListener("keyup", function(e) {

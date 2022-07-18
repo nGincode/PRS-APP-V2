@@ -35,12 +35,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-12">
+                            <div class="col-12 col-sm-12" style="overflow: auto;">
                                 <label for="nama">Input</label>
                                 <table id="tambahbelanja" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Nama Barang</th>
+                                            <th style="min-width: 300px">Nama Barang</th>
                                             <th>Kategori</th>
                                             <th style="min-width: 300px">Qty Nota</th>
                                             <th style="min-width: 150px">Qty UOM</th>
@@ -55,26 +55,31 @@
                                         @foreach ($Data as $key => $v)
                                             <tr id="tr_{{ $key }}"
                                                 @if ($v['up']) style="background-color: #a9a9a966;" @endif>
-                                                <td style="padding-left: 15px;">
+                                                <td @if (!$v['up']) style="padding-left: 50px;" @endif>
                                                     @if (!$v['up'])
                                                         <a class="btn btn-danger btn-sm"
                                                             onclick="hapusbelanja({{ $v['id'] }}, {{ $key }})"
-                                                            style="margin-top: 3px;position: absolute;z-index: 9;left: -10px;"><i
+                                                            style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i
                                                                 class="fa fa-times"></i>
                                                         </a>
                                                     @endif
                                                     <select @if ($v['up']) disabled @endif name="nama[]"
-                                                        onchange="clicknama(this.value, {{ $key }})"
+                                                        onchange="clicknama(this.value, {{ $key }}, '<?= $v['nama'] ?>')"
                                                         id="nama_{{ $key }}"
                                                         class="form-control select2 select2-danger"
-                                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                        data-dropdown-css-class="select2-danger"
+                                                        style="width: 100%;margin-left:100px;">
                                                         <option selected="true" disabled="disabled">Pilih</option>
-                                                        <option value="Oprasional"
-                                                            @if ($v['nama'] == 'Oprasional') selected @endif>Oprasional
+
+                                                        <option value="<?= $v['nama'] ?>" selected><?= $v['nama'] ?>
                                                         </option>
-                                                        <option value="Supplay"
-                                                            @if ($v['nama'] == 'Supplay') selected @endif> Supplay
+                                                        <option value="Oprasional">Oprasional
                                                         </option>
+                                                        <option value="Supplay">Supplay
+                                                        </option>
+                                                        <option value="ART">ART
+                                                        </option>
+
                                                         @foreach ($bahan as $bhn)
                                                             <option value="{{ $bhn['id'] }}"
                                                                 @if ($v['bahan_id'] == $bhn['id']) selected @endif>
@@ -89,20 +94,25 @@
                                                             id="key_{{ $key }}" name="key[]">
                                                     @endif
                                                 </td>
-                                                <td> <select @if ($v['up']) disabled @endif
-                                                        name="kategori[]" id="kategori_{{ $key }}" disabled
+                                                <td> <select disabled id="kategori_{{ $key }}"
                                                         class="form-control select2 select2-danger"
                                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                                        <option selected="true" disabled="disabled">Pilih Nama</option>
+                                                        <option selected="true" disabled="disabled">Pilih</option>
                                                         <option value="Item"
                                                             @if ($v['bahan_id'] > 0) selected @endif>Item</option>
                                                         <option value="Oprasional"
-                                                            @if ($v['nama'] == 'Oprasional') selected @endif>Oprasional
+                                                            @if ($v['kategori'] == 'Oprasional') selected @endif>Oprasional
                                                         </option>
                                                         <option value="Supplay"
-                                                            @if ($v['nama'] == 'Supplay') selected @endif>Supplay
+                                                            @if ($v['kategori'] == 'Supplay') selected @endif>Supplay
+                                                        </option>
+                                                        <option value="ART"
+                                                            @if ($v['kategori'] == 'ART') selected @endif>ART
                                                         </option>
                                                     </select>
+                                                    <input type="hidden" name="kategori[]"
+                                                        id="kategori_val_{{ $key }}"
+                                                        value="<?= $v['kategori'] ?>">
                                                 </td>
                                                 <td>
                                                     <div class="row">
@@ -134,8 +144,9 @@
                                                             <input @if ($v['up']) disabled @endif
                                                                 type="text" class="form-control"
                                                                 onkeyup="hitung_belanja(this.value, {{ $key }})"
-                                                                id="harga_{{ $key }}" value="{{ $v['harga'] }}"
-                                                                placeholder="Harga" name="harga[]">
+                                                                id="harga_{{ $key }}"
+                                                                value="{{ $v['harga'] }}" placeholder="Harga"
+                                                                name="harga[]">
                                                         </div>
                                                     </div>
                                                 </td>
@@ -223,27 +234,89 @@
     </section>
 
     <script>
-        function clicknama(id, row) {
+        function clicknama(id, row, tersimpan = null) {
             if (id === 'Oprasional') {
-                $('#kategori_' + row).val('Oprasional');
-                $('#kategori_' + row).trigger('change');
-                $('#item_' + row).html('-');
-                $('#uombelanja_' + row).prop('disabled', false);
-                $('#qty_' + row).val('');
-                $('#total_' + row).html('-');
 
-                html = '<input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" >';
-                $('#FormBelanja').submit();
+                var isi = prompt('Nama Barang Oprasional');
+
+                if (isi) {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+                        alert('Nama Tidak diizinkan');
+                        hapusbelanja(false, row);
+                    } else {
+                        $('#kategori_val_' + row).val('Oprasional');
+                        $('#kategori_' + row).val('Oprasional');
+                        $('#kategori_' + row).trigger('change');
+                        $('#item_' + row).html('-');
+                        $('#uombelanja_' + row).prop('disabled', false);
+                        $('#qty_' + row).val('');
+                        $('#total_' + row).html('-');
+
+                        var newOption = new Option(isi, isi, true, true);
+                        $('#nama_' + row).append(newOption).trigger('change');
+                    }
+                } else {
+                    if (tersimpan) {
+                        $('#nama_' + row).val(tersimpan).trigger("change.select2");
+                    } else {
+                        hapusbelanja(false, row);
+                    }
+                }
 
             } else if (id === 'Supplay') {
-                $('#kategori_' + row).val('Supplay');
-                $('#kategori_' + row).trigger('change');
-                $('#item_' + row).html('-');
-                $('#uombelanja_' + row).prop('disabled', false);
-                $('#qty_' + row).val('');
-                $('#total_' + row).html('-');
-                $('#FormBelanja').submit();
-            } else {
+                var isi = prompt('Nama Barang Supplay');
+                if (isi) {
+
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+                        alert('Nama Tidak diizinkan');
+                        hapusbelanja(false, row);
+                    } else {
+                        $('#kategori_val_' + row).val('Supplay');
+                        $('#kategori_' + row).val('Supplay');
+                        $('#kategori_' + row).trigger('change');
+                        $('#item_' + row).html('-');
+                        $('#uombelanja_' + row).prop('disabled', false);
+                        $('#qty_' + row).val('');
+                        $('#total_' + row).html('-');
+
+                        var newOption = new Option(isi, isi, true, true);
+                        $('#nama_' + row).append(newOption).trigger('change');
+                    }
+                } else {
+                    if (tersimpan) {
+                        $('#nama_' + row).val(tersimpan).trigger("change.select2");
+                    } else {
+                        hapusbelanja(false, row)
+                    }
+                }
+            } else if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+
+                var isi = prompt('Nama Barang ART');
+                if (isi) {
+                    if (isi == 'ART') {
+                        alert('Nama Tidak diizinkan');
+                        hapusbelanja(false, row);
+                    } else {
+                        $('#kategori_val_' + row).val('ART');
+                        $('#kategori_' + row).val('ART');
+                        $('#kategori_' + row).trigger('change');
+                        $('#item_' + row).html('-');
+                        $('#uombelanja_' + row).prop('disabled', false);
+                        $('#qty_' + row).val('');
+                        $('#total_' + row).html('-');
+
+                        var newOption = new Option(isi, isi, true, true);
+                        $('#nama_' + row).append(newOption).trigger('change');
+                    }
+                } else {
+                    if (tersimpan) {
+                        $('#nama_' + row).val(tersimpan).trigger("change.select2");
+                    } else {
+                        hapusbelanja(false, row)
+                    }
+                }
+            } else if (id > 0) {
+                $('#kategori_val_' + row).val('Item');
                 $('#kategori_' + row).val('Item');
                 $('#kategori_' + row).trigger('change');
 
@@ -253,7 +326,7 @@
                     data: {
                         id: id
                     },
-                    dataType: "JSON",
+                    dataType: "json",
                     success: function(data) {
                         $('#item_' + row).html(
                             '<div class="input-group"><input onkeyup="hitung_belanja(this.value,' + row +
@@ -318,12 +391,15 @@
                         popup(status, true, xhr.status + " " + error);
                     },
                     success: function(data) {
+                        console.log(data);
                         if (data.status === 'success') {
+                            $('#hapus_' + data.row).removeAttr('onclick id style class')
+                                .html('');
                             hapus = '<a class="btn btn-danger btn-sm" onclick="hapusbelanja(' +
                                 data.id + ',' + data.row +
-                                ')" style="margin-top: 3px;position: absolute;z-index: 9;left: -10px;"><i class="fa fa-times"></i> </a>';
+                                ')" style="margin-top: 3px;position: absolute;z-index: 9; left:20px;"><i class="fa fa-times"></i> </a>';
                             $('#id_' + data.row).val(data.id);
-                            $('#nama_' + data.row).before(hapus);
+                            $('#id_' + data.row).before(hapus);
                             $('#autosave').html(
                                 '<small style="color:green;"> <i class="fas fa-check"></i> ' +
                                 data.pesan +

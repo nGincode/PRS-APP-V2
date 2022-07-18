@@ -39,6 +39,11 @@ class FoodcostController extends Controller
     /////////////////////////////////// SUPLIER //////////////////////////
     public function Olahan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Olahan';
         $this->data['kode'] = 'BO' . $this->kode;
         $this->data['satuan'] = Satuan::all();
@@ -70,6 +75,12 @@ class FoodcostController extends Controller
 
     public function OlahanManage(Request $request)
     {
+
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Olahan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -115,6 +126,11 @@ class FoodcostController extends Controller
     public function OlahanTambah(Request $request)
     {
 
+
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('createOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $validator = Validator::make(
             $request->all(),
@@ -300,6 +316,11 @@ class FoodcostController extends Controller
     //bahan baku
     public function PilihBahanBaku(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id = $request->input('id');
 
         $this->data['OlahanDataBahanBaku'] = Bahan::all();
@@ -321,6 +342,11 @@ class FoodcostController extends Controller
 
     public function OlahanItemBahanBaku(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Olahan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -360,6 +386,11 @@ class FoodcostController extends Controller
     public function TambahItemBahanBaku(Request $request)
     {
 
+
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('createOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $id = $request->input('id');
 
@@ -402,6 +433,12 @@ class FoodcostController extends Controller
     //Olahan
     public function PilihBahanOlahan(Request $request)
     {
+
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id = $request->input('id');
 
         $this->data['OlahanDataBahanOlahan'] = Olahan::where('delete', 0)->where('draft', false)->get();
@@ -424,6 +461,11 @@ class FoodcostController extends Controller
     }
     public function OlahanItemBahanOlahan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Olahan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -467,6 +509,10 @@ class FoodcostController extends Controller
     }
     public function TambahItemBahanOlahan(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('createOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
 
 
         $id = $request->input('id');
@@ -513,6 +559,12 @@ class FoodcostController extends Controller
 
     public function OlahanBahanManage(Request $request)
     {
+
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $this->data['subtitle'] = 'Olahan';
         $this->subtitle = $this->data['subtitle'];
 
@@ -550,6 +602,11 @@ class FoodcostController extends Controller
 
     public function OlahanHapus(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('deleteOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id =  $request->input('id');
         if (Olahan::where('id', $id)->update(['delete' => true])) {
             $data = [
@@ -570,6 +627,11 @@ class FoodcostController extends Controller
 
     public function ItemOlahanHapus(Request $request)
     {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('deleteOlahan', $this->permission())) {
+            return redirect()->to('/');
+        }
+
         $id =  $request->input('id');
         if ($id) {
             if (Bahan_Olahan::where('id', $id)->delete()) {

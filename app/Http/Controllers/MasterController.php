@@ -2,14 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Store;
-use App\Models\Ivn;
-use App\Models\Pengadaan;
-use App\Models\LogistikProduk;
-use App\Models\LogistikBelanja;
-use App\Models\LogistikOrder;
-use App\Models\Groups;
 use App\Models\Supplier;
 use App\Models\Bahan;
 use App\Models\Peralatan;
@@ -27,21 +20,6 @@ class MasterController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Master';
-        if (Bahan::latest()->first()) {
-            $this->kodebahan = sprintf("%05s", Bahan::latest()->first()->id + 1);
-        } else {
-            $this->kodebahan = sprintf("%05s", 1);
-        }
-        if (Peralatan::latest()->first()) {
-            $this->kodealat = sprintf("%05s", Peralatan::latest()->first()->id + 1);
-        } else {
-            $this->kodealat = sprintf("%05s", 1);
-        }
-        if (Pegawai::latest()->first()) {
-            $this->kodepegawai = sprintf("%03s", Pegawai::latest()->first()->id + 1);
-        } else {
-            $this->kodepegawai = sprintf("%03s", 1);
-        }
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
@@ -145,6 +123,7 @@ class MasterController extends Controller
                     'nama' => $request->input('nama'),
                     'alamat' => $request->input('alamat'),
                     'tipe' => $request->input('tipe'),
+                    'rekening' => $request->input('rekening'),
                     'hutang' => $request->input('hutang'),
                     'wa' => $request->input('wa'),
                     'delete' => false,
@@ -302,7 +281,6 @@ class MasterController extends Controller
         }
 
         $this->data['subtitle'] = 'Bahan';
-        $this->data['kode'] = $this->kodebahan;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         $this->data['satuan'] = Satuan::all();
         return view('Bahan', $this->data);
@@ -421,19 +399,20 @@ class MasterController extends Controller
                 ];
             } else {
                 if ($request->input('kategori')) {
+
                     if ($request->input('kategori') == 1) {
-                        $kategori = 'S' . sprintf("%05s", $this->kodebahan);
+                        $kategori = 'S' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 2) {
-                        $kategori = 'B' . sprintf("%05s", $this->kodebahan);
+                        $kategori = 'B' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 3) {
-                        $kategori = 'K' . sprintf("%05s", $this->kodebahan);
+                        $kategori = 'K' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 4) {
-                        $kategori = 'D' . sprintf("%05s", $this->kodebahan);
+                        $kategori = 'D' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } else {
-                        $kategori = 'X' . sprintf("%05s", 0);
+                        $kategori = 'X' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     }
                 } else {
-                    $kategori = 'X' . sprintf("%05s", 0);
+                    $kategori = 'X' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count());
                 }
                 $input = [
                     'nama' => $request->input('nama'),
@@ -482,7 +461,6 @@ class MasterController extends Controller
 
         $this->data['BahanData'] = Bahan::where('id', $id)->first();
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
-        $this->data['kode'] = sprintf("%05s", $this->data['BahanData']['id']);
         $this->data['satuan'] = Satuan::all();
         return view('Edit', $this->data);
     }
@@ -543,25 +521,8 @@ class MasterController extends Controller
                     }
                 } else {
 
-                    if ($request->input('kategori')) {
-                        if ($request->input('kategori') == 1) {
-                            $kategori = 'S' . sprintf("%05s", $Bahan['id']);
-                        } elseif ($request->input('kategori') == 2) {
-                            $kategori = 'B' . sprintf("%05s", $Bahan['id']);
-                        } elseif ($request->input('kategori') == 3) {
-                            $kategori = 'K' . sprintf("%05s", $Bahan['id']);
-                        } elseif ($request->input('kategori') == 4) {
-                            $kategori = 'D' . sprintf("%05s", $Bahan['id']);
-                        } else {
-                            $kategori = 'X' . sprintf("%05s", 0);
-                        }
-                    } else {
-                        $kategori = 'X' . sprintf("%05s", 0);
-                    }
                     $input = [
                         'nama' => $request->input('nama'),
-                        'kode' => 'BB' . $kategori,
-                        'kategori' => $request->input('kategori'),
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
                         'harga' =>  $this->unrupiah($request->input('hargaa')),
                         'satuan_pemakaian' => $request->input('satuan_pemakaian'),
@@ -632,7 +593,6 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
         $this->data['subtitle'] = 'Peralatan';
-        $this->data['kode'] = $this->kodealat;
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
         $this->data['satuan'] = Satuan::all();
         return view('Peralatan', $this->data);
@@ -747,20 +707,20 @@ class MasterController extends Controller
             } else {
                 if ($request->input('kategori')) {
                     if ($request->input('kategori') == 1) {
-                        $kategori = 'D' . sprintf("%05s", $this->kodealat);
+                        $kategori = 'D' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 2) {
-                        $kategori = 'K' . sprintf("%05s", $this->kodealat);
+                        $kategori = 'K' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 3) {
-                        $kategori = 'B' . sprintf("%05s", $this->kodealat);
+                        $kategori = 'B' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 4) {
-                        $kategori = 'W' . sprintf("%05s", $this->kodealat);
+                        $kategori = 'W' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 4) {
-                        $kategori = 'L' . sprintf("%05s", $this->kodealat);
+                        $kategori = 'L' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     } else {
-                        $kategori = 'X' . sprintf("%05s", 0);
+                        $kategori = 'X' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                     }
                 } else {
-                    $kategori = 'X' . sprintf("%05s", 0);
+                    $kategori = 'X' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                 }
                 $input = [
                     'nama' => $request->input('nama'),
@@ -802,7 +762,7 @@ class MasterController extends Controller
         }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
-        $this->data['kode'] = $this->kodealat;
+
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
 
         $this->data['satuan'] = Satuan::all();
@@ -864,28 +824,9 @@ class MasterController extends Controller
                     }
                 } else {
 
-                    if ($request->input('kategori')) {
-                        if ($request->input('kategori') == 1) {
-                            $kategori = 'D' . sprintf("%05s", $Peralatan['id']);
-                        } elseif ($request->input('kategori') == 2) {
-                            $kategori = 'K' . sprintf("%05s", $Peralatan['id']);
-                        } elseif ($request->input('kategori') == 3) {
-                            $kategori = 'B' . sprintf("%05s", $Peralatan['id']);
-                        } elseif ($request->input('kategori') == 4) {
-                            $kategori = 'W' . sprintf("%05s", $Peralatan['id']);
-                        } elseif ($request->input('kategori') == 4) {
-                            $kategori = 'L' . sprintf("%05s", $Peralatan['id']);
-                        } else {
-                            $kategori = 'X' . sprintf("%05s", 0);
-                        }
-                    } else {
-                        $kategori = 'X' . sprintf("%05s", 0);
-                    }
 
                     $input = [
                         'nama' => $request->input('nama'),
-                        'kode' => 'P' . $kategori,
-                        'kategori' => $request->input('kategori'),
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
                         'harga' =>  $this->unrupiah($request->input('hargaa')),
                         'satuan_pemakaian' => $request->input('satuan_pemakaian'),
@@ -950,7 +891,6 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
         $this->data['subtitle'] = 'Pegawai';
-        $this->data['kode'] = $this->kodealat;
         $this->data['Datastore'] = Store::where('active', 1)->get();
         return view('Pegawai', $this->data);
     }
@@ -986,8 +926,8 @@ class MasterController extends Controller
                 $value['kode'],
                 $value['store']->nama,
                 $value['nama'],
-                $value['tempat_lahir'] . ',<br>' . $value['tanggal_lahir'],
-                $value['tanggal_masuk'],
+                $value['tempat_lahir'] . ',<br>' . $this->tanggal($value['tanggal_lahir'], true),
+                $this->tanggal($value['tanggal_masuk'], true),
                 $value['agama'],
                 $value['gender'],
                 $value['wa'],
@@ -1043,7 +983,7 @@ class MasterController extends Controller
                     'pesan' => 'Nama Telah Ada'
                 ];
             } else {
-                $kode = $request->input('store') . date_format(date_create($request->input('tanggal_masuk')), 'ym') . date_format(date_create($request->input('tanggal_lahir')), 'ymd') . $this->kodepegawai;
+                $kode = 'PRS' . $request->input('store')   . sprintf("%05s", Pegawai::where('store_id', $request->input('store'))->count() + 1);
 
                 if ($request->hasFile('img')) {
                     $files = $request->file('img');
@@ -1099,7 +1039,6 @@ class MasterController extends Controller
         }
         $id = $request->input('id');
         session()->flash('IdEdit', $id);
-        $this->data['kode'] = $this->kodepegawai;
 
         $this->data['PegawaiData'] = Pegawai::where('id', $id)->first();
         $this->data['Datastore'] = Store::where('active', 1)->get();
@@ -1167,10 +1106,9 @@ class MasterController extends Controller
                     }
                 } else {
 
-                    $kode = $request->input('store') . date_format(date_create($request->input('tanggal_masuk')), 'ym') . date_format(date_create($request->input('tanggal_lahir')), 'ymd') . sprintf("%03s",  $Pegawai['id']);
                     if ($request->hasFile('img')) {
                         $files = $request->file('img');
-                        $imageName = $kode . '.' . $files->getClientOriginalExtension();
+                        $imageName = $Pegawai['kode'] . '.' . $files->getClientOriginalExtension();
                         $files->move(public_path('uploads/pegawai'), $imageName);
                         $urlimg = url('/') . '/uploads/pegawai/' . $imageName;
                     } else {
@@ -1179,7 +1117,6 @@ class MasterController extends Controller
 
 
                     $input = [
-                        'kode' => $kode,
                         'nama' => $request->input('nama'),
                         'store_id' => $request->input('store'),
                         'tempat_lahir' => $request->input('tempat_lahir'),
