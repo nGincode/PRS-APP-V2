@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -52,7 +52,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="Email">Email</label>
-                                    <input type="email" class="form-control" id="Email" placeholder="Email" name="Email">
+                                    <input type="email" class="form-control" id="Email" placeholder="Email"
+                                        name="Email">
                                 </div>
                             </div>
 
@@ -108,7 +109,8 @@
                                 <div class="form-group">
                                     <label for="img">Image Profil</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" accept="image/*" id="img" name="img">
+                                        <input type="file" class="custom-file-input" accept="image/*" id="img"
+                                            name="img">
                                         <label class="custom-file-label" for="img">Choose file</label>
                                     </div>
                                 </div>
@@ -118,7 +120,8 @@
                                 <div class="form-group clearfix">
                                     <label>Gender</label><br>
                                     <div class="icheck-primary d-inline">
-                                        <input type="radio" id="GenderUsersPerempuan" name="gender" value="1" checked>
+                                        <input type="radio" id="GenderUsersPerempuan" name="gender" value="1"
+                                            checked>
                                         <label for="GenderUsersPerempuan">
                                             Perempuan
                                         </label>

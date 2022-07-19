@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -26,8 +26,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="nama">Nama Satuan</label>
-                                    <input type="text" class="form-control" style="text-transform:capitalize" id="nama"
-                                        placeholder="Kilogram" name="nama">
+                                    <input type="text" class="form-control" style="text-transform:capitalize"
+                                        id="nama" placeholder="Kilogram" name="nama">
                                 </div>
                             </div>
 
@@ -35,8 +35,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="singkat">Singkatan</label>
-                                    <input type="text" class="form-control" id="singkat" style="text-transform:capitalize"
-                                        placeholder="Kg" name="singkat">
+                                    <input type="text" class="form-control" id="singkat"
+                                        style="text-transform:capitalize" placeholder="Kg" name="singkat">
                                 </div>
                             </div>
 

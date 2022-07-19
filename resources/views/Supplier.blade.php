@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <div id="app">

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -26,8 +26,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Store</label>
-                                    <select name="store" id="store" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="store" id="store" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($Datastore as $v)
                                             @if ($v['id'] != 1)
@@ -84,8 +84,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="agama">Agama</label>
-                                    <select name="agama" id="agama" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="agama" id="agama" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="Islam">Islam</option>
                                         <option value="Kristen">Kristen</option>
@@ -98,8 +98,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="gender">Gender</label>
-                                    <select name="gender" id="gender" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="gender" id="gender" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="Pria">Pria</option>
                                         <option value="Wanita">Wanita</option>
@@ -116,14 +116,15 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="wa">No Whatsapp</label>
-                                    <input type="number" class="form-control" id="wa" placeholder="No Whatsapp" name="wa">
+                                    <input type="number" class="form-control" id="wa" placeholder="No Whatsapp"
+                                        name="wa">
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="divisi">Divisi</label>
-                                    <select name="divisi" id="divisi" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="divisi" id="divisi" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="Accounting">Accounting</option>
                                         <option value="Enginering">Enginering</option>
@@ -143,8 +144,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="jabatan">Jabatan</label>
-                                    <select name="jabatan" id="jabatan" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="jabatan" id="jabatan" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="Supervisor">Supervisor</option>
                                         <option value="Manager">Manager</option>
@@ -171,7 +172,8 @@
                                 <div class="form-group">
                                     <label for="img">Foto</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" accept="image/*" id="img" name="img">
+                                        <input type="file" class="custom-file-input" accept="image/*" id="img"
+                                            name="img">
                                         <label class="custom-file-label" for="img">Choose file</label>
                                     </div>
                                 </div>

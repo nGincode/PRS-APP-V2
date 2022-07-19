@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -156,8 +156,7 @@
                                 <div id="olahanitemolahan">
                                     @isset($Olahan['id'])
                                         <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="pilihbahanolahan({{ $Olahan['id'] }})"><i
-                                                class="fas fa-plus"></i></a>
+                                            onclick="pilihbahanolahan({{ $Olahan['id'] }})"><i class="fas fa-plus"></i></a>
                                         <hr>
                                     @endisset
                                 </div>

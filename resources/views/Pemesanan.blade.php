@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -44,8 +44,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="outlet">Outlet</label>
-                                    <select name="outlet" id="outlet" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="outlet" id="outlet" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($store as $str)
                                             <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
@@ -68,8 +68,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="tujuan">Tujuan Pemesanan</label>
-                                    <select name="tujuan" id="tujuan" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="tujuan" id="tujuan" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($logistik as $lgs)
                                             <option value="{{ $lgs['id'] }}">{{ $lgs['nama'] }}</option>
@@ -140,6 +140,5 @@
 
         <!-- /.container-fluid -->
     </section>
-    <script>
-    </script>
+    <script></script>
 @endsection

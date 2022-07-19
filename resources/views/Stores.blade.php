@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -25,8 +25,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Status</label>
-                                    <select name="status" id="status" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="status" id="status" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="1">Active</option>
                                         <option value="0">In Active</option>
@@ -37,8 +37,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Tipe</label>
-                                    <select name="tipe" id="tipe" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="tipe" id="tipe" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         <option value="Office">Office</option>
                                         <option value="Outlet">Outlet</option>
@@ -68,7 +68,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="wa">No Whatsapp</label>
-                                    <input type="number" class="form-control" id="wa" placeholder="No Wa" name="wa">
+                                    <input type="number" class="form-control" id="wa" placeholder="No Wa"
+                                        name="wa">
                                 </div>
                             </div>
 
@@ -77,7 +78,8 @@
                                 <div class="form-group">
                                     <label for="img">Logo Store</label>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" accept="image/*" id="img" name="img">
+                                        <input type="file" class="custom-file-input" accept="image/*" id="img"
+                                            name="img">
                                         <label class="custom-file-label" for="img">Choose file</label>
                                     </div>
                                 </div>

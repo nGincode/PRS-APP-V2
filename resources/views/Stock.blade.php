@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('isi')
     <section class="content">
@@ -24,8 +24,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="nama">Nama Bahan</label>
-                                    <select class="select2" name="nama" id="nama" data-placeholder="Pilih Nama Bahan"
-                                        style="width: 100%;">
+                                    <select class="select2" name="nama" id="nama"
+                                        data-placeholder="Pilih Nama Bahan" style="width: 100%;">
                                         @if ($bahan)
                                             <option selected="true" disabled="disabled">Pilih</option>
                                             @foreach ($bahan as $v)
@@ -43,7 +43,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="qty">Qty</label>
-                                    <input type="number" class="form-control" id="qty" placeholder="QTY" name="qty">
+                                    <input type="number" class="form-control" id="qty" placeholder="QTY"
+                                        name="qty">
                                 </div>
                             </div>
 
@@ -51,8 +52,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label>Satuan</label>
-                                    <select name="satuan" id="satuan" class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <select name="satuan" id="satuan" class="form-control select2 select2-danger"
+                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($satuan as $s1)
                                             <option value="{{ $s1['singkat'] }}">{{ $s1['nama'] }}</option>
@@ -65,8 +66,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="auto_harga">Auto Harga</label>
-                                    <select class="select2" name="auto_harga" id="auto_harga"
-                                        data-placeholder="Pilih" style="width: 100%;">
+                                    <select class="select2" name="auto_harga" id="auto_harga" data-placeholder="Pilih"
+                                        style="width: 100%;">
                                         <option value="1">True</option>
                                         <option value="0">False</option>
                                     </select>
@@ -78,7 +79,8 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="harga">Harga Sekarang</label>
-                                    <input type="number" class="form-control" id="harga" placeholder="Harga" name="harga">
+                                    <input type="number" class="form-control" id="harga" placeholder="Harga"
+                                        name="harga">
                                 </div>
                             </div>
 
