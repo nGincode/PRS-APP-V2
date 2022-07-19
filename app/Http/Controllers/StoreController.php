@@ -333,7 +333,7 @@ class StoreController extends Controller
                 if ($value['img']) {
                     $img = '<img width="30" class="rounded-circle" src="' . $value['img'] . '">';
                 } else {
-                    $img = '<img width="30" class="rounded-circle" src="http://prs/assets/images/unnamed.png">';
+                    $img = '<img width="30" class="rounded-circle" src="' . url('/assets/images/unnamed.png') . '">';
                 }
 
                 $button = '<div class="btn-group dropleft">
