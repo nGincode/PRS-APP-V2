@@ -82,7 +82,7 @@ class UsersController extends Controller
 
             if ($request->hasFile('img')) {
                 $files = $request->file('img');
-                $imageName = $request->input('Username') . '.' . $files->getClientOriginalExtension();
+                $imageName = date('YmdHis')  . '.' . $files->getClientOriginalExtension();
                 $files->move(public_path('uploads/users'), $imageName);
                 $urlimg = url('/') . '/uploads/users/' . $imageName;
             } else {
@@ -221,7 +221,7 @@ class UsersController extends Controller
 
                     if ($request->hasFile('img')) {
                         $files = $request->file('img');
-                        $imageName = $request->input('Username') . '.' . $files->getClientOriginalExtension();
+                        $imageName = date('YmdHis')  . '.' . $files->getClientOriginalExtension();
                         $files->move(public_path('uploads/users'), $imageName);
                         $urlimg = url('/') . '/uploads/users/' . $imageName;
                     } else {

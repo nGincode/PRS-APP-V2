@@ -101,7 +101,7 @@ class StoreController extends Controller
 
                 if ($request->hasFile('img')) {
                     $files = $request->file('img');
-                    $imageName = $request->input('Username') . '.' . $files->getClientOriginalExtension();
+                    $imageName = date('YmdHis') . '.' . $files->getClientOriginalExtension();
                     $files->move(public_path('uploads/stores'), $imageName);
                     $urlimg = url('/') . '/uploads/stores/' . $imageName;
                 } else {
@@ -217,7 +217,7 @@ class StoreController extends Controller
 
                     if ($request->hasFile('img')) {
                         $files = $request->file('img');
-                        $imageName = $request->input('nama') . '.' . $files->getClientOriginalExtension();
+                        $imageName = date('YmdHis')  . '.' . $files->getClientOriginalExtension();
                         $files->move(public_path('uploads/stores'), $imageName);
                         $urlimg = url('/') . '/uploads/stores/' . $imageName;
                     } else {
