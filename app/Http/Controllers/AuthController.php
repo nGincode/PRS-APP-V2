@@ -51,11 +51,11 @@ class AuthController extends Controller
                 User::where('id', $data['id'])->update(['last_login' => date('Y-m-d H:i:s')]);
                 return redirect()->intended('/');
             } else {
-                $this->data['err'] = 'Email  & Password Belum Terdaftar';
+                $this->data['err'] = 'Username  & Password Belum Terdaftar';
                 return view('Login', $this->data);
             }
         } else {
-            $this->data['err'] = 'Email  & Password Belum Terdaftar';
+            $this->data['err'] = 'Username  & Password Belum Terdaftar';
             return view('Login', $this->data);
         }
     }

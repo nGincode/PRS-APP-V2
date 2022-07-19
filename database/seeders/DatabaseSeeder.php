@@ -39,6 +39,32 @@ class DatabaseSeeder extends Seeder
             'deleteStore',
         );
 
+        Store::create([
+            'nama' => 'SUPERADMIN',
+            'active' => 1,
+            'tipe' => 'SUPERADMIN',
+            'alamat' => 'BENGKULU',
+            'img' => null,
+            'wa' => '085369957606',
+            'jam_kerja' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        Store::create([
+            'nama' => 'CV Prima Rasa Selaras',
+            'active' => 1,
+            'tipe' => 'Outlet',
+            'alamat' => 'BENGKULU',
+            'img' => null,
+            'wa' => '085369957606',
+            'jam_kerja' => '[{"No":0,"Nama":"Shift 1","Masuk":"15:16","Pulang":"15:16"}]',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+
+
         User::create([
             'store' => 'SUPERADMIN',
             'store_id' => 1,
@@ -110,30 +136,6 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        Store::create([
-            'nama' => 'SUPERADMIN',
-            'active' => 1,
-            'tipe' => 'SUPERADMIN',
-            'alamat' => 'BENGKULU',
-            'img' => null,
-            'wa' => '085369957606',
-            'jam_kerja' => null,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
-        Store::create([
-            'nama' => 'CV Prima Rasa Selaras',
-            'active' => 1,
-            'tipe' => 'Outlet',
-            'alamat' => 'BENGKULU',
-            'img' => null,
-            'wa' => '085369957606',
-            'jam_kerja' => '[{"No":0,"Nama":"Shift 1","Masuk":"15:16","Pulang":"15:16"}]',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-
-        ]);
 
 
         // Bahan::create([
