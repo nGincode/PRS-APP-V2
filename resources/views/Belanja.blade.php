@@ -40,12 +40,12 @@
                                 <table id="tambahbelanja" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th style="min-width: 300px">Nama Barang</th>
+                                            <th style="min-width: 250px">Nama Barang</th>
                                             <th>Kategori</th>
-                                            <th style="min-width: 300px">Qty Nota</th>
-                                            <th style="min-width: 150px">Qty UOM</th>
-                                            <th>Total</th>
-                                            <th>Keterangan</th>
+                                            <th style="min-width: 350px">Qty Nota</th>
+                                            <th style="min-width: 300px">Stock</th>
+                                            <th style="min-width: 100px">Total</th>
+                                            <th style="min-width: 130px">Keterangan</th>
                                             <th>Hutang</th>
                                         </tr>
                                     </thead>
@@ -110,8 +110,8 @@
                                                             @if ($v['kategori'] == 'ART') selected @endif>ART
                                                         </option>
                                                     </select>
-                                                    <input type="hidden" name="kategori[]"
-                                                        id="kategori_val_{{ $key }}"
+                                                    <input @if ($v['up']) disabled @endif type="hidden"
+                                                        name="kategori[]" id="kategori_val_{{ $key }}"
                                                         value="<?= $v['kategori'] ?>">
                                                 </td>
                                                 <td>
@@ -125,9 +125,7 @@
                                                         </div>
                                                         <div class="col">
                                                             <select @if ($v['up']) disabled @endif
-                                                                name="uombelanja[]"
-                                                                onchange="konversi_belanja({{ $key }})"
-                                                                id="uombelanja_{{ $key }}"
+                                                                name="uombelanja[]" id="uombelanja_{{ $key }}"
                                                                 class="form-control select2 select2-danger"
                                                                 data-dropdown-css-class="select2-danger"
                                                                 style="width: 100%;">
@@ -142,7 +140,8 @@
                                                         </div>
                                                         <div class="col">
                                                             <input @if ($v['up']) disabled @endif
-                                                                type="text" class="form-control"
+                                                                title="Harga 1 nya" data-toggle="tooltip"
+                                                                data-placement="top" type="text" class="form-control"
                                                                 onkeyup="hitung_belanja(this.value, {{ $key }})"
                                                                 id="harga_{{ $key }}"
                                                                 value="{{ $v['harga'] }}" placeholder="Harga"
@@ -151,41 +150,66 @@
                                                     </div>
                                                 </td>
                                                 <td id="item_{{ $key }}">
-                                                    @if ($v['bahan_id'])
-                                                        <div class="input-group">
-                                                            <input @if ($v['up']) disabled @endif
-                                                                onkeyup="hitung_belanja(this.value,{{ $key }})"
-                                                                style="text-align: right;max-width:50px;" type="text"
-                                                                value="{{ $v['konversi'] }}" name="konversi[]"
-                                                                id="konversi_{{ $key }}" class="form-control"
-                                                                placeholder="Konversi">
-                                                            <div class="input-group-append"><span class="input-group-text"
-                                                                    id="belanja_uom_{{ $key }}">
-                                                                    {{ $v['uom'] }}</span></div>
-                                                        </div><input type="hidden" value="{{ $v['item_uom'] }}"
-                                                            id="konversi_satuan_{{ $key }}">
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td id="total_{{ $key }}">
-                                                    @if ($v['total'])
-                                                        Rp. {{ $v['total'] }}
-                                                    @else
-                                                        -
-                                                    @endif
-                                                </td>
-                                                <td> <input @if ($v['up']) disabled @endif
-                                                        type="text" class="form-control" value="{{ $v['ket'] }}"
-                                                        id="ket" placeholder="Keterangan" name="ket[]"
-                                                        onchange="$('#FormBelanja').submit()">
-                                                </td>
-                                                <td><input @if ($v['up']) disabled @endif
-                                                        name="hutang[]" class="form-control"
-                                                        @if ($v['hutang']) checked @endif type="checkbox"
-                                                        value="1" onchange="$('#FormBelanja').submit()">
-                                                </td>
-                                            </tr>
+                                                    <div style="display: flex;">
+                                                        @if ($v['bahan_id'])
+                                                            <div class="input-group">
+                                                                <input @if ($v['up']) disabled @endif
+                                                                    onkeyup="hitung_belanja(this.value,{{ $key }})"
+                                                                    style="text-align: right;max-width:100px;"
+                                                                    type="number" value="{{ $v['stock'] }}"
+                                                                    name="stock[]" id="stock_{{ $key }}"
+                                                                    class="form-control" placeholder="Stock">
+                                                                <div class="input-group-append"><span
+                                                                        class="input-group-text"
+                                                                        id="belanja_uom_{{ $key }}">
+                                                                        {{ $v['stock_uom'] }}</span></div>
+                                                            </div>
+
+                                                            <input type="hidden" name="stock_uom[]"
+                                                                value="{{ $v['stock_uom'] }}"
+                                                                id="stock_satuan_{{ $key }}">
+
+                                                            &nbsp;
+
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend"><span
+                                                                        class="input-group-text"
+                                                                        id="belanja_uom_{{ $key }}">Rp.</span>
+                                                                </div>
+
+                                                                <input @if ($v['up']) disabled @endif
+                                                                    title="Harga 1 nya" data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    onkeyup="hitung_belanja(this.value,{{ $key }})"
+                                                                    style="text-align: right;max-width:100px;"
+                                                                    type="number" value="{{ $v['stock_harga'] }}"
+                                                                    name="stock_harga[]"
+                                                                    id="stock_harga_{{ $key }}"
+                                                                    class="form-control" placeholder="Stock Harga">
+
+                                                            </div>
+                                                    </div>
+                                                @else
+                                                    -
+                                        @endif
+                                        </td>
+                                        <td id="total_{{ $key }}">
+                                            @if ($v['total'])
+                                                Rp. {{ $v['total'] }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td> <input @if ($v['up']) disabled @endif type="text"
+                                                class="form-control" value="{{ $v['ket'] }}" id="ket"
+                                                placeholder="Keterangan" name="ket[]"
+                                                onchange="$('#FormBelanja').submit()">
+                                        </td>
+                                        <td><input @if ($v['up']) disabled @endif name="hutang[]"
+                                                class="form-control" @if ($v['hutang']) checked @endif
+                                                type="checkbox" value="1" onchange="$('#FormBelanja').submit()">
+                                        </td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -221,6 +245,7 @@
                                 <th>Tanggal</th>
                                 <th>Jumlah</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -232,6 +257,30 @@
 
         <!-- /.container-fluid -->
     </section>
+
+
+    <div class="modal fade" id="lihat" tabindex="-1" role="dialog" style="width:100%"
+        aria-labelledby="transaksiLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog  modal-xl" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><b>Lihat Belanja</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="Lihat">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         function clicknama(id, row, tersimpan = null) {
@@ -266,7 +315,6 @@
             } else if (id === 'Supplay') {
                 var isi = prompt('Nama Barang Supplay');
                 if (isi) {
-
                     if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
@@ -289,11 +337,10 @@
                         hapusbelanja(false, row)
                     }
                 }
-            } else if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
-
+            } else if (id == 'ART') {
                 var isi = prompt('Nama Barang ART');
                 if (isi) {
-                    if (isi == 'ART') {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
                     } else {
@@ -329,12 +376,19 @@
                     dataType: "json",
                     success: function(data) {
                         $('#item_' + row).html(
-                            '<div class="input-group"><input onkeyup="hitung_belanja(this.value,' + row +
-                            ')" style="text-align: right;max-width:50px;" type="number" value="1" name="konversi[]" id="konversi_' +
+                            '<div style="display: flex;"><div class="input-group" style="height: fit-content;" ><input onkeyup="hitung_belanja(this.value,' +
                             row +
-                            '" class="form-control" placeholder="Konversi"><div class="input-group-append"><span class="input-group-text">' +
-                            data.satuan + '</span></div></div><input type="hidden" value="' + data
-                            .satuan + '" id="konversi_satuan_' + row + '">'
+                            ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock[]" id="stock_' +
+                            row +
+                            '" class="form-control" placeholder="Stock"><div class="input-group-append"><span class="input-group-text">' +
+                            data.satuan +
+                            '</span></div></div><input type="hidden" name="stock_uom[]" value="' + data
+                            .satuan + '" id="stock_uom_' + row + '"> &nbsp; ' +
+                            '<div class="input-group" style="height: fit-content;"><div class="input-group-prepend" ><span class="input-group-text">Rp.</span></div><input onkeyup="hitung_belanja(this.value,' +
+                            row +
+                            ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock_harga[]" id="stock_harga_' +
+                            row +
+                            '" class="form-control" placeholder="Harga"></div></div>'
                         );
                         $('#qty_' + row).val('');
                         $('#total_' + row).html('-');
@@ -350,10 +404,10 @@
         function hitung_belanja(id, row) {
             qty = parseInt($('#qty_' + row).val());
             harga = parseInt($('#harga_' + row).val());
-            konversi = parseInt($('#konversi_' + row).val());
+            stock = parseInt($('#stock_' + row).val());
             if (qty && harga) {
-                if (konversi) {
-                    total = konversi * harga;
+                if (stock) {
+                    total = stock * harga;
                     $('#total_' + row).html('Rp. ' + total);
                 } else {
                     total = qty * harga;
@@ -363,14 +417,14 @@
             $('#FormBelanja').submit();
         }
 
-        function konversi_belanja(row) {
-            let satuan = $('#konversi_satuan_' + row).val();
-            let uom = $('#uombelanja_' + row).val();
+        // function stock_belanja(row) {
+        //     let satuan = $('#stock_satuan_' + row).val();
+        //     let uom = $('#uombelanja_' + row).val();
 
-            $('#belanja_uom_' + row).html(uom);
+        //     $('#belanja_uom_' + row).html(uom);
 
-            $('#FormBelanja').submit();
-        }
+        //     $('#FormBelanja').submit();
+        // }
 
 
         //Input
@@ -420,5 +474,32 @@
             });
 
         });
+
+
+
+
+        function lihat(id, judul) {
+            $.ajax({
+                url: "Belanja/ViewItem",
+                type: "POST",
+                data: {
+                    id: id,
+                    judul: judul
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                beforeSend: function(xhr) {
+                    $('#Lihat').html('<div class="loading-bg"><div class="loading"></div></div>');
+                },
+                success: function(data) {
+                    $('#Lihat').html(data);
+                }
+            });
+        }
+
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
     </script>
 @endsection

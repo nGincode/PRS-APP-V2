@@ -136,52 +136,52 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        Bahan::create([
-            'nama' => 'Ayam',
-            'kode' => 'FD22121',
-            'satuan_pembelian' => 'Pcs',
-            'satuan_pengeluaran' => 'Pcs',
-            'konversi_pengeluaran' => 100,
-            'satuan_pemakaian' => 'Gram',
-            'konversi_pemakaian' => 50,
-            'harga' => 10000,
-            'kategori' => 1
+        // Bahan::create([
+        //     'nama' => 'Ayam',
+        //     'kode' => 'FD22121',
+        //     'satuan_pembelian' => 'Pcs',
+        //     'satuan_pengeluaran' => 'Pcs',
+        //     'konversi_pengeluaran' => 100,
+        //     'satuan_pemakaian' => 'Gram',
+        //     'konversi_pemakaian' => 50,
+        //     'harga' => 10000,
+        //     'kategori' => 1
 
-        ]);
+        // ]);
 
-        Bahan::create([
-            'nama' => 'Gula',
-            'kode' => 'FD22121',
-            'satuan_pembelian' => 'Pcs',
-            'satuan_pengeluaran' => 'Pcs',
-            'konversi_pengeluaran' => 100,
-            'satuan_pemakaian' => 'Gram',
-            'konversi_pemakaian' => 50,
-            'harga' => 10000,
-            'kategori' => 1
-        ]);
+        // Bahan::create([
+        //     'nama' => 'Gula',
+        //     'kode' => 'FD22121',
+        //     'satuan_pembelian' => 'Pcs',
+        //     'satuan_pengeluaran' => 'Pcs',
+        //     'konversi_pengeluaran' => 100,
+        //     'satuan_pemakaian' => 'Gram',
+        //     'konversi_pemakaian' => 50,
+        //     'harga' => 10000,
+        //     'kategori' => 1
+        // ]);
 
-        Olahan::create([
-            'nama' => 'AYam Bakar',
-            'kode' => 'FD22121',
-            'satuan_pengeluaran' => 'Pcs',
-            'satuan_penyajian' => 'Gram',
-            'konversi_penyajian' => 50
+        // Olahan::create([
+        //     'nama' => 'AYam Bakar',
+        //     'kode' => 'FD22121',
+        //     'satuan_pengeluaran' => 'Pcs',
+        //     'satuan_penyajian' => 'Gram',
+        //     'konversi_penyajian' => 50
 
-        ]);
+        // ]);
 
-        Bahan_Olahan::create([
-            'olahan_id' => 1,
-            'bahan_id' => 1,
-            'pemakaian' => 100
+        // Bahan_Olahan::create([
+        //     'olahan_id' => 1,
+        //     'bahan_id' => 1,
+        //     'pemakaian' => 100
 
-        ]);
-        Bahan_Olahan::create([
-            'olahan_id' => 1,
-            'bahan_id' => 2,
-            'pemakaian' => 10000
+        // ]);
+        // Bahan_Olahan::create([
+        //     'olahan_id' => 1,
+        //     'bahan_id' => 2,
+        //     'pemakaian' => 10000
 
-        ]);
+        // ]);
 
         $satuan = [
             [
@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
             Satuan::create($s);
         }
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\Store::factory(10)->create();
+        // \App\Models\User::factory(10)->create();
+        // \App\Models\Store::factory(10)->create();
     }
 }

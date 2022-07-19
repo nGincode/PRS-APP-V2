@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Store;
-use App\Models\Inventaris;
-use App\Models\Pengadaan;
-use App\Models\Bahan;
-use App\Models\Peralatan;
 use App\Models\Satuan;
 use App\Models\Belanja;
 use App\Models\Inventory;
@@ -20,6 +14,7 @@ class BelanjaController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Belanja';
+        $this->title = $this->data['title'];
         $this->data['subtitle'] = '';
     }
 
@@ -29,6 +24,9 @@ class BelanjaController extends Controller
         if (!in_array('viewBelanja', $this->permission())) {
             return redirect()->to('/');
         }
+
+        $this->AutoHarga();
+
         $this->data['Belanja'] = Inventory::with('Bahan')->first();
 
         $bhn = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->get();
@@ -77,7 +75,7 @@ class BelanjaController extends Controller
             }
         } else {
             foreach ($request->input('kategori') as $key => $kategori) {
-                if (isset($request->input('qty')[$key])) {
+                if (isset($request->input('qty')[$key]) && isset($request->input('nama')[$key])) {
                     if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART') {
                         $input = [
                             'nama' => $request->input('nama')[$key],
@@ -89,7 +87,9 @@ class BelanjaController extends Controller
                             'ket' => $request->input('ket')[$key] ?? null,
                             'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
                             'uom' => $request->input('uombelanja')[$key] ?? null,
-                            'konversi' => $request->input('konversi')[$key] ?? null,
+                            'stock' => $request->input('stock')[$key] ?? null,
+                            'stock_uom' => $request->input('stock_uom')[$key] ?? null,
+                            'stock_harga' => $request->input('stock_harga')[$key] ?? null,
                             'hutang' => $request->input('hutang')[$key] ?? 0,
                             'updated_at' => date('Y-m-d H:i:s'),
                             'created_at' => date('Y-m-d H:i:s')
@@ -130,9 +130,9 @@ class BelanjaController extends Controller
                         }
                     } else {
                         $inventory = Inventory::with('Bahan')->where('bahan_id', $request->input('nama')[$key])->first();
-                        $harga =  $request->input('harga')[$key] ?? 0;
-                        $konversi = $request->input('konversi')[$key] ?? 1;
-                        $total = $harga * $konversi;
+                        $harga =  $request->input('stock_harga')[$key] ?? 0;
+                        $stock = $request->input('stock')[$key] ?? 0;
+                        $total = $harga * $stock;
                         $id = $request->input('id')[$key] ?? 0;
 
                         $jml = Belanja::where('bahan_id', $inventory['bahan']->id)
@@ -145,7 +145,6 @@ class BelanjaController extends Controller
                             $input = [
                                 'nama' => $inventory['bahan']->nama,
                                 'bahan_id' => $inventory['bahan_id'],
-                                'item_uom' => $inventory['satuan'],
                                 'tgl' => date('Y-m-d'),
                                 'kategori' => 'Item',
                                 'total' => $total,
@@ -154,7 +153,9 @@ class BelanjaController extends Controller
                                 'harga' => $request->input('harga')[$key] ?? null,
                                 'ket' => $request->input('ket')[$key] ?? null,
                                 'uom' => $request->input('uombelanja')[$key] ?? null,
-                                'konversi' => $request->input('konversi')[$key] ?? null,
+                                'stock' => $request->input('stock')[$key] ?? null,
+                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                'stock_uom' => $inventory['satuan'],
                                 'hutang' => $request->input('hutang')[$key] ?? 0,
                                 'updated_at' => date('Y-m-d H:i:s'),
                                 'created_at' => date('Y-m-d H:i:s')
@@ -220,17 +221,19 @@ class BelanjaController extends Controller
         }
 
         $belanja = Belanja::where('up', false)->where('store_id', $request->session()->get('store_id'))->where('tgl', date('Y-m-d'))->get();
-        if ($belanja) {
+
+
+        if (isset($belanja[0]['nama'])) {
             $cek = true;
             $item = '';
             foreach ($belanja as $key => $value) {
                 if ($value['qty'] && $value['uom'] && $value['harga']) {
                     if (Belanja::where('id', $value['id'])->update(['up' => true])) {
                         if ($value['bahan_id']) {
-                            if ($value['konversi']) {
+                            if ($value['stock']) {
                                 $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
                                 if ($bhn) {
-                                    $jumlah = $value['konversi'] + $bhn['qty'];
+                                    $jumlah = $value['stock'] + $bhn['qty'];
                                     if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
                                         Belanja::where('id', $value['id'])->update(['up' => false]);
                                         $cek = false;
@@ -272,8 +275,8 @@ class BelanjaController extends Controller
         } else {
             $data = [
                 'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Belanja tidak ditemukan'
+                'status' => 'warning',
+                'pesan' =>  'Item Belanja Tidak Ada'
             ];
         }
 
@@ -346,29 +349,141 @@ class BelanjaController extends Controller
 
         $this->data['subtitle'] = 'Belanja';
         $this->subtitle = $this->data['subtitle'];
+        $id_store = request()->session()->get('store_id');
 
         $result = array('data' => array());
         $tgl = [];
-        foreach (Belanja::select('tgl')->where('delete', false)->get()->toArray() as $v) {
+        foreach (Belanja::select('tgl')->where('store_id', $id_store)->where('delete', false)->get()->toArray() as $v) {
             $tgl[] = $v['tgl'];
         }
         $tgl = array_unique($tgl);
 
 
         foreach ($tgl as $value) {
-            $total =  Belanja::where('tgl', $value)->where('delete', false)->sum('total');
-            if (Belanja::where('up', false)->where('delete', false)->count()) {
+            $total =  Belanja::where('store_id', $id_store)->where('tgl', $value)->where('delete', false)->sum('total');
+            if (Belanja::where('store_id', $id_store)->where('tgl', $value)->where('up', false)->where('delete', false)->count()) {
                 $up = '<a class="badge badge-danger">Proses</a>';
             } else {
                 $up = '<a class="badge badge-success">Success</a>';
             }
 
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('viewBelanja', $this->permission())) $button .= "<li><a class='dropdown-item' onclick='lihat(" . '"' . $value . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
+
+            $button .= '</ul></div>';
+
+
             $result['data'][] = array(
                 $value,
                 $this->rupiah($total),
-                $up
+                $up,
+                $button
             );
         }
         echo json_encode($result);
+    }
+
+    public function ViewItem(Request $request)
+    {
+        if (!in_array('viewBelanja', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $id = $request->input('id');
+        $judul = $request->input('judul');
+        $id_store = request()->session()->get('store_id');
+
+        $variable = Belanja::with('Store')->where('store_id', $id_store)->where('tgl', $id)->get();
+
+        if (request()->session()->get('tipe')) {
+            $viewthstore = '<th rowspan="2" style="vertical-align : middle;text-align:center;">Store</th>';
+        } else {
+            $viewthstore = '';
+        }
+
+        $html = ' 
+        <h5><b>' . $this->tanggal($id, true) . '</b></h5>
+        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    ' . $viewthstore . '
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Nama</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Kategori</th>
+                                    <th colspan="2" style="vertical-align : middle;text-align:center;">Qty Nota</th>
+                                    <th colspan="2" style="vertical-align : middle;text-align:center;">Stock</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Ket</th>
+                                    <th rowspan="2" style="vertical-align : middle;text-align:center;">Total</th>
+                                </tr>
+                                <tr>
+                                    <th>Qty</th>
+                                    <th>Harga</th>
+                                    <th>Qty</th>
+                                    <th>Harga</th>
+                                </tr>
+                            </thead>';
+
+        $jumlah = 0;
+        foreach ($variable as $key => $value) {
+            if ($value['hutang']) {
+                $hutang = ' <a class="badge badge-danger">Hutang</a> ';
+            } else {
+                $hutang = ' ';
+            }
+
+            if (!$value['up']) {
+                $up = ' <a class="badge badge-warning">Proses</a> ';
+                $hapus = ' <a class="btn btn-danger btn-sm" onclick="hapusbelanja(' . $value['id'] . ',0)"><i class="fa fa-times"></i> </a>';
+            } else {
+                $up = '';
+                $hapus = '';
+            }
+
+
+            if ($value['stock']) {
+                $stock = $value['stock'];
+                $total = $value['stock'] * $value['stock_harga'];
+                $jumlah += $total;
+            } else {
+                $stock = '-';
+                $total = $value['qty'] * $value['harga'];
+                $jumlah += $total;
+            }
+
+            if (request()->session()->get('tipe')) {
+                $viewstore = '<td>' . $value['store']->nama . '</td>';
+                $viewtotal = 8;
+            } else {
+                $viewtotal = 7;
+                $viewstore = '';
+            }
+
+            $html .= '
+                    <tr>
+                        ' . $viewstore . '
+                        <td>'  . $up . $value['nama'] . '</td>
+                        <td>' . $value['kategori'] . '</td>
+                        <td>' . $value['qty'] . ' ' . $value['uom'] . '</td>
+                        <td>' . $this->rupiah($value['harga']) . '</td>
+                        <td>' . $stock . '</td>
+                        <td>' . $this->rupiah($value['stock_harga']) . '</td>
+                        <td>' . $hutang . $value['ket'] . '</td>
+                        <td>' . $this->rupiah($total) . $hapus . '</td>
+                    </tr>
+                       
+            ';
+        }
+        $html .= '
+                        <tr style="background-color:#607d8b7a;">
+                            <td colspan="' . $viewtotal . '"><b>Total</b> </td>
+                            <td><b>' . $this->rupiah($jumlah, true) . '</b></td>
+                        </tr>
+                        </table>';
+
+        echo $html;
     }
 }

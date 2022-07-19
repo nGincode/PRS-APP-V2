@@ -29,8 +29,9 @@ return new class extends Migration
             $table->string('harga')->nullable();
 
 
-            $table->string('konversi')->nullable();
-            $table->string('item_uom')->nullable();
+            $table->string('stock')->nullable();
+            $table->string('stock_harga')->nullable();
+            $table->string('stock_uom')->nullable();
             $table->string('total')->nullable();
             $table->string('ket')->nullable();
             $table->boolean('hutang')->default(false);

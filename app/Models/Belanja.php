@@ -11,4 +11,10 @@ class Belanja extends Model
 
     protected $table = 'belanja';
     protected $guarded = ['id'];
+
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

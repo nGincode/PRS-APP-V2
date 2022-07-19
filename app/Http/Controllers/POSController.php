@@ -156,39 +156,52 @@ class POSController extends Controller
 
             $data = '';
             foreach ($pos as $key => $v) {
-                $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
-                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
-                                            <div class="float-right"><b>';
-                if ($v['qty'] < 5) {
-                    $data .= '<i class="fa fa-exclamation-triangle"></i>';
-                }
-                $data .= $v['qty'] . ' ' . $v['satuan'];
 
                 $bahan = Bahan::where('id', $v['bahan_id'])->first();
-                $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
+                if (!$bahan->delete) {
+                    $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
+                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
+                                            <div class="float-right"><b>';
+                    if ($v['qty'] < 5) {
+                        $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                    }
+                    $data .= $v['qty'] . ' ' . $v['satuan'];
+
+                    $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
                                             <hr>
                                         </div>';
+                }
             }
-            echo $data;
+            if ($data) {
+                echo $data;
+            } else {
+                echo 'Tidak Ditemukan';
+            }
         } else {
             $data = '';
             foreach (Inventory::with('Bahan')->where('delete', false)->get() as $key => $v) {
-                $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
+                if (!$v['bahan']->delete) {
+                    $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
                                             onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
                                             <div class="float-right"><b>';
 
-                if ($v['qty'] < 5) {
-                    $data .= '<i class="fa fa-exclamation-triangle"></i>';
-                }
-                $data .= $v['qty'] . ' ' . $v['satuan'];
-                $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
+                    if ($v['qty'] < 5) {
+                        $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                    }
+                    $data .= $v['qty'] . ' ' . $v['satuan'];
+                    $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
                                             <hr>
                                         </div>';
+                }
             }
 
-            echo $data;
+            if ($data) {
+                echo $data;
+            } else {
+                echo 'Tidak Ditemukan';
+            }
         }
     }
 

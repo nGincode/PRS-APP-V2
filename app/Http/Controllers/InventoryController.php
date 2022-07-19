@@ -173,13 +173,15 @@ class InventoryController extends Controller
                 $qty = $value['qty'] . '/' . $value['satuan'];
             }
 
-            $result['data'][] = array(
-                $value['bahan']->kode,
-                $value['bahan']->nama,
-                $qty,
-                ($this->rupiah($value['harga_last']) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
-                $button
-            );
+            if (!$value['bahan']->delete) {
+                $result['data'][] = array(
+                    $value['bahan']->kode,
+                    $value['bahan']->nama,
+                    $qty,
+                    ($this->rupiah($value['harga_last']) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                    $button
+                );
+            }
         }
         echo json_encode($result);
     }

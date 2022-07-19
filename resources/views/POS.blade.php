@@ -46,21 +46,26 @@
                                     </div>
                                 </div>
                                 <div class="card-body" style="max-height: 500px;overflow-y:auto;" id="item">
+                                    <div class="waiting"
+                                        style="position: absolute;height: 85%;width: 96%;background-color: #dfdfdf;z-index: 9999;border-radius: 10px;display:none;">
+                                    </div>
                                     @foreach ($item as $v)
-                                        <div class="animate__animated animate__backInDown animate__faster item"
-                                            id="pilihan_<?= $v['id'] ?>"
-                                            onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
-                                            <div class="float-right"><b>
-                                                    @if ($v['qty'] < 5)
-                                                        <i class="fa fa-exclamation-triangle"></i>
-                                                    @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
-                                                </b>
+                                        @if (!$v['bahan']->delete)
+                                            <div class="animate__animated animate__backInDown animate__faster item"
+                                                id="pilihan_<?= $v['id'] ?>"
+                                                onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
+                                                <div class="float-right"><b>
+                                                        @if ($v['qty'] < 5)
+                                                            <i class="fa fa-exclamation-triangle"></i>
+                                                        @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
+                                                    </b>
+                                                </div>
+                                                <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
+                                                <p class="card-text">
+                                                    {{ 'Rp ' . number_format($v['harga_last'], 0, ',', '.') }}</p>
+                                                <hr>
                                             </div>
-                                            <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
-                                            <p class="card-text">
-                                                {{ 'Rp ' . number_format($v['harga_last'], 0, ',', '.') }}</p>
-                                            <hr>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 </div>
                             </div>
@@ -369,17 +374,18 @@
                 url: "POS/Pilih",
                 type: "POST",
                 data: {
+                    "_token": "{{ csrf_token() }}",
                     id: id,
                     bahan: bahan
                 },
                 beforeSend: function(xhr) {
-                    $('#pilihan_' + id).addClass('waiting');
+                    $('.waiting').show('');
                 },
                 error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
+                    // popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
-                    $('#pilihan_' + id).removeClass('waiting');
+                    $('.waiting').hide('');
                     layar();
 
                 }
@@ -393,10 +399,14 @@
                 data: {
                     id: value
                 },
+                beforeSend: function(xhr) {
+                    $('.waiting').show('');
+                },
                 error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
+                    // popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
+                    $('.waiting').hide('');
                     $('#item').html(data);
                 }
             });
@@ -408,7 +418,7 @@
                 type: "POST",
                 dataType: 'json',
                 error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
+                    // popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
                     $('#totalbelanja').html(data.rp);
@@ -483,8 +493,11 @@
             $.ajax({
                 url: "POS/Layar",
                 type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
                 error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
+                    // popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
                     $('#layar').html(data);
@@ -590,31 +603,37 @@
                     popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
-                    layar();
+
                     if (data.status) {
                         popup(data.status, data.toast, data.pesan);
                     }
 
-                    $('#transaksi').modal('hide');
-                    if (data.kembalian) {
-                        if (data.kembalian === 0) {
-                            $('#StatusKembalian').html(
-                                '<div class="modal-body"><center><h2><b style="color: green">~ LUNAS ~</b></h2></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
-                                data.id + ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
-                            );
-                        } else {
-                            $('#StatusKembalian').html(
-                                '<div class="modal-body"><center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' +
-                                data
-                                .kembalian +
-                                '</b></h4></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
-                                data.id + ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
-                            );
+                    if (data.status == 'success') {
+                        layar();
+
+                        $('#transaksi').modal('hide');
+                        if (data.kembalian) {
+                            if (data.kembalian === 0) {
+                                $('#StatusKembalian').html(
+                                    '<div class="modal-body"><center><h2><b style="color: green">~ LUNAS ~</b></h2></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
+                                    data.id +
+                                    ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
+                                );
+                            } else {
+                                $('#StatusKembalian').html(
+                                    '<div class="modal-body"><center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' +
+                                    data
+                                    .kembalian +
+                                    '</b></h4></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
+                                    data.id +
+                                    ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
+                                );
+                            }
                         }
+                        $('#kembalian').modal('show');
+                        $('#manage').DataTable().ajax.reload();
+                        search();
                     }
-                    $('#kembalian').modal('show');
-                    $('#manage').DataTable().ajax.reload();
-                    search();
 
                 }
             });

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
 use App\Models\GroupsUsers;
+use App\Models\Inventory;
+use App\Models\Belanja;
 
 
 class Controller extends BaseController
@@ -66,6 +68,43 @@ class Controller extends BaseController
             return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
         } else {
             return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0] . ' (' . $ambiljam . ')';
+        }
+    }
+
+    function uang($uang)
+    {
+        $ratusan = substr($uang, -3);
+        if ($ratusan < 500)
+            $akhir = $uang - $ratusan;
+        else
+            $akhir = $uang + (1000 - $ratusan);
+        return number_format($akhir, 0, ',', '');;
+    }
+
+
+    function AutoHarga()
+    {
+        $tgl_awal =  date('Y-m-d', strtotime('-7 days', strtotime(date('Y-m-d'))));
+        $tgl_akhir =  date('Y-m-d', strtotime('+1 days', strtotime(date('Y-m-d'))));
+
+
+        foreach (Inventory::where('store_id', request()->session()->get('store_id'))->where('auto_harga', 1)->get() as $value) {
+
+            $harga = 0;
+            $row = 0;
+            foreach (Belanja::where('store_id', request()->session()->get('store_id'))->where('bahan_id', $value['bahan_id'])->where('up', 1)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->get() as $v) {
+                $harga += $v['stock_harga'];
+                $row += 1;
+            }
+            if ($row) {
+                $RataRata = round($harga / $row);
+
+                $hargaskrang = $value['harga_last'];
+                if ($RataRata != $hargaskrang) {
+                    $upharga = $this->uang($RataRata);
+                    Inventory::where('id', $value['id'])->update(['harga_last' => $upharga]);
+                }
+            }
         }
     }
 }
