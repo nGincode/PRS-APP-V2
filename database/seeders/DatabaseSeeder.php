@@ -113,13 +113,13 @@ class DatabaseSeeder extends Seeder
 
         ]);
         $v2 = 'a:48:{i:0;s:14:"createSupplier";i:1;s:14:"updateSupplier";i:2;s:12:"viewSupplier";i:3;s:14:"deleteSupplier";i:4;s:12:"createSatuan";i:5;s:12:"updateSatuan";i:6;s:10:"viewSatuan";i:7;s:12:"deleteSatuan";i:8;s:11:"createBahan";i:9;s:11:"updateBahan";i:10;s:9:"viewBahan";i:11;s:11:"deleteBahan";i:12;s:15:"createPeralatan";i:13;s:15:"updatePeralatan";i:14;s:13:"viewPeralatan";i:15;s:15:"deletePeralatan";i:16;s:13:"createPegawai";i:17;s:13:"updatePegawai";i:18;s:11:"viewPegawai";i:19;s:13:"deletePegawai";i:20;s:25:"createFoodcostBahanOlahan";i:21;s:25:"updateFoodcostBahanOlahan";i:22;s:23:"viewFoodcostBahanOlahan";i:23;s:25:"deleteFoodcostBahanOlahan";i:24;s:20:"createFoodcostVarian";i:25;s:20:"updateFoodcostVarian";i:26;s:18:"viewFoodcostVarian";i:27;s:20:"deleteFoodcostVarian";i:28;s:19:"createFoodcostResep";i:29;s:19:"updateFoodcostResep";i:30;s:17:"viewFoodcostResep";i:31;s:19:"deleteFoodcostResep";i:32;s:9:"createPOS";i:33;s:9:"updatePOS";i:34;s:7:"viewPOS";i:35;s:9:"deletePOS";i:36;s:13:"createBelanja";i:37;s:13:"updateBelanja";i:38;s:11:"viewBelanja";i:39;s:13:"deleteBelanja";i:40;s:20:"createInventoryStock";i:41;s:20:"updateInventoryStock";i:42;s:18:"viewInventoryStock";i:43;s:20:"deleteInventoryStock";i:44;s:21:"createInventoryOpname";i:45;s:21:"updateInventoryOpname";i:46;s:19:"viewInventoryOpname";i:47;s:21:"deleteInventoryOpname";}';
-        Groups::create([
-            'nama' => 'Office',
-            'permission' => $v2,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+        // Groups::create([
+        //     'nama' => 'Office',
+        //     'permission' => $v2,
+        //     'created_at' => date('Y-m-d H:i:s'),
+        //     'updated_at' => date('Y-m-d H:i:s')
 
-        ]);
+        // ]);
 
         GroupsUsers::create([
             'users_id' => 1,
@@ -128,13 +128,13 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
-        GroupsUsers::create([
-            'users_id' => 2,
-            'groups_id' => 2,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+        // GroupsUsers::create([
+        //     'users_id' => 2,
+        //     'groups_id' => 2,
+        //     'created_at' => date('Y-m-d H:i:s'),
+        //     'updated_at' => date('Y-m-d H:i:s')
 
-        ]);
+        // ]);
 
 
 
