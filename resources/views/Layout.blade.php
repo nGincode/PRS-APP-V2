@@ -705,7 +705,7 @@ if (Auth::check()) {
                             </li>
                         @endif
 
-                        <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
+                        {{-- <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
                             <a href="#" class="nav-link @if ($title == 'Master') active @endif ">
                                 <i class=" nav-icon fas fa-database"></i>
                                 <p>
@@ -714,10 +714,7 @@ if (Auth::check()) {
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                @if (in_array('createSupplier', $user_permission) ||
-                                    in_array('updateSupplier', $user_permission) ||
-                                    in_array('viewSupplier', $user_permission) ||
-                                    in_array('deleteSupplier', $user_permission))
+                                @if (in_array('createSupplier', $user_permission) || in_array('updateSupplier', $user_permission) || in_array('viewSupplier', $user_permission) || in_array('deleteSupplier', $user_permission))
                                     <li class="nav-item">
                                         <a href="{{ url('/Master/Supplier') }}"
                                             class="nav-link @if ($subtitle == 'Supplier') active @endif">
@@ -726,10 +723,7 @@ if (Auth::check()) {
                                         </a>
                                     </li>
                                 @endif
-                                @if (in_array('createSupplier', $user_permission) ||
-                                    in_array('updateSupplier', $user_permission) ||
-                                    in_array('viewSupplier', $user_permission) ||
-                                    in_array('deleteSupplier', $user_permission))
+                                @if (in_array('createSupplier', $user_permission) || in_array('updateSupplier', $user_permission) || in_array('viewSupplier', $user_permission) || in_array('deleteSupplier', $user_permission))
                                     <li class="nav-item">
                                         <a href="{{ url('/Master/Supplier') }}"
                                             class="nav-link @if ($subtitle == 'Supplier') active @endif">
@@ -739,7 +733,7 @@ if (Auth::check()) {
                                     </li>
                                 @endif
                             </ul>
-                        </li>
+                        </li> --}}
 
 
                         {{-- @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
