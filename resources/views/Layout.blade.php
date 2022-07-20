@@ -855,6 +855,12 @@ if (Auth::check()) {
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
+
+        $(function() {
+            $('input').keyup(function() {
+                this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+            });
+        });
     </script>
 
     <!-- Bootstrap 4 -->
