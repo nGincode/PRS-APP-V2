@@ -48,7 +48,8 @@
                                         required data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($store as $str)
-                                            <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
+                                            <option value="{{ $str['id'] }}" 
+                                            @if ($str['id'] == request()->session()->get('id')) selected @endif >{{ $str['nama'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -140,5 +141,4 @@
 
         <!-- /.container-fluid -->
     </section>
-    <script></script>
 @endsection

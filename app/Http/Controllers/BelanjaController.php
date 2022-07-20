@@ -40,7 +40,7 @@ class BelanjaController extends Controller
 
         $this->data['satuan'] = Satuan::all();
         $this->data['bahan'] = $bahan;
-        $this->data['Data'] = Belanja::where('tgl', date('Y-m-d'))->where('delete', false)->where('store_id', $request->session()->get('store_id'))->orderBy('up', 'DESC')->orderBy('nama', 'ASC')->get();
+        $this->data['Data'] = Belanja::where('tgl', date('Y-m-d'))->where('delete', false)->where('store_id', $request->session()->get('store_id'))->orderBy('up', 'DESC')->get();
         return view('Belanja', $this->data);
     }
 

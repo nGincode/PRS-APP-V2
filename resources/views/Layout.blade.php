@@ -705,6 +705,23 @@ if (Auth::check()) {
                             </li>
                         @endif
 
+
+                        @if (in_array('createBelanja', $user_permission) ||
+                            in_array('updateBelanja', $user_permission) ||
+                            in_array('viewBelanja', $user_permission) ||
+                            in_array('deleteBelanja', $user_permission))
+                            <li class="nav-item @if ($title == 'Order')  @endif ">
+                                <a href="{{ url('/Order') }}"
+                                    class="nav-link @if ($title == 'Order') active @endif "">
+                                    <i class="             nav-icon fas fa-shopping-cart "></i>
+                                    <p>
+                                        Order
+                                        <span class="right badge badge-danger">New</span>
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
                         {{-- <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
                             <a href="#" class="nav-link @if ($title == 'Master') active @endif ">
                                 <i class=" nav-icon fas fa-database"></i>

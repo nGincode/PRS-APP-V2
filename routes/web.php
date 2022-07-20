@@ -14,6 +14,7 @@ use App\Http\Controllers\PemesananController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\POSController;
+use App\Http\Controllers\OrderController;
 
 
 /*
@@ -205,15 +206,6 @@ Route::controller(BelanjaController::class)->group(
     }
 );
 
-//Pemesanan
-Route::controller(PemesananController::class)->group(
-    function () {
-
-        //OLAHAN
-        Route::get('Pemesanan/PR', 'Olahan')->middleware('auth');
-    }
-);
-
 
 //POS
 Route::controller(POSController::class)->group(
@@ -249,6 +241,15 @@ Route::controller(InventoryController::class)->group(
         Route::post('Inventory/Manage/Opname', 'ManageOpname')->middleware('auth');
     }
 );
+
+//Order
+Route::controller(OrderController::class)->group(
+    function () {
+        //Stock
+        Route::get('Order/', 'Index')->middleware('auth');
+    }
+);
+
 
 Route::get(
     '/test',

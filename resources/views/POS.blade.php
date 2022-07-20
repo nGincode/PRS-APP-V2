@@ -35,15 +35,17 @@
                             </h1>
                             <br><br>
                             <div class="card card-success card-outline" style="min-height: 600px">
-                                <div class="card-header">
-                                    <h5 class="card-title m-0" style="padding:5px"><b>Produk Inventory</b></h5>
+                                <div class="card-header" style="display: flex">
+                                    <input type="text" class="form-control" onkeyup="barcode(this.value)" id="search"
+                                        placeholder="Barcode..">
+                                    <i class="fa fa-barcode"
+                                        style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
 
-                                    <div class="float-right" style="position: absolute; right:0px;">
-                                        <div class="form-group col-md-12">
-                                            <input type="text" class="form-control" onkeyup="search(this.value)"
-                                                id="search" placeholder="Search..">
-                                        </div>
-                                    </div>
+
+                                    <input type="text" class="form-control" onkeyup="search(this.value)" id="search"
+                                        placeholder="Search..">
+                                    <i class="fa fa-search"
+                                        style="padding: 10px;padding: 10px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
                                 </div>
                                 <div class="card-body" style="max-height: 500px;overflow-y:auto;" id="item">
                                     <div class="waiting"
@@ -145,8 +147,8 @@
 
                         <div class="form-group">
                             <label for="no">No Hp:</label>
-                            <input type="number" class="form-control" name="no" id="no" aria-describedby="No"
-                                placeholder="Masukan Data">
+                            <input type="number" class="form-control" name="no" id="no"
+                                aria-describedby="No" placeholder="Masukan Data">
                         </div>
 
                         <hr>

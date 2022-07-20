@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 
-class PemesananController extends Controller
+class OrderController extends Controller
 {
     public function __construct()
     {
-        $this->data['title'] = 'Pemesanan';
+        $this->data['title'] = 'Order';
         $this->data['subtitle'] = '';
         $this->title = $this->data['title'];
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
@@ -31,14 +31,17 @@ class PemesananController extends Controller
 
 
     /////////////////////////////////// SUPLIER //////////////////////////
-    public function Olahan(Request $request)
+    public function Index(Request $request)
     {
-        $this->data['subtitle'] = '(PR)';
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewSupplier', $this->permission())) {
+            return redirect()->to('/');
+        }
 
         $this->data['store'] = store::where('tipe', 'Outlet')->where('active', true)->get();
         $this->data['logistik'] = store::where('tipe', 'Logistik')->where('active', true)->get();
 
-        return view('Pemesanan', $this->data);
+        return view('Order', $this->data);
     }
 
     public function OlahanManage(Request $request)

@@ -46,7 +46,7 @@
                                             <th style="min-width: 300px">Stock</th>
                                             <th style="min-width: 100px">Total</th>
                                             <th style="min-width: 130px">Keterangan</th>
-                                            <th>Hutang</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -202,12 +202,15 @@
                                         </td>
                                         <td> <input @if ($v['up']) disabled @endif type="text"
                                                 class="form-control" value="{{ $v['ket'] }}" id="ket"
-                                                placeholder="Keterangan" name="ket[]"
-                                                onchange="$('#FormBelanja').submit()">
+                                                placeholder="Ket" name="ket[]" onchange="$('#FormBelanja').submit()">
                                         </td>
-                                        <td><input @if ($v['up']) disabled @endif name="hutang[]"
-                                                class="form-control" @if ($v['hutang']) checked @endif
-                                                type="checkbox" value="1" onchange="$('#FormBelanja').submit()">
+                                        <td>
+                                            <select style="border: unset;background: transparent;" name="hutang[]"
+                                                onchange="$('#FormBelanja').submit()">
+                                                <option value="0">Lunas</option>
+                                                <option value="1" @if ($v['hutang']) selected @endif>
+                                                    Hutang</option>
+                                            </select>
                                         </td>
                                         </tr>
                                         @endforeach
@@ -289,7 +292,7 @@
                 var isi = prompt('Nama Barang Oprasional');
 
                 if (isi) {
-                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi > 0) {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
                     } else {

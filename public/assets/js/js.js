@@ -1091,7 +1091,7 @@ $(document).ready(function() {
                     html += '<option value="' + data.satuan[y]['singkat'] + '">' + data.satuan[y]['nama'] + '</option>';
                 }
 
-                html += '</select> </div><div class="col"> <input type="number" class="form-control" onkeyup="hitung_belanja(this.value, ' + row_id + ')" id="harga_' + row_id + '" placeholder="Harga" name="harga[]"> </div></div></td><td id="item_' + row_id + '"  > - </td><td id="total_' + row_id + '"> - </td><td> <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"> </td><td><input name="hutang[]" class="form-control" type="checkbox" value="1" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"></td></tr>';
+                html += '</select> </div><div class="col"> <input type="number" class="form-control" onkeyup="hitung_belanja(this.value, ' + row_id + ')" id="harga_' + row_id + '" placeholder="Harga" name="harga[]"> </div></div></td><td id="item_' + row_id + '"  > - </td><td id="total_' + row_id + '"> - </td><td> <input type="text" class="form-control" id="ket" placeholder="Keterangan" name="ket[]" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"> </td><td><select style="border: unset;background: transparent;" name="hutang[]" onchange="$(' + "'" + '#FormBelanja' + "'" + ').submit()"><option value="0">Lunas</option><option value="1">Hutang</option></select></td></tr>';
 
                 if (row_id >= 0) {
                     $("#tambahbelanja tbody tr:last").after(html);
