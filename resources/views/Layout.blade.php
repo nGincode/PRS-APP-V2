@@ -858,7 +858,9 @@ if (Auth::check()) {
 
         $(function() {
             $('input').keyup(function() {
-                this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+                if (this.type !== 'password') {
+                    this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+                }
             });
         });
     </script>
