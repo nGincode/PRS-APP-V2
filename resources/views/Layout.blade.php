@@ -706,10 +706,10 @@ if (Auth::check()) {
                         @endif
 
 
-                        @if (in_array('createBelanja', $user_permission) ||
-                            in_array('updateBelanja', $user_permission) ||
-                            in_array('viewBelanja', $user_permission) ||
-                            in_array('deleteBelanja', $user_permission))
+                        @if (in_array('createOrder', $user_permission) ||
+                            in_array('updateOrder', $user_permission) ||
+                            in_array('viewOrder', $user_permission) ||
+                            in_array('deleteOrder', $user_permission))
                             <li class="nav-item @if ($title == 'Order')  @endif ">
                                 <a href="{{ url('/Order') }}"
                                     class="nav-link @if ($title == 'Order') active @endif "">
@@ -875,7 +875,7 @@ if (Auth::check()) {
 
         $(function() {
             $('input').keyup(function() {
-                if (this.type !== 'password') {
+                if (this.type === 'text') {
                     this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
                 }
             });

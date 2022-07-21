@@ -605,14 +605,13 @@
                     popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
-
+                    console.log(data);
                     if (data.status) {
                         popup(data.status, data.toast, data.pesan);
                     }
 
-                    if (data.status == 'success') {
+                    if (data.status !== 'error') {
                         layar();
-
                         $('#transaksi').modal('hide');
                         if (data.kembalian) {
                             if (data.kembalian === 0) {

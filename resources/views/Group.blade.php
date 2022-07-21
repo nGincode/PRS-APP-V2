@@ -269,6 +269,17 @@
                                         <td><input type="checkbox" name="permission[]" id="permission"
                                                 value="deleteInventoryOpname" class="minimal"></td>
                                     </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Order </td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createOrder" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateOrder" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission" value="viewOrder"
+                                                class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteOrder" class="minimal"></td>
+                                    </tr>
                                 </tbody>
                             </table>
 

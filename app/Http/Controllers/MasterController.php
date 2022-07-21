@@ -281,7 +281,7 @@ class MasterController extends Controller
         }
 
         $this->data['subtitle'] = 'Bahan';
-        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->orWhere('tipe', 'Logistik')->get();
         $this->data['satuan'] = Satuan::all();
         return view('Bahan', $this->data);
     }
@@ -460,7 +460,7 @@ class MasterController extends Controller
         session()->flash('IdEdit', $id);
 
         $this->data['BahanData'] = Bahan::where('id', $id)->first();
-        $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
+        $this->data['Store'] = Store::where('tipe', 'Outlet')->orWhere('tipe', 'Logistik')->get();
         $this->data['satuan'] = Satuan::all();
         return view('Edit', $this->data);
     }
@@ -478,7 +478,6 @@ class MasterController extends Controller
                 $request->all(),
                 $rules = [
                     'nama' => 'required',
-                    'kategori' => 'required',
                     'satuan_pembelian' => 'required',
                     'hargaa' => 'required',
                     'satuan_pemakaian' => 'required',

@@ -15,8 +15,13 @@ return new class extends Migration
     {
         Schema::create('posbill', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('users_id');
+            $table->foreign('users_id')->references('id')->on('users');
+
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');
+
             $table->dateTime('tgl');
             $table->string('no_bill');
             $table->string('no_hp')->nullable();

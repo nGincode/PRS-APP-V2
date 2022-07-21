@@ -53,6 +53,7 @@ class POSController extends Controller
         $bahan_id = $request->input('bahan');
         $inventory_id = $request->input('id');
         $id_store = request()->session()->get('store_id');
+        $id_users = request()->session()->get('id');
 
         $inventory = Inventory::where('id', $inventory_id)->first();
 
@@ -61,17 +62,12 @@ class POSController extends Controller
         if ($inventory_id && $bahan_id) {
             if ($cek) {
                 POS::where('inventory_id', $inventory_id)->update([
-                    'store_id' => $id_store,
-                    'inventory_id' => $inventory_id,
-                    'bahan_id' => $bahan_id,
                     'qty' => 1 + $cek['qty'],
-                    'satuan' => $inventory['satuan'],
-                    'harga' => $inventory['harga_last'],
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]);
             } else {
                 POS::insert([
+                    'users_id' => $id_users,
                     'store_id' => $id_store,
                     'inventory_id' => $inventory_id,
                     'bahan_id' => $bahan_id,
@@ -309,6 +305,7 @@ class POSController extends Controller
         if ($jumlahbelanja <= $jumlahqty) {
             $bill_no = 'BILL-' . $id_store . '-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
             $data = [
+                'users_id' => $request->session()->get('id'),
                 'store_id' => $id_store,
                 'tgl' => date('Y-m-d H:i:s'),
                 'no_bill' => $bill_no,
@@ -328,6 +325,7 @@ class POSController extends Controller
                 $dataitem = [];
                 foreach ($dtpos as $value1) {
                     $dataitem[] = [
+                        'users_id' => $request->session()->get('id'),
                         'store_id' => $id_store,
                         'posbill_id' => $id,
                         'bahan_id' => $value1['bahan_id'],
@@ -424,7 +422,7 @@ class POSController extends Controller
                 $value['no_bill'],
                 $nama_bill,
                 $no_hp,
-                $value['total'],
+                $this->rupiah($value['total']),
                 $paid,
                 $button
             );

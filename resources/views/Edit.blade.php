@@ -675,6 +675,17 @@
                             <td><input type="checkbox" name="permission[]" id="permission" value="deleteInventoryOpname"
                                     @if (in_array('deleteInventoryOpname', $permission)) checked @endif class="minimal"></td>
                         </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Order</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createOrder"
+                                    @if (in_array('createOrder', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateOrder"
+                                    @if (in_array('updateOrder', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewOrder"
+                                    @if (in_array('viewOrder', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteOrder"
+                                    @if (in_array('deleteOrder', $permission)) checked @endif class="minimal"></td>
+                        </tr>
                     </tbody>
                 </table>
 

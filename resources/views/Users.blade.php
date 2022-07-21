@@ -60,7 +60,7 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="Username">Username</label>
-                                    <input type="text" class="form-control" id="Username" placeholder="Username"
+                                    <input type="username" class="form-control" id="Username" placeholder="Username"
                                         name="Username">
                                 </div>
                             </div>

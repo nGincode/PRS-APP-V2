@@ -103,6 +103,7 @@
                                 <th>Qty Sebelumnya</th>
                                 <th>Total Qty</th>
                                 <th>Ket</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>

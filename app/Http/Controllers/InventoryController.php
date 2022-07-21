@@ -113,6 +113,7 @@ class InventoryController extends Controller
                 $input = [
                     'bahan_id' => $request->input('nama'),
                     'store_id' => $request->session()->get('store_id'),
+                    'users_id' => $request->session()->get('id'),
                     'qty' => $request->input('qty'),
                     'satuan' => $request->input('satuan'),
                     'auto_harga' => $request->input('auto_harga'),
@@ -261,15 +262,29 @@ class InventoryController extends Controller
             } else {
                 $qtyjml = '';
             }
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('deleteInventoryOpname', $this->permission())) {
+                // $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+            }
+
+            $button .= '</ul></div>';
+
 
             $result['data'][] = array(
                 $value['tgl'],
                 $value['nama'],
                 $value['status'],
-                $value['qty'],
-                $value['qty_sebelum'],
-                $qtyjml,
+                $value['qty'] . '/' . $value['uom'],
+                $value['qty_sebelum'] . '/' . $value['uom'],
+                $qtyjml . '/' . $value['uom'],
                 $value['ket'],
+                $button
+
             );
         }
         echo json_encode($result);
@@ -283,6 +298,7 @@ class InventoryController extends Controller
         $nama = $request->input('nama');
         $status = $request->input('status');
         $qty = $request->input('qty');
+        $ket = $request->input('ket');
 
         $bahan = Inventory::where('bahan_id', $nama)->with('Bahan', 'Store')->first();
 
@@ -298,10 +314,15 @@ class InventoryController extends Controller
                 'tgl' => date('Y-m-d'),
                 'bahan_id' => $nama,
                 'nama' => $bahan['bahan']->nama,
+                'uom' => $bahan['satuan'],
                 'status' => $status,
                 'qty' => $qty,
+                'ket' => $ket,
                 'store_id' => $request->session()->get('store_id'),
-                'qty_sebelum' => $bahan['qty']
+                'users_id' => $request->session()->get('id'),
+                'qty_sebelum' => $bahan['qty'],
+                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at' => date('Y-m-d H:i:s')
             ];
 
             if ($qtyjml) {
