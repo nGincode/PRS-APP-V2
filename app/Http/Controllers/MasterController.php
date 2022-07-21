@@ -342,7 +342,7 @@ class MasterController extends Controller
                     }
                 }
             } else {
-                $pengguna .= '-';
+                $pengguna .= 'Semua';
             }
 
             $result['data'][] = array(
@@ -520,6 +520,12 @@ class MasterController extends Controller
                     }
                 } else {
 
+                    if ($request->input('pengguna')) {
+                        $pengguna = json_encode($request->input('pengguna'));
+                    } else {
+                        $pengguna = null;
+                    }
+
                     $input = [
                         'nama' => $request->input('nama'),
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
@@ -528,7 +534,7 @@ class MasterController extends Controller
                         'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
                         'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                         'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluarann')),
-                        'pengguna' => json_encode($request->input('pengguna')),
+                        'pengguna' => $pengguna,
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
                     ];

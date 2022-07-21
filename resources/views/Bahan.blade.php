@@ -136,6 +136,9 @@
                                             <option value="{{ $v['id'] }}">{{ $v['nama'] }}</option>
                                         @endforeach
                                     </select>
+                                    <small>
+                                        <font color="red">*</font> Kosongkan untuk keseluruhan
+                                    </small>
                                 </div>
                             </div>
 

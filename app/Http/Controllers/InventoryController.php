@@ -43,7 +43,7 @@ class InventoryController extends Controller
 
         $bahan = [];
         $inv = [];
-        $inventory = Inventory::where('delete', false)->get();
+        $inventory = Inventory::where('store_id', request()->session()->get('store_id'))->where('delete', false)->get();
         foreach ($inventory as $v) {
             $inv[] = $v['bahan_id'];
         }
