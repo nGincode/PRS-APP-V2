@@ -3,120 +3,122 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            @csrf
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title"><b> {{ $title . ' ' . $subtitle }} </b></h3>
+            @if (in_array('createPOS', $user_permission))
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b> {{ $title . ' ' . $subtitle }} </b></h3>
 
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                        </button>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <div class="row">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="row">
 
-                        <div class="col-sm-8">
-                            <div class="float-right">
-                                <b>
-                                    Total
-                                </b>
-                                <h1><b id="totalbelanja"></b></h1>
-                            </div>
-                            <h1>
-                                <b>
-                                    {{ request()->session()->get('store') }}
-                                </b>
-                            </h1>
-                            <br><br>
-                            <div class="card card-success card-outline" style="min-height: 600px">
-                                <div class="card-header" style="display: flex">
-                                    <input type="text" class="form-control" onkeyup="barcode(this.value)" id="search"
-                                        placeholder="Barcode..">
-                                    <i class="fa fa-barcode"
-                                        style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
-
-
-                                    <input type="text" class="form-control" onkeyup="search(this.value)" id="search"
-                                        placeholder="Search..">
-                                    <i class="fa fa-search"
-                                        style="padding: 10px;padding: 10px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
+                            <div class="col-sm-8">
+                                <div class="float-right">
+                                    <b>
+                                        Total
+                                    </b>
+                                    <h1><b id="totalbelanja"></b></h1>
                                 </div>
-                                <div class="card-body" style="max-height: 500px;overflow-y:auto;" id="item">
-                                    <div class="waiting"
-                                        style="position: absolute;height: 85%;width: 96%;background-color: #dfdfdf;z-index: 9999;border-radius: 10px;display:none;">
+                                <h1>
+                                    <b>
+                                        {{ request()->session()->get('store') }}
+                                    </b>
+                                </h1>
+                                <br><br>
+                                <div class="card card-success card-outline" style="min-height: 600px">
+                                    <div class="card-header" style="display: flex">
+                                        <input type="text" class="form-control" onkeyup="barcode(this.value)"
+                                            id="search" placeholder="Barcode..">
+                                        <i class="fa fa-barcode"
+                                            style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
+
+
+                                        <input type="text" class="form-control" onkeyup="search(this.value)"
+                                            id="search" placeholder="Search..">
+                                        <i class="fa fa-search"
+                                            style="padding: 10px;padding: 10px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
                                     </div>
-                                    @foreach ($item as $v)
-                                        @if (!$v['bahan']->delete)
-                                            <div class="animate__animated animate__backInDown animate__faster item"
-                                                id="pilihan_<?= $v['id'] ?>"
-                                                onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
-                                                <div class="float-right"><b>
-                                                        @if ($v['qty'] < 5)
-                                                            <i class="fa fa-exclamation-triangle"></i>
-                                                        @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
-                                                    </b>
+                                    <div class="card-body" style="max-height: 500px;overflow-y:auto;" id="item">
+                                        <div class="waiting"
+                                            style="position: absolute;height: 85%;width: 96%;background-color: #dfdfdf;z-index: 9999;border-radius: 10px;display:none;">
+                                        </div>
+                                        @foreach ($item as $v)
+                                            @if (!$v['bahan']->delete)
+                                                <div class="animate__animated animate__backInDown animate__faster item"
+                                                    id="pilihan_<?= $v['id'] ?>"
+                                                    onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
+                                                    <div class="float-right"><b>
+                                                            @if ($v['qty'] < 5)
+                                                                <i class="fa fa-exclamation-triangle"></i>
+                                                            @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
+                                                        </b>
+                                                    </div>
+                                                    <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
+
+                                                    @if ($v['auto_harga'])
+                                                        <p class="card-text">
+                                                            {{ 'Rp ' . number_format($v['harga_auto'], 0, ',', '.') }}</p>
+                                                    @else
+                                                        <p class="card-text">
+                                                            {{ 'Rp ' . number_format($v['harga_manual'], 0, ',', '.') }}</p>
+                                                    @endif
+                                                    <hr>
                                                 </div>
-                                                <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
-
-                                                @if ($v['auto_harga'])
-                                                    <p class="card-text">
-                                                        {{ 'Rp ' . number_format($v['harga_auto'], 0, ',', '.') }}</p>
-                                                @else
-                                                    <p class="card-text">
-                                                        {{ 'Rp ' . number_format($v['harga_manual'], 0, ',', '.') }}</p>
-                                                @endif
-                                                <hr>
-                                            </div>
-                                        @endif
-                                    @endforeach
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card card-primary card-outline" style="min-height: 600px">
+                                    <div class="card-header">
+                                        <h5 class="card-title m-0"><b>POS (Point Of Sales)</b></h5>
+                                    </div>
+                                    <div class="card-body" id="layar" style="max-height: 600px;overflow-y:auto;">
+
+
+                                    </div>
+                                </div>
+                                <button href="#" id="submit" disabled class="btn btn-primary btn-lg btn-block"
+                                    data-toggle="modal" data-target="#transaksi"><B>--| SUBMIT |--</B></button>
                             </div>
 
                         </div>
-                        <div class="col-sm-4">
-                            <div class="card card-primary card-outline" style="min-height: 600px">
-                                <div class="card-header">
-                                    <h5 class="card-title m-0"><b>POS (Point Of Sales)</b></h5>
-                                </div>
-                                <div class="card-body" id="layar" style="max-height: 600px;overflow-y:auto;">
-
-
-                                </div>
-                            </div>
-                            <button href="#" id="submit" disabled class="btn btn-primary btn-lg btn-block"
-                                data-toggle="modal" data-target="#transaksi"><B>--| SUBMIT |--</B></button>
-                        </div>
-
+                        <!-- /.row -->
                     </div>
-                    <!-- /.row -->
+
                 </div>
-
-            </div>
-
+            @endif
             <div class="card">
                 <div class="card-header text-white bg-secondary mb-3">
                     <h3 class="card-title" style="font-weight: bolder;padding:8px">Data {{ $title . ' ' . $subtitle }}
                     </h3>
 
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-info"><?= request()
-                                ->session()
-                                ->get('store') ?></button>
-                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"
-                            aria-expanded="false">
-                        </button>
-                        <div class="dropdown-menu" role="menu" style="">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
+                    @if (request()->session()->get('store') === 'Office')
+                        <div class="btn-group float-right">
+                            <button type="button" class="btn btn-info">All</button>
+                            <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"
+                                aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" role="menu" style="">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
                         </div>
-                    </div>
+                    @endif
+
+
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -126,8 +128,9 @@
                                 <i class="far fa-calendar-alt"></i>
                             </span>
                         </div>
-                        <input type="text" onchange="manage()" name="manage_date" class="form-control float-right"
-                            id="manage_date">
+                        <input type="text"
+                            value="<?= date('m/d/Y', strtotime('-29 days', strtotime(date('Y-m-d')))) ?> - <?= date('m/d/Y') ?>"
+                            onchange="manage()" name="manage_date" class="form-control" id="manage_date">
                     </div>
                     <br>
 
@@ -155,8 +158,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="transaksi" tabindex="-1" role="dialog" style="width:100%" aria-labelledby="transaksiLabel"
-        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="transaksi" tabindex="-1" role="dialog" style="width:100%"
+        aria-labelledby="transaksiLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -726,11 +729,22 @@
 
         $(function() {
             $('#manage_date').daterangepicker({
+                format: 'MM/DD/YYYY',
+                minDate: '06/01/2022',
+                maxDate: moment(),
+                dateLimit: {
+                    days: 30
+                },
                 locale: {
                     "applyLabel": "Simpan",
                     "cancelLabel": "Kembali",
                     "fromLabel": "Dari",
-                    "toLabel": "Ke"
+                    "toLabel": "Ke",
+                    "daysOfWeek": ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    "monthNames": ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
+                        'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                    ],
+
                 },
                 startDate: moment().subtract(29, 'days'),
                 endDate: moment()

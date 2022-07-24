@@ -4,8 +4,6 @@ use App\Models\Groups;
 use App\Models\GroupsUsers;
 
 if (Auth::check()) {
-    $DataUsers = User::where('id', Auth::id())->first();
-
     if (
         request()
             ->session()
@@ -36,6 +34,7 @@ if (Auth::check()) {
             ->session()
             ->get('active');
     } else {
+        $DataUsers = User::where('id', Auth::id())->first();
         $Id = Auth::id();
         $Username = $DataUsers['username'];
         $Email = $DataUsers['email'];
@@ -877,7 +876,6 @@ if (Auth::check()) {
 
                 $("#manage").DataTable({
                     "ajax": {
-                        "_token": "{{ csrf_token() }}",
                         url: "{{ $urlmanage }}",
                         type: "POST",
                         processing: false,
@@ -938,6 +936,8 @@ if (Auth::check()) {
             }
         }
         manage();
+        //hilangkan alert datatables
+        $.fn.dataTable.ext.errMode = 'throw';
 
         const animateCSS = (element, animation, prefix = 'animate__') =>
             // We create a Promise and return it
