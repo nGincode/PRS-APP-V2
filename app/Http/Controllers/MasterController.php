@@ -414,6 +414,14 @@ class MasterController extends Controller
                 } else {
                     $kategori = 'X' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count());
                 }
+
+
+                if ($request->input('pengguna')) {
+                    $pengguna = json_encode($request->input('pengguna'));
+                } else {
+                    $pengguna = null;
+                }
+
                 $input = [
                     'nama' => $request->input('nama'),
                     'kode' => 'BB' . $kategori,
@@ -424,7 +432,7 @@ class MasterController extends Controller
                     'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
-                    'pengguna' => json_encode($request->input('pengguna')),
+                    'pengguna' => $pengguna,
                     'delete' => false,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')

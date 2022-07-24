@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('harga_last')->nullable();
             $table->string('harga_first')->nullable();
             $table->dateTime('tgl_harga')->nullable();
+            $table->string('margin')->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

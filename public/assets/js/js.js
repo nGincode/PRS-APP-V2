@@ -913,6 +913,9 @@ $(document).ready(function() {
                 },
                 'harga': {
                     required: true
+                },
+                'margin': {
+                    required: true
                 }
             },
             messages: {

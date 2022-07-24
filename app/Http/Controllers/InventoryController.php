@@ -86,6 +86,7 @@ class InventoryController extends Controller
                 'satuan' => 'required',
                 'auto_harga' => 'required',
                 'harga' => 'required',
+                'margin' => 'required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -114,6 +115,7 @@ class InventoryController extends Controller
                     'bahan_id' => $request->input('nama'),
                     'store_id' => $request->session()->get('store_id'),
                     'users_id' => $request->session()->get('id'),
+                    'margin' => $request->input('margin'),
                     'qty' => $request->input('qty'),
                     'satuan' => $request->input('satuan'),
                     'auto_harga' => $request->input('auto_harga'),

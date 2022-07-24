@@ -62,6 +62,14 @@
                                 </div>
                             </div>
 
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="harga">Harga</label>
+                                    <input type="number" class="form-control" id="harga" placeholder="Harga Satuannya"
+                                        name="harga">
+                                </div>
+                            </div>
+
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
@@ -71,18 +79,19 @@
                                         <option value="1">True</option>
                                         <option value="0">False</option>
                                     </select>
-                                    <span>*Harga akan berubah menyesuiakan belanja</span>
+                                    <small>*Harga akan berubah menyesuiakan belanja</small>
                                 </div>
                             </div>
 
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="harga">Harga Sekarang</label>
-                                    <input type="number" class="form-control" id="harga" placeholder="Harga"
-                                        name="harga">
+                                    <label for="harga">Margin</label>
+                                    <input type="number" class="form-control" id="margin" placeholder="Harga Margin %"
+                                        name="margin">
                                 </div>
                             </div>
+
 
                         </div>
                         <!-- /.row -->
