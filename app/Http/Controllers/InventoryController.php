@@ -119,7 +119,9 @@ class InventoryController extends Controller
                     'qty' => $request->input('qty'),
                     'satuan' => $request->input('satuan'),
                     'auto_harga' => $request->input('auto_harga'),
-                    'harga_last' => $request->input('harga'),
+                    'harga_manual' => $request->input('harga'),
+                    'harga_auto' => $request->input('harga'),
+                    'tgl_harga' => date('Y-m-d'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
@@ -176,12 +178,19 @@ class InventoryController extends Controller
                 $qty = $value['qty'] . '/' . $value['satuan'];
             }
 
+            if ($value['auto_harga']) {
+                $harga = $value['harga_auto'];
+            } else {
+                $harga = $value['harga_manual'];
+            }
+
             if (!$value['bahan']->delete) {
                 $result['data'][] = array(
                     $value['bahan']->kode,
                     $value['bahan']->nama,
                     $qty,
-                    ($this->rupiah($value['harga_last']) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                    ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                    $value['margin'] . '%',
                     $button
                 );
             }

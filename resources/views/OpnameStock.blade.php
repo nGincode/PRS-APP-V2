@@ -60,7 +60,7 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="qty">Qty</label>
-                                    <input type="number" class="form-control" id="qty" placeholder="QTY"
+                                    <input type="number" class="form-control" id="qty" placeholder="Qty"
                                         name="qty">
                                 </div>
                             </div>

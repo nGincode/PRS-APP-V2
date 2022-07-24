@@ -43,7 +43,7 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="qty">Qty</label>
-                                    <input type="number" class="form-control" id="qty" placeholder="QTY"
+                                    <input type="number" class="form-control" id="qty" placeholder="Qty"
                                         name="qty">
                                 </div>
                             </div>
@@ -87,8 +87,11 @@
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="harga">Margin</label>
-                                    <input type="number" class="form-control" id="margin" placeholder="Harga Margin %"
-                                        name="margin">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="margin"
+                                            placeholder="Harga Margin %" name="margin">
+                                        <div class="input-group-append"><span class="input-group-text">%</span></div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -116,6 +119,7 @@
                                 <th>Nama</th>
                                 <th>Qty</th>
                                 <th>Harga</th>
+                                <th>Margin</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

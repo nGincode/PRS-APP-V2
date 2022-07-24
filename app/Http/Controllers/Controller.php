@@ -99,10 +99,22 @@ class Controller extends BaseController
             if ($row) {
                 $RataRata = round($harga / $row);
 
-                $hargaskrang = $value['harga_last'];
+                $hargaskrang = $value['harga_manual'];
+
                 if ($RataRata != $hargaskrang) {
-                    $upharga = $this->uang($RataRata);
-                    Inventory::where('id', $value['id'])->update(['harga_last' => $upharga]);
+                    if ($value['margin']) {
+                        $result = $this->uang(round((($RataRata * $value['margin']) / 100) + $RataRata));
+                    } else {
+                        $result = $this->uang(round($RataRata));
+                    }
+
+                    Inventory::where('id', $value['id'])->update(
+                        [
+                            'harga_auto' => $result,
+                            'harga_manual' => $hargaskrang,
+                            'tgl_harga' => date('Y-m-d H:i:s')
+                        ]
+                    );
                 }
             }
         }

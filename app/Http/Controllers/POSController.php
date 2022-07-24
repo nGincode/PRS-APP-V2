@@ -66,6 +66,11 @@ class POSController extends Controller
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
             } else {
+                if ($inventory['auto_harga']) {
+                    $harga = $inventory['harga_auto'];
+                } else {
+                    $harga = $inventory['harga_manual'];
+                }
                 POS::insert([
                     'users_id' => $id_users,
                     'store_id' => $id_store,
@@ -73,7 +78,7 @@ class POSController extends Controller
                     'bahan_id' => $bahan_id,
                     'qty' => 1,
                     'satuan' => $inventory['satuan'],
-                    'harga' => $inventory['harga_last'],
+                    'harga' => $harga,
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ]);
@@ -163,8 +168,14 @@ class POSController extends Controller
                     }
                     $data .= $v['qty'] . ' ' . $v['satuan'];
 
+                    if ($v['auto_harga']) {
+                        $harga = $v['harga_auto'];
+                    } else {
+                        $harga = $v['harga_manual'];
+                    }
+
                     $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
-                                            <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
+                                            <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
                                             <hr>
                                         </div>';
                 }
@@ -185,9 +196,16 @@ class POSController extends Controller
                     if ($v['qty'] < 5) {
                         $data .= '<i class="fa fa-exclamation-triangle"></i>';
                     }
+
+                    if ($v['auto_harga']) {
+                        $harga = $v['harga_auto'];
+                    } else {
+                        $harga = $v['harga_manual'];
+                    }
+
                     $data .= $v['qty'] . ' ' . $v['satuan'];
                     $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
-                                            <p class="card-text">' . 'Rp ' . number_format($v['harga_last'], 0, ',', '.') . '</p>
+                                            <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
                                             <hr>
                                         </div>';
                 }
@@ -386,10 +404,10 @@ class POSController extends Controller
 
         if ($tgl = $request->input('tgl')) {
             $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $tgl)[0]));
-            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $tgl)[1]));
+            $tgl_akhir = date('Y-m-d', strtotime("+1 day", strtotime(explode(" - ", $tgl)[1])));
         } else {
             $tgl_awal = date('Y-m-d', strtotime("-30 day", strtotime(date("Y-m-d"))));
-            $tgl_akhir = date('Y-m-d', strtotime(date("Y-m-d")));
+            $tgl_akhir = date('Y-m-d', strtotime("+1 day", strtotime(date("Y-m-d"))));
         }
 
         if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {

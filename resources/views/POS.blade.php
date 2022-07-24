@@ -63,8 +63,14 @@
                                                     </b>
                                                 </div>
                                                 <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
-                                                <p class="card-text">
-                                                    {{ 'Rp ' . number_format($v['harga_last'], 0, ',', '.') }}</p>
+
+                                                @if ($v['auto_harga'])
+                                                    <p class="card-text">
+                                                        {{ 'Rp ' . number_format($v['harga_auto'], 0, ',', '.') }}</p>
+                                                @else
+                                                    <p class="card-text">
+                                                        {{ 'Rp ' . number_format($v['harga_manual'], 0, ',', '.') }}</p>
+                                                @endif
                                                 <hr>
                                             </div>
                                         @endif

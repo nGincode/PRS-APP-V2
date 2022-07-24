@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('qty')->nullable();
             $table->string('satuan')->nullable();
             $table->boolean('auto_harga')->nullable();
-            $table->string('harga_last')->nullable();
-            $table->string('harga_first')->nullable();
+            $table->string('harga_auto')->nullable();
+            $table->string('harga_manual')->nullable();
             $table->dateTime('tgl_harga')->nullable();
             $table->string('margin')->nullable();
             $table->boolean('delete')->default(false);
