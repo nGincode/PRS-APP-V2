@@ -155,33 +155,37 @@ class POSController extends Controller
 
             $pos = Inventory::search($id)->where('delete', false)->get()->toArray();
 
-            $data = '';
-            foreach ($pos as $key => $v) {
+            if ($pos) {
+                $data = '';
+                foreach ($pos as $key => $v) {
 
-                $bahan = Bahan::where('id', $v['bahan_id'])->first();
-                if (!$bahan->delete) {
-                    $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
+                    $bahan = Bahan::where('id', $v['bahan_id'])->first();
+                    if (!$bahan->delete) {
+                        $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
                                             onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
                                             <div class="float-right"><b>';
-                    if ($v['qty'] < 5) {
-                        $data .= '<i class="fa fa-exclamation-triangle"></i>';
-                    }
-                    $data .= $v['qty'] . ' ' . $v['satuan'];
+                        if ($v['qty'] < 5) {
+                            $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                        }
+                        $data .= $v['qty'] . ' ' . $v['satuan'];
 
-                    if ($v['auto_harga']) {
-                        $harga = $v['harga_auto'];
-                    } else {
-                        $harga = $v['harga_manual'];
-                    }
+                        if ($v['auto_harga']) {
+                            $harga = $v['harga_auto'];
+                        } else {
+                            $harga = $v['harga_manual'];
+                        }
 
-                    $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
+                        $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
                                             <hr>
                                         </div>';
+                    }
                 }
-            }
-            if ($data) {
-                echo $data;
+                if ($data) {
+                    echo $data;
+                } else {
+                    echo 'Tidak Ditemukan';
+                }
             } else {
                 echo 'Tidak Ditemukan';
             }
