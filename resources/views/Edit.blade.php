@@ -84,8 +84,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="NamaDepanUsers">Nama Depan</label>
-                        <input value="{{ $UsersData['firstname'] }}" type="text" class="form-control"
-                            id="NamaDepanUsers" placeholder="Nama Depan" name="NamaDepanUsers">
+                        <input value="{{ $UsersData['firstname'] }}" type="text" class="form-control" id="NamaDepanUsers"
+                            placeholder="Nama Depan" name="NamaDepanUsers">
                     </div>
                 </div>
 
@@ -816,8 +816,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="alamat">Alamat</label>
-                        <input type="text" class="form-control" value="{{ $SupplierData['alamat'] }}"
-                            id="alamat" placeholder="Alamat" name="alamat">
+                        <input type="text" class="form-control" value="{{ $SupplierData['alamat'] }}" id="alamat"
+                            placeholder="Alamat" name="alamat">
                     </div>
                 </div>
 
@@ -1075,8 +1075,7 @@
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             @foreach ($satuan as $s1)
-                                <option value="{{ $s1['singkat'] }}"
-                                    @if ($BahanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                <option value="{{ $s1['singkat'] }}" @if ($BahanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
                                     {{ $s1['nama'] }}
                                 </option>
                             @endforeach
@@ -1103,8 +1102,7 @@
 
                             <option selected="true" disabled="disabled">Pilih</option>
                             @foreach ($satuan as $s2)
-                                <option value="{{ $s2['singkat'] }}"
-                                    @if ($BahanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                <option value="{{ $s2['singkat'] }}" @if ($BahanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
                                     {{ $s2['nama'] }}
                                 </option>
                             @endforeach
@@ -1139,8 +1137,7 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s3)
-                                <option value="{{ $s3['singkat'] }}"
-                                    @if ($BahanData['satuan_pengeluaran'] == $s3['singkat']) selected @endif>
+                                <option value="{{ $s3['singkat'] }}" @if ($BahanData['satuan_pengeluaran'] == $s3['singkat']) selected @endif>
                                     {{ $s3['nama'] }}
                                 </option>
                             @endforeach
@@ -1182,7 +1179,7 @@
                             data-placeholder="Pilih Outlet" style="width: 100%;">
                             @foreach ($Store as $v)
                                 <option value="{{ $v['id'] }}"
-                                    @if ($BahanData['pengguna']) @if (in_array($v['id'], json_decode($BahanData['pengguna']))) selected @endif
+                                    @if (json_decode($BahanData['pengguna'])) @if (in_array($v['id'], json_decode($BahanData['pengguna']))) selected @endif
                                     @endif>
                                     {{ $v['nama'] }}</option>
                             @endforeach
@@ -1323,8 +1320,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="nama">Nama Peralatan</label>
-                        <input type="text" class="form-control" value="{{ $PeralatanData['nama'] }}"
-                            id="nama" placeholder="Nama Peralatan" name="nama">
+                        <input type="text" class="form-control" value="{{ $PeralatanData['nama'] }}" id="nama"
+                            placeholder="Nama Peralatan" name="nama">
                     </div>
                 </div>
 
@@ -1337,8 +1334,7 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s1)
-                                <option value="{{ $s1['singkat'] }}"
-                                    @if ($PeralatanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                <option value="{{ $s1['singkat'] }}" @if ($PeralatanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
                                     {{ $s1['nama'] }}
                                 </option>
                             @endforeach
@@ -1350,8 +1346,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="hargaa">Harga</label>
-                        <input type="text" value="{{ $PeralatanData['harga'] }}" class="form-control"
-                            id="hargaa" placeholder="Harga" name="hargaa">
+                        <input type="text" value="{{ $PeralatanData['harga'] }}" class="form-control" id="hargaa"
+                            placeholder="Harga" name="hargaa">
                     </div>
                 </div>
 
@@ -1366,8 +1362,7 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s2)
-                                <option value="{{ $s2['singkat'] }}"
-                                    @if ($PeralatanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                <option value="{{ $s2['singkat'] }}" @if ($PeralatanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
                                     {{ $s2['nama'] }}
                                 </option>
                             @endforeach
@@ -1621,8 +1616,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="wa">No Whatsapp</label>
-                        <input type="number" value="{{ $PegawaiData['wa'] }}" class="form-control"
-                            id="wa" placeholder="No Whatsapp" name="wa">
+                        <input type="number" value="{{ $PegawaiData['wa'] }}" class="form-control" id="wa"
+                            placeholder="No Whatsapp" name="wa">
                     </div>
                 </div>
                 <div class="col-12 col-sm-6">

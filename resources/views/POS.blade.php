@@ -91,32 +91,58 @@
                     <!-- /.row -->
                 </div>
 
-
-                <div class="card">
-                    <div class="card-header text-white bg-secondary mb-3">
-                        <h3 class="card-title" style="font-weight: bolder">Data {{ $title . ' ' . $subtitle }}
-                        </h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body">
-                        <table id="manage" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>No Bill</th>
-                                    <th>Nama</th>
-                                    <th>No Hp</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
             </div>
+
+            <div class="card">
+                <div class="card-header text-white bg-secondary mb-3">
+                    <h3 class="card-title" style="font-weight: bolder;padding:8px">Data {{ $title . ' ' . $subtitle }}
+                    </h3>
+
+                    <div class="btn-group float-right">
+                        <button type="button" class="btn btn-info"><?= request()
+                                ->session()
+                                ->get('store') ?></button>
+                        <button type="button" class="btn btn-info dropdown-toggle dropdown-icon" data-toggle="dropdown"
+                            aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu" role="menu" style="">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                        <input type="text" onchange="manage()" name="manage_date" class="form-control float-right"
+                            id="manage_date">
+                    </div>
+                    <br>
+
+
+                    <table id="manage" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Tanggal</th>
+                                <th>No Bill</th>
+                                <th>Nama</th>
+                                <th>No Hp</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
 
             <!-- /.container-fluid -->
     </section>
@@ -691,5 +717,18 @@
                 }
             });
         }
+
+        $(function() {
+            $('#manage_date').daterangepicker({
+                locale: {
+                    "applyLabel": "Simpan",
+                    "cancelLabel": "Kembali",
+                    "fromLabel": "Dari",
+                    "toLabel": "Ke"
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            })
+        });
     </script>
 @endsection

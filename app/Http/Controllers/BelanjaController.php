@@ -354,8 +354,33 @@ class BelanjaController extends Controller
         $id_store = request()->session()->get('store_id');
 
         $result = array('data' => array());
+
+
+        if ($date = $request->input('tgl')) {
+            $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $date)[0]));
+            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $date)[1]));
+        } else {
+            $tgl_awal = date('Y-m-d', strtotime("-30 day", strtotime(date("Y-m-d"))));
+            $tgl_akhir = date('Y-m-d', strtotime(date("Y-m-d")));
+        }
+
+        if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = Belanja::select('tgl')->where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get()->toArray();
+            } else {
+                $Data = Belanja::select('tgl')->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get()->toArray();
+            }
+        } else {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = Belanja::select('tgl')->where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->where('delete', false)->get()->toArray();
+            } else {
+                $Data = Belanja::select('tgl')->where('store_id', $id_store)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->where('delete', false)->get()->toArray();
+            }
+        }
+
+
         $tgl = [];
-        foreach (Belanja::select('tgl')->where('store_id', $id_store)->where('delete', false)->get()->toArray() as $v) {
+        foreach ($Data as $v) {
             $tgl[] = $v['tgl'];
         }
         $tgl = array_unique($tgl);

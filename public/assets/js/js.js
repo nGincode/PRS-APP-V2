@@ -1,5 +1,6 @@
 //penggunaan library
 $(function() {
+
     //Initialize Select2 Elements
     $('.select2').select2().on("change", function(e) {
         $(this).valid()
@@ -22,44 +23,42 @@ $(function() {
     $('[data-mask]').inputmask()
 
     //Date picker
-    $('#reservationdate').datetimepicker({
-        format: 'L'
-    });
+    // $('#reservationdate').datetimepicker({
+    //     format: 'L'
+    // });
 
     //Date and time picker
-    $('#reservationdatetime').datetimepicker({
-        icons: {
-            time: 'far fa-clock'
-        }
-    });
+    // $('#reservationdatetime').datetimepicker({
+    //     icons: {
+    //         time: 'far fa-clock'
+    //     }
+    // });
 
-    //Date range picker
-    $('#reservation').daterangepicker()
-        //Date range picker with time picker
-    $('#reservationtime').daterangepicker({
-            timePicker: true,
-            timePickerIncrement: 30,
-            locale: {
-                format: 'MM/DD/YYYY hh:mm A'
-            }
-        })
-        //Date range as a button
-    $('#daterange-btn').daterangepicker({
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
-        },
-        function(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-        }
-    )
+    //Date range picker with time picker
+    // $('#reservationtime').daterangepicker({
+    //         timePicker: true,
+    //         timePickerIncrement: 30,
+    //         locale: {
+    //             format: 'MM/DD/YYYY hh:mm A'
+    //         }
+    //     })
+    //Date range as a button
+    // $('#daterange-btn').daterangepicker({
+    //         ranges: {
+    //             'Today': [moment(), moment()],
+    //             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+    //             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+    //             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+    //             'This Month': [moment().startOf('month'), moment().endOf('month')],
+    //             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    //         },
+    //         startDate: moment().subtract(29, 'days'),
+    //         endDate: moment()
+    //     },
+    //     function(start, end) {
+    //         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+    //     }
+    // )
 
     //Timepicker
     $('#timepicker').datetimepicker({
@@ -1284,4 +1283,23 @@ function uploadbelanja() {
             })
         }
     })
+}
+
+
+/* Fungsi formatRupiah */
+function formatRupiah(angka, prefix) {
+    var number_string = angka.toString(),
+        split = number_string.split(","),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    if (ribuan) {
+        separator = sisa ? "." : "";
+        rupiah += separator + ribuan.join(".");
+    }
+
+    rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+    return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
 }

@@ -383,7 +383,31 @@ class POSController extends Controller
         }
         $result = array('data' => array());
         $id_store = request()->session()->get('store_id');
-        $Data = POSBill::where('store_id', $id_store)->orderBy('id', 'DESC')->get();
+
+        if ($tgl = $request->input('tgl')) {
+            $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $tgl)[0]));
+            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $tgl)[1]));
+        } else {
+            $tgl_awal = date('Y-m-d', strtotime("-30 day", strtotime(date("Y-m-d"))));
+            $tgl_akhir = date('Y-m-d', strtotime(date("Y-m-d")));
+        }
+
+        if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = POSBill::where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            } else {
+                $Data = POSBill::whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            }
+        } else {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = POSBill::where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            } else {
+                $Data = POSBill::where('store_id', $id_store)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            }
+        }
+
+
+
         foreach ($Data as $key => $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 

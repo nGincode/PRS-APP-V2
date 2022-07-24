@@ -203,116 +203,6 @@ if (Auth::check()) {
 
 
 
-    <script>
-        //DataTable
-        $(function() {
-            if ($("#manage").length) {
-                var cells = document.getElementById('manage').getElementsByTagName('th').length - 1;
-
-                var jmlcolm = '';
-                for (let index = 0; index < cells; index++) {
-                    if (cells - 1 == index) {
-                        jmlcolm += index;
-                    } else {
-                        jmlcolm += index + ',';
-                    }
-                }
-
-                $("#manage").DataTable({
-                    "ajax": {
-                        url: "{{ $urlmanage }}",
-                        type: "POST",
-                    },
-                    "order": [],
-                    "responsive": true,
-                    "autoWidth": true,
-                    "processing": true,
-                    "searching": true,
-                    "sort": true,
-                    "paging": true,
-                    "destroy": true,
-                    "dom": '<"dt-buttons"Bf><"clear">lirtp',
-                    "buttons": [{
-                            extend: 'copyHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'excelHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'csvHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'pdfHtml5',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        },
-                        {
-                            extend: 'print',
-                            messageTop: '',
-                            title: '{{ $manage ?? '' }}',
-                            exportOptions: {
-                                columns: [jmlcolm]
-                            }
-                        }
-                    ]
-                }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
-            }
-
-        });
-
-        /* Fungsi formatRupiah */
-        function formatRupiah(angka, prefix) {
-            var number_string = angka.toString(),
-                split = number_string.split(","),
-                sisa = split[0].length % 3,
-                rupiah = split[0].substr(0, sisa),
-                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-            // tambahkan titik jika yang di input sudah menjadi angka ribuan
-            if (ribuan) {
-                separator = sisa ? "." : "";
-                rupiah += separator + ribuan.join(".");
-            }
-
-            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-            return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
-        }
-
-
-        const animateCSS = (element, animation, prefix = 'animate__') =>
-            // We create a Promise and return it
-            new Promise((resolve, reject) => {
-                const animationName = `${prefix}${animation}`;
-                const node = document.querySelector(element);
-
-                node.classList.add(`${prefix}animated`, animationName);
-
-                // When the animation ends, we clean the classes and resolve the Promise
-                function handleAnimationEnd(event) {
-                    event.stopPropagation();
-                    node.classList.remove(`${prefix}animated`, animationName);
-                    resolve('Animation ended');
-                }
-
-                node.addEventListener('animationend', handleAnimationEnd, {
-                    once: true
-                });
-            });
-    </script>
 
 </head>
 
@@ -957,6 +847,118 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/assets/js/js.js"></script>
 
     @include('sweetalert::alert')
+
+
+    <script>
+        function GetURLParameter(sParam) {
+            var sPageURL = window.location.search.substring(1);
+            var sURLVariables = sPageURL.split('&');
+            for (var i = 0; i < sURLVariables.length; i++) {
+                var sParameterName = sURLVariables[i].split('=');
+                if (sParameterName[0] == sParam) {
+                    return sParameterName[1];
+                }
+            }
+        }
+
+
+        function manage() {
+            if ($("#manage").length) {
+                var cells = document.getElementById('manage').getElementsByTagName('th').length - 1;
+
+                var jmlcolm = '';
+                for (let index = 0; index < cells; index++) {
+                    if (cells - 1 == index) {
+                        jmlcolm += index;
+                    } else {
+                        jmlcolm += index + ',';
+                    }
+                }
+
+                $("#manage").DataTable({
+                    "ajax": {
+                        "_token": "{{ csrf_token() }}",
+                        url: "{{ $urlmanage }}",
+                        type: "POST",
+                        processing: false,
+                        serverSide: false,
+                        destroy: true,
+                        data: {
+                            tgl: $('#manage_date').val(),
+                            filter: GetURLParameter('filter')
+                        }
+                    },
+                    "order": [],
+                    "responsive": true,
+                    "autoWidth": true,
+                    "processing": false,
+                    "searching": true,
+                    "sort": true,
+                    "paging": true,
+                    "destroy": true,
+                    "dom": '<"dt-buttons"Bf><"clear">lirtp',
+                    "buttons": [{
+                            extend: 'copyHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            messageTop: '',
+                            title: '{{ $manage ?? '' }}',
+                            exportOptions: {
+                                columns: [jmlcolm]
+                            }
+                        }
+                    ]
+                }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
+            }
+        }
+        manage();
+
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {
+                    once: true
+                });
+            });
+    </script>
 </body>
 
 </html>
