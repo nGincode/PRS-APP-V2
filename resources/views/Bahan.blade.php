@@ -34,6 +34,8 @@
                                             <option value="2">Bahan Baku Beku</option>
                                             <option value="3">Bahan Baku Dalam Kemasan</option>
                                             <option value="4">Bahan Baku Dingin</option>
+                                            <option value="11">Bahan Supplay</option>
+                                            <option value="21">Bahan Oprasional</option>
                                         </select>
                                     </div>
                                 </div>

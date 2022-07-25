@@ -1041,7 +1041,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Kategori</label>
-                        <select disabled name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
+                        <select disabled name="kategori" id="kategori_edit" onchange="clickkategoriedit(this.value)"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
@@ -1054,6 +1054,10 @@
                             </option>
                             <option value="4" @if ($BahanData['kategori'] == 4) selected @endif>Bahan Baku Dingin
                             </option>
+                            <option value="11" @if ($BahanData['kategori'] == 11) selected @endif>Bahan Supplay
+                            </option>
+                            <option value="21" @if ($BahanData['kategori'] == 21) selected @endif>Bahan Oprasional
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -1061,7 +1065,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="nama">Nama Bahan</label>
-                        <input type="text" class="form-control" value="{{ $BahanData['nama'] }}" id="nama"
+                        <input type="text" class="form-control" value="{{ $BahanData['nama'] }}" id="nama_edit"
                             placeholder="Nama Bahan" name="nama">
                     </div>
                 </div>
@@ -1070,7 +1074,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Satuan Pembelian</label>
-                        <select name="satuan_pembelian" onchange="pembelianedit(this.value)" id="satuan_pembelian"
+                        <select name="satuan_pembelian" onchange="pembelianedit(this.value)" id="satuan_pembelian_edit"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
@@ -1087,8 +1091,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="hargaa">Harga</label>
-                        <input type="text" value="{{ $BahanData['harga'] }}" class="form-control" id="hargaa"
-                            placeholder="Harga" name="hargaa">
+                        <input type="text" value="{{ $BahanData['harga'] }}" class="form-control" id="harga_edit"
+                            placeholder="Harga" name="harga">
                     </div>
                 </div>
 
@@ -1096,7 +1100,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Satuan Pemakaian</label>
-                        <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian"
+                        <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian_edit"
                             class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
                             style="width: 100%;">
 
@@ -1118,7 +1122,7 @@
                                     class="input-group-text">{{ $BahanData['satuan_pembelian'] }}</span>
                             </div>
                             <input type="text" value="{{ $BahanData['konversi_pemakaian'] }}"
-                                name="konversi_pemakaiann" id="konversi_pemakaiann" class="form-control"
+                                name="konversi_pemakaian" id="konversi_pemakaian_edit" class="form-control"
                                 placeholder="Satuan Pemakaian">
                             <div class="input-group-append" id="konversib1edit"> <span
                                     class="input-group-text">{{ $BahanData['satuan_pemakaian'] }}</span>
@@ -1153,7 +1157,7 @@
                                     class="input-group-text">{{ $BahanData['satuan_pembelian'] }}</span>
                             </div>
                             <input type="text" value="{{ $BahanData['konversi_pengeluaran'] }}"
-                                name="konversi_pengeluarann" id="konversi_pengeluarann" class="form-control"
+                                name="konversi_pengeluaran" id="konversi_pengeluaran_edit" class="form-control"
                                 placeholder="Satuan Pengeluaran">
                             <div class="input-group-append" id="konversib2edit"><span
                                     class="input-group-text">{{ $BahanData['satuan_pengeluaran'] }}</span>
@@ -1166,7 +1170,7 @@
                     <div class="form-group">
                         <label for="kodeedit">Kode Product</label>
                         <input type="text" disabled class="form-control" value="{{ $BahanData['kode'] }}"
-                            id="kodeedit" name="kodeedit">
+                            id="kode_edit" name="kodeedit">
                     </div>
                 </div>
 
@@ -1211,19 +1215,19 @@
                         'satuan_pembelian': {
                             required: true
                         },
-                        'hargaa': {
+                        'harga': {
                             required: true
                         },
                         'satuan_pemakaian': {
                             required: true
                         },
-                        'konversi_pemakaiann': {
+                        'konversi_pemakaian': {
                             required: true
                         },
                         'satuan_pengeluaran': {
                             required: true
                         },
-                        'konversi_pengeluarann': {
+                        'konversi_pengeluaran': {
                             required: true
                         }
                     },
@@ -1278,13 +1282,13 @@
             }
         });
         //Format Penulisan
-        document.getElementById("hargaa").addEventListener("keyup", function(e) {
+        document.getElementById("harga_edit").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
         });
-        document.getElementById("konversi_pemakaiann").addEventListener("keyup", function(e) {
+        document.getElementById("konversi_pemakaian_edit").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
         });
-        document.getElementById("konversi_pengeluarann").addEventListener("keyup", function(e) {
+        document.getElementById("konversi_pengeluaran_edit").addEventListener("keyup", function(e) {
             this.value = numeral(this.value).format('0,0');
         });
     </script>
@@ -1589,7 +1593,8 @@
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="Islam" @if ($PegawaiData['agama'] == 'Islam') selected @endif>Islam</option>
                             <option value="Kristen" @if ($PegawaiData['agama'] == 'Kristen') selected @endif>Kristen</option>
-                            <option value="Katholik" @if ($PegawaiData['agama'] == 'Katholik') selected @endif>Katholik</option>
+                            <option value="Katholik" @if ($PegawaiData['agama'] == 'Katholik') selected @endif>Katholik
+                            </option>
                             <option value="Budha" @if ($PegawaiData['agama'] == 'Budha') selected @endif>Budha</option>
                             <option value="Hindu" @if ($PegawaiData['agama'] == 'Hindu') selected @endif>Hindu</option>
                         </select>
@@ -2079,3 +2084,14 @@
         });
     </script>
 @endisset
+
+<script>
+    $(function() {
+        $('input').keyup(function() {
+            if (this.type === 'text') {
+                this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+            }
+        });
+
+    });
+</script>

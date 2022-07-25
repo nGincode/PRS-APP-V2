@@ -765,7 +765,7 @@ if (Auth::check()) {
         $(function() {
             $('input').keyup(function() {
                 if (this.type === 'text') {
-                    this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+                    this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
                 }
             });
         });

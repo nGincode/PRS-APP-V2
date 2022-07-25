@@ -323,6 +323,10 @@ class MasterController extends Controller
                     $kategori = 'Bahan Baku Dalam Kemasan';
                 } elseif ($value['kategori'] == 4) {
                     $kategori = 'Bahan Baku Dingin';
+                } elseif ($value['kategori'] == 11) {
+                    $kategori = 'Bahan Supplay';
+                } elseif ($value['kategori'] == 21) {
+                    $kategori = 'Bahan Oprasional';
                 } else {
                     $kategori = 'Not Found';
                 }
@@ -401,18 +405,22 @@ class MasterController extends Controller
                 if ($request->input('kategori')) {
 
                     if ($request->input('kategori') == 1) {
-                        $kategori = 'S' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                        $kategori = 'BBS' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 2) {
-                        $kategori = 'B' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                        $kategori = 'BBB' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 3) {
-                        $kategori = 'K' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                        $kategori = 'BBK' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } elseif ($request->input('kategori') == 4) {
-                        $kategori = 'D' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                        $kategori = 'BBD' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                    } elseif ($request->input('kategori') == 11) {
+                        $kategori = 'BS' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                    } elseif ($request->input('kategori') == 21) {
+                        $kategori = 'BO' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     } else {
-                        $kategori = 'X' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
+                        $kategori = 'X' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 1);
                     }
                 } else {
-                    $kategori = 'X' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count());
+                    $kategori = 'X' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count());
                 }
 
 
@@ -424,7 +432,7 @@ class MasterController extends Controller
 
                 $input = [
                     'nama' => $request->input('nama'),
-                    'kode' => 'BB' . $kategori,
+                    'kode' => $kategori,
                     'kategori' => $request->input('kategori'),
                     'satuan_pembelian' => $request->input('satuan_pembelian'),
                     'harga' =>  $this->unrupiah($request->input('harga')),
@@ -465,7 +473,7 @@ class MasterController extends Controller
         }
 
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['BahanData'] = Bahan::where('id', $id)->first();
         $this->data['Store'] = Store::where('tipe', 'Outlet')->orWhere('tipe', 'Logistik')->get();
@@ -479,7 +487,8 @@ class MasterController extends Controller
         if (!in_array('updateBahan', $this->permission())) {
             return redirect()->to('/');
         }
-        $id = session('IdEdit');
+
+        $id = $request->session()->get('IdEdit');
         $Bahan = Bahan::where('id', $id)->first();
         if ($Bahan) {
             $validator = Validator::make(
@@ -509,7 +518,7 @@ class MasterController extends Controller
                         'status' => 'error',
                         'pesan' =>  'Nama Telah digunakan'
                     ];
-                    $nama = '';
+                    $nama = false;
                 } else {
                     $nama = $request->input('nama');
                 }
@@ -518,7 +527,6 @@ class MasterController extends Controller
 
             if ($nama) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
