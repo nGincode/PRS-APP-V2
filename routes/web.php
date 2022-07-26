@@ -239,6 +239,7 @@ Route::controller(InventoryController::class)->group(
         Route::get('Inventory/Opname', 'Opname')->middleware('auth');
         Route::post('Inventory/Opname', 'TambahOpname')->middleware('auth');
         Route::post('Inventory/Manage/Opname', 'ManageOpname')->middleware('auth');
+        Route::post('Inventory/Bahan', 'Bahan')->middleware('auth');
     }
 );
 

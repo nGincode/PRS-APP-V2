@@ -228,7 +228,7 @@ class GroupController extends Controller
     public function Edit(Request $request)
     {
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $GroupsData = Groups::where('id', $id)->first();
         $Users = User::all();
@@ -242,7 +242,7 @@ class GroupController extends Controller
 
     public function TambahEdit(Request $request)
     {
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $Groups = Groups::where('id', $id)->first();
         if ($Groups) {
 
@@ -277,7 +277,6 @@ class GroupController extends Controller
 
             if ($name) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,

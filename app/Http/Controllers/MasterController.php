@@ -158,7 +158,7 @@ class MasterController extends Controller
         }
 
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['SupplierData'] = Supplier::where('id', $id)->first();
         return view('Edit', $this->data);
@@ -171,7 +171,7 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
 
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $SUpplier = Supplier::where('id', $id)->first();
         if ($SUpplier) {
             $validator = Validator::make(
@@ -205,7 +205,6 @@ class MasterController extends Controller
 
             if ($nama) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
@@ -496,11 +495,11 @@ class MasterController extends Controller
                 $rules = [
                     'nama' => 'required',
                     'satuan_pembelian' => 'required',
-                    'hargaa' => 'required',
+                    'harga' => 'required',
                     'satuan_pemakaian' => 'required',
-                    'konversi_pemakaiann' => 'required',
+                    'konversi_pemakaian' => 'required',
                     'satuan_pengeluaran' => 'required',
-                    'konversi_pengeluarann' => 'required',
+                    'konversi_pengeluaran' => 'required',
                 ],
                 $messages  = [
                     'required' => 'Form :attribute harus terisi',
@@ -545,11 +544,11 @@ class MasterController extends Controller
                     $input = [
                         'nama' => $request->input('nama'),
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
-                        'harga' =>  $this->unrupiah($request->input('hargaa')),
+                        'harga' =>  $this->unrupiah($request->input('harga')),
                         'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                        'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
+                        'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
                         'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
-                        'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluarann')),
+                        'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
                         'pengguna' => $pengguna,
                         'delete' => false,
                         'updated_at' => date('Y-m-d H:i:s')
@@ -782,7 +781,7 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['Store'] = Store::where('tipe', 'Outlet')->get();
 
@@ -797,7 +796,7 @@ class MasterController extends Controller
         if (!in_array('updatePeralatan', $this->permission())) {
             return redirect()->to('/');
         }
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $Peralatan = Peralatan::where('id', $id)->first();
         if ($Peralatan) {
             $validator = Validator::make(
@@ -835,7 +834,6 @@ class MasterController extends Controller
 
             if ($nama) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
@@ -1059,7 +1057,7 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['PegawaiData'] = Pegawai::where('id', $id)->first();
         $this->data['Datastore'] = Store::where('active', 1)->get();
@@ -1117,7 +1115,6 @@ class MasterController extends Controller
 
             if ($nama) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
@@ -1317,7 +1314,7 @@ class MasterController extends Controller
             return redirect()->to('/');
         }
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['SatuanData'] = Satuan::where('id', $id)->first();
         return view('Edit', $this->data);
@@ -1329,7 +1326,7 @@ class MasterController extends Controller
         if (!in_array('updateSatuan', $this->permission())) {
             return redirect()->to('/');
         }
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $Satuan = Satuan::where('id', $id)->first();
         if ($Satuan) {
             $validator = Validator::make(
@@ -1363,7 +1360,6 @@ class MasterController extends Controller
 
             if ($nama) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,

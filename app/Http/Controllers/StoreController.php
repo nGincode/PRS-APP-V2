@@ -152,7 +152,7 @@ class StoreController extends Controller
             return redirect()->to('/');
         }
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['StoreData'] = Store::where('id', $id)->first();
         return view('Edit', $this->data);
@@ -164,7 +164,7 @@ class StoreController extends Controller
         if (!in_array('updateStore', $this->permission())) {
             return redirect()->to('/');
         }
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $Store = Store::where('id', $id)->first();
         if ($Store) {
 
@@ -205,7 +205,6 @@ class StoreController extends Controller
 
             if ($name) {
                 if ($validator->fails()) {
-                    session()->flash('IdEdit', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
@@ -286,7 +285,6 @@ class StoreController extends Controller
                 }
             }
         } else {
-            session()->flash('IdUsers', $id);
             $data = [
                 'toast' => true,
                 'status' => 'error',

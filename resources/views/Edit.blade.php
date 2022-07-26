@@ -12,7 +12,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Outlet Users</label>
-                        <select name="OutletUsers" id="OutletUsers1" class="form-control select2 select2-danger"
+                        <select name="OutletUsers" id="OutletUsers_edit" class="form-control select2 select2-danger"
                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
 
@@ -32,7 +32,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="izin">Izin Penampilan</label>
-                        <select name="izin" id="izin" class="form-control select2 select2-danger"
+                        <select name="izin" id="izin_edit" class="form-control select2 select2-danger"
                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="1" @if ($UsersData['izin'] == 1) selected @endif>Keseluruhan</option>
@@ -43,73 +43,73 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="Email">Email</label>
-                        <input value="{{ $UsersData['email'] }}" type="email" class="form-control" id="Email"
+                        <label for="Email_edit">Email</label>
+                        <input value="{{ $UsersData['email'] }}" type="email" class="form-control" id="Email_edit"
                             placeholder="Email" name="Email">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="Username">Username</label>
-                        <input value="{{ $UsersData['username'] }}" type="text" class="form-control" id="Username"
+                        <label for="Username_edit">Username</label>
+                        <input value="{{ $UsersData['username'] }}" type="text" class="form-control" id="Username"_edit
                             placeholder="Username" name="Username">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="PasswordUsersLama">Password Lama</label>
-                        <input type="password" class="form-control" id="PasswordUsersLama" placeholder="Password"
+                        <label for="PasswordUsersLama_edit">Password Lama</label>
+                        <input type="password" class="form-control" id="PasswordUsersLama_edit" placeholder="Password"
                             name="PasswordUsersLama">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="PasswordUsersEdit">Password Baru</label>
-                        <input type="password" class="form-control" id="PasswordUsersEdit" placeholder="Password"
+                        <label for="PasswordUsers_edit">Password Baru</label>
+                        <input type="password" class="form-control" id="PasswordUsers_edit" placeholder="Password"
                             name="PasswordUsersEdit">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="PasswordRipetEdit">Password Ulangi</label>
-                        <input type="password" class="form-control" id="PasswordRipetEdit" placeholder="Passworrd"
+                        <label for="PasswordRipet_edit">Password Ulangi</label>
+                        <input type="password" class="form-control" id="PasswordRipet_edit" placeholder="Passworrd"
                             name="PasswordRipetEdit">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="NamaDepanUsers">Nama Depan</label>
-                        <input value="{{ $UsersData['firstname'] }}" type="text" class="form-control" id="NamaDepanUsers"
-                            placeholder="Nama Depan" name="NamaDepanUsers">
+                        <label for="NamaDepanUsers_edit">Nama Depan</label>
+                        <input value="{{ $UsersData['firstname'] }}" type="text" class="form-control"
+                            id="NamaDepanUsers_edit" placeholder="Nama Depan" name="NamaDepanUsers">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="NamaBelakangUsers">Nama Belakang</label>
+                        <label for="NamaBelakangUsers_edit">Nama Belakang</label>
                         <input value="{{ $UsersData['lastname'] }}" type="text" class="form-control"
-                            id="NamaBelakangUsers" placeholder="Nama Belakang" name="NamaBelakangUsers">
+                            id="NamaBelakangUsers" placeholder="Nama Belakang" name="NamaBelakangUsers_edit">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="NoUsers">No Whatsapp</label>
-                        <input value="{{ $UsersData['phone'] }}" type="number" class="form-control" id="NoUsers"
+                        <label for="NoUsers_edit">No Whatsapp</label>
+                        <input value="{{ $UsersData['phone'] }}" type="number" class="form-control" id="NoUsers_edit"
                             placeholder="No Whatsapp" name="NoUsers">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="img">Image Profil</label>
+                        <label for="img_edit">Image Profil</label>
                         <div class="custom-file">
-                            <input type="file" accept="image/*" class="custom-file-input" id="img"
+                            <input type="file" accept="image/*" class="custom-file-input" id="img_edit"
                                 name="img">
                             <label class="custom-file-label" for="img">Choose file</label>
                         </div>
@@ -120,12 +120,12 @@
                     <div class="form-group clearfix">
                         <label>Gender</label><br>
                         <div class="icheck-primary d-inline">
-                            <input type="radio" id="GenderUsersPerempuanedit" name="gender" value="1"
+                            <input type="radio" id="GenderUsersPerempuan_edit" name="gender" value="1"
                                 @if ($UsersData['gender'] == 'Wanita') checked @endif>
                             <label for="GenderUsersPerempuanedit"> Perempuan</label>
                         </div>
                         <div class="icheck-primary d-inline">
-                            <input type="radio" id="GenderUsersPriaedit" value="2" name="gender"
+                            <input type="radio" id="GenderUsersPria_edit" value="2" name="gender"
                                 @if ($UsersData['gender'] == 'Pria') checked @endif>
                             <label for="GenderUsersPriaedit"> Laki-Laki</label>
                         </div>
@@ -140,9 +140,6 @@
     </form>
     <script>
         $(function() {
-            $('.select2').select2().on("change", function(e) {
-                $(this).valid()
-            });
             bsCustomFileInput.init();
         });
 
@@ -223,10 +220,8 @@
                             dataType: "json",
                             success: function(data) {
                                 if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    $("#UsersEdit")[0].reset();
+                                    popup(data.status, data.toast, data.pesan, "#UsersEdit");
                                     $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }
@@ -256,7 +251,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Status</label>
-                        <select name="status" id="status" class="form-control select2 select2-danger" required
+                        <select name="status" id="status_edit" class="form-control select2 select2-danger" required
                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="1" @if ($StoreData['active'] == 1) selected @endif>Active</option>
@@ -268,7 +263,7 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Tipe</label>
-                        <select name="tipe" id="tipe" class="form-control select2 select2-danger" required
+                        <select name="tipe" id="tipe_edit" class="form-control select2 select2-danger" required
                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="Office" @if ($StoreData['tipe'] == 'Office') selected @endif>Office</option>
@@ -283,24 +278,24 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="nama">Nama Store</label>
-                        <input type="text" class="form-control" value="{{ $StoreData['nama'] }}" id="nama"
+                        <label for="nama_edit">Nama Store</label>
+                        <input type="text" class="form-control" value="{{ $StoreData['nama'] }}" id="nama_edit"
                             placeholder="Nama Store" name="nama">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="alamat">Alamat</label>
-                        <input type="text" class="form-control" value="{{ $StoreData['alamat'] }}" id="alamat"
+                        <label for="alamat_edit">Alamat</label>
+                        <input type="text" class="form-control" value="{{ $StoreData['alamat'] }}" id="alamat_edit"
                             placeholder="alamat" name="alamat">
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="wa">No Whatsapp</label>
-                        <input type="number" class="form-control" value="{{ $StoreData['wa'] }}" id="wa"
+                        <label for="wa_edit">No Whatsapp</label>
+                        <input type="number" class="form-control" value="{{ $StoreData['wa'] }}" id="wa_edit"
                             placeholder="No Wa" name="wa">
                     </div>
                 </div>
@@ -308,9 +303,9 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="img">Logo Store</label>
+                        <label for="img_edit">Logo Store</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" accept="image/*" id="img"
+                            <input type="file" class="custom-file-input" accept="image/*" id="img_edit"
                                 name="img">
                             <label class="custom-file-label" for="img">Choose file</label>
                         </div>
@@ -325,48 +320,48 @@
                     @foreach ($jamkerja as $v)
                         <div class="col-12 col-sm-12" id="isi_jam_kerja_edit">
                             <div class="form-group">
-                                <label for="nama_shift">Nama Shift</label>
-                                <input type="text" class="form-control" value="{{ $v['Nama'] }}" id="nama_shift"
-                                    placeholder="Nama Shift" name="nama_shift[]">
+                                <label for="nama_shift_edit">Nama Shift</label>
+                                <input type="text" class="form-control" value="{{ $v['Nama'] }}"
+                                    id="nama_shift_edit" placeholder="Nama Shift" name="nama_shift[]">
                             </div>
                         </div>
 
                         <div class="col-12 col-sm-6">
                             <div class="form-group">
-                                <label for="masuk_kerja">Masuk </label>
-                                <input type="time" class="form-control" value="{{ $v['Masuk'] }}" id="masuk_kerja"
-                                    name="masuk_kerja[]">
+                                <label for="masuk_kerja_edit">Masuk </label>
+                                <input type="time" class="form-control" value="{{ $v['Masuk'] }}"
+                                    id="masuk_kerja_edit" name="masuk_kerja[]">
                             </div>
                         </div>
 
                         <div class="col-12 col-sm-6" id='akhir_isi_jam_kerja_edit'>
                             <div class="form-group">
-                                <label for="pulang_kerja">Pulang </label>
+                                <label for="pulang_kerja_edit">Pulang </label>
                                 <input type="time" class="form-control" value="{{ $v['Pulang'] }}"
-                                    id="pulang_kerja" name="pulang_kerja[]">
+                                    id="pulang_kerja_edit" name="pulang_kerja[]">
                             </div>
                         </div>
                     @endforeach
                 @else
                     <div class="col-12 col-sm-12" id="isi_jam_kerja_edit">
                         <div class="form-group">
-                            <label for="nama_shift">Nama Shift</label>
-                            <input type="text" class="form-control" id="nama_shift" placeholder="Nama Shift"
+                            <label for="nama_shift_edit">Nama Shift</label>
+                            <input type="text" class="form-control" id="nama_shift_edit" placeholder="Nama Shift"
                                 name="nama_shift[]">
                         </div>
                     </div>
 
                     <div class="col-12 col-sm-6">
                         <div class="form-group">
-                            <label for="masuk_kerja">Masuk </label>
-                            <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]">
+                            <label for="masuk_kerja_edit">Masuk </label>
+                            <input type="time" class="form-control" id="masuk_kerja_edit" name="masuk_kerja[]">
                         </div>
                     </div>
 
                     <div class="col-12 col-sm-6" id='akhir_isi_jam_kerja_edit'>
                         <div class="form-group">
-                            <label for="pulang_kerja">Pulang </label>
-                            <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]">
+                            <label for="pulang_kerja_edit">Pulang </label>
+                            <input type="time" class="form-control" id="pulang_kerja_edit" name="pulang_kerja[]">
                         </div>
                     </div>
                 @endif
@@ -378,7 +373,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
     <script>
@@ -393,8 +388,6 @@
                     $(".row #akhir_isi_jam_kerja_edit:last").after(html);
                 }
             });
-
-
 
             if ($("#StoreEdit").length) {
                 $("#StoreEdit").validate({
@@ -451,10 +444,8 @@
                             dataType: "json",
                             success: function(data) {
                                 if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    $("#StoreEdit")[0].reset();
+                                    popup(data.status, data.toast, data.pesan, "#StoreEdit");
                                     $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }
@@ -711,6 +702,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
         </div>
     </form>
@@ -792,7 +784,6 @@
 
 
         $(function() {
-            $(".select2").select2();
             bsCustomFileInput.init();
         });
     </script>
@@ -866,6 +857,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
         </div>
     </form>
@@ -963,6 +955,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
         </div>
     </form>
@@ -1195,6 +1188,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
     <script>
@@ -1420,6 +1414,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
     <script>
@@ -1697,6 +1692,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
     <script>
@@ -1848,6 +1844,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
         </div>
     </form>
@@ -1989,6 +1986,7 @@
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
         </div>
     </form>
@@ -2087,6 +2085,11 @@
 
 <script>
     $(function() {
+
+        $('.select2').select2().on("change", function(e) {
+            $(this).valid()
+        });
+
         $('input').keyup(function() {
             if (this.type === 'text') {
                 this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());

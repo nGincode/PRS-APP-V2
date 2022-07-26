@@ -3,7 +3,7 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            @if (in_array('createUsers', $user_permission))
+            @if (in_array('createUser', $user_permission))
                 <form id="FormUsers" action="{{ url('/Users') }}">
                     @csrf
                     <div class="card card-primary">

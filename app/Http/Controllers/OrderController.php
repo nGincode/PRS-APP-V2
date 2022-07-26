@@ -34,7 +34,7 @@ class OrderController extends Controller
     public function Index(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewSupplier', $this->permission())) {
+        if (!in_array('viewOrder', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -44,7 +44,7 @@ class OrderController extends Controller
         return view('Order', $this->data);
     }
 
-    public function OlahanManage(Request $request)
+    public function Manage(Request $request)
     {
         $this->data['subtitle'] = 'Olahan';
         $this->subtitle = $this->data['subtitle'];

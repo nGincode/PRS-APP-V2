@@ -132,7 +132,7 @@ class UsersController extends Controller
             return redirect()->to('/');
         }
         $id = $request->input('id');
-        session()->flash('IdEdit', $id);
+        $request->session()->put('IdEdit', $id);
 
         $this->data['UsersData'] = User::where('id', $id)->first();
         $this->data['Store'] = Store::all();
@@ -144,7 +144,7 @@ class UsersController extends Controller
         if (!in_array('updateUser', $this->permission())) {
             return redirect()->to('/');
         }
-        $id = session('IdEdit');
+        $id = $request->session()->get('IdEdit');
         $pass = $request->input('PasswordUsersLama');
 
         $Users = User::where('id', $id)->first();
@@ -209,7 +209,6 @@ class UsersController extends Controller
 
             if ($username && $Email) {
                 if ($validator->fails()) {
-                    session()->flash('IdUsers', $id);
                     foreach ($validator->errors()->all() as $message) {
                         $data = [
                             'toast' => true,
@@ -258,7 +257,6 @@ class UsersController extends Controller
                 }
             }
         } else {
-            session()->flash('IdUsers', $id);
             if ($cek or $Users) {
                 $data = [
                     'toast' => true,

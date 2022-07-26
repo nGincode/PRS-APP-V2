@@ -411,7 +411,6 @@
                 url: "POS/Pilih",
                 type: "POST",
                 data: {
-                    "_token": "{{ csrf_token() }}",
                     id: id,
                     bahan: bahan
                 },
@@ -530,9 +529,6 @@
             $.ajax({
                 url: "POS/Layar",
                 type: "POST",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                },
                 error: function(xhr, status, error) {
                     // popup(status, true, xhr.status + " " + error);
                 },

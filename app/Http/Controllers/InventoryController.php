@@ -60,8 +60,7 @@ class InventoryController extends Controller
                 if ($cek) {
                     $bahan[] = array(
                         'nama' => $value['nama'],
-                        'id' => $value['id'],
-                        'satuan' => $value['satuan_pengeluaran'],
+                        'id' => $value['id']
                     );
                 }
             }
@@ -103,7 +102,7 @@ class InventoryController extends Controller
                 ];
             }
         } else {
-            if (Inventory::where('delete', false)->where('bahan_id', $request->input('nama'))->count()) {
+            if (Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->where('bahan_id', $request->input('nama'))->count()) {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
@@ -155,7 +154,11 @@ class InventoryController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = Inventory::where('delete', false)->with('Bahan')->latest()->get();
+        if ($request->session()->get('store') == 'Office') {
+            $Data = Inventory::where('delete', false)->with('Bahan', 'Store')->latest()->get();
+        } else {
+            $Data = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
+        }
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -184,15 +187,30 @@ class InventoryController extends Controller
                 $harga = $value['harga_manual'];
             }
 
-            if (!$value['bahan']->delete) {
-                $result['data'][] = array(
-                    $value['bahan']->kode,
-                    $value['bahan']->nama,
-                    $qty,
-                    ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
-                    $value['margin'] . '%',
-                    $button
-                );
+            if ($request->session()->get('store') == 'Office') {
+                if (!$value['bahan']->delete) {
+                    $result['data'][] = array(
+                        $value['bahan']->kode,
+                        $value['store']->nama,
+                        $value['bahan']->nama,
+                        $qty,
+                        ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                        $value['margin'] . '%',
+                        $button
+                    );
+                }
+            } else {
+
+                if (!$value['bahan']->delete) {
+                    $result['data'][] = array(
+                        $value['bahan']->kode,
+                        $value['bahan']->nama,
+                        $qty,
+                        ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                        $value['margin'] . '%',
+                        $button
+                    );
+                }
             }
         }
         echo json_encode($result);
@@ -370,6 +388,33 @@ class InventoryController extends Controller
                 'toast' => true,
                 'status' => 'error',
                 'pesan' =>  'Inventory Tidak Ditemukan'
+            ];
+        }
+
+        echo json_encode($data);
+    }
+
+    public function Bahan(Request $request)
+    {
+        $id = $request->input('id');
+        if ($id) {
+            if ($array = Bahan::where('id', $id)->first()) {
+                $data = [
+                    'satuan' => $array['satuan_pengeluaran'],
+                    'harga' => $array['harga']
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Terjadi kegagalan system'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Terjadi kegagalan system'
             ];
         }
 

@@ -35,13 +35,16 @@ class POSController extends Controller
         $this->title = $this->data['title'];
         $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
-    public function index()
+    public function index(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
         if (!in_array('viewPOS', $this->permission())) {
             return redirect()->to('/');
         }
-        $this->data['item'] = Inventory::with('Bahan')->where('delete', false)->get();
+
+        $this->data['item'] = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->get();
+
+
         return view('POS', $this->data);
     }
 
@@ -109,13 +112,16 @@ class POSController extends Controller
         echo json_encode(['rp' => $this->rupiah($jumlah), 'no' => $jumlah]);
     }
 
-    public function layar()
+    public function layar(Request $request)
     {
 
         if (!in_array('viewPOS', $this->permission())) {
             return redirect()->to('/');
         }
-        $pos = POS::with('Bahan')->latest()->get();
+
+        $pos = POS::where('store_id', $request->session()->get('store_id'))->with('Bahan')->get();
+
+
 
         foreach ($pos as $key => $value) {
             echo  $data = ' <div>
@@ -192,7 +198,11 @@ class POSController extends Controller
             }
         } else {
             $data = '';
-            foreach (Inventory::with('Bahan')->where('delete', false)->get() as $key => $v) {
+
+            $item = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->get();
+
+
+            foreach ($item as $key => $v) {
                 if (!$v['bahan']->delete) {
                     $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
                                             onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">

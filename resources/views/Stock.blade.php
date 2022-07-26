@@ -25,13 +25,13 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="nama">Nama Bahan</label>
-                                        <select class="select2" name="nama" id="nama"
+                                        <select class="select2" onchange="bahan(this.value)" name="nama" id="nama"
                                             data-placeholder="Pilih Nama Bahan" style="width: 100%;">
                                             @if ($bahan)
                                                 <option selected="true" disabled="disabled">Pilih</option>
                                                 @foreach ($bahan as $v)
                                                     <option value="{{ $v['id'] }}">
-                                                        {{ $v['nama'] . ' (' . $v['satuan'] . ')' }}
+                                                        {{ $v['nama'] }}
                                                     </option>
                                                 @endforeach
                                             @else
@@ -103,7 +103,6 @@
 
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ url('/Foodcost/Olahan/Session') }}" class="btn btn-danger">Clear</a>
                         </div>
                     </div>
                 </form>
@@ -118,6 +117,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                @if (request()->session()->get('store') == 'Office')
+                                    <th>Store</th>
+                                @endif
                                 <th>Nama</th>
                                 <th>Qty</th>
                                 <th>Harga</th>
@@ -134,5 +136,28 @@
 
         <!-- /.container-fluid -->
     </section>
-    <script></script>
+    <script>
+        function bahan(id) {
+            $.ajax({
+                url: "Bahan",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    if (data.harga) {
+                        $('#harga').val(data.harga);
+                        $("#satuan").val(data.satuan).trigger("change.select2");
+                    } else {
+                        popup(data.status, data.toast, data.pesan);
+                    }
+
+                }
+            });
+        }
+    </script>
 @endsection
