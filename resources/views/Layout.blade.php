@@ -34,15 +34,17 @@ if (Auth::check()) {
             ->session()
             ->get('active');
     } else {
-        $DataUsers = User::where('id', Auth::id())->first();
+        $DataUsers = User::where('id', Auth::id())
+            ->with('Store')
+            ->first();
         $Id = Auth::id();
         $Username = $DataUsers['username'];
         $Email = $DataUsers['email'];
         $Store = $DataUsers['store'];
         $StoreId = $DataUsers['store_id'];
-        $Tipe = $DataUsers['tipe'];
         $Logo = $DataUsers['logo'];
-        $active = $DataUsers['active'];
+        $Tipe = $DataUsers['store']->tipe;
+        $active = $DataUsers['store']->active;
 
         request()
             ->session()
@@ -568,7 +570,7 @@ if (Auth::check()) {
                             in_array('deletePOS', $user_permission))
                             <li class="nav-item @if ($title == 'POS')  @endif ">
                                 <a href="{{ url('/POS') }}"
-                                    class="nav-link @if ($title == 'POS') active @endif "">
+                                    class="nav-link @if ($title == 'POS') active @endif ">
                                     <i class="  nav-icon fas fa-th"></i>
                                     <p>
                                         Poin Of Sales (POS)
@@ -584,7 +586,7 @@ if (Auth::check()) {
                             in_array('deleteBelanja', $user_permission))
                             <li class="nav-item @if ($title == 'Belanja')  @endif ">
                                 <a href="{{ url('/Belanja') }}"
-                                    class="nav-link @if ($title == 'Belanja') active @endif "">
+                                    class="nav-link @if ($title == 'Belanja') active @endif ">
                                     <i class="             nav-icon fas fa-shopping-bag "></i>
                                     <p>
                                         Belanja
@@ -601,7 +603,7 @@ if (Auth::check()) {
                             in_array('deleteOrder', $user_permission))
                             <li class="nav-item @if ($title == 'Order')  @endif ">
                                 <a href="{{ url('/Order') }}"
-                                    class="nav-link @if ($title == 'Order') active @endif "">
+                                    class="nav-link @if ($title == 'Order') active @endif ">
                                     <i class="             nav-icon fas fa-shopping-cart "></i>
                                     <p>
                                         Order

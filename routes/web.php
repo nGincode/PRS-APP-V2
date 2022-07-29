@@ -248,6 +248,10 @@ Route::controller(OrderController::class)->group(
     function () {
         //Stock
         Route::get('Order/', 'Index')->middleware('auth');
+        Route::post('Order/Items', 'Items')->middleware('auth');
+        Route::post('Order/Input', 'Input')->middleware('auth');
+        Route::post('Order/Select', 'Select')->middleware('auth');
+        Route::post('Order/Hapus', 'Hapus')->middleware('auth');
     }
 );
 

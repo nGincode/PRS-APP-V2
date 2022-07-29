@@ -120,7 +120,7 @@ class InventoryController extends Controller
                     'auto_harga' => $request->input('auto_harga'),
                     'harga_manual' => $request->input('harga'),
                     'harga_auto' => $request->input('harga'),
-                    'tgl_harga' => date('Y-m-d'),
+                    'tgl_harga' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s'),
                     'created_at' => date('Y-m-d H:i:s')
                 ];
@@ -154,7 +154,7 @@ class InventoryController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        if ($request->session()->get('store') == 'Office') {
+        if ($request->session()->get('tipe') == 'Office') {
             $Data = Inventory::where('delete', false)->with('Bahan', 'Store')->latest()->get();
         } else {
             $Data = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
@@ -187,7 +187,7 @@ class InventoryController extends Controller
                 $harga = $value['harga_manual'];
             }
 
-            if ($request->session()->get('store') == 'Office') {
+            if ($request->session()->get('tipe') == 'Office') {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
                         $value['bahan']->kode,
@@ -412,9 +412,7 @@ class InventoryController extends Controller
             }
         } else {
             $data = [
-                'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Terjadi kegagalan system'
+                'kosong' => true,
             ];
         }
 

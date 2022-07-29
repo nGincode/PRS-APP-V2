@@ -896,8 +896,8 @@ $(document).ready(function() {
 
 
     //Inventory
-    if ($('#FormInventory').length) {
-        $('#FormInventory').validate({
+    if ($('#FormInventoryStock').length) {
+        $('#FormInventoryStock').validate({
             rules: {
                 'nama': {
                     required: true
@@ -938,7 +938,7 @@ $(document).ready(function() {
             },
         });
 
-        $('#FormInventory').on('submit', function(event) {
+        $('#FormInventoryStock').on('submit', function(event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -957,7 +957,7 @@ $(document).ready(function() {
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan, '#FormInventory');
+                            popup(data.status, data.toast, data.pesan, '#FormInventoryStock');
                         } else {
                             popup(data.status, data.toast, data.pesan);
                         }

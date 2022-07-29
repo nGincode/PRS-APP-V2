@@ -16,7 +16,7 @@ class Bahan extends Model
 
     public function Olahan()
     {
-        return $this->belongsToMany(Olahan::class, 'olahan_bahan');
+        return $this->belongsToMany(Olahan::class, 'Bahan_Olahan');
     }
 
 

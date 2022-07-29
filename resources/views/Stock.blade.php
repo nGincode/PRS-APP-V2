@@ -4,7 +4,7 @@
     <section class="content">
         <div class="container-fluid">
             @if (in_array('createInventoryStock', $user_permission))
-                <form id="FormInventory" action="{{ url('/Inventory/Stock') }}">
+                <form id="FormInventoryStock" action="{{ url('/Inventory/Stock') }}">
                     @csrf
                     <div class="card card-primary">
                         <div class="card-header">
@@ -117,7 +117,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                @if (request()->session()->get('store') == 'Office')
+                                @if (request()->session()->get('tipe') == 'Office')
                                     <th>Store</th>
                                 @endif
                                 <th>Nama</th>
@@ -152,6 +152,8 @@
                     if (data.harga) {
                         $('#harga').val(data.harga);
                         $("#satuan").val(data.satuan).trigger("change.select2");
+                    } else if (data.kosong) {
+
                     } else {
                         popup(data.status, data.toast, data.pesan);
                     }

@@ -22,11 +22,12 @@ return new class extends Migration
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');
 
-            $table->date('tgl');
+            $table->integer('logistik');
+
+            $table->dateTime('tgl');
             $table->string('nama')->nullable();
             $table->string('nohp')->nullable();
-            $table->string('logistik');
-            $table->string('waktu');
+            $table->string('ket')->nullable();
             $table->timestamps();
         });
     }

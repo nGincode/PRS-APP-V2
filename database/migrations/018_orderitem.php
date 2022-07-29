@@ -30,10 +30,12 @@ return new class extends Migration
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
 
-            $table->date('tgl');
+            $table->integer('logistik');
+            $table->dateTime('tgl');
             $table->string('nama')->nullable();
             $table->string('qty')->nullable();
             $table->string('harga')->nullable();
+            $table->string('satuan')->nullable();
 
             $table->timestamps();
         });

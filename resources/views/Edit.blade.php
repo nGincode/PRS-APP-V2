@@ -1192,11 +1192,6 @@
         </div>
     </form>
     <script>
-        $(function() {
-            $('.select2').select2().on("change", function(e) {
-                $(this).valid()
-            });
-        });
         $(document).ready(function() {
             var id = $("#BahanEdit");
 
