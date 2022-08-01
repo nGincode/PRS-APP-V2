@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Unreleased
+
+## 4.2.0 - 2022-07-28
+
+* Bumped dependencies, the minimum version of the underlying SDK is now 6.7.0.
+* Updated comment in `config/firebase.php` to reference the default HTTP timeout
+  * With `kreait/firebase` 6.7.0, the default was changed from ∞ to 30 seconds.
+
 ## 4.1.0 - 2022-02-08
 
 * Added support for Laravel 9 ([#118](https://github.com/kreait/laravel-firebase/pull/118))
@@ -51,12 +59,9 @@ This is a release with breaking changes. Please review the following changes and
 
 ## 3.0.0 - 2020-11-01 
 ### Added
-* Support for multiple firebase projects
-  (thanks to [@dododedodonl](https://github.com/dododedodonl)).
-  See "upgrading to version 3" section in [UPGRADE.md](UPGRADE.md)
+* Support for multiple firebase projects (thanks to [@dododedodonl](https://github.com/dododedodonl)).
 * `\Kreait\Laravel\Firebase\Facades\Firebase` facade
-* HTTP Client Options are now configurable 
-  (thanks to [@kakajansh](https://github.com/kakajansh))
+* HTTP Client Options are now configurable (thanks to [@kakajansh](https://github.com/kakajansh))
 
 ### Changed
 * [config/firebase.php](config/firebase.php) has a new format to support multiple projects

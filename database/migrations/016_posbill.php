@@ -24,12 +24,12 @@ return new class extends Migration
 
             $table->dateTime('tgl');
             $table->string('no_bill');
-            $table->string('no_hp')->nullable();
-            $table->string('nama_bill')->nullable();
-            $table->string('gross_total');
-            $table->string('disc')->nullable();
-            $table->string('tax')->nullable();
-            $table->string('total');
+            $table->string('no_hp', 15)->nullable();
+            $table->string('nama_bill', 30)->nullable();
+            $table->integer('gross_total');
+            $table->string('disc', 2)->nullable();
+            $table->string('tax', 2)->nullable();
+            $table->integer('total');
             $table->boolean('paid');
             $table->timestamps();
         });

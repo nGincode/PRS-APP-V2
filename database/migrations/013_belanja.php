@@ -25,18 +25,18 @@ return new class extends Migration
             $table->unsignedBigInteger('bahan_id')->nullable();
             $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
 
-            $table->date('tgl');
-            $table->string('nama');
-            $table->string('kategori');
-            $table->integer('qty')->nullable();
-            $table->string('uom')->nullable();
-            $table->string('harga')->nullable();
+            $table->dateTime('tgl');
+            $table->string('nama', 30);
+            $table->string('kategori', 20);
+            $table->string('qty')->nullable();
+            $table->string('uom', 20)->nullable();
+            $table->integer('harga')->nullable();
 
 
             $table->string('stock')->nullable();
-            $table->string('stock_harga')->nullable();
-            $table->string('stock_uom')->nullable();
-            $table->string('total')->nullable();
+            $table->integer('stock_harga')->nullable();
+            $table->string('stock_uom', 10)->nullable();
+            $table->integer('total')->nullable();
             $table->string('ket')->nullable();
             $table->boolean('hutang')->default(false);
             $table->boolean('up')->default(false);

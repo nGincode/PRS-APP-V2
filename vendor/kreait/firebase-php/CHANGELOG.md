@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+## [6.7.0] - 2022-07-28
+
+### Added
+
+* Added support for the Firebase Auth Emulator.
+  ([#722](https://github.com/kreait/firebase-php/pull/722)) ([Documentation](https://firebase-php.readthedocs.io/en/latest/testing.html))
+
+### Changed
+
+* The default HTTP Client options have been updated
+  ([#723](https://github.com/kreait/firebase-php/issues/723))
+  * Connect Timeout from ∞ to 15 seconds
+  * Timeout from ∞ to 30 seconds
+
 ## [6.6.1] - 2022-07-12
 
 ### Fixed
@@ -252,7 +266,8 @@ methods.
     * `Kreait\Firebase\Value\Uid`
     * `Kreait\Firebase\Value\Url`
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/6.6.1...6.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/6.7.0...6.x
+[6.7.0]: https://github.com/kreait/firebase-php/compare/6.6.1...6.7.0
 [6.6.1]: https://github.com/kreait/firebase-php/compare/6.6.0...6.6.1
 [6.6.0]: https://github.com/kreait/firebase-php/compare/6.5.1...6.6.0
 [6.5.1]: https://github.com/kreait/firebase-php/compare/6.5.0...6.5.1

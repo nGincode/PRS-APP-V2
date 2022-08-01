@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('opnamestock', function (Blueprint $table) {
             $table->id();
-            $table->date('tgl');
+            $table->dateTime('tgl');
 
             $table->unsignedBigInteger('users_id');
             $table->foreign('users_id')->references('id')->on('users');
@@ -27,9 +27,9 @@ return new class extends Migration
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
 
-            $table->string('status')->nullable();
-            $table->string('nama')->nullable();
-            $table->string('uom')->nullable();
+            $table->enum('status', ['Tambah', 'Kurang'])->nullable();
+            $table->string('nama', 30)->nullable();
+            $table->string('uom', 10)->nullable();
             $table->string('qty')->nullable();
             $table->string('qty_sebelum')->nullable();
             $table->boolean('delete')->default(false);

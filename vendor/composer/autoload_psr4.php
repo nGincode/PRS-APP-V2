@@ -12,6 +12,7 @@ return array(
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'TijsVerkoyen\\CssToInlineStyles\\' => array($vendorDir . '/tijsverkoyen/css-to-inline-styles/src'),
     'Tests\\' => array($baseDir . '/tests'),
+    'Termwind\\' => array($vendorDir . '/nunomaduro/termwind/src'),
     'TeamTNT\\TNTSearch\\' => array($vendorDir . '/teamtnt/tntsearch/src'),
     'TeamTNT\\Scout\\' => array($vendorDir . '/teamtnt/laravel-scout-tntsearch-driver/src'),
     'Symfony\\Polyfill\\Php81\\' => array($vendorDir . '/symfony/polyfill-php81'),

@@ -15,21 +15,21 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('store');
+            $table->string('store', 20);
 
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');
 
-            $table->string('username')->unique();
+            $table->string('username', 20)->unique();
             $table->string('password');
             $table->string('email')->unique();
-            $table->string('firstname')->nullable();
-            $table->string('lastname')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('firstname', 20)->nullable();
+            $table->string('lastname', 20)->nullable();
+            $table->string('phone', 15)->nullable();
             $table->enum('gender', ['Pria', 'Wanita'])->nullable();
             $table->string('img')->nullable();
             $table->boolean('izin');
-            $table->string('last_login')->nullable();
+            $table->string('last_login', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

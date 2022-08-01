@@ -8,7 +8,7 @@ use Laravel\Scout\Searchable;
 
 class Order extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $table = 'order';
     protected $guarded = ['id'];

@@ -36,13 +36,13 @@
                                 <br><br>
                                 <div class="card card-success card-outline" style="min-height: 600px">
                                     <div class="card-header" style="display: flex">
-                                        <input type="text" class="form-control" onkeyup="barcode(this.value)"
-                                            id="search" placeholder="Barcode..">
+                                        <input type="search" class="form-control" onkeyup="barcode(this.value)"
+                                            id="barcode" placeholder="Barcode..">
                                         <i class="fa fa-barcode"
                                             style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
 
 
-                                        <input type="text" class="form-control" onkeyup="search(this.value)"
+                                        <input type="search" class="form-control" onkeyup="search(this.value)"
                                             id="search" placeholder="Search..">
                                         <i class="fa fa-search"
                                             style="padding: 10px;padding: 10px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
@@ -62,15 +62,22 @@
                                                             @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
                                                         </b>
                                                     </div>
-                                                    <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
+                                                    <div>
+                                                        {{ $v['bahan']->kode }}
+                                                    </div>
+                                                    <div>
+                                                        <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
 
-                                                    @if ($v['auto_harga'])
-                                                        <p class="card-text">
-                                                            {{ 'Rp ' . number_format($v['harga_auto'], 0, ',', '.') }}</p>
-                                                    @else
-                                                        <p class="card-text">
-                                                            {{ 'Rp ' . number_format($v['harga_manual'], 0, ',', '.') }}</p>
-                                                    @endif
+                                                        @if ($v['auto_harga'])
+                                                            <p class="card-text">
+                                                                {{ 'Rp ' . number_format($v['harga_auto'], 0, ',', '.') }}
+                                                            </p>
+                                                        @else
+                                                            <p class="card-text">
+                                                                {{ 'Rp ' . number_format($v['harga_manual'], 0, ',', '.') }}
+                                                            </p>
+                                                        @endif
+                                                    </div>
                                                     <hr>
                                                 </div>
                                             @endif
@@ -467,52 +474,53 @@
 
                     var html = '';
                     if (data.no > 100000) {
-                        html += '<label  onclick="inputkosong()" class="container">' + data.no +
+                        html += '<label  onclick="inputkosong()" class="container">Rp. ' + formatRupiah(data
+                                .no) +
                             ' <input type="radio" name="duit" value="' + data.no +
                             '" id="duit"> <span class="checkmark"></span> </label>';
 
 
                         if (data.no < 150000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">150.000<input type="radio" name="duit" value="150000" id="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">Rp. 150.000<input type="radio" name="duit" value="150000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 200000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">200.000<input type="radio" name="duit" value="200000"  id="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">Rp. 200.000<input type="radio" name="duit" value="200000"  id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 500000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">500.000<input type="radio" name="duit" value="500000" id="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">Rp. 500.000<input type="radio" name="duit" value="500000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                         if (data.no < 1000000) {
                             html +=
-                                '<label  onclick="inputkosong()" class="container">1.000.000<input type="radio" name="duit" value="1000000" id="duit"> <span class="checkmark"></span> </label>';
+                                '<label  onclick="inputkosong()" class="container">Rp. 1.000.000<input type="radio" name="duit" value="1000000" id="duit"> <span class="checkmark"></span> </label>';
                         }
                     }
 
                     if (data.no < 100000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">100.000<input type="radio" name="duit" value="100000" id="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">Rp. 100.000<input type="radio" name="duit" value="100000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 50000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">50.000<input type="radio" name="duit" value="50000" id="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">Rp. 50.000<input type="radio" name="duit" value="50000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 20000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">20.000<input type="radio" name="duit" value="20000" id="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">Rp. 20.000<input type="radio" name="duit" value="20000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 10000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">10.000<input type="radio" name="duit" value="10000" id="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">Rp. 10.000<input type="radio" name="duit" value="10000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     if (data.no < 5000) {
                         html +=
-                            '<label  onclick="inputkosong()" class="container">5.000<input type="radio" name="duit" value="5000" id="duit"> <span class="checkmark"></span> </label>';
+                            '<label  onclick="inputkosong()" class="container">Rp. 5.000<input type="radio" name="duit" value="5000" id="duit"> <span class="checkmark"></span> </label>';
                     }
 
                     $('.duit').html(html);
@@ -552,6 +560,7 @@
                 },
                 beforeSend: function(xhr) {
                     $('#TblPlus_' + id).prop('disabled', true);
+                    $('#key_' + id).prop('disabled', true);
                 },
                 success: function(data) {
                     if (data.status) {
@@ -746,5 +755,57 @@
                 endDate: moment()
             })
         });
+
+        function qtyubah(id, qty) {
+
+            $.ajax({
+                url: "POS/positemubah",
+                type: "POST",
+                data: {
+                    id: id,
+                    qty: qty
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                beforeSend: function(xhr) {
+                    $('#TblPlus_' + id).prop('disabled', true);
+                },
+                success: function(data) {
+                    if (data.status) {
+                        popup(data.status, data.toast, data.pesan);
+                    } else {
+                        layar();
+                    }
+                }
+            });
+        }
+
+
+        function barcode(id) {
+
+            $.ajax({
+                url: "POS/Barcode",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    if (data.status) {
+                        popup(data.status, data.toast, data.pesan);
+                    } else {
+                        if (!data.barcode) {
+                            layar();
+                            $('#barcode').val('');
+                        }
+                    }
+                }
+            });
+        }
     </script>
 @endsection

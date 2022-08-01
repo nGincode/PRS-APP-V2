@@ -216,6 +216,8 @@ Route::controller(POSController::class)->group(
         Route::post('POS/positemhapus', 'positemhapus')->middleware('auth');
         Route::post('POS/positemminus', 'positemminus')->middleware('auth');
         Route::post('POS/positemplus', 'positemplus')->middleware('auth');
+        Route::post('POS/positemubah', 'positemubah')->middleware('auth');
+        Route::post('POS/Barcode', 'Barcode')->middleware('auth');
         Route::post('POS/Totalbill', 'Totalbill')->middleware('auth');
         Route::post('POS/Search', 'Search')->middleware('auth');
         Route::post('POS/Input', 'Input')->middleware('auth');

@@ -26,12 +26,12 @@ return new class extends Migration
             $table->foreign('store_id')->references('id')->on('store');
 
             $table->string('qty')->nullable();
-            $table->string('satuan')->nullable();
+            $table->string('satuan', 10)->nullable();
             $table->boolean('auto_harga')->nullable();
-            $table->string('harga_auto')->nullable();
-            $table->string('harga_manual')->nullable();
+            $table->integer('harga_auto')->nullable();
+            $table->integer('harga_manual')->nullable();
             $table->dateTime('tgl_harga')->nullable();
-            $table->string('margin')->nullable();
+            $table->string('margin', 3)->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

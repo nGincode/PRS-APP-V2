@@ -132,9 +132,10 @@ class POSController extends Controller
                     </button>
                 </div>
                 <p style="float:right"><b>' . $this->rupiah($value['qty'] * $value['harga']) . ' &nbsp</b></p>
-                 <h5 class="card-title">' . $value['bahan']->nama . ' x' . $value['qty'] . '</h5>
+                 <h5 class="card-title">' . $value['bahan']->nama . '</h5>
                 <p class="card-text" style="margin-bottom:2px">' . $this->rupiah($value['harga']) . '</p>
                     <div style="float: right;margin-top: -1.5rem;">
+                    <input type="number" onchange="qtyubah(' . $value['id'] . ',this.value)" style="max-width: 61px;text-align: right;border: unset;border-bottom: 2px #478faf solid;" id="key_' . $key . '" value="' . $value['qty'] . '">
                     <button class="btn btn-warning btn-sm" id="TblMinus_' . $value['id'] . '"  onclick="positemminus(' . $value['id'] . ')">
                     <i class="fa fa-minus"></i>
                     </button>
@@ -182,9 +183,11 @@ class POSController extends Controller
                             $harga = $v['harga_manual'];
                         }
 
-                        $data .= '</b> </div> <h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
+                        $data .= '</b> </div> 
+                                            <div>' . $bahan['kode'] . '</div>
+                                            <div><h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
-                                            <hr>
+                                            <hr></div>
                                         </div>';
                     }
                 }
@@ -219,9 +222,9 @@ class POSController extends Controller
                     }
 
                     $data .= $v['qty'] . ' ' . $v['satuan'];
-                    $data .= '</b> </div> <h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
+                    $data .= '</b> </div> <div>' . $v['bahan']->kode . '</div><div><h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
-                                            <hr>
+                                            <hr></div>
                                         </div>';
                 }
             }
@@ -237,7 +240,7 @@ class POSController extends Controller
 
     public function positemhapus(Request $request)
     {
-        if (!in_array('viewPOS', $this->permission())) {
+        if (!in_array('createPOS', $this->permission())) {
             return redirect()->to('/');
         }
         $id = $request->input('id');
@@ -260,7 +263,7 @@ class POSController extends Controller
 
     public function positemplus(Request $request)
     {
-        if (!in_array('viewPOS', $this->permission())) {
+        if (!in_array('createPOS', $this->permission())) {
             return redirect()->to('/');
         }
         $id = $request->input('id');
@@ -279,6 +282,104 @@ class POSController extends Controller
         };
     }
 
+
+    public function Barcode(Request $request)
+    {
+        if (!in_array('createPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
+        $id = $request->input('id');
+
+        $inventory_id = $request->input('id');
+
+        $id_store = request()->session()->get('store_id');
+        $id_users = request()->session()->get('id');
+
+        $bahan = Bahan::where('kode', $inventory_id)->first();
+        if ($bahan) {
+            $inventory = Inventory::where('bahan_id', $bahan['id'])->first();
+        } else {
+            $inventory = false;
+        }
+        if ($inventory && $id_users && $id_store) {
+            if ($inventory['auto_harga']) {
+                $harga = $inventory['harga_auto'];
+            } else {
+                $harga = $inventory['harga_manual'];
+            }
+
+            if ($pos = POS::where('users_id', $id_users)->where('store_id', $id_store)->where('inventory_id', $inventory['id'])->first()) {
+                if (
+                    POS::where('id', $pos['id'])->update([
+                        'users_id' => $id_users,
+                        'store_id' => $id_store,
+                        'inventory_id' => $inventory['id'],
+                        'bahan_id' => $inventory['bahan_id'],
+                        'qty' => 1 + $pos['qty'],
+                        'satuan' => $inventory['satuan'],
+                        'harga' => $harga,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ])
+                ) {
+                    echo json_encode([]);
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Gagal Barcode'
+                    ];
+                    echo json_encode($data);
+                };
+            } else {
+                if (
+                    POS::insert([
+                        'users_id' => $id_users,
+                        'store_id' => $id_store,
+                        'inventory_id' => $inventory['id'],
+                        'bahan_id' => $inventory['bahan_id'],
+                        'qty' => 1,
+                        'satuan' => $inventory['satuan'],
+                        'harga' => $harga,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'created_at' => date('Y-m-d H:i:s')
+                    ])
+                ) {
+                    echo json_encode([]);
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Gagal Barcode'
+                    ];
+                    echo json_encode($data);
+                };
+            }
+        } else {
+            $data = ['barcode' => true];
+            echo json_encode($data);
+        }
+    }
+
+    public function positemubah(Request $request)
+    {
+        if (!in_array('createPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
+        $id = $request->input('id');
+        $qty = $request->input('qty');
+
+        if (POS::where('id', $id)->update(['qty' => $qty])) {
+            echo json_encode([]);
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Gagal Mengubah Data Dengan Id ' . $id
+            ];
+            echo json_encode($data);
+        };
+    }
 
     public function positemminus(Request $request)
     {

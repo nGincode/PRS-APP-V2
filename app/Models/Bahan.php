@@ -10,6 +10,8 @@ class Bahan extends Model
 {
     use HasFactory, Searchable;
 
+    public $asYouType = true;
+
     protected $table = 'bahan';
     protected $guarded = ['id'];
 

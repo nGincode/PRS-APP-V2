@@ -29,9 +29,8 @@ return new class extends Migration
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
             $table->string('qty');
-            $table->string('harga');
-            $table->string('satuan');
-            $table->timestamps();
+            $table->integer('harga');
+            $table->string('satuan', 10);
         });
     }
 

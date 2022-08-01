@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('store', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama', 30);
             $table->boolean('active');
-            $table->string('tipe');
+            $table->string('tipe', 20);
             $table->string('alamat')->nullable();
             $table->string('img')->nullable();
-            $table->string('wa')->nullable();
+            $table->string('wa', 15)->nullable();
             $table->json('jam_kerja')->nullable();
             $table->timestamps();
         });

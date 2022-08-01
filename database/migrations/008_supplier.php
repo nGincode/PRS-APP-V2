@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('supplier', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama', 30);
             $table->string('alamat')->nullable();
             $table->boolean('hutang')->nullable();
-            $table->string('tipe')->nullable();
-            $table->string('rekening')->nullable();
-            $table->string('wa')->nullable();
+            $table->string('tipe', 20)->nullable();
+            $table->string('rekening', 10)->nullable();
+            $table->string('wa', 15)->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

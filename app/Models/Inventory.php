@@ -9,6 +9,7 @@ use Laravel\Scout\Searchable;
 class Inventory extends Model
 {
     use HasFactory, Searchable;
+    public $asYouType = true;
 
     protected $table = 'inventory';
     protected $guarded = ['id'];
@@ -36,7 +37,8 @@ class Inventory extends Model
 
         return [
             'id' => $this->id,
-            'nama' => $data['nama']
+            'nama' => $data['nama'],
+            'kode' => $data['kode']
         ];
     }
 }

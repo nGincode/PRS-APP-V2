@@ -28,12 +28,12 @@ return new class extends Migration
             $table->unsignedBigInteger('bahan_id');
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
-            $table->date('tgl');
-            $table->string('nama');
+            $table->dateTime('tgl');
+            $table->string('nama', 30);
             $table->string('qty');
-            $table->string('satuan');
-            $table->string('harga');
-            $table->string('total');
+            $table->string('satuan', 10);
+            $table->integer('harga');
+            $table->integer('total');
             $table->boolean('paid');
             $table->timestamps();
         });

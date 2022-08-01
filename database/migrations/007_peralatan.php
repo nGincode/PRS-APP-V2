@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('peralatan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('kode');
-            $table->string('kategori');
-            $table->string('satuan_pembelian');
+            $table->string('nama', 30);
+            $table->string('kode', 20);
+            $table->string('kategori', 20);
+            $table->string('satuan_pembelian', 20);
             $table->integer('harga');
-            $table->string('satuan_pemakaian');
-            $table->integer('konversi_pemakaian');
+            $table->string('satuan_pemakaian', 20);
+            $table->string('konversi_pemakaian', 20);
             $table->json('pengguna')->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();

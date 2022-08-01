@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('kode');
+            $table->string('nama', 30);
+            $table->string('kode', 20);
 
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');
@@ -24,12 +24,12 @@ return new class extends Migration
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->date('tanggal_masuk');
-            $table->string('agama');
-            $table->string('gender');
+            $table->string('agama', 20);
+            $table->string('gender', 20);
             $table->string('alamat');
-            $table->string('wa');
-            $table->string('divisi');
-            $table->string('jabatan');
+            $table->string('wa', 15);
+            $table->string('divisi', 20);
+            $table->string('jabatan', 20);
             $table->boolean('active');
             $table->string('img')->nullable();
             $table->boolean('delete')->default(false);

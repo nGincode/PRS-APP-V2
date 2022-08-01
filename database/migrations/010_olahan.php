@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('olahan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('kode');
-            $table->string('satuan_pengeluaran');
-            $table->string('satuan_penyajian');
+            $table->string('nama', 30);
+            $table->string('kode', 20);
+            $table->string('satuan_pengeluaran', 10);
+            $table->string('satuan_penyajian', 10);
             $table->integer('konversi_penyajian');
-            $table->string('hasil')->nullable();
-            $table->string('produksi')->nullable();
+            $table->string('hasil', 20)->nullable();
+            $table->string('produksi', 20)->nullable();
             $table->boolean('draft')->default(true);
             $table->boolean('delete')->default(false);
             $table->timestamps();
