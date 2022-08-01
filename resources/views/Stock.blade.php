@@ -66,7 +66,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="harga">Harga</label>
-                                        <input type="number" class="form-control" id="harga"
+                                        <input type="text" class="form-control" id="harga"
                                             placeholder="Harga Satuannya" name="harga">
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                 },
                 success: function(data) {
                     if (data.harga) {
-                        $('#harga').val(data.harga);
+                        $('#harga').val(numeral(data.harga).format('0,0'));
                         $("#satuan").val(data.satuan).trigger("change.select2");
                     } else if (data.kosong) {
 

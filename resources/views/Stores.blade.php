@@ -26,8 +26,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Status</label>
-                                        <select name="status" id="status" class="form-control select2 select2-danger"
-                                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <select name="status" id="status" class="form-control select2 " required
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
                                             <option selected="true" disabled="disabled">Pilih</option>
                                             <option value="1">Active</option>
                                             <option value="0">In Active</option>
@@ -38,8 +38,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Tipe</label>
-                                        <select name="tipe" id="tipe" class="form-control select2 select2-danger"
-                                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <select name="tipe" id="tipe" class="form-control select2 " required
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
                                             <option selected="true" disabled="disabled">Pilih</option>
                                             <option value="Office">Office</option>
                                             <option value="Outlet">Outlet</option>
@@ -149,4 +149,11 @@
 
         <!-- /.container-fluid -->
     </section>
+    <script></script>
+    <style>
+        .has-error .select2-selection {
+            border: 1px solid #a94442;
+            border-radius: 4px;
+        }
+    </style>
 @endsection

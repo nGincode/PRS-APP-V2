@@ -7,9 +7,13 @@ $(function() {
     });
 
     //Initialize Select2 Elements
-    $('.select2bs4').select2({
+    // $('.select2bs4').select2({
+    //     theme: 'bootstrap4'
+    // })
+
+    $('.select2').select2({
         theme: 'bootstrap4'
-    })
+                    });
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', {
@@ -312,6 +316,26 @@ $(document).ready(function() {
 
 });
 
+jQuery.extend(jQuery.validator.messages, {
+    required: "Wajib di Isi.",
+    remote: "Perlu di perbaiki.",
+    email: "Email belum valid.",
+    url: "Url belum valid.",
+    date: "Tanggal belum Valid.",
+    dateISO: "Tanggal belum valid (ISO).",
+    number: "Nomor belum valid.",
+    digits: "Wajib angka.",
+    creditcard: "Silakan masukkan nomor kartu kredit yang valid.",
+    equalTo: "Silakan masukkan nilai yang sama.",
+    accept: "Silakan masukkan nilai dengan ekstensi yang valid.",
+    maxlength: jQuery.validator.format("Masukkan tidak lebih dari {0} karakter."),
+    minlength: jQuery.validator.format("Silakan masukkan setidaknya {0} karakter."),
+    rangelength: jQuery.validator.format("Silakan masukkan nilai antara panjang  {0} - {1} karakter."),
+    range: jQuery.validator.format("Silakan masukkan nilai antara {0} - {1}."),
+    max: jQuery.validator.format("Silakan masukkan nilai kurang dari atau sama dengan {0}."),
+    min: jQuery.validator.format("Silakan masukkan nilai yang lebih besar dari atau sama dengan {0}.")
+});
+
 //form
 $(document).ready(function() {
     //users
@@ -337,11 +361,13 @@ $(document).ready(function() {
                 },
                 'Email': {
                     required: true,
-                    email: true
+                    email: true,
+                    maxlength: 191
                 },
                 'Username': {
                     required: true,
-                    minlength: 6
+                    minlength: 6,
+                    maxlength: 20
                 },
                 'PasswordUsers': {
                     required: true,
@@ -352,21 +378,23 @@ $(document).ready(function() {
                     equalTo: "#PasswordUsers"
                 },
                 'NamaDepanUsers': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'NamaBelakangUsers': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'NoUsers': {
-                    required: true
+                    required: true,
+                    minlength: 11,
+                    maxlength: 15
                 },
                 'izin': {
                     required: true
                 }
             },
-            messages: {
-                // id : "pesan"
-            }
+            messages: {}
         });
 
         $('#FormUsers').on('submit', function(event) {
@@ -403,22 +431,27 @@ $(document).ready(function() {
     if ($('#FormStore').length) {
         $('#FormStore').validate({
             errorElement: 'span',
+            errorClass: "help-block",
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
             highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
+                console.log(element);
             },
             unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
+                console.log(element);
             },
             success: function(validClass, element) {
                 $(element).addClass('is-valid');
+                console.log(element);
             },
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'status': {
                     required: true
@@ -427,15 +460,16 @@ $(document).ready(function() {
                     required: true
                 },
                 'alamat': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 },
                 'wa': {
-                    required: true
+                    required: true,
+                    maxlength: 15,
+                    minlength: 11
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            }
+            messages: {}
         });
 
         $('#FormStore').on('submit', function(event) {
@@ -487,7 +521,8 @@ $(document).ready(function() {
             },
             rules: {
                 'NamaGroup': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'permission': {
                     required: true
@@ -496,9 +531,7 @@ $(document).ready(function() {
                     required: true
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            }
+            messages: {}
         });
 
         $('#FormGroup').on('submit', function(event) {
@@ -550,15 +583,15 @@ $(document).ready(function() {
             },
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'alamat': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            }
+            messages: {}
         });
 
         $('#FormSupplier').on('submit', function(event) {
@@ -610,15 +643,15 @@ $(document).ready(function() {
             },
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'singkat': {
-                    required: true
+                    required: true,
+                    maxlength: 10
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            }
+            messages: {}
         });
 
         $('#FormSatuan').on('submit', function(event) {
@@ -656,28 +689,36 @@ $(document).ready(function() {
         $('#FormBahan').validate({
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'kategori': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'satuan_pembelian': {
-                    required: true
+                    required: true,
+                    maxlength: 10
                 },
                 'harga': {
-                    required: true
+                    required: true,
+                    maxlength: 11
                 },
                 'satuan_pemakaian': {
-                    required: true
+                    required: true,
+                    maxlength: 10
                 },
                 'konversi_pemakaian': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'satuan_pengeluaran': {
-                    required: true
+                    required: true,
+                    maxlength: 10
                 },
                 'konversi_pengeluaran': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 }
             },
             messages: {
@@ -735,27 +776,31 @@ $(document).ready(function() {
         $('#FormPeralatan').validate({
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'kategori': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'satuan_pembelian': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'harga': {
-                    required: true
+                    required: true,
+                    maxlength: 11
                 },
                 'satuan_pemakaian': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'konversi_pemakaian': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            },
+            messages: {},
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
@@ -808,45 +853,54 @@ $(document).ready(function() {
         $('#FormPegawai').validate({
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'store': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'tempat_lahir': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 },
                 'tanggal_lahir': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'tanggal_masuk': {
                     required: true
                 },
                 'agama': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'gender': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'alamat': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 },
                 'wa': {
-                    required: true
+                    required: true,
+                    maxlength: 15,
+                    minlength: 11
                 },
                 'divisi': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'jabatan': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'status_pekerja': {
                     required: true
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            },
+            messages: {},
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
@@ -900,27 +954,31 @@ $(document).ready(function() {
         $('#FormInventoryStock').validate({
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 20
                 },
                 'qty': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 },
                 'satuan': {
-                    required: true
+                    required: true,
+                    maxlength: 10
                 },
                 'auto_harga': {
-                    required: true
+                    required: true,
+                    maxlength: 1
                 },
                 'harga': {
-                    required: true
+                    required: true,
+                    maxlength: 11
                 },
                 'margin': {
-                    required: true
+                    required: true,
+                    maxlength: 3
                 }
             },
-            messages: {
-                // OutletUsers : "Masih Kosong"
-            },
+            messages: {},
             errorElement: 'span',
             errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
@@ -975,16 +1033,19 @@ $(document).ready(function() {
         $('#FormInventoryOpname').validate({
             rules: {
                 'nama': {
-                    required: true
+                    required: true,
+                    maxlength: 30
                 },
                 'qty': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 },
                 'status': {
                     required: true
                 },
                 'ket': {
-                    required: true
+                    required: true,
+                    maxlength: 191
                 }
             },
             messages: {

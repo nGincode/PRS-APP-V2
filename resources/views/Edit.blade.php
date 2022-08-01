@@ -1083,7 +1083,7 @@
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
-                        <label for="hargaa">Harga</label>
+                        <label for="harga_edit">Harga</label>
                         <input type="text" value="{{ $BahanData['harga'] }}" class="form-control" id="harga_edit"
                             placeholder="Harga" name="harga">
                     </div>
@@ -1271,15 +1271,7 @@
             }
         });
         //Format Penulisan
-        document.getElementById("harga_edit").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pemakaian_edit").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pengeluaran_edit").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
+        document.getElementById("harga_edit").value = numeral(document.getElementById("harga_edit").value).format('0,0');
     </script>
 @endisset
 
@@ -2083,12 +2075,6 @@
 
         $('.select2').select2().on("change", function(e) {
             $(this).valid()
-        });
-
-        $('input').keyup(function() {
-            if (this.type === 'text') {
-                this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
-            }
         });
 
     });

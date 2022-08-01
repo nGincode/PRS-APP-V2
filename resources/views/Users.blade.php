@@ -26,8 +26,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Outlet Users</label>
-                                        <select name="OutletUsers" id="OutletUsers"
-                                            class="form-control select2 select2-danger"
+                                        <select name="OutletUsers" id="OutletUsers" class="form-control select2"
                                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                                             <option selected="true" disabled="disabled">Pilih</option>
                                             @foreach ($Store as $str)
@@ -42,7 +41,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="izin">Izin Penampilan</label>
-                                        <select name="izin" id="izin" class="form-control select2 select2-danger"
+                                        <select name="izin" id="izin" class="form-control select2"
                                             data-dropdown-css-class="select2-danger" style="width: 100%;">
                                             <option selected="true" disabled="disabled">Pilih</option>
                                             <option value="1">Keseluruhan</option>
@@ -70,16 +69,30 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="PasswordUsers">Password</label>
-                                        <input type="password" class="form-control" id="PasswordUsers"
-                                            placeholder="Password" name="PasswordUsers">
+                                        <div class="input-group" id="show_hide_password">
+                                            <input class="form-control" type="password" id="PasswordUsers"
+                                                placeholder="Password" name="PasswordUsers">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" style="cursor: pointer">
+                                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="PasswordRipet">Password Ulangi</label>
-                                        <input type="password" class="form-control" id="PasswordRipet"
-                                            placeholder="Passworrd" name="PasswordRipet">
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" class="form-control" id="PasswordRipet"
+                                                placeholder="Password" name="PasswordRipet">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" style="cursor: pointer">
+                                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -102,8 +115,8 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="NoUsers">No Whatsapp</label>
-                                        <input type="number" class="form-control" id="NoUsers" placeholder="No Whatsapp"
-                                            name="NoUsers">
+                                        <input type="number" class="form-control" id="NoUsers"
+                                            placeholder="No Whatsapp" name="NoUsers">
                                     </div>
                                 </div>
 

@@ -183,16 +183,15 @@
         <!-- /.container-fluid -->
     </section>
     <script>
-        //Format Penulisan
-        document.getElementById("harga").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pemakaian").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pengeluaran").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
+        $(function() {
+            $('input').keyup(function() {
+                // if (this.type === 'text') {
+                //     this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+                // }
+                if (this.type === 'text') {
+                    this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
+                }
+            });
         });
     </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 @endsection

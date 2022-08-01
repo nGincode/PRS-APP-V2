@@ -192,7 +192,6 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/buttons.colVis.min.js">
     </script>
-    <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -760,19 +759,6 @@ if (Auth::check()) {
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jquery-ui/jquery-ui.min.js"></script>
 
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-
-        $(function() {
-            $('input').keyup(function() {
-                if (this.type === 'text') {
-                    this.value = this.value.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
-                }
-            });
-        });
-    </script>
-
     <!-- Bootstrap 4 -->
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -845,12 +831,32 @@ if (Auth::check()) {
 
 
 
-    <script src="{{ url('/') }}/assets/js/js.js"></script>
+
+    <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
+    <script src="{{ url('/') }}/assets/js/custom.js"></script>
 
     @include('sweetalert::alert')
 
 
     <script>
+        $(document).ready(function() {
+            $("#show_hide_password span").on('click', function(event) {
+                event.preventDefault();
+                if ($('#show_hide_password input').attr("type") == "text") {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("fa-eye-slash");
+                    $('#show_hide_password i').removeClass("fa-eye");
+                } else if ($('#show_hide_password input').attr("type") == "password") {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("fa-eye-slash");
+                    $('#show_hide_password i').addClass("fa-eye");
+                }
+            });
+        });
+
+        $.widget.bridge('uibutton', $.ui.button)
+
+
         function GetURLParameter(sParam) {
             var sPageURL = window.location.search.substring(1);
             var sURLVariables = sPageURL.split('&');
@@ -861,6 +867,47 @@ if (Auth::check()) {
                 }
             }
         }
+
+
+        if (document.getElementById("harga")) {
+            document.getElementById("harga").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+        if (document.getElementById("konversi_pemakaian")) {
+            document.getElementById("konversi_pemakaian").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+        if (document.getElementById("konversi_pengeluaran")) {
+            document.getElementById("konversi_pengeluaran").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+
+        if (document.getElementById("harga_edit")) {
+            document.getElementById("harga_edit").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+
+        if (document.getElementById("konversi_pemakaian_edit")) {
+            document.getElementById("konversi_pemakaian_edit").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+        if (document.getElementById("konversi_pengeluaran_edit")) {
+            document.getElementById("konversi_pengeluaran_edit").addEventListener("keyup", function(e) {
+                this.value = numeral(this.value).format('0,0');
+            });
+        }
+
+
 
 
         function manage() {
