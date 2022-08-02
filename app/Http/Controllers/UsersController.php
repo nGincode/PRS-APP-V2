@@ -101,9 +101,7 @@ class UsersController extends Controller
                 'phone' => $request->input('NoUsers'),
                 'gender' => $request->input('gender'),
                 'izin' => $request->input('izin'),
-                'img' => $urlimg,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'last_login' => date('Y-m-d H:i:s')
+                'img' => $urlimg
             ];
             if (user::create($input)) {
                 $data = [
@@ -238,8 +236,7 @@ class UsersController extends Controller
                         'lastname' => $request->input('NamaBelakangUsers'),
                         'phone' => $request->input('NoUsers'),
                         'gender' => $request->input('gender'),
-                        'img' => $urlimg,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'img' => $urlimg
                     ];
                     if (user::where('id', $id)->update($input)) {
                         $data = [

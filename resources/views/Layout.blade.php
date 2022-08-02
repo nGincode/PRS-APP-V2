@@ -840,18 +840,34 @@ if (Auth::check()) {
 
     <script>
         $(document).ready(function() {
-            $("#show_hide_password span").on('click', function(event) {
-                event.preventDefault();
-                if ($('#show_hide_password input').attr("type") == "text") {
-                    $('#show_hide_password input').attr('type', 'password');
-                    $('#show_hide_password i').addClass("fa-eye-slash");
-                    $('#show_hide_password i').removeClass("fa-eye");
-                } else if ($('#show_hide_password input').attr("type") == "password") {
-                    $('#show_hide_password input').attr('type', 'text');
-                    $('#show_hide_password i').removeClass("fa-eye-slash");
-                    $('#show_hide_password i').addClass("fa-eye");
-                }
-            });
+            if ($("#show_hide_password").length) {
+                $("#show_hide_password span").on('click', function(event) {
+                    event.preventDefault();
+                    if ($('#show_hide_password input').attr("type") == "text") {
+                        $('#show_hide_password input').attr('type', 'password');
+                        $('#show_hide_password i').addClass("fa-eye-slash");
+                        $('#show_hide_password i').removeClass("fa-eye");
+                    } else if ($('#show_hide_password input').attr("type") == "password") {
+                        $('#show_hide_password input').attr('type', 'text');
+                        $('#show_hide_password i').removeClass("fa-eye-slash");
+                        $('#show_hide_password i').addClass("fa-eye");
+                    }
+                });
+
+                $("#show_hide_password_ulang span").on('click', function(event) {
+                    event.preventDefault();
+                    if ($('#show_hide_password_ulang input').attr("type") == "text") {
+                        $('#show_hide_password_ulang input').attr('type', 'password');
+                        $('#show_hide_password_ulang i').addClass("fa-eye-slash");
+                        $('#show_hide_password_ulang i').removeClass("fa-eye");
+                    } else if ($('#show_hide_password_ulang input').attr("type") == "password") {
+                        $('#show_hide_password_ulang input').attr('type', 'text');
+                        $('#show_hide_password_ulang i').removeClass("fa-eye-slash");
+                        $('#show_hide_password_ulang i').addClass("fa-eye");
+                    }
+                });
+            }
+
         });
 
         $.widget.bridge('uibutton', $.ui.button)
@@ -868,47 +884,9 @@ if (Auth::check()) {
             }
         }
 
-
-        if (document.getElementById("harga")) {
-            document.getElementById("harga").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-        if (document.getElementById("konversi_pemakaian")) {
-            document.getElementById("konversi_pemakaian").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-        if (document.getElementById("konversi_pengeluaran")) {
-            document.getElementById("konversi_pengeluaran").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-
-        if (document.getElementById("harga_edit")) {
-            document.getElementById("harga_edit").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-
-        if (document.getElementById("konversi_pemakaian_edit")) {
-            document.getElementById("konversi_pemakaian_edit").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-        if (document.getElementById("konversi_pengeluaran_edit")) {
-            document.getElementById("konversi_pengeluaran_edit").addEventListener("keyup", function(e) {
-                this.value = numeral(this.value).format('0,0');
-            });
-        }
-
-
-
+        $("#harga").keyup(function() {
+            $("#harga").val(numeral($("#harga").val()).format('0,0'));
+        });
 
         function manage() {
             if ($("#manage").length) {

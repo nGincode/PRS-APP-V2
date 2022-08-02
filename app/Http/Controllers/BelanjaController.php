@@ -91,9 +91,7 @@ class BelanjaController extends Controller
                             'stock' => $request->input('stock')[$key] ?? null,
                             'stock_uom' => $request->input('stock_uom')[$key] ?? null,
                             'stock_harga' => $request->input('stock_harga')[$key] ?? null,
-                            'hutang' => $request->input('hutang')[$key] ?? 0,
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'created_at' => date('Y-m-d H:i:s')
+                            'hutang' => $request->input('hutang')[$key] ?? 0
                         ];
 
                         $id = $request->input('id')[$key] ?? 0;
@@ -158,9 +156,7 @@ class BelanjaController extends Controller
                                 'stock' => $request->input('stock')[$key] ?? null,
                                 'stock_harga' => $request->input('stock_harga')[$key] ?? null,
                                 'stock_uom' => $inventory['satuan'],
-                                'hutang' => $request->input('hutang')[$key] ?? 0,
-                                'updated_at' => date('Y-m-d H:i:s'),
-                                'created_at' => date('Y-m-d H:i:s')
+                                'hutang' => $request->input('hutang')[$key] ?? 0
                             ];
 
                             if ($id) {

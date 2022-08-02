@@ -118,11 +118,9 @@ class InventoryController extends Controller
                     'qty' => $request->input('qty'),
                     'satuan' => $request->input('satuan'),
                     'auto_harga' => $request->input('auto_harga'),
-                    'harga_manual' => $request->input('harga'),
-                    'harga_auto' => $request->input('harga'),
-                    'tgl_harga' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'harga_manual' => $this->unrupiah($request->input('harga')),
+                    'harga_auto' => $this->unrupiah($request->input('harga')),
+                    'tgl_harga' => date('Y-m-d H:i:s')
                 ];
                 if (Inventory::create($input)) {
                     $data = [
@@ -349,13 +347,11 @@ class InventoryController extends Controller
                 'ket' => $ket,
                 'store_id' => $request->session()->get('store_id'),
                 'users_id' => $request->session()->get('id'),
-                'qty_sebelum' => $bahan['qty'],
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
+                'qty_sebelum' => $bahan['qty']
             ];
 
             if ($qtyjml) {
-                if (Inventory::where('id', $bahan['id'])->update(['qty' => $qtyjml, 'updated_at' => date('Y-m-d H:i:s')])) {
+                if (Inventory::where('id', $bahan['id'])->update(['qty' => $qtyjml])) {
                     if (OpnameStock::insert($input)) {
                         $data = [
                             'toast' => true,

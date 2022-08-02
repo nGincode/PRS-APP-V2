@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('qty');
             $table->integer('harga');
             $table->string('satuan', 10);
+            $table->timestamps();
         });
     }
 

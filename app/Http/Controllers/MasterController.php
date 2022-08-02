@@ -126,9 +126,7 @@ class MasterController extends Controller
                     'rekening' => $request->input('rekening'),
                     'hutang' => $request->input('hutang'),
                     'wa' => $request->input('wa'),
-                    'delete' => false,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'delete' => false
                 ];
                 if (Supplier::create($input)) {
                     $data = [
@@ -220,9 +218,7 @@ class MasterController extends Controller
                         'tipe' => $request->input('tipe'),
                         'rekening' => $request->input('rekening'),
                         'hutang' => $request->input('hutang'),
-                        'wa' => $request->input('wa'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'wa' => $request->input('wa')
                     ];
                     if (Supplier::where('id', $id)->update($input)) {
                         $data = [
@@ -440,9 +436,7 @@ class MasterController extends Controller
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
                     'pengguna' => $pengguna,
-                    'delete' => false,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'delete' => false
                 ];
                 if (Bahan::create($input)) {
                     $data = [
@@ -550,8 +544,7 @@ class MasterController extends Controller
                         'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                         'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
                         'pengguna' => $pengguna,
-                        'delete' => false,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'delete' => false
                     ];
                     if (Bahan::where('id', $id)->update($input)) {
                         $data = [
@@ -670,7 +663,7 @@ class MasterController extends Controller
                     }
                 }
             } else {
-                $pengguna .= '-';
+                $pengguna .= 'Semua';
             }
 
             $konversi = 'Pemakaian : ' . $value['konversi_pemakaian'] . ' ' . $value['satuan_pemakaian'];
@@ -742,6 +735,14 @@ class MasterController extends Controller
                 } else {
                     $kategori = 'X' . sprintf("%05s", Peralatan::where('kategori', $request->input('kategori'))->count() + 1);
                 }
+
+
+                if ($request->input('pengguna')) {
+                    $pengguna = json_encode($request->input('pengguna'));
+                } else {
+                    $pengguna = null;
+                }
+
                 $input = [
                     'nama' => $request->input('nama'),
                     'kode' => 'P' . $kategori,
@@ -750,10 +751,8 @@ class MasterController extends Controller
                     'harga' =>  $this->unrupiah($request->input('harga')),
                     'satuan_pemakaian' => $request->input('satuan_pemakaian'),
                     'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
-                    'pengguna' => json_encode($request->input('pengguna')),
-                    'delete' => false,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'pengguna' => $pengguna,
+                    'delete' => false
                 ];
                 if (Peralatan::create($input)) {
                     $data = [
@@ -844,15 +843,19 @@ class MasterController extends Controller
                 } else {
 
 
+                    if ($request->input('pengguna')) {
+                        $pengguna = json_encode($request->input('pengguna'));
+                    } else {
+                        $pengguna = null;
+                    }
                     $input = [
                         'nama' => $request->input('nama'),
                         'satuan_pembelian' => $request->input('satuan_pembelian'),
                         'harga' =>  $this->unrupiah($request->input('hargaa')),
                         'satuan_pemakaian' => $request->input('satuan_pemakaian'),
-                        'pengguna' => json_encode($request->input('pengguna')),
+                        'pengguna' => $pengguna,
                         'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaiann')),
-                        'delete' => false,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'delete' => false
                     ];
                     if (Peralatan::where('id', $id)->update($input)) {
                         $data = [
@@ -1027,9 +1030,7 @@ class MasterController extends Controller
                     'jabatan' => $request->input('jabatan'),
                     'active' => $request->input('status_pekerja'),
                     'img' => $urlimg,
-                    'delete' => false,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'delete' => false
                 ];
                 if (Pegawai::create($input)) {
                     $data = [
@@ -1148,8 +1149,7 @@ class MasterController extends Controller
                         'jabatan' => $request->input('jabatan'),
                         'active' => $request->input('status_pekerja'),
                         'img' => $urlimg,
-                        'delete' => false,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'delete' => false
                     ];
                     if (Pegawai::where('id', $id)->update($input)) {
                         $data = [
@@ -1284,9 +1284,7 @@ class MasterController extends Controller
                 $input = [
                     'nama' => $request->input('nama'),
                     'singkat' => $request->input('singkat'),
-                    'delete' => false,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'delete' => false
                 ];
                 if (Satuan::create($input)) {
                     $data = [
@@ -1371,9 +1369,7 @@ class MasterController extends Controller
 
                     $input = [
                         'nama' => $request->input('nama'),
-                        'singkat' => $request->input('singkat'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'singkat' => $request->input('singkat')
                     ];
                     if (Satuan::where('id', $id)->update($input)) {
                         $data = [

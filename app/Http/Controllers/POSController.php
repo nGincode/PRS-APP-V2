@@ -13,9 +13,6 @@ use App\Models\LogistikBelanja;
 use App\Models\LogistikOrder;
 use App\Models\Groups;
 use App\Models\Inventory;
-use App\Models\Olahan;
-use App\Models\Satuan;
-use App\Models\OpnameStock;
 use App\Models\POS;
 use App\Models\POSBill;
 use App\Models\POSBillItem;
@@ -65,8 +62,7 @@ class POSController extends Controller
         if ($inventory_id && $bahan_id) {
             if ($cek) {
                 POS::where('inventory_id', $inventory_id)->update([
-                    'qty' => 1 + $cek['qty'],
-                    'updated_at' => date('Y-m-d H:i:s')
+                    'qty' => 1 + $cek['qty']
                 ]);
             } else {
                 if ($inventory['auto_harga']) {
@@ -81,9 +77,7 @@ class POSController extends Controller
                     'bahan_id' => $bahan_id,
                     'qty' => 1,
                     'satuan' => $inventory['satuan'],
-                    'harga' => $harga,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'harga' => $harga
                 ]);
             }
         }
@@ -317,9 +311,7 @@ class POSController extends Controller
                         'bahan_id' => $inventory['bahan_id'],
                         'qty' => 1 + $pos['qty'],
                         'satuan' => $inventory['satuan'],
-                        'harga' => $harga,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'harga' => $harga
                     ])
                 ) {
                     echo json_encode([]);
@@ -340,9 +332,7 @@ class POSController extends Controller
                         'bahan_id' => $inventory['bahan_id'],
                         'qty' => 1,
                         'satuan' => $inventory['satuan'],
-                        'harga' => $harga,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'harga' => $harga
                     ])
                 ) {
                     echo json_encode([]);
@@ -449,9 +439,7 @@ class POSController extends Controller
                 'disc' => null,
                 'tax' => null,
                 'paid' => 1,
-                'total' => $jumlahbelanja,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
+                'total' => $jumlahbelanja
             ];
 
             if ($id = POSBill::insertGetId($data)) {
@@ -463,15 +451,13 @@ class POSController extends Controller
                         'store_id' => $id_store,
                         'posbill_id' => $id,
                         'bahan_id' => $value1['bahan_id'],
-                        'tgl' => date('Y-m-d'),
+                        'tgl' => date('Y-m-d H:i:s'),
                         'nama' => $value1['bahan']->nama,
                         'qty' => $value1['qty'],
                         'satuan' => $value1['satuan'],
                         'harga' => $value1['harga'],
                         'total' => $value1['qty'] * $value1['harga'],
-                        'paid' => 1,
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'paid' => 1
                     ];
                 }
 

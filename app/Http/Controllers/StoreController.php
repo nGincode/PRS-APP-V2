@@ -115,9 +115,7 @@ class StoreController extends Controller
                     'alamat' => $request->input('alamat'),
                     'wa' => $request->input('wa'),
                     'jam_kerja' => $Jam_kerja,
-                    'img' => $urlimg,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'img' => $urlimg
                 ];
                 if (store::create($input)) {
                     $data = [
@@ -259,8 +257,7 @@ class StoreController extends Controller
                             'alamat' => $request->input('alamat'),
                             'wa' => $request->input('wa'),
                             'jam_kerja' => $Jam_kerja,
-                            'img' => $urlimg,
-                            'updated_at' => date('Y-m-d H:i:s')
+                            'img' => $urlimg
                         ];
                         if (store::where('id', $id)->update($input)) {
                             $data = [

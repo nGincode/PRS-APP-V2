@@ -171,9 +171,7 @@ class OrderController extends Controller
                             'tgl' => date('Y-m-d H:i:s'),
                             'ket' => $request->input('ket'),
                             'nohp' => $request->input('no'),
-                            'logistik' => $request->input('tujuan'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                            'created_at' => date('Y-m-d H:i:s')
+                            'logistik' => $request->input('tujuan')
                         ]
                     );
                 }
@@ -186,9 +184,7 @@ class OrderController extends Controller
                         'tgl' => date('Y-m-d H:i:s'),
                         'ket' => $request->input('ket'),
                         'nohp' => $request->input('no'),
-                        'logistik' => $request->input('tujuan'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'created_at' => date('Y-m-d H:i:s')
+                        'logistik' => $request->input('tujuan')
                     ]
                 );
             }
@@ -222,9 +218,7 @@ class OrderController extends Controller
                                 'tgl' => date('Y-m-d H:i:s'),
                                 'nama' => $inventory['bahan']->nama,
                                 'qty' => $request->input('qty')[$key],
-                                'harga' => $harga,
-                                'updated_at' => date('Y-m-d H:i:s'),
-                                'created_at' => date('Y-m-d H:i:s')
+                                'harga' => $harga
                             ];
 
                             $id = $request->input('id')[$key] ?? 0;

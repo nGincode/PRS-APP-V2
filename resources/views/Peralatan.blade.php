@@ -150,14 +150,4 @@
 
         <!-- /.container-fluid -->
     </section>
-    <script>
-        //Format Penulisan
-        document.getElementById("harga").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pemakaian").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-    </script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
 @endsection

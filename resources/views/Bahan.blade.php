@@ -94,7 +94,7 @@
                                             <div class="input-group-prepend" id="konversid1">
 
                                             </div>
-                                            <input type="text" name="konversi_pemakaian" id="konversi_pemakaian"
+                                            <input type="number" name="konversi_pemakaian" id="konversi_pemakaian"
                                                 class="form-control" placeholder="Satuan Pemakaian">
                                             <div class="input-group-append" id="konversib1">
                                             </div>
@@ -122,7 +122,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend" id="konversid2">
                                             </div>
-                                            <input type="text" name="konversi_pengeluaran" id="konversi_pengeluaran"
+                                            <input type="number" name="konversi_pengeluaran" id="konversi_pengeluaran"
                                                 class="form-control" placeholder="Satuan Pengeluaran">
                                             <div class="input-group-append" id="konversib2">
                                             </div>

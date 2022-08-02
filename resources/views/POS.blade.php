@@ -793,7 +793,7 @@
                 },
                 dataType: 'json',
                 error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
+                    // popup(status, true, xhr.status + " " + error);
                 },
                 success: function(data) {
                     if (data.status) {

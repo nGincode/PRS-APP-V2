@@ -161,9 +161,7 @@ class GroupController extends Controller
         } else {
             $input = [
                 'nama' => $request->input('nama'),
-                'permission' => $permission,
-                'updated_at' => date('Y-m-d H:i:s'),
-                'created_at' => date('Y-m-d H:i:s')
+                'permission' => $permission
             ];
             if ($grp = Groups::insertGetId($input)) {
                 if ($grp) {
@@ -289,8 +287,7 @@ class GroupController extends Controller
                     $permission = serialize($request->input('permission'));
                     $input = [
                         'nama' => $request->input('nama'),
-                        'permission' => $permission,
-                        'updated_at' => date('Y-m-d H:i:s')
+                        'permission' => $permission
                     ];
                     if (Groups::where('id', $id)->update($input)) {
                         if ($request->input('usersedit')) {

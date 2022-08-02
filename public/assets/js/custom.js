@@ -1,8 +1,8 @@
 //penggunaan library
-$(function() {
+$(function () {
 
     //Initialize Select2 Elements
-    $('.select2').select2().on("change", function(e) {
+    $('.select2').select2().on("change", function (e) {
         $(this).valid()
     });
 
@@ -13,17 +13,17 @@ $(function() {
 
     $('.select2').select2({
         theme: 'bootstrap4'
-                    });
+    });
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', {
-            'placeholder': 'dd/mm/yyyy'
-        })
-        //Datemask2 mm/dd/yyyy
+        'placeholder': 'dd/mm/yyyy'
+    })
+    //Datemask2 mm/dd/yyyy
     $('#datemask2').inputmask('mm/dd/yyyy', {
-            'placeholder': 'mm/dd/yyyy'
-        })
-        //Money Euro
+        'placeholder': 'mm/dd/yyyy'
+    })
+    //Money Euro
     $('[data-mask]').inputmask()
 
     //Date picker
@@ -75,14 +75,14 @@ $(function() {
 
     //Colorpicker
     $('.my-colorpicker1').colorpicker()
-        //color picker with addon
+    //color picker with addon
     $('.my-colorpicker2').colorpicker()
 
-    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+    $('.my-colorpicker2').on('colorpickerChange', function (event) {
         $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
     })
 
-    $("input[data-bootstrap-switch]").each(function() {
+    $("input[data-bootstrap-switch]").each(function () {
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
     })
 
@@ -253,29 +253,29 @@ function popup($icon, $toast, $pesan, reset = null) {
         $('.form-control').removeClass('is-valid');
         $(reset)[0].reset();
 
-        if ($('.input-group-prepend')) {
-            $('.input-group-prepend').html('');
-        }
-        if ($('.input-group-append')) {
-            $('.input-group-append').html('');
-        }
+            if ($('.input-group-prepend').length) {
+                $('.input-group-prepend').html('');
+            } 
+            if ($('.input-group-append').length && !$('#show_hide_password').length) {
+                $('.input-group-append').html('');
+            }
 
     }
 
-    if ($('#manage')) {
+    if ($('#manage').length) {
         $('#manage').DataTable().ajax.reload();
     }
 
 }
 
 //autosave panel
-$(document).ready(function() {
+$(document).ready(function () {
 
     if ($('#divautosave').length) {
 
         var stickyNavTop = $('#divautosave').offset().top;
 
-        var stickyNav = function() {
+        var stickyNav = function () {
 
             var scrollTop = $(window).scrollTop();
 
@@ -307,7 +307,7 @@ $(document).ready(function() {
 
         stickyNav();
 
-        $(window).scroll(function() {
+        $(window).scroll(function () {
 
             stickyNav();
 
@@ -337,22 +337,22 @@ jQuery.extend(jQuery.validator.messages, {
 });
 
 //form
-$(document).ready(function() {
+$(document).ready(function () {
     //users
     if ($('#FormUsers').length) {
         $('#FormUsers').validate({
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
             rules: {
@@ -397,7 +397,7 @@ $(document).ready(function() {
             messages: {}
         });
 
-        $('#FormUsers').on('submit', function(event) {
+        $('#FormUsers').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -411,10 +411,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormUsers');
                         } else {
@@ -432,19 +432,19 @@ $(document).ready(function() {
         $('#FormStore').validate({
             errorElement: 'span',
             errorClass: "help-block",
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 console.log(element);
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
                 console.log(element);
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
                 console.log(element);
             },
@@ -472,7 +472,7 @@ $(document).ready(function() {
             messages: {}
         });
 
-        $('#FormStore').on('submit', function(event) {
+        $('#FormStore').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -486,10 +486,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormStore');
                         } else {
@@ -506,17 +506,17 @@ $(document).ready(function() {
     if ($('#FormGroup').length) {
         $('#FormGroup').validate({
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
             rules: {
@@ -534,7 +534,7 @@ $(document).ready(function() {
             messages: {}
         });
 
-        $('#FormGroup').on('submit', function(event) {
+        $('#FormGroup').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -548,10 +548,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormGroup');
                         } else {
@@ -568,17 +568,17 @@ $(document).ready(function() {
     if ($('#FormSupplier').length) {
         $('#FormSupplier').validate({
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
             rules: {
@@ -589,12 +589,18 @@ $(document).ready(function() {
                 'alamat': {
                     required: true,
                     maxlength: 191
+                },
+                'rekening': {
+                    maxlength: 10
+                },
+                'wa': {
+                    maxlength: 15
                 }
             },
             messages: {}
         });
 
-        $('#FormSupplier').on('submit', function(event) {
+        $('#FormSupplier').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -608,10 +614,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormSupplier');
                         } else {
@@ -628,17 +634,17 @@ $(document).ready(function() {
     if ($('#FormSatuan').length) {
         $('#FormSatuan').validate({
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
             rules: {
@@ -654,7 +660,7 @@ $(document).ready(function() {
             messages: {}
         });
 
-        $('#FormSatuan').on('submit', function(event) {
+        $('#FormSatuan').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -668,10 +674,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormSatuan');
                         } else {
@@ -725,23 +731,23 @@ $(document).ready(function() {
                 // OutletUsers : "Masih Kosong"
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 $(element).removeClass('is-valid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
         });
 
-        $('#FormBahan').on('submit', function(event) {
+        $('#FormBahan').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -755,10 +761,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormBahan');
                         } else {
@@ -802,23 +808,23 @@ $(document).ready(function() {
             },
             messages: {},
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 $(element).removeClass('is-valid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
         });
 
-        $('#FormPeralatan').on('submit', function(event) {
+        $('#FormPeralatan').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -832,10 +838,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormPeralatan');
                         } else {
@@ -902,23 +908,23 @@ $(document).ready(function() {
             },
             messages: {},
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 $(element).removeClass('is-valid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
         });
 
-        $('#FormPegawai').on('submit', function(event) {
+        $('#FormPegawai').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -932,10 +938,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormPegawai');
                         } else {
@@ -980,23 +986,23 @@ $(document).ready(function() {
             },
             messages: {},
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 $(element).removeClass('is-valid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
         });
 
-        $('#FormInventoryStock').on('submit', function(event) {
+        $('#FormInventoryStock').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -1010,10 +1016,10 @@ $(document).ready(function() {
                     contentType: false,
                     processData: false,
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan, '#FormInventoryStock');
                         } else {
@@ -1052,23 +1058,23 @@ $(document).ready(function() {
                 // OutletUsers : "Masih Kosong"
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
                 $(element).removeClass('is-valid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             },
-            success: function(validClass, element) {
+            success: function (validClass, element) {
                 $(element).addClass('is-valid');
             },
         });
 
-        $('#FormInventoryOpname').on('submit', function(event) {
+        $('#FormInventoryOpname').on('submit', function (event) {
             var isValid = $(this).valid();
             event.preventDefault();
             var formData = new FormData(this);
@@ -1099,10 +1105,10 @@ $(document).ready(function() {
                             contentType: false,
                             processData: false,
                             dataType: 'json',
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 popup(status, true, xhr.status + " " + error);
                             },
-                            success: function(data) {
+                            success: function (data) {
                                 if (data.status === 'success') {
                                     popup(data.status, data.toast, data.pesan, '#FormInventoryOpname');
                                 } else {
@@ -1120,9 +1126,9 @@ $(document).ready(function() {
 });
 
 //Lainnya
-$(document).ready(function() {
+$(document).ready(function () {
     //Tambah Jam Kerja
-    $("#add_row_jam_kerja").unbind('click').bind('click', function() {
+    $("#add_row_jam_kerja").unbind('click').bind('click', function () {
         var row_id = $(".row #isi_jam_kerja").length + 1;
         var html = '<div class="col-12 col-sm-12" id="isi_jam_kerja"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' + row_id + '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
         if (row_id >= 2) {
@@ -1132,7 +1138,7 @@ $(document).ready(function() {
 
 
     //Tambah Belanja
-    $("#add_row_belanja").unbind('click').bind('click', function() {
+    $("#add_row_belanja").unbind('click').bind('click', function () {
         $.ajax({
             url: 'Belanja/Namabarang',
             type: "POST",
@@ -1140,7 +1146,7 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 var row_id = $("#tambahbelanja tbody tr").length - 1;
                 var html = '<tr id="tr_' + row_id + '"> <td style="padding-left: 50px;"><a class="btn btn-warning btn-sm" id="hapus_' + row_id + '" onclick="hapusbelanja(false,' + row_id + ')" style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i class="fa fa-times"></i> </a><input type="hidden" value="" id="id_' + row_id + '" name="id[]"><input type="hidden" value="' + row_id + '" id="key_' + row_id + '" name="key[]"> <select name="nama[]" onchange="clicknama(this.value, ' + row_id + ')" id="nama_' + row_id + '" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;"> <option selected="true" disabled="disabled">Pilih</option> <option value="Oprasional">Oprasional</option> <option value="Supplay">Supplay</option> <option value="ART">ART</option>';
 
@@ -1160,7 +1166,7 @@ $(document).ready(function() {
                     $("#tambahbelanja tbody tr:last").after(html);
                 }
 
-                $('.select2').select2().on("change", function(e) {
+                $('.select2').select2().on("change", function (e) {
                     $(this).valid()
                 });
 
@@ -1180,11 +1186,11 @@ function Edit(id, title) {
         data: {
             id: id
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             var err = eval("(" + xhr.responseText + ")");
             popup('error', true, err.Message);
         },
-        success: function(data) {
+        success: function (data) {
             $('#ModalLabel').html('Edit ' + title);
             $('#ModelView').html(data);
         }
@@ -1212,10 +1218,10 @@ function Hapus(id, title) {
                     id: id
                 },
                 dataType: 'json',
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     popup(status, true, xhr.status + " " + error);
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data.status === 'success') {
                         popup(data.status, data.toast, data.pesan);
                     } else {
@@ -1288,10 +1294,10 @@ function hapusbelanja(id, row) {
                         id: id
                     },
                     dataType: 'json',
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         popup(status, true, xhr.status + " " + error);
                     },
-                    success: function(data) {
+                    success: function (data) {
                         if (data.status === 'success') {
                             popup(data.status, data.toast, data.pesan);
                             $('#tr_' + row).html('');
@@ -1324,21 +1330,21 @@ function uploadbelanja() {
                 url: "Belanja/Upload",
                 type: "POST",
                 dataType: 'json',
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     popup(status, true, xhr.status + " " + error);
                 },
-                success: function(data) {
+                success: function (data) {
                     if (data.status === 'success') {
                         popup(data.status, data.toast, data.pesan);
                         setTimeout(
-                            function() {
+                            function () {
                                 location.reload();
                             },
                             1000);
                     } else {
                         popup(data.status, data.toast, data.pesan);
                         setTimeout(
-                            function() {
+                            function () {
                                 location.reload();
                             },
                             1500);

@@ -60,16 +60,30 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="PasswordUsersLama_edit">Password Lama</label>
-                        <input type="password" class="form-control" id="PasswordUsersLama_edit" placeholder="Password"
-                            name="PasswordUsersLama">
+                        <div class="input-group" id="show_hide_password_edit">
+                            <input type="password" class="form-control" id="PasswordUsersLama_edit" placeholder="Password"
+                                name="PasswordUsersLama">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="cursor: pointer">
+                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="PasswordUsers_edit">Password Baru</label>
-                        <input type="password" class="form-control" id="PasswordUsers_edit" placeholder="Password"
-                            name="PasswordUsersEdit">
+                        <div class="input-group" id="show_hide_password_edit_ulang">
+                            <input type="password" class="form-control" id="PasswordUsers_edit" placeholder="Password"
+                                name="PasswordUsersEdit">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="cursor: pointer">
+                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -138,101 +152,6 @@
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
-    <script>
-        $(function() {
-            bsCustomFileInput.init();
-        });
-
-        $(document).ready(function() {
-            //users Edit
-            if ($("#UsersEdit").length) {
-                $("#UsersEdit").validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        "OutletUsers": {
-                            required: true
-                        },
-                        "Email": {
-                            required: true,
-                            email: true
-                        },
-                        "Username": {
-                            required: true,
-                            minlength: 6
-                        },
-                        "PasswordUsersLama": {
-                            required: true,
-                            minlength: 6
-                        },
-                        "PasswordUsersEdit": {
-                            required: true,
-                            minlength: 6
-                        },
-                        "PasswordRipetEdit": {
-                            required: true,
-                            equalTo: "#PasswordUsersEdit"
-                        },
-                        "NamaDepanUsers": {
-                            required: true
-                        },
-                        "NamaBelakangUsers": {
-                            required: true
-                        },
-                        "NoUsers": {
-                            required: true
-                        },
-                        "izin": {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    }
-                });
-
-                $("#UsersEdit").on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan, "#UsersEdit");
-                                    $('#Modal').modal('hide');
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($StoreData)
@@ -376,87 +295,6 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
-    <script>
-        $(document).ready(function() {
-            $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
-                var row_id = $(".row #isi_jam_kerja_edit").length + 1;
-                var html =
-                    '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
-                    row_id +
-                    '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
-                if (row_id >= 2) {
-                    $(".row #akhir_isi_jam_kerja_edit:last").after(html);
-                }
-            });
-
-            if ($("#StoreEdit").length) {
-                $("#StoreEdit").validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'status': {
-                            required: true
-                        },
-                        'tipe': {
-                            required: true
-                        },
-                        'alamat': {
-                            required: true
-                        },
-                        'wa': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    }
-                });
-
-                $("#StoreEdit").on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan, "#StoreEdit");
-                                    $('#Modal').modal('hide');
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($GroupsData)
@@ -706,87 +544,6 @@
         </div>
         </div>
     </form>
-    <script>
-        $(document).ready(function() {
-            var edit = $("#GroupsEdit");
-            if (edit.length) {
-                edit.validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'status': {
-                            required: true
-                        },
-                        'tipe': {
-                            required: true
-                        },
-                        'alamat': {
-                            required: true
-                        },
-                        'wa': {
-                            required: true
-                        },
-                        'usersedit[]': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    }
-                });
-
-                edit.on("submit", function(event) {
-                    var isValid = edit.valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: edit.attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    edit[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-
-
-        $(function() {
-            bsCustomFileInput.init();
-        });
-    </script>
 @endisset
 
 @isset($SupplierData)
@@ -861,71 +618,6 @@
         </div>
         </div>
     </form>
-    <script>
-        $(document).ready(function() {
-            var id = $("#SupplierEdit");
-
-            if (id.length) {
-                id.validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'alamat': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    }
-                });
-
-                id.on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    id[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($SatuanData)
@@ -959,71 +651,6 @@
         </div>
         </div>
     </form>
-    <script>
-        $(document).ready(function() {
-            var id = $("#SatuanEdit");
-
-            if (id.length) {
-                id.validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'singkat': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    }
-                });
-
-                id.on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    id[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($BahanData)
@@ -1191,88 +818,6 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
-    <script>
-        $(document).ready(function() {
-            var id = $("#BahanEdit");
-
-            if (id.length) {
-                id.validate({
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'satuan_pembelian': {
-                            required: true
-                        },
-                        'harga': {
-                            required: true
-                        },
-                        'satuan_pemakaian': {
-                            required: true
-                        },
-                        'konversi_pemakaian': {
-                            required: true
-                        },
-                        'satuan_pengeluaran': {
-                            required: true
-                        },
-                        'konversi_pengeluaran': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    }
-                });
-
-                id.on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    id[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-        //Format Penulisan
-        document.getElementById("harga_edit").value = numeral(document.getElementById("harga_edit").value).format('0,0');
-    </script>
 @endisset
 
 @isset($PeralatanData)
@@ -1314,8 +859,9 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Satuan Pembelian</label>
-                        <select name="satuan_pembelian" id="satuan_pembelian" class="form-control select2 select2-danger"
-                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
+                        <select onchange="pembelianedit(this.value)" name="satuan_pembelian" id="satuan_pembelian"
+                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
+                            style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s1)
@@ -1362,7 +908,7 @@
                             <div class="input-group-prepend" id="konversid1edit"> <span
                                     class="input-group-text">{{ $PeralatanData['satuan_pembelian'] }}</span>
                             </div>
-                            <input type="text" value="{{ $PeralatanData['konversi_pemakaian'] }}"
+                            <input type="number" value="{{ $PeralatanData['konversi_pemakaian'] }}"
                                 name="konversi_pemakaiann" id="konversi_pemakaiann" class="form-control"
                                 placeholder="Satuan Pemakaian">
                             <div class="input-group-append" id="konversib1edit"> <span
@@ -1404,94 +950,6 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
-    <script>
-        $(function() {
-            $('.select2').select2().on("change", function(e) {
-                $(this).valid()
-            });
-        });
-        $(document).ready(function() {
-            var id = $("#PeralatanEdit");
-
-            if (id.length) {
-                id.validate({
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'satuan_pembelian': {
-                            required: true
-                        },
-                        'hargaa': {
-                            required: true
-                        },
-                        'satuan_pemakaian': {
-                            required: true
-                        },
-                        'konversi_pemakaiann': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    }
-                });
-
-                id.on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    id[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-
-
-        //Format Penulisan
-        document.getElementById("hargaa").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-        document.getElementById("konversi_pemakaiann").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-    </script>
 @endisset
 
 @isset($PegawaiData)
@@ -1682,107 +1140,6 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
-    <script>
-        $(function() {
-            $('.select2').select2().on("change", function(e) {
-                $(this).valid()
-            });
-            bsCustomFileInput.init();
-        });
-        $(document).ready(function() {
-            var id = $("#PegawaiEdit");
-
-            if (id.length) {
-                id.validate({
-                    rules: {
-                        'nama': {
-                            required: true
-                        },
-                        'store': {
-                            required: true
-                        },
-                        'tempat_lahir': {
-                            required: true
-                        },
-                        'tanggal_lahir': {
-                            required: true
-                        },
-                        'tanggal_masuk': {
-                            required: true
-                        },
-                        'agama': {
-                            required: true
-                        },
-                        'gender': {
-                            required: true
-                        },
-                        'alamat': {
-                            required: true
-                        },
-                        'wa': {
-                            required: true
-                        },
-                        'divisi': {
-                            required: true
-                        },
-                        'jabatan': {
-                            required: true
-                        },
-                        'status_pekerja': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // OutletUsers : "Masih Kosong"
-                    },
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                        $(element).removeClass('is-valid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    }
-                });
-
-                id.on("submit", function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr("action"),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.status === "success") {
-                                    popup(data.status, data.toast, data.pesan);
-                                    id[0].reset();
-                                    $('#Modal').modal('hide');
-                                    $('#manage').DataTable().ajax.reload();
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($OlahanDataBahanBaku)
@@ -2072,9 +1429,649 @@
 
 <script>
     $(function() {
-
         $('.select2').select2().on("change", function(e) {
             $(this).valid()
+        });
+
+        bsCustomFileInput.init();
+
+    });
+
+    if ($("#show_hide_password_edit")) {
+        $("#show_hide_password_edit span").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password_edit input').attr("type") == "text") {
+                $('#show_hide_password_edit input').attr('type', 'password');
+                $('#show_hide_password_edit i').addClass("fa-eye-slash");
+                $('#show_hide_password_edit i').removeClass("fa-eye");
+            } else if ($('#show_hide_password_edit input').attr("type") == "password") {
+                $('#show_hide_password_edit input').attr('type', 'text');
+                $('#show_hide_password_edit i').removeClass("fa-eye-slash");
+                $('#show_hide_password_edit i').addClass("fa-eye");
+            }
+        });
+
+        $("#show_hide_password_edit_ulang span").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
+                $('#show_hide_password_edit_ulang input').attr('type', 'password');
+                $('#show_hide_password_edit_ulang i').addClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang i').removeClass("fa-eye");
+            } else if ($('#show_hide_password_edit_ulang input').attr("type") == "password") {
+                $('#show_hide_password_edit_ulang input').attr('type', 'text');
+                $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang i').addClass("fa-eye");
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        //Users Edit
+        if ($("#UsersEdit").length) {
+            $("#UsersEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    "OutletUsers": {
+                        required: true
+                    },
+                    "Email": {
+                        required: true,
+                        email: true
+                    },
+                    "Username": {
+                        required: true,
+                        minlength: 6
+                    },
+                    "PasswordUsersLama": {
+                        required: true,
+                        minlength: 6
+                    },
+                    "PasswordUsersEdit": {
+                        required: true,
+                        minlength: 6
+                    },
+                    "PasswordRipetEdit": {
+                        required: true,
+                        equalTo: "#PasswordUsersEdit"
+                    },
+                    "NamaDepanUsers": {
+                        required: true
+                    },
+                    "NamaBelakangUsers": {
+                        required: true
+                    },
+                    "NoUsers": {
+                        required: true
+                    },
+                    "izin": {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#UsersEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan, "#UsersEdit");
+                                $('#Modal').modal('hide');
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        //Store Edit
+        if ($("#StoreEdit").length) {
+            $("#StoreEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'status': {
+                        required: true
+                    },
+                    'tipe': {
+                        required: true
+                    },
+                    'alamat': {
+                        required: true
+                    },
+                    'wa': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#StoreEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan, "#StoreEdit");
+                                $('#Modal').modal('hide');
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        //Group Edit
+        if ($("#GroupsEdit").length) {
+            $("#GroupsEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'status': {
+                        required: true
+                    },
+                    'tipe': {
+                        required: true
+                    },
+                    'alamat': {
+                        required: true
+                    },
+                    'wa': {
+                        required: true
+                    },
+                    'usersedit[]': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#GroupsEdit").on("submit", function(event) {
+                var isValid = $("#GroupsEdit").valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $("#GroupsEdit").attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#GroupsEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        //Supplier Edit
+        if ($("#SupplierEdit").length) {
+            $("#SupplierEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'alamat': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#SupplierEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#SupplierEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        //Satuan Edit
+        if ($("#SatuanEdit").length) {
+            $("#SatuanEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'singkat': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#SatuanEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#SatuanEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+        //Bahan Edit
+        if ($("#BahanEdit").length) {
+            $("#BahanEdit").validate({
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'satuan_pembelian': {
+                        required: true
+                    },
+                    'harga': {
+                        required: true
+                    },
+                    'satuan_pemakaian': {
+                        required: true
+                    },
+                    'konversi_pemakaian': {
+                        required: true
+                    },
+                    'satuan_pengeluaran': {
+                        required: true
+                    },
+                    'konversi_pengeluaran': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                }
+            });
+
+            $("#BahanEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#BahanEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+        $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+        $("#harga_edit").keyup(function() {
+            $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+        });
+
+        //Peralatan Edit
+        if ($("#PeralatanEdit").length) {
+            $("#PeralatanEdit").validate({
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'satuan_pembelian': {
+                        required: true
+                    },
+                    'hargaa': {
+                        required: true
+                    },
+                    'satuan_pemakaian': {
+                        required: true
+                    },
+                    'konversi_pemakaiann': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                }
+            });
+
+            $("#PeralatanEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#PeralatanEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+        $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
+        $("#hargaa").keyup(function() {
+            $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
+        });
+
+        //Pegawai Edit
+        if ($("#PegawaiEdit").length) {
+            $("#PegawaiEdit").validate({
+                rules: {
+                    'nama': {
+                        required: true
+                    },
+                    'store': {
+                        required: true
+                    },
+                    'tempat_lahir': {
+                        required: true
+                    },
+                    'tanggal_lahir': {
+                        required: true
+                    },
+                    'tanggal_masuk': {
+                        required: true
+                    },
+                    'agama': {
+                        required: true
+                    },
+                    'gender': {
+                        required: true
+                    },
+                    'alamat': {
+                        required: true
+                    },
+                    'wa': {
+                        required: true
+                    },
+                    'divisi': {
+                        required: true
+                    },
+                    'jabatan': {
+                        required: true
+                    },
+                    'status_pekerja': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                },
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                }
+            });
+
+            $("#PegawaiEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan);
+                                $("#PegawaiEdit")[0].reset();
+                                $('#Modal').modal('hide');
+                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+
+        $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
+            var row_id = $(".row #isi_jam_kerja_edit").length + 1;
+            var html =
+                '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
+                row_id +
+                '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
+            if (row_id >= 2) {
+                $(".row #akhir_isi_jam_kerja_edit:last").after(html);
+            }
         });
 
     });

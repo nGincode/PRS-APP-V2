@@ -84,7 +84,7 @@
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label for="PasswordRipet">Password Ulangi</label>
-                                        <div class="input-group" id="show_hide_password">
+                                        <div class="input-group" id="show_hide_password_ulang">
                                             <input type="password" class="form-control" id="PasswordRipet"
                                                 placeholder="Password" name="PasswordRipet">
                                             <div class="input-group-append">

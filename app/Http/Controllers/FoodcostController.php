@@ -250,9 +250,7 @@ class FoodcostController extends Controller
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'produksi' => $jumlah,
-                    'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian'))
                 ];
                 if (Olahan::where('id', $id)->update($input)) {
 
@@ -278,9 +276,7 @@ class FoodcostController extends Controller
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
                     'kode' => 'BO' . $this->kode,
-                    'produksi' => $jumlah,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'produksi' => $jumlah
                 ];
                 if ($olahan = Olahan::create($input)) {
                     request()->session()->put('IdOlahan', $olahan->id);
@@ -400,9 +396,7 @@ class FoodcostController extends Controller
                 $input[] = array(
                     'olahan_id' => session('IdEdit'),
                     'bahan_id' => $v,
-                    'pemakaian' => 0,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'pemakaian' => 0
                 );
             }
             if (Bahan_Olahan::insert($input)) {
@@ -523,9 +517,7 @@ class FoodcostController extends Controller
                 $input[] = array(
                     'olahan_id' => session('IdEdit'),
                     'olahan' => $v,
-                    'pemakaian' => 0,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'pemakaian' => 0
                 );
             }
             if (Bahan_Olahan::insert($input)) {
