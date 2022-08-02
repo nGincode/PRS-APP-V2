@@ -18,6 +18,84 @@ class BelanjaController extends Controller
         $this->data['subtitle'] = '';
     }
 
+    function AutoUpload()
+    {
+        $item = '';
+        $no = 0;
+        foreach (Belanja::where('tgl', '<', date('Y-m-d'))->where('up', false)->get() as $key => $value) {
+            $no++;
+            if ($value['qty'] && $value['uom'] && $value['harga']) {
+                if (Belanja::where('id', $value['id'])->update(['up' => true])) {
+                    if ($value['bahan_id']) {
+                        if ($value['stock']) {
+                            $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
+                            if ($bhn) {
+                                $jumlah = $value['stock'] + $bhn['qty'];
+                                if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+                                    Belanja::where('id', $value['id'])->update(['up' => false]);
+                                    $item .= $value['nama'] . '- Inventory Gagal Menambah <br>';
+                                };
+                            } else {
+                                Belanja::where('id', $value['id'])->update(['up' => false]);
+                                $item .= $value['nama'] . '- Inventory Kosong <br>';
+                            }
+                        } else {
+                            Belanja::where('id', $value['id'])->update(['up' => false]);
+                            $item .= $value['nama'] . '- Qty UOM Kosong <br>';
+                        }
+                    }
+                } else {
+                    $item .= $value['nama'] . '- Gagal Upload <br>';
+                }
+            }
+        }
+        if ($no && $item) {
+            return $item;
+        } elseif ($no) {
+            return 'Tanggal sebelumnya berhasil di upload';
+        } else {
+            return '';
+        }
+    }
+
+    function AutoHarga()
+    {
+        $tgl_awal =  date('Y-m-d', strtotime('-7 days', strtotime(date('Y-m-d'))));
+        $tgl_akhir =  date('Y-m-d', strtotime('+1 days', strtotime(date('Y-m-d'))));
+
+
+        foreach (Inventory::where('store_id', request()->session()->get('store_id'))->where('auto_harga', 1)->get() as $value) {
+
+            $harga = 0;
+            $row = 0;
+            foreach (Belanja::where('store_id', request()->session()->get('store_id'))->where('bahan_id', $value['bahan_id'])->where('up', 1)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->get() as $v) {
+                $harga += $v['stock_harga'];
+                $row += 1;
+            }
+            if ($row) {
+                $RataRata = round($harga / $row);
+
+                $hargaskrang = $value['harga_manual'];
+
+                if ($RataRata != $hargaskrang) {
+                    if ($value['margin']) {
+                        $result = $this->uang(round((($RataRata * $value['margin']) / 100) + $RataRata));
+                    } else {
+                        $result = $this->uang(round($RataRata));
+                    }
+
+                    Inventory::where('id', $value['id'])->update(
+                        [
+                            'harga_auto' => $result,
+                            'harga_manual' => $hargaskrang,
+                            'tgl_harga' => date('Y-m-d H:i:s')
+                        ]
+                    );
+                }
+            }
+        }
+    }
+
     public function index(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
@@ -26,6 +104,8 @@ class BelanjaController extends Controller
         }
 
         $this->AutoHarga();
+
+        $this->data['AutoUpload'] = $this->AutoUpload();
 
         $this->data['Belanja'] = Inventory::with('Bahan')->first();
 
@@ -77,25 +157,27 @@ class BelanjaController extends Controller
             foreach ($request->input('kategori') as $key => $kategori) {
                 if (isset($request->input('qty')[$key]) && isset($request->input('nama')[$key])) {
                     if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART') {
-                        $input = [
-                            'nama' => $request->input('nama')[$key],
-                            'tgl' => date('Y-m-d'),
-                            'kategori' => $kategori,
-                            'users_id' => $request->session()->get('id'),
-                            'store_id' => $request->session()->get('store_id'),
-                            'qty' => $request->input('qty')[$key],
-                            'harga' => $request->input('harga')[$key] ?? null,
-                            'ket' => $request->input('ket')[$key] ?? null,
-                            'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
-                            'uom' => $request->input('uombelanja')[$key] ?? null,
-                            'stock' => $request->input('stock')[$key] ?? null,
-                            'stock_uom' => $request->input('stock_uom')[$key] ?? null,
-                            'stock_harga' => $request->input('stock_harga')[$key] ?? null,
-                            'hutang' => $request->input('hutang')[$key] ?? 0
-                        ];
 
                         $id = $request->input('id')[$key] ?? 0;
                         if ($id) {
+
+                            $input = [
+                                'nama' => $request->input('nama')[$key],
+                                'tgl' => date('Y-m-d'),
+                                'kategori' => $kategori,
+                                'users_id' => $request->session()->get('id'),
+                                'store_id' => $request->session()->get('store_id'),
+                                'qty' => $request->input('qty')[$key],
+                                'harga' => $request->input('harga')[$key] ?? null,
+                                'ket' => $request->input('ket')[$key] ?? null,
+                                'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
+                                'uom' => $request->input('uombelanja')[$key] ?? null,
+                                'stock' => $request->input('stock')[$key] ?? null,
+                                'stock_uom' => $request->input('stock_uom')[$key] ?? null,
+                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                'hutang' => $request->input('hutang')[$key] ?? 0
+                            ];
+
                             if (Belanja::where('id', $id)->update($input)) {
                                 $data = [
                                     'toast' => true,
@@ -110,7 +192,26 @@ class BelanjaController extends Controller
                                 ];
                             };
                         } else {
-                            if ($idbelanja = Belanja::insertGetId($input)) {
+
+                            $input1 = [
+                                'nama' => $request->input('nama')[$key],
+                                'tgl' => date('Y-m-d'),
+                                'kategori' => $kategori,
+                                'users_id' => $request->session()->get('id'),
+                                'store_id' => $request->session()->get('store_id'),
+                                'qty' => $request->input('qty')[$key],
+                                'harga' => $request->input('harga')[$key] ?? null,
+                                'ket' => $request->input('ket')[$key] ?? null,
+                                'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
+                                'uom' => $request->input('uombelanja')[$key] ?? null,
+                                'stock' => $request->input('stock')[$key] ?? null,
+                                'stock_uom' => $request->input('stock_uom')[$key] ?? null,
+                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                'hutang' => $request->input('hutang')[$key] ?? 0,
+                                'created_at' => date('Y-m-d H:i:s')
+                            ];
+
+                            if ($idbelanja = Belanja::insertGetId($input1)) {
                                 $data = [
                                     'toast' => true,
                                     'status' => 'success',
@@ -141,25 +242,27 @@ class BelanjaController extends Controller
                             ->count();
 
                         if (!$jml or $id) {
-                            $input = [
-                                'nama' => $inventory['bahan']->nama,
-                                'bahan_id' => $inventory['bahan_id'],
-                                'tgl' => date('Y-m-d'),
-                                'kategori' => 'Item',
-                                'total' => $total,
-                                'store_id' => $request->session()->get('store_id'),
-                                'users_id' => $request->session()->get('id'),
-                                'qty' => $request->input('qty')[$key] ?? null,
-                                'harga' => $request->input('harga')[$key] ?? null,
-                                'ket' => $request->input('ket')[$key] ?? null,
-                                'uom' => $request->input('uombelanja')[$key] ?? null,
-                                'stock' => $request->input('stock')[$key] ?? null,
-                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
-                                'stock_uom' => $inventory['satuan'],
-                                'hutang' => $request->input('hutang')[$key] ?? 0
-                            ];
 
                             if ($id) {
+
+                                $input = [
+                                    'nama' => $inventory['bahan']->nama,
+                                    'bahan_id' => $inventory['bahan_id'],
+                                    'tgl' => date('Y-m-d'),
+                                    'kategori' => 'Item',
+                                    'total' => $total,
+                                    'store_id' => $request->session()->get('store_id'),
+                                    'users_id' => $request->session()->get('id'),
+                                    'qty' => $request->input('qty')[$key] ?? null,
+                                    'harga' => $request->input('harga')[$key] ?? null,
+                                    'ket' => $request->input('ket')[$key] ?? null,
+                                    'uom' => $request->input('uombelanja')[$key] ?? null,
+                                    'stock' => $request->input('stock')[$key] ?? null,
+                                    'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                    'stock_uom' => $inventory['satuan'],
+                                    'hutang' => $request->input('hutang')[$key] ?? 0
+                                ];
+
                                 if (Belanja::where('id', $id)->update($input)) {
                                     $data = [
                                         'toast' => true,
@@ -175,7 +278,27 @@ class BelanjaController extends Controller
                                     ];
                                 };
                             } else {
-                                if ($idbelanja = Belanja::insertGetId($input)) {
+
+
+                                $input1 = [
+                                    'nama' => $request->input('nama')[$key],
+                                    'tgl' => date('Y-m-d'),
+                                    'kategori' => $kategori,
+                                    'users_id' => $request->session()->get('id'),
+                                    'store_id' => $request->session()->get('store_id'),
+                                    'qty' => $request->input('qty')[$key],
+                                    'harga' => $request->input('harga')[$key] ?? null,
+                                    'ket' => $request->input('ket')[$key] ?? null,
+                                    'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
+                                    'uom' => $request->input('uombelanja')[$key] ?? null,
+                                    'stock' => $request->input('stock')[$key] ?? null,
+                                    'stock_uom' => $request->input('stock_uom')[$key] ?? null,
+                                    'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                    'hutang' => $request->input('hutang')[$key] ?? 0,
+                                    'created_at' => date('Y-m-d H:i:s')
+                                ];
+
+                                if ($idbelanja = Belanja::insertGetId($input1)) {
                                     $data = [
                                         'toast' => true,
                                         'status' => 'success',

@@ -1224,6 +1224,8 @@ function Hapus(id, title) {
                 success: function (data) {
                     if (data.status === 'success') {
                         popup(data.status, data.toast, data.pesan);
+                    }else if(data.status === false){
+                        popup(data.status, data.toast, data.pesan);
                     } else {
                         popup(data.status, data.toast, data.pesan);
                     }

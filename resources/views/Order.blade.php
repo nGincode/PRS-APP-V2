@@ -36,7 +36,7 @@
                                     <div class="form-group">
                                         <label for="nama">Tanggal</label>
                                         <input disabled type="date"
-                                            @isset($order['tgl']) value="{{ date('Y-m-d', strtotime($order['tgl'])) }}" @endif
+                                            @isset($order['tgl']) value="{{ date('Y-m-d', strtotime($order['tgl'])) }}" @else value="{{ date('Y-m-d')}}" @endif
                                             class="form-control" onchange="$('#FormOrder').submit()" id="tgl"
                                             placeholder="Tanggal" name="tgl">
                                     </div>

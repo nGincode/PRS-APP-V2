@@ -80,43 +80,4 @@ class Controller extends BaseController
             $akhir = $uang + (1000 - $ratusan);
         return number_format($akhir, 0, ',', '');;
     }
-
-
-    function AutoHarga()
-    {
-        $tgl_awal =  date('Y-m-d', strtotime('-7 days', strtotime(date('Y-m-d'))));
-        $tgl_akhir =  date('Y-m-d', strtotime('+1 days', strtotime(date('Y-m-d'))));
-
-
-        foreach (Inventory::where('store_id', request()->session()->get('store_id'))->where('auto_harga', 1)->get() as $value) {
-
-            $harga = 0;
-            $row = 0;
-            foreach (Belanja::where('store_id', request()->session()->get('store_id'))->where('bahan_id', $value['bahan_id'])->where('up', 1)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->get() as $v) {
-                $harga += $v['stock_harga'];
-                $row += 1;
-            }
-            if ($row) {
-                $RataRata = round($harga / $row);
-
-                $hargaskrang = $value['harga_manual'];
-
-                if ($RataRata != $hargaskrang) {
-                    if ($value['margin']) {
-                        $result = $this->uang(round((($RataRata * $value['margin']) / 100) + $RataRata));
-                    } else {
-                        $result = $this->uang(round($RataRata));
-                    }
-
-                    Inventory::where('id', $value['id'])->update(
-                        [
-                            'harga_auto' => $result,
-                            'harga_manual' => $hargaskrang,
-                            'tgl_harga' => date('Y-m-d H:i:s')
-                        ]
-                    );
-                }
-            }
-        }
-    }
 }

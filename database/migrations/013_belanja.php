@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('bahan_id')->nullable();
             $table->foreign('bahan_id')->nullable()->references('id')->on('bahan');
 
-            $table->dateTime('tgl');
+            $table->date('tgl');
             $table->string('nama', 30);
             $table->string('kategori', 20);
             $table->string('qty')->nullable();

@@ -77,7 +77,8 @@ class POSController extends Controller
                     'bahan_id' => $bahan_id,
                     'qty' => 1,
                     'satuan' => $inventory['satuan'],
-                    'harga' => $harga
+                    'harga' => $harga,
+                    'created_at' => date('Y-m-d H:i:s')
                 ]);
             }
         }
@@ -126,8 +127,8 @@ class POSController extends Controller
                     </button>
                 </div>
                 <p style="float:right"><b>' . $this->rupiah($value['qty'] * $value['harga']) . ' &nbsp</b></p>
-                 <h5 class="card-title">' . $value['bahan']->nama . '</h5>
-                <p class="card-text" style="margin-bottom:2px">' . $this->rupiah($value['harga']) . '</p>
+                 <h5 class="card-title"><b>' . $value['bahan']->nama . '</b><br><small>' . $value['bahan']->kode . '</small></h5>
+                <p class="card-text" style="margin-bottom:2px">' . $this->rupiah($value['harga']) . '/' . $value['satuan'] . '</p>
                     <div style="float: right;margin-top: -1.5rem;">
                     <input type="number" onchange="qtyubah(' . $value['id'] . ',this.value)" style="max-width: 61px;text-align: right;border: unset;border-bottom: 2px #478faf solid;" id="key_' . $key . '" value="' . $value['qty'] . '">
                     <button class="btn btn-warning btn-sm" id="TblMinus_' . $value['id'] . '"  onclick="positemminus(' . $value['id'] . ')">
@@ -178,7 +179,7 @@ class POSController extends Controller
                         }
 
                         $data .= '</b> </div> 
-                                            <div>' . $bahan['kode'] . '</div>
+                                            <div><small>' . $bahan['kode'] . '</small></div>
                                             <div><h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
                                             <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
                                             <hr></div>
@@ -240,9 +241,9 @@ class POSController extends Controller
         $id = $request->input('id');
         if (POS::where('id', $id)->delete()) {
             $data = [
-                'toast' => true,
-                'status' => 'success',
-                'pesan' =>  'Berhasil Menghapus'
+                'toast' => '',
+                'status' => 'no',
+                'pesan' =>  ''
             ];
         } else {
             $data = [
@@ -439,7 +440,8 @@ class POSController extends Controller
                 'disc' => null,
                 'tax' => null,
                 'paid' => 1,
-                'total' => $jumlahbelanja
+                'total' => $jumlahbelanja,
+                'created_at' => date('Y-m-d H:i:s')
             ];
 
             if ($id = POSBill::insertGetId($data)) {
@@ -457,7 +459,8 @@ class POSController extends Controller
                         'satuan' => $value1['satuan'],
                         'harga' => $value1['harga'],
                         'total' => $value1['qty'] * $value1['harga'],
-                        'paid' => 1
+                        'paid' => 1,
+                        'created_at' => date('Y-m-d H:i:s')
                     ];
                 }
 

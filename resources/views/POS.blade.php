@@ -63,10 +63,8 @@
                                                         </b>
                                                     </div>
                                                     <div>
-                                                        {{ $v['bahan']->kode }}
-                                                    </div>
-                                                    <div>
-                                                        <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b></h5>
+                                                        <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b><br>
+                                                        <small>{{ $v['bahan']->kode }}</small></h5>
 
                                                         @if ($v['auto_harga'])
                                                             <p class="card-text">
@@ -621,7 +619,9 @@
                             if (data.status === 'success') {
                                 popup(data.status, data.toast, data.pesan);
                                 layar();
-                            } else {
+                            } else if(data.status === 'no'){
+                                layar();
+                            }else {
                                 popup(data.status, data.toast, data.pesan);
                             }
                         }

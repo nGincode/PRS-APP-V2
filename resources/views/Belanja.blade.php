@@ -24,7 +24,11 @@
                         <div class="card-body">
                             <div id="divautosave">
                                 <div class="text-right" id="autosave">
+                                    @if($AutoUpload)
+                                    <small style="color: green;" class="animate__animated animate__bounce"> <i class="fas fa-check"></i> {{ $AutoUpload }}</small>
+                                    @else
                                     <small> <i class="fas fa-check"></i> Autosave on</small>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">
@@ -245,7 +249,9 @@
 
                         <div class="card-footer">
                             <a onclick="uploadbelanja()" class="btn btn-primary">Upload</a>
-                            <font color="red">*</font> Upload akan menambah inventory dan akan terkunci
+                            <br><br>
+                            <font color="red">*</font> Upload akan menambah inventory dan akan terkunci<br>
+                            <font color="red">*</font> Jika tanggal sebelumnya belum terupload maka akan upload otomatis<br>
                         </div>
                     </div>
                 </form>
@@ -434,16 +440,6 @@
             $('#FormBelanja').submit();
         }
 
-        // function stock_belanja(row) {
-        //     let satuan = $('#stock_satuan_' + row).val();
-        //     let uom = $('#uombelanja_' + row).val();
-
-        //     $('#belanja_uom_' + row).html(uom);
-
-        //     $('#FormBelanja').submit();
-        // }
-
-
         //Input
         $(document).ready(function() {
 
@@ -491,9 +487,6 @@
             });
 
         });
-
-
-
 
         function lihat(id, judul) {
             $.ajax({
