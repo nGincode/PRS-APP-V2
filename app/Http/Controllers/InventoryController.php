@@ -59,6 +59,14 @@ class InventoryController extends Controller
         $this->data['satuan'] = Satuan::all();
         $this->data['bahan'] = $bahan;
 
+
+        if ($request->session()->get('tipe') == 'Office') {
+            $Data = Inventory::where('delete', false)->with('Bahan', 'Store')->latest()->get();
+        } else {
+            $Data = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
+        }
+
+        $this->data['BahanPrint'] = $Data;
         return view('Stock', $this->data);
     }
 
@@ -182,7 +190,7 @@ class InventoryController extends Controller
             if ($request->session()->get('tipe') == 'Office') {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
+                        '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
@@ -194,7 +202,7 @@ class InventoryController extends Controller
             } else {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
+                        '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
                         $value['bahan']->nama,
                         $qty,
                         ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
@@ -406,5 +414,92 @@ class InventoryController extends Controller
         }
 
         echo json_encode($data);
+    }
+
+
+    public function PrintBarcode(Request $request)
+    {
+
+        $generator = new BarcodeGeneratorPNG();
+
+        if ($request->session()->get('tipe') == 'Office') {
+            $Data = Inventory::where('delete', false)->with('Bahan', 'Store')->latest()->get();
+        } else {
+            $Data = Inventory::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
+        }
+
+        echo '
+        <html>
+        <body onload="print()">
+        <div class="page">';
+        foreach ($Data as $key => $value) {
+            echo '
+            <div class="barcode">
+            <small>' . $value['bahan']->nama . '</small><br>
+            <img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '">
+            <br>' . $value['bahan']->kode . '
+            </div>';
+        }
+        echo '</div>
+        <style>
+        
+        .page{
+            font-family: monospace;
+            text-align:center;
+        }
+        .barcode {
+            border-bottom:1px dotted black;
+            padding : 10px;
+            margin:5px;
+        }
+        </style>
+        </body>
+        </html>
+        ';
+    }
+
+
+    public function BarcodeCustom(Request $request)
+    {
+
+        $generator = new BarcodeGeneratorPNG();
+
+        $id = $request->input('idbarcode');
+        $jml = $request->input('jumlah');
+
+
+        $Data = bahan::where('kode', $id)->first();
+        echo '
+        <html>
+        <body onload="print()">
+        <div class="page">';
+        if ($Data) {
+            for ($i = 0; $i < $jml; $i++) {
+                echo '
+            <div class="barcode">
+            <small>' . $Data['nama'] . '</small><br>
+            <img src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
+            <br>' . $Data['kode'] . '
+            </div>';
+            }
+        } else {
+            echo 'Tak ditemukan';
+        }
+        echo '</div>
+        <style>
+        
+        .page{
+            font-family: monospace;
+            text-align:center;
+        }
+        .barcode {
+            border-bottom:1px dotted black;
+            padding : 10px;
+            margin:5px;
+        }
+        </style>
+        </body>
+        </html>
+        ';
     }
 }

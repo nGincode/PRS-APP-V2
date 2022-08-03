@@ -345,7 +345,7 @@ class MasterController extends Controller
 
             $generator = new BarcodeGeneratorPNG();
             $result['data'][] = array(
-                '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"><br>' . $value['kode'] . '</center>',
+                '<center><img width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"><br>' . $value['kode'] . '</center>',
                 $value['nama'],
                 $kategori,
                 $this->rupiah($value['harga']) . '/' . $value['satuan_pembelian'],
@@ -593,6 +593,42 @@ class MasterController extends Controller
         };
 
         echo json_encode($data);
+    }
+
+    public function PrintBarcode(Request $request)
+    {
+
+        $generator = new BarcodeGeneratorPNG();
+
+        $Data = Bahan::where('delete', false)->latest()->get();
+        echo '
+        <html>
+        <body onload="print()">
+        <div class="page">';
+        foreach ($Data as $key => $value) {
+            echo '
+            <div class="barcode">
+            <small>' . $value['nama'] . '</small><br>
+            <img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '">
+            <br>' . $value['kode'] . '
+            </div>';
+        }
+        echo '</div>
+        <style>
+        
+        .page{
+            font-family: monospace;
+            text-align:center;
+        }
+        .barcode {
+            border-bottom:1px dotted black;
+            padding : 10px;
+            margin:5px;
+        }
+        </style>
+        </body>
+        </html>
+        ';
     }
     ////////////////////////////////// BAHAN ///////////////////////////
 

@@ -113,6 +113,9 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <a class="btn btn-primary float-lg-right" target="_blank" href="Bahan/PrintBarcode"><i
+                            class="fa fa-barcode"></i>
+                        Print Barcode</a><br>
                     <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -131,6 +134,55 @@
                 </div>
                 <!-- /.card-body -->
             </div>
+
+            @if (request()->session()->get('tipe') == 'Logistik')
+                <div class="card">
+                    <div class="card-header text-white bg-secondary mb-3">
+                        <h3 class="card-title" style="font-weight: bolder">Custom Print Barcode</h3>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <form action="Bahan/BarcodeCustom" method="GET">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="nama_barcode">Nama Bahan</label>
+                                        <select required class="select2" name="idbarcode" id="nama_barcode"
+                                            data-placeholder="Pilih Nama Bahan" style="width: 100%;">
+                                            @if ($BahanPrint)
+                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                @foreach ($BahanPrint as $v)
+                                                    <option value="{{ $v['bahan']->kode }}">
+                                                        {{ $v['bahan']->nama }}
+                                                    </option>
+                                                @endforeach
+                                            @else
+                                                <option selected="true" disabled="disabled">Master Bahan Kosong</option>
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="jumlah">Jumlah</label>
+                                        <input required type="number" class="form-control" id="jumlah"
+                                            placeholder="Jumlah Barcode" name="jumlah">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary"> <i class="fa fa-print"></i> Print</button>
+                        </div>
+                    </form>
+                    <!-- /.card-body -->
+                </div>
+            @endif
             <!-- /.card -->
         </div>
 

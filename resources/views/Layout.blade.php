@@ -913,6 +913,9 @@ if (Auth::check()) {
                             filter: GetURLParameter('filter')
                         }
                     },
+                    "rowReorder": {
+                        selector: 'td:nth-child(2)'
+                    },
                     "order": [],
                     "responsive": true,
                     "autoWidth": true,
@@ -955,15 +958,22 @@ if (Auth::check()) {
                             messageTop: '',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
-                                stripHtml : false,
+                                stripHtml: false,
                                 columns: [jmlcolm]
                             }
-                        }
+                        },
+                        // {
+                        //     text: 'My button',
+                        //     action: function(e, dt, node, config) {
+                        //         alert('Button activated');
+                        //     }
+                        // }
                     ]
                 }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
             }
         }
         manage();
+        $('#manage')
         //hilangkan alert datatables
         $.fn.dataTable.ext.errMode = 'throw';
 

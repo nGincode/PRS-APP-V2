@@ -161,6 +161,9 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <a class="btn btn-primary float-lg-right" target="_blank" href="Bahan/PrintBarcode"><i
+                            class="fa fa-barcode"></i>
+                        Print Barcode</a><br>
                     <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>

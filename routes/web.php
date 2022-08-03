@@ -124,6 +124,7 @@ Route::controller(MasterController::class)->group(
         Route::post('Master/Bahan/BahanEdit', 'BahanEditTambah')->middleware('auth');
 
         Route::post('Master/Manage/Bahan', 'BahanManage')->middleware('auth');
+        Route::get('Master/Bahan/PrintBarcode', 'PrintBarcode')->middleware('auth');
 
 
         Route::get('Master/Peralatan', 'Peralatan')->middleware('auth');
@@ -242,6 +243,8 @@ Route::controller(InventoryController::class)->group(
         Route::post('Inventory/Opname', 'TambahOpname')->middleware('auth');
         Route::post('Inventory/Manage/Opname', 'ManageOpname')->middleware('auth');
         Route::post('Inventory/Bahan', 'Bahan')->middleware('auth');
+        Route::get('Inventory/Bahan/PrintBarcode', 'PrintBarcode')->middleware('auth');
+        Route::get('Inventory/Bahan/BarcodeCustom', 'BarcodeCustom')->middleware('auth');
     }
 );
 
