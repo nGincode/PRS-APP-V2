@@ -521,7 +521,7 @@ class BelanjaController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-            if (in_array('viewBelanja', $this->permission())) $button .= "<li><a class='dropdown-item' onclick='lihat(" . '"' . $value . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
+            if (in_array('viewBelanja', $this->permission())) $button .= "<li><a class='dropdown-item' onclick='lihat(" . '"' . $value . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
 
             $button .= '</ul></div>';
 

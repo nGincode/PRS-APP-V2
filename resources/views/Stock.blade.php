@@ -71,17 +71,25 @@
                                     </div>
                                 </div>
 
-
                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="auto_harga">Auto Harga</label>
-                                        <select class="select2" name="auto_harga" id="auto_harga" data-placeholder="Pilih"
-                                            style="width: 100%;">
-                                            <option value="1">True</option>
-                                            <option value="0">False</option>
-                                        </select>
-                                        <small>*Harga akan berubah menyesuiakan belanja</small>
+                                    <div class="form-group clearfix">
+                                        <label>Auto Harga</label><br>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" id="auto_harga_1" name="auto_harga" value="1"
+                                                checked>
+                                            <label for="auto_harga_1">
+                                                Aktif
+                                            </label>
+                                        </div>
+                                        &nbsp
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" id="auto_harga_0" value="0" name="auto_harga">
+                                            <label for="auto_harga_0">
+                                                Non Aktif
+                                            </label>
+                                        </div>
                                     </div>
+                                    <small>*Harga akan berubah menyesuiakan belanja</small>
                                 </div>
 
 

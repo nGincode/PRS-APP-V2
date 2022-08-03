@@ -838,6 +838,11 @@ if (Auth::check()) {
     @include('sweetalert::alert')
 
 
+    <style>
+        a {
+            cursor: pointer;
+        }
+    </style>
     <script>
         $(document).ready(function() {
             if ($("#show_hide_password").length) {

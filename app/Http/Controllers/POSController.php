@@ -540,7 +540,7 @@ class POSController extends Controller
             $button .= "<li><a class='dropdown-item' onclick='Print(" . $value['id'] . "," . '"' . $this->title . '"' . ")' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
 
             if (in_array('viewPOS', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' href='#'><i class='fas fa-eye'></i> Lihat</a></li>";
+                $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
             }
 
             $button .= '</ul></div>';

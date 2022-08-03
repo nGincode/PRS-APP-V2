@@ -89,10 +89,10 @@ class GroupController extends Controller
                 <ul class="dropdown-menu">';
 
             if (in_array('updateUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $id[$key] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' href='#'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $id[$key] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#Modal' ><i class='fas fa-pencil-alt'></i> Edit</a></li>";
             }
             if (in_array('deleteUser', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $id[$key] . "," . '"' . $this->title . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $id[$key] . "," . '"' . $this->title . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
             $button .= '</ul></div>';
 

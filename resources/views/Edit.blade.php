@@ -1,5 +1,6 @@
 @isset($UsersData)
     <form id="UsersEdit" action="{{ url('/Users/TambahEdit') }}">
+        @csrf
         <div class="modal-body">
             <div class="row">
 
@@ -537,11 +538,9 @@
         </div>
 
         <!-- /.row -->
-        </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
-        </div>
         </div>
     </form>
 @endisset
@@ -616,7 +615,6 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
-        </div>
     </form>
 @endisset
 
@@ -649,9 +647,9 @@
             <button type="submit" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
-        </div>
     </form>
 @endisset
+
 
 @isset($BahanData)
     <form id="BahanEdit" action="{{ url('/Master/Bahan/BahanEdit') }}">
@@ -1427,6 +1425,114 @@
     </script>
 @endisset
 
+@isset($InventoryStockData)
+    <form id="InventoryStockEdit" action="{{ url('/Inventory/Stock/InventoryStockEditTambah') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="kode">Kode Barang</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $InventoryStockData['bahan']->kode }}" disabled>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama Barang</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $InventoryStockData['bahan']->nama }}" disabled>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Qty</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $InventoryStockData['qty'] }}" disabled>
+                        <small>
+                            <font color="red">*</font> Hanya Dapat Diubah Pada Saat Opname
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="harga_edit">Harga Manual</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $InventoryStockData['harga_manual'] }}" id="harga_edit" placeholder="Harga"
+                            name="harga">
+                        <small>
+                            <font color="red">*</font> Bekerja saat auto harga non aktif
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group clearfix">
+                        <label>Auto Harga</label><br>
+
+
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="auto_harga_edit"
+                                id="flexRadioDefault1" value="1"
+                                @if ($InventoryStockData['auto_harga']) checked @endif>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Aktif
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="auto_harga_edit"
+                                id="flexRadioDefault2" value="0"
+                                @if (!$InventoryStockData['auto_harga']) checked @endif>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Non Aktif
+                            </label>
+                        </div>
+                        <small>
+                            <font color="red">*</font> Harga akan berubah menyesuiakan belanja
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Harga Auto Sekarang</label>
+                        <input type="text" style="text-transform:capitalize" class="form-control"
+                            value="{{ $InventoryStockData['harga_auto'] }}" id="hargaa" disabled>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Margin</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="margin" placeholder="Harga Margin %"
+                                value="{{ $InventoryStockData['margin'] }}" name="margin">
+                            <div class="input-group-append"><span class="input-group-text">%</span></div>
+                        </div>
+                        <small>
+                            <font color="red">*</font> Akan bekerja saat belanja terupload
+                        </small>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        </div>
+    </form>
+@endisset
+
 <script>
     $(function() {
         $('.select2').select2().on("change", function(e) {
@@ -1681,10 +1787,8 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#GroupsEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan, "#GroupsEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
@@ -1742,10 +1846,8 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#SupplierEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan, "#SupplierEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
@@ -1803,10 +1905,8 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#SatuanEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan, "#SatuanEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
@@ -1879,10 +1979,8 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#BahanEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan, "#BahanEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
@@ -1953,10 +2051,9 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#PeralatanEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan,
+                                    "#PeralatanEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
@@ -2048,10 +2145,72 @@
                         dataType: "json",
                         success: function(data) {
                             if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan);
-                                $("#PegawaiEdit")[0].reset();
+                                popup(data.status, data.toast, data.pesan, "#PegawaiEdit");
                                 $('#Modal').modal('hide');
-                                $('#manage').DataTable().ajax.reload();
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                }
+            });
+        }
+
+
+        //Stock Edit
+        if ($("#InventoryStockEdit").length) {
+            $("#InventoryStockEdit").validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                    $(element).removeClass('is-valid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'harga': {
+                        required: true
+                    },
+                    'auto_harga_edit': {
+                        required: true
+                    },
+                    'margin': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // OutletUsers : "Masih Kosong"
+                }
+            });
+
+            $("#InventoryStockEdit").on("submit", function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr("action"),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.status === "success") {
+                                popup(data.status, data.toast, data.pesan,
+                                    '#InventoryStockEdit');
+                                $('#Modal').modal('hide');
                             } else {
                                 popup(data.status, data.toast, data.pesan);
                             }

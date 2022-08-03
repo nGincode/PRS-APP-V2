@@ -163,8 +163,12 @@ class InventoryController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
+            if (in_array('updateInventoryStock', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")' data-toggle='modal' data-target='#Modal' ><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+            }
+
             if (in_array('deleteInventoryStock', $this->permission())) {
-                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
             $button .= '</ul></div>';
@@ -178,10 +182,12 @@ class InventoryController extends Controller
                 $qty = $value['qty'] . '/' . $value['satuan'];
             }
 
-            if ($value['auto_harga']) {
+            if ($value['auto_harga'] == 1) {
                 $harga = $value['harga_auto'];
+                $tanda = ' &nbsp<span class="badge badge-success"> Auto</span> ';
             } else {
                 $harga = $value['harga_manual'];
+                $tanda = '';
             }
 
 
@@ -194,7 +200,7 @@ class InventoryController extends Controller
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
-                        ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                        ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
                         $value['margin'] . '%',
                         $button
                     );
@@ -205,7 +211,7 @@ class InventoryController extends Controller
                         '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
                         $value['bahan']->nama,
                         $qty,
-                        ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
+                        ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
                         $value['margin'] . '%',
                         $button
                     );
@@ -238,6 +244,81 @@ class InventoryController extends Controller
 
         echo json_encode($data);
     }
+
+
+    public function InventoryStockEdit(Request $request)
+    {
+
+        if (!in_array('updateInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $id = $request->input('id');
+        $request->session()->put('IdEdit', $id);
+
+        $this->data['InventoryStockData'] = Inventory::with('Bahan')->where('id', $id)->first();
+        return view('Edit', $this->data);
+    }
+
+    public function InventoryStockEditTambah(Request $request)
+    {
+
+        if (!in_array('updateInventoryStock', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $id = $request->session()->get('IdEdit');
+        $Inventory = Inventory::where('id', $id)->first();
+        if ($Inventory) {
+            $validator = Validator::make(
+                $request->all(),
+                $rules = [
+                    'harga' => 'required',
+                    'auto_harga_edit' => 'required',
+                    'margin' => 'required',
+                ],
+                $messages  = [
+                    'required' => 'Form :attribute harus terisi',
+                    'same' => 'Form :attribute & :other tidak sama.',
+                ]
+            );
+
+
+            if ($validator->fails()) {
+                foreach ($validator->errors()->all() as $message) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  $message
+                    ];
+                }
+            } else {
+
+                $input = [
+                    'harga_manual' => $this->unrupiah($request->input('harga')),
+                    'auto_harga' => $request->input('auto_harga_edit'),
+                    'margin' => $request->input('margin')
+                ];
+                if (Inventory::where('id', $id)->update($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat'
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'error',
+                        'pesan' =>  'Terjadi kegagalan system'
+                    ];
+                };
+            }
+        }
+
+
+        echo json_encode($data);
+    }
+
 
 
     public function Opname(Request $request)
@@ -297,7 +378,7 @@ class InventoryController extends Controller
                 <ul class="dropdown-menu">';
 
             if (in_array('deleteInventoryOpname', $this->permission())) {
-                // $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  href='#'><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                // $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
             }
 
             $button .= '</ul></div>';
