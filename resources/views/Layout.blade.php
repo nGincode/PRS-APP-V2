@@ -955,6 +955,7 @@ if (Auth::check()) {
                             messageTop: '',
                             title: '{{ $manage ?? '' }}',
                             exportOptions: {
+                                stripHtml : false,
                                 columns: [jmlcolm]
                             }
                         }

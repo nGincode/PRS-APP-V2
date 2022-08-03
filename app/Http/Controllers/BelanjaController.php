@@ -164,6 +164,7 @@ class BelanjaController extends Controller
                             $input = [
                                 'nama' => $request->input('nama')[$key],
                                 'tgl' => date('Y-m-d'),
+                                'bahan_id' => null,
                                 'kategori' => $kategori,
                                 'users_id' => $request->session()->get('id'),
                                 'store_id' => $request->session()->get('store_id'),
@@ -196,6 +197,7 @@ class BelanjaController extends Controller
                             $input1 = [
                                 'nama' => $request->input('nama')[$key],
                                 'tgl' => date('Y-m-d'),
+                                'bahan_id' => null,
                                 'kategori' => $kategori,
                                 'users_id' => $request->session()->get('id'),
                                 'store_id' => $request->session()->get('store_id'),
@@ -279,21 +281,21 @@ class BelanjaController extends Controller
                                 };
                             } else {
 
-
                                 $input1 = [
-                                    'nama' => $request->input('nama')[$key],
+                                    'nama' => $inventory['bahan']->nama,
+                                    'bahan_id' => $inventory['bahan_id'],
                                     'tgl' => date('Y-m-d'),
-                                    'kategori' => $kategori,
-                                    'users_id' => $request->session()->get('id'),
+                                    'kategori' => 'Item',
+                                    'total' => $total,
                                     'store_id' => $request->session()->get('store_id'),
-                                    'qty' => $request->input('qty')[$key],
+                                    'users_id' => $request->session()->get('id'),
+                                    'qty' => $request->input('qty')[$key] ?? null,
                                     'harga' => $request->input('harga')[$key] ?? null,
                                     'ket' => $request->input('ket')[$key] ?? null,
-                                    'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
                                     'uom' => $request->input('uombelanja')[$key] ?? null,
                                     'stock' => $request->input('stock')[$key] ?? null,
-                                    'stock_uom' => $request->input('stock_uom')[$key] ?? null,
                                     'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                    'stock_uom' => $inventory['satuan'],
                                     'hutang' => $request->input('hutang')[$key] ?? 0,
                                     'created_at' => date('Y-m-d H:i:s')
                                 ];

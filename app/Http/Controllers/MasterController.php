@@ -12,8 +12,7 @@ use App\Models\Satuan;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class MasterController extends Controller
 {
@@ -344,8 +343,9 @@ class MasterController extends Controller
                 $pengguna .= 'Semua';
             }
 
+            $generator = new BarcodeGeneratorPNG();
             $result['data'][] = array(
-                $value['kode'],
+                '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"><br>' . $value['kode'] . '</center>',
                 $value['nama'],
                 $kategori,
                 $this->rupiah($value['harga']) . '/' . $value['satuan_pembelian'],

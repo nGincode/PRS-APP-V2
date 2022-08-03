@@ -36,13 +36,13 @@
                                 <br><br>
                                 <div class="card card-success card-outline" style="min-height: 600px">
                                     <div class="card-header" style="display: flex">
-                                        <input type="search" class="form-control" onkeyup="barcode(this.value)"
+                                        <input type="search" class="form-control" oninput="barcode(this.value)"
                                             id="barcode" placeholder="Barcode..">
                                         <i class="fa fa-barcode"
                                             style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
 
 
-                                        <input type="search" class="form-control" onkeyup="search(this.value)"
+                                        <input type="search" class="form-control" oninput="search(this.value)"
                                             id="search" placeholder="Search..">
                                         <i class="fa fa-search"
                                             style="padding: 10px;padding: 10px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
@@ -785,6 +785,8 @@
 
         function barcode(id) {
 
+            var sound = new Audio('assets/sound/beep.mp3');
+
             $.ajax({
                 url: "POS/Barcode",
                 type: "POST",
@@ -802,6 +804,7 @@
                         if (!data.barcode) {
                             layar();
                             $('#barcode').val('');
+                            sound.play();
                         }
                     }
                 }

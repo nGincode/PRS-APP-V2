@@ -24,10 +24,11 @@
                         <div class="card-body">
                             <div id="divautosave">
                                 <div class="text-right" id="autosave">
-                                    @if($AutoUpload)
-                                    <small style="color: green;" class="animate__animated animate__bounce"> <i class="fas fa-check"></i> {{ $AutoUpload }}</small>
+                                    @if ($AutoUpload)
+                                        <small style="color: green;" class="animate__animated animate__bounce"> <i
+                                                class="fas fa-check"></i> {{ $AutoUpload }}</small>
                                     @else
-                                    <small> <i class="fas fa-check"></i> Autosave on</small>
+                                        <small> <i class="fas fa-check"></i> Autosave on</small>
                                     @endif
                                 </div>
                             </div>
@@ -70,31 +71,36 @@
                                                                     class="fa fa-times"></i>
                                                             </a>
                                                         @endif
-                                                        <select @if ($v['up']) disabled @endif
-                                                            name="nama[]"
-                                                            onchange="clicknama(this.value, {{ $key }}, '<?= $v['nama'] ?>')"
-                                                            id="nama_{{ $key }}"
-                                                            class="form-control select2 select2-danger"
-                                                            data-dropdown-css-class="select2-danger"
-                                                            style="width: 100%;margin-left:100px;">
-                                                            <option selected="true" disabled="disabled">Pilih</option>
 
-                                                            <option value="<?= $v['nama'] ?>" selected><?= $v['nama'] ?>
-                                                            </option>
-                                                            <option value="Oprasional">Oprasional
-                                                            </option>
-                                                            <option value="Supplay">Supplay
-                                                            </option>
-                                                            <option value="ART">ART
-                                                            </option>
-
-                                                            @foreach ($bahan as $bhn)
-                                                                <option value="{{ $bhn['id'] }}"
-                                                                    @if ($v['bahan_id'] == $bhn['id']) selected @endif>
-                                                                    {{ $bhn['nama'] }}
+                                                        @if ($v['bahan_id'])
+                                                            <select @if ($v['up']) disabled @endif
+                                                                name="nama[]"
+                                                                onchange="clicknama(this.value, {{ $key }}, {{ $v['bahan_id'] }})"
+                                                                id="nama_{{ $key }}"
+                                                                class="form-control select2 select2-danger"
+                                                                data-dropdown-css-class="select2-danger"
+                                                                style="width: 100%;margin-left:100px;">
+                                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                                <option value="Oprasional">Oprasional
                                                                 </option>
-                                                            @endforeach
-                                                        </select>
+                                                                <option value="Supplay">Supplay
+                                                                </option>
+                                                                <option value="ART">ART
+                                                                </option>
+
+                                                                @foreach ($bahan as $bhn)
+                                                                    <option value="{{ $bhn['id'] }}"
+                                                                        @if ($v['bahan_id'] == $bhn['id']) selected @endif>
+                                                                        {{ $bhn['nama'] }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        @else
+                                                            <input title="Nama Barang" type="text" class="form-control"
+                                                                oninput="$('#FormBelanja').submit()"
+                                                                id="nama_{{ $key }}" value="{{ $v['nama'] }}"
+                                                                placeholder="Nama Barang" name="nama[]">
+                                                        @endif
                                                         @if (!$v['up'])
                                                             <input type="hidden" value="{{ $v['id'] }}"
                                                                 id="id_{{ $key }}" name="id[]">
@@ -102,27 +108,53 @@
                                                                 id="key_{{ $key }}" name="key[]">
                                                         @endif
                                                     </td>
-                                                    <td> <select disabled id="kategori_{{ $key }}"
-                                                            class="form-control select2 select2-danger"
-                                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                                            <option selected="true" disabled="disabled">Pilih</option>
-                                                            <option value="Item"
-                                                                @if ($v['bahan_id'] > 0) selected @endif>Item
-                                                            </option>
-                                                            <option value="Oprasional"
-                                                                @if ($v['kategori'] == 'Oprasional') selected @endif>Oprasional
-                                                            </option>
-                                                            <option value="Supplay"
-                                                                @if ($v['kategori'] == 'Supplay') selected @endif>Supplay
-                                                            </option>
-                                                            <option value="ART"
-                                                                @if ($v['kategori'] == 'ART') selected @endif>ART
-                                                            </option>
-                                                        </select>
-                                                        <input @if ($v['up']) disabled @endif
-                                                            type="hidden" name="kategori[]"
-                                                            id="kategori_val_{{ $key }}"
-                                                            value="<?= $v['kategori'] ?>">
+                                                    <td>
+
+                                                        @if ($v['bahan_id'])
+                                                            <select disabled id="kategori_{{ $key }}"
+                                                                class="form-control select2 select2-danger"
+                                                                data-dropdown-css-class="select2-danger"
+                                                                style="width: 100%;">
+                                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                                <option value="Item"
+                                                                    @if ($v['bahan_id'] > 0) selected @endif>Item
+                                                                </option>
+                                                                <option value="Oprasional"
+                                                                    @if ($v['kategori'] == 'Oprasional') selected @endif>
+                                                                    Oprasional
+                                                                </option>
+                                                                <option value="Supplay"
+                                                                    @if ($v['kategori'] == 'Supplay') selected @endif>
+                                                                    Supplay
+                                                                </option>
+                                                                <option value="ART"
+                                                                    @if ($v['kategori'] == 'ART') selected @endif>ART
+                                                                </option>
+                                                            </select>
+                                                            <input @if ($v['up']) disabled @endif
+                                                                type="hidden" name="kategori[]"
+                                                                id="kategori_val_{{ $key }}"
+                                                                value="<?= $v['kategori'] ?>">
+                                                        @else
+                                                            <select oninput="$('#FormBelanja').submit()"
+                                                                id="kategori_{{ $key }}" name="kategori[]"
+                                                                class="form-control select2 select2-danger"
+                                                                data-dropdown-css-class="select2-danger"
+                                                                style="width: 100%;">
+                                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                                <option value="Oprasional"
+                                                                    @if ($v['kategori'] == 'Oprasional') selected @endif>
+                                                                    Oprasional
+                                                                </option>
+                                                                <option value="Supplay"
+                                                                    @if ($v['kategori'] == 'Supplay') selected @endif>
+                                                                    Supplay
+                                                                </option>
+                                                                <option value="ART"
+                                                                    @if ($v['kategori'] == 'ART') selected @endif>ART
+                                                                </option>
+                                                            </select>
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         <div class="row">
@@ -131,16 +163,19 @@
                                                                     type="number" class="form-control"
                                                                     id="qty_{{ $key }}"
                                                                     value="{{ $v['qty'] }}"
-                                                                    onkeyup="hitung_belanja(this.value, {{ $key }})"
+                                                                    oninput="hitung_belanja(this.value, {{ $key }})"
                                                                     placeholder="Qty" name="qty[]">
                                                             </div>
                                                             <div class="col">
                                                                 <select @if ($v['up']) disabled @endif
-                                                                    name="uombelanja[]" id="uombelanja_{{ $key }}"
+                                                                    name="uombelanja[]"
+                                                                    onchange="$('#FormBelanja').submit()"
+                                                                    id="uombelanja_{{ $key }}"
                                                                     class="form-control select2 select2-danger"
                                                                     data-dropdown-css-class="select2-danger"
                                                                     style="width: 100%;">
-                                                                    <option selected="true" disabled="disabled">UOM</option>
+                                                                    <option selected="true" disabled="disabled">UOM
+                                                                    </option>
                                                                     4
                                                                     @foreach ($satuan as $stn)
                                                                         <option value="{{ $stn['singkat'] }}"
@@ -155,7 +190,7 @@
                                                                     title="Harga 1 nya" data-toggle="tooltip"
                                                                     data-placement="top" type="text"
                                                                     class="form-control"
-                                                                    onkeyup="hitung_belanja(this.value, {{ $key }})"
+                                                                    oninput="hitung_belanja(this.value, {{ $key }})"
                                                                     id="harga_{{ $key }}"
                                                                     value="{{ $v['harga'] }}" placeholder="Harga"
                                                                     name="harga[]">
@@ -168,7 +203,7 @@
                                                                 <div class="input-group">
                                                                     <input
                                                                         @if ($v['up']) disabled @endif
-                                                                        onkeyup="hitung_belanja(this.value,{{ $key }})"
+                                                                        oninput="hitung_belanja(this.value,{{ $key }})"
                                                                         style="text-align: right;max-width:100px;"
                                                                         type="number" value="{{ $v['stock'] }}"
                                                                         name="stock[]" id="stock_{{ $key }}"
@@ -195,7 +230,7 @@
                                                                         @if ($v['up']) disabled @endif
                                                                         title="Harga 1 nya" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        onkeyup="hitung_belanja(this.value,{{ $key }})"
+                                                                        oninput="hitung_belanja(this.value,{{ $key }})"
                                                                         style="text-align: right;max-width:100px;"
                                                                         type="number" value="{{ $v['stock_harga'] }}"
                                                                         name="stock_harga[]"
@@ -251,7 +286,8 @@
                             <a onclick="uploadbelanja()" class="btn btn-primary">Upload</a>
                             <br><br>
                             <font color="red">*</font> Upload akan menambah inventory dan akan terkunci<br>
-                            <font color="red">*</font> Jika tanggal sebelumnya belum terupload maka akan upload otomatis<br>
+                            <font color="red">*</font> Jika tanggal sebelumnya belum terupload maka akan upload
+                            otomatis<br>
                         </div>
                     </div>
                 </form>
@@ -310,6 +346,10 @@
             if (id === 'Oprasional') {
 
                 var isi = prompt('Nama Barang Oprasional');
+                var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
+                    '#FormBelanja' + "'" + ').submit()" id="nama_' +
+                    row + '" value="' + isi + '" placeholder="Nama Barang" name="nama[]">';
+
 
                 if (isi) {
                     if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi > 0) {
@@ -324,19 +364,24 @@
                         $('#qty_' + row).val('');
                         $('#total_' + row).html('-');
 
-                        var newOption = new Option(isi, isi, true, true);
-                        $('#nama_' + row).append(newOption).trigger('change');
+                        $('#nama_' + row).replaceWith(html);
+                        $("#nama_" + row).select2('destroy');
                     }
                 } else {
                     if (tersimpan) {
                         $('#nama_' + row).val(tersimpan).trigger("change.select2");
                     } else {
-                        hapusbelanja(false, row);
+                        hapusbelanja(false, row)
                     }
                 }
 
             } else if (id === 'Supplay') {
                 var isi = prompt('Nama Barang Supplay');
+                var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
+                    '#FormBelanja' + "'" + ').submit()" id="nama_' +
+                    row + '" value="' + isi + '" placeholder="Nama Barang" name="nama[]">';
+
+
                 if (isi) {
                     if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
                         alert('Nama Tidak diizinkan');
@@ -350,8 +395,8 @@
                         $('#qty_' + row).val('');
                         $('#total_' + row).html('-');
 
-                        var newOption = new Option(isi, isi, true, true);
-                        $('#nama_' + row).append(newOption).trigger('change');
+                        $('#nama_' + row).replaceWith(html);
+                        $("#nama_" + row).select2('destroy');
                     }
                 } else {
                     if (tersimpan) {
@@ -362,6 +407,10 @@
                 }
             } else if (id == 'ART') {
                 var isi = prompt('Nama Barang ART');
+                var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
+                    '#FormBelanja' + "'" + ').submit()" id="nama_' +
+                    row + '" value="' + isi + '" placeholder="Nama Barang" name="nama[]">';
+
                 if (isi) {
                     if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
                         alert('Nama Tidak diizinkan');
@@ -375,8 +424,8 @@
                         $('#qty_' + row).val('');
                         $('#total_' + row).html('-');
 
-                        var newOption = new Option(isi, isi, true, true);
-                        $('#nama_' + row).append(newOption).trigger('change');
+                        $('#nama_' + row).replaceWith(html);
+                        $("#nama_" + row).select2('destroy');
                     }
                 } else {
                     if (tersimpan) {
@@ -399,7 +448,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('#item_' + row).html(
-                            '<div style="display: flex;"><div class="input-group" style="height: fit-content;" ><input onkeyup="hitung_belanja(this.value,' +
+                            '<div style="display: flex;"><div class="input-group" style="height: fit-content;" ><input oninput="hitung_belanja(this.value,' +
                             row +
                             ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock[]" id="stock_' +
                             row +
@@ -407,7 +456,7 @@
                             data.satuan +
                             '</span></div></div><input type="hidden" name="stock_uom[]" value="' + data
                             .satuan + '" id="stock_uom_' + row + '"> &nbsp; ' +
-                            '<div class="input-group" style="height: fit-content;"><div class="input-group-prepend" ><span class="input-group-text">Rp.</span></div><input onkeyup="hitung_belanja(this.value,' +
+                            '<div class="input-group" style="height: fit-content;"><div class="input-group-prepend" ><span class="input-group-text">Rp.</span></div><input oninput="hitung_belanja(this.value,' +
                             row +
                             ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock_harga[]" id="stock_harga_' +
                             row +

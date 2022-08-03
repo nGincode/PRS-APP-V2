@@ -3,22 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
-use App\Models\Bahan_Olahan;
-use App\Models\User;
-use App\Models\Store;
-use App\Models\Ivn;
-use App\Models\Pengadaan;
-use App\Models\LogistikProduk;
-use App\Models\LogistikBelanja;
-use App\Models\LogistikOrder;
-use App\Models\Groups;
 use App\Models\Inventory;
-use App\Models\Olahan;
 use App\Models\Satuan;
 use App\Models\OpnameStock;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 
 class InventoryController extends Controller
@@ -172,9 +163,9 @@ class InventoryController extends Controller
 
 
             if ($value['qty'] < 10) {
-                $qty = '<span class="badge badge-danger"> <i class="fa fa-exclamation-triangle"></i></span> ' . $value['qty'] . '/' . $value['satuan'];
+                $qty = $value['qty'] . '/' . $value['satuan'] . ' &nbsp<span class="badge badge-danger"> <i class="fa fa-exclamation-triangle"></i></span> ';
             } else if ($value['qty'] < 20) {
-                $qty = '<span class="badge badge-warning"> <i class="fa fa-exclamation-triangle"></i></span> ' . $value['qty'] . '/' . $value['satuan'];
+                $qty = $value['qty'] . '/' . $value['satuan'] . ' &nbsp<span class="badge badge-warning"> <i class="fa fa-exclamation-triangle"></i></span> ';
             } else {
                 $qty = $value['qty'] . '/' . $value['satuan'];
             }
@@ -185,10 +176,13 @@ class InventoryController extends Controller
                 $harga = $value['harga_manual'];
             }
 
+
+            $generator = new BarcodeGeneratorPNG();
+
             if ($request->session()->get('tipe') == 'Office') {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        $value['bahan']->kode,
+                        '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
@@ -198,10 +192,9 @@ class InventoryController extends Controller
                     );
                 }
             } else {
-
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        $value['bahan']->kode,
+                        '<center><img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
                         $value['bahan']->nama,
                         $qty,
                         ($this->rupiah($harga) ?? 'Rp. 0') .  ' <span class="badge badge-success"> <i class="fa fa-bullseye"></i></span> ',
