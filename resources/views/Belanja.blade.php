@@ -24,11 +24,20 @@
                         <div class="card-body">
                             <div id="divautosave">
                                 <div class="text-right" id="autosave">
-                                    @if ($AutoUpload)
-                                        <small style="color: green;" class="animate__animated animate__bounce"> <i
-                                                class="fas fa-check"></i> {{ $AutoUpload }}</small>
+                                    @if (!$AutoUpload['status'])
+                                        @foreach ($AutoUpload['pesan'] as $item)
+                                            <small style="color: red;" class="animate__animated animate__flash"> <i
+                                                    class="fas fa-times"></i> {{ $item }}</small><br>
+                                        @endforeach
                                     @else
-                                        <small> <i class="fas fa-check"></i> Autosave on</small>
+                                        @if ($AutoUpload['pesan'])
+                                            @foreach ($AutoUpload['pesan'] as $item)
+                                                <small style="color: green;" class="animate__animated animate__bounce"> <i
+                                                        class="fas fa-check"></i> {{ $item }}</small><br>
+                                            @endforeach
+                                        @else
+                                            <small> <i class="fas fa-check"></i> Autosave on</small>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

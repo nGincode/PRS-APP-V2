@@ -20,41 +20,75 @@ class BelanjaController extends Controller
 
     function AutoUpload()
     {
-        $item = '';
-        $no = 0;
+        $item = [];
+        $true = [];
+        $cek = true;
         foreach (Belanja::where('tgl', '<', date('Y-m-d'))->where('up', false)->get() as $key => $value) {
-            $no++;
-            if ($value['qty'] && $value['uom'] && $value['harga']) {
-                if (Belanja::where('id', $value['id'])->update(['up' => true])) {
-                    if ($value['bahan_id']) {
-                        if ($value['stock']) {
-                            $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
-                            if ($bhn) {
-                                $jumlah = $value['stock'] + $bhn['qty'];
-                                if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+            if ($value['bahan_id']) {
+                if ($value['stock'] && $value['stock_harga'] && $value['stock_uom']) {
+                    if (Belanja::where('id', $value['id'])->update(['up' => true])) {
+                        if ($value['bahan_id']) {
+                            if ($value['stock']) {
+                                $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
+                                if ($bhn) {
+                                    $jumlah = $value['stock'] + $bhn['qty'];
+                                    if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+                                        Belanja::where('id', $value['id'])->update(['up' => false]);
+                                        $cek = false;
+                                        $item[] =  $value['tgl'] . '  (' . $value['nama'] . ') Inventory Gagal Menambah';
+                                    } else {
+                                        $true[] = 'Berhasil Terupload Auto Untuk Tanggal ' . $value['tgl'];
+                                    };
+                                } else {
                                     Belanja::where('id', $value['id'])->update(['up' => false]);
-                                    $item .= $value['nama'] . '- Inventory Gagal Menambah <br>';
-                                };
+                                    $cek = false;
+                                    $item[] =  $value['tgl'] . '  (' . $value['nama'] . ') Inventory Kosong';
+                                }
                             } else {
                                 Belanja::where('id', $value['id'])->update(['up' => false]);
-                                $item .= $value['nama'] . '- Inventory Kosong <br>';
+                                $cek = false;
+                                $item[] =  $value['tgl'] . '  (' . $value['nama'] . ') Qty UOM Kosong';
                             }
-                        } else {
-                            Belanja::where('id', $value['id'])->update(['up' => false]);
-                            $item .= $value['nama'] . '- Qty UOM Kosong <br>';
                         }
+                    } else {
+                        $cek = false;
+                        $item[] =  $value['tgl'] . '  (' . $value['nama'] . ') Gagal Upload';
                     }
                 } else {
-                    $item .= $value['nama'] . '- Gagal Upload <br>';
+                    $cek = false;
+                    $item[] = $value['tgl'] . '  (' . $value['nama'] . ') Tidak Lengkap (di Sarankan Hapus)';
+                }
+            } else {
+                if ($value['qty'] && $value['uom'] && $value['harga']) {
+                    if (!Belanja::where('id', $value['id'])->update(['up' => true])) {
+                        $cek = false;
+                        $item[] =  $value['tgl'] . '  (' . $value['nama'] . ') Gagal Upload';
+                    } else {
+                        $true[] = 'Berhasil Terupload Auto Untuk Tanggal ' . $value['tgl'];
+                    };
+                } else {
+                    $cek = false;
+                    $item[] = $value['tgl'] . ' ( ' . $value['nama'] . ') Tidak Lengkap (di Sarankan Hapus)';
                 }
             }
         }
-        if ($no && $item) {
-            return $item;
-        } elseif ($no) {
-            return 'Tanggal sebelumnya berhasil di upload';
+        if ($cek) {
+            if ($item) {
+                return [
+                    'status' => true,
+                    'pesan' => $true
+                ];
+            } else {
+                return [
+                    'status' => true,
+                    'pesan' => ''
+                ];
+            }
         } else {
-            return '';
+            return [
+                'status' => false,
+                'pesan' => $item
+            ];
         }
     }
 
@@ -347,47 +381,72 @@ class BelanjaController extends Controller
 
 
         if (isset($belanja[0]['nama'])) {
+            $item = [];
+            $true = [];
             $cek = true;
-            $item = '';
             foreach ($belanja as $key => $value) {
-                if ($value['qty'] && $value['uom'] && $value['harga']) {
-                    if (Belanja::where('id', $value['id'])->update(['up' => true])) {
-                        if ($value['bahan_id']) {
-                            if ($value['stock']) {
-                                $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
-                                if ($bhn) {
-                                    $jumlah = $value['stock'] + $bhn['qty'];
-                                    if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+                if ($value['bahan_id']) {
+                    if ($value['stock'] && $value['stock_harga'] && $value['stock_uom']) {
+                        if (Belanja::where('id', $value['id'])->update(['up' => true])) {
+                            if ($value['bahan_id']) {
+                                if ($value['stock']) {
+                                    $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
+                                    if ($bhn) {
+                                        $jumlah = $value['stock'] + $bhn['qty'];
+                                        if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+                                            Belanja::where('id', $value['id'])->update(['up' => false]);
+                                            $cek = false;
+                                            $item[] =   ' ' . $value['nama'] . ' Inventory Gagal Menambah';
+                                        } else {
+                                            $true[] = 'Berhasil Terupload Untuk Tanggal ' . $value['tgl'];
+                                        };
+                                    } else {
                                         Belanja::where('id', $value['id'])->update(['up' => false]);
                                         $cek = false;
-                                        $item .= $value['nama'] . '- Inventory Gagal Menambah <br>';
-                                    };
+                                        $item[] =  ' ' . $value['nama'] . ' Inventory Kosong';
+                                    }
                                 } else {
                                     Belanja::where('id', $value['id'])->update(['up' => false]);
                                     $cek = false;
-                                    $item .= $value['nama'] . '- Inventory Kosong <br>';
+                                    $item[] =  ' ' . $value['nama'] . ' Qty UOM Kosong';
                                 }
-                            } else {
-                                Belanja::where('id', $value['id'])->update(['up' => false]);
-                                $cek = false;
-                                $item .= $value['nama'] . '- Qty UOM Kosong <br>';
                             }
+                        } else {
+                            $cek = false;
+                            $item[] =   ' ' . $value['nama'] . ' Gagal Upload';
                         }
                     } else {
                         $cek = false;
-                        $item .= $value['nama'] . '- Gagal Upload <br>';
+                        $item[] = ' Barang ' . $value['nama'] . ' Tidak Lengkap';
                     }
                 } else {
-                    $cek = false;
-                    $item .= $value['nama'] . '- Tidak Lengkap <br>';
+                    if ($value['qty'] && $value['uom'] && $value['harga']) {
+                        if (!Belanja::where('id', $value['id'])->update(['up' => true])) {
+                            $cek = false;
+                            $item[] =  ' ' . $value['nama'] . ' Gagal Upload';
+                        } else {
+                            $true[] = 'Berhasil Terupload Untuk Tanggal ' . $value['tgl'];
+                        };
+                    } else {
+                        $cek = false;
+                        $item[] = ' Barang ' . $value['nama'] . ' tidak lengkap ';
+                    }
                 }
             }
             if ($cek) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'success',
-                    'pesan' =>  'Belanja Berhasil Diupload Dengan Aman'
-                ];
+                if ($item) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' =>  $true
+                    ];
+                } else {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'Info',
+                        'pesan' =>  'Tidak ada yang terupload'
+                    ];
+                }
             } else {
                 $data = [
                     'toast' => true,
@@ -527,7 +586,7 @@ class BelanjaController extends Controller
 
 
             $result['data'][] = array(
-                $value,
+                $this->tanggal($value, true),
                 $this->rupiah($total),
                 $up,
                 $button
@@ -617,9 +676,9 @@ class BelanjaController extends Controller
                         <td>' . $value['kategori'] . '</td>
                         <td>' . $value['qty'] . ' ' . $value['uom'] . '</td>
                         <td>' . $this->rupiah($value['harga']) . '</td>
-                        <td>' . $stock . '</td>
+                        <td>' . $stock . ' ' . $value['stock_uom'] . '</td>
                         <td>' . $this->rupiah($value['stock_harga']) . '</td>
-                        <td>' . $hutang . $value['ket'] . '</td>
+                        <td>' . $hutang . ($value['ket'] ?? '-') . '</td>
                         <td>' . $this->rupiah($total) . $hapus . '</td>
                     </tr>
                        
