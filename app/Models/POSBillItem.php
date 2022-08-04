@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class posbillitem extends Model
+class POSBillItem extends Model
 {
     use HasFactory;
     protected $table = 'posbillitem';

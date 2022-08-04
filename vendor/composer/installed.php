@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '2c8a3183234dc7d480850cb3242d7fca0591df74',
+        'reference' => '44f0c6d2d1a2aaca6e93f71f21173ea6d8499800',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -56,6 +56,42 @@
             'install_path' => __DIR__ . '/../dflydev/dot-access-data',
             'aliases' => array(),
             'reference' => '0992cc19268b259a39e86f296da5f0677841f42c',
+            'dev_requirement' => false,
+        ),
+        'doctrine/cache' => array(
+            'pretty_version' => '2.2.0',
+            'version' => '2.2.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/cache',
+            'aliases' => array(),
+            'reference' => '1ca8f21980e770095a31456042471a57bc4c68fb',
+            'dev_requirement' => false,
+        ),
+        'doctrine/dbal' => array(
+            'pretty_version' => '3.3.7',
+            'version' => '3.3.7.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/dbal',
+            'aliases' => array(),
+            'reference' => '9f79d4650430b582f4598fe0954ef4d52fbc0a8a',
+            'dev_requirement' => false,
+        ),
+        'doctrine/deprecations' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/deprecations',
+            'aliases' => array(),
+            'reference' => '0e2a4f1f8cdfc7a92ec3b01c9334898c806b30de',
+            'dev_requirement' => false,
+        ),
+        'doctrine/event-manager' => array(
+            'pretty_version' => '1.1.2',
+            'version' => '1.1.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/event-manager',
+            'aliases' => array(),
+            'reference' => 'eb2ecf80e3093e8f3c2769ac838e27d8ede8e683',
             'dev_requirement' => false,
         ),
         'doctrine/inflector' => array(
@@ -241,193 +277,193 @@
         'illuminate/auth' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/broadcasting' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/bus' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/cache' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/collections' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/conditionable' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/config' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/console' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/container' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/contracts' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/cookie' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/database' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/encryption' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/events' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/filesystem' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/hashing' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/http' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/log' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/macroable' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/mail' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/notifications' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/pagination' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/pipeline' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/queue' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/redis' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/routing' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/session' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/support' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/testing' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/translation' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/validation' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'illuminate/view' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v9.22.1',
+                0 => 'v9.23.0',
             ),
         ),
         'itsgoingd/clockwork' => array(
@@ -473,12 +509,12 @@
             'dev_requirement' => false,
         ),
         'laravel/framework' => array(
-            'pretty_version' => 'v9.22.1',
-            'version' => '9.22.1.0',
+            'pretty_version' => 'v9.23.0',
+            'version' => '9.23.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/framework',
             'aliases' => array(),
-            'reference' => 'b3b3dd43b9899f23df6d1d3e5390bd4662947a46',
+            'reference' => 'c4eea9060d847b5c93957b203caa8f57544a76ab',
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
@@ -487,7 +523,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '2c8a3183234dc7d480850cb3242d7fca0591df74',
+            'reference' => '44f0c6d2d1a2aaca6e93f71f21173ea6d8499800',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -686,12 +722,12 @@
             'dev_requirement' => true,
         ),
         'nunomaduro/termwind' => array(
-            'pretty_version' => 'v1.13.0',
-            'version' => '1.13.0.0',
+            'pretty_version' => 'v1.14.0',
+            'version' => '1.14.0.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nunomaduro/termwind',
             'aliases' => array(),
-            'reference' => '132a24bd3e8c559e7f14fa14ba1b83772a0f97f8',
+            'reference' => '10065367baccf13b6e30f5e9246fa4f63a79eb1d',
             'dev_requirement' => false,
         ),
         'phar-io/manifest' => array(
