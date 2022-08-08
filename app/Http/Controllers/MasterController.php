@@ -600,7 +600,12 @@ class MasterController extends Controller
 
         $generator = new BarcodeGeneratorPNG();
 
-        $Data = Bahan::where('delete', false)->latest()->get();
+        if ($request->session()->get('tipe') == 'Office') {
+            $Data = Bahan::where('delete', false)->with('Bahan', 'Store')->latest()->get();
+        } else {
+            $Data = Bahan::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
+        }
+
         echo
         '
         <html>
