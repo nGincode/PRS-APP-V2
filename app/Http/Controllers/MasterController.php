@@ -600,12 +600,7 @@ class MasterController extends Controller
 
         $generator = new BarcodeGeneratorPNG();
 
-        if ($request->session()->get('tipe') == 'Office') {
-            $Data = Bahan::where('delete', false)->with('Bahan', 'Store')->latest()->get();
-        } else {
-            $Data = Bahan::where('store_id', $request->session()->get('store_id'))->where('delete', false)->with('Bahan')->latest()->get();
-        }
-
+        $Data = Bahan::where('delete', false)->latest()->get();
         echo
         '
         <html>
@@ -615,9 +610,9 @@ class MasterController extends Controller
             echo
             '
             <div class="barcode">
-            <small style="font-size: 7px;">' . $value['bahan']->nama . '</small>
-            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '">
-            <br> <small style="font-size: 9px;">' . $value['bahan']->kode . '</small>
+            <small style="font-size: 7px;">' . $value['nama'] . '</small>
+            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '">
+            <br> <small style="font-size: 9px;">' . $value['kode'] . '</small>
             </div>';
         }
         echo '</div>
