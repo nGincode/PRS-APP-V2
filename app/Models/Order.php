@@ -18,4 +18,10 @@ class Order extends Model
     {
         return $this->belongsToMany(Order_Item::class, 'orderitem');
     }
+
+
+    public function Users()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

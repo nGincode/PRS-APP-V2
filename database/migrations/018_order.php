@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->integer('logistik');
 
-            $table->dateTime('tgl');
+            $table->date('tgl');
             $table->string('nama', 20)->nullable();
             $table->string('nohp', 15)->nullable();
             $table->string('ket')->nullable();

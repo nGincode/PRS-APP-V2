@@ -511,14 +511,15 @@ class InventoryController extends Controller
 
         echo '
         <html>
-        <body onload="print()">
+        <body onload="print()" style="width:80mm">
         <div class="page">';
         foreach ($Data as $key => $value) {
-            echo '
+            echo
+            '
             <div class="barcode">
-            <small>' . $value['bahan']->nama . '</small><br>
-            <img src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '">
-            <br>' . $value['bahan']->kode . '
+            <small style="font-size: 7px;">' . $value['bahan']->nama . '</small>
+            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '">
+            <br> <small style="font-size: 9px;">' . $value['bahan']->kode . '</small>
             </div>';
         }
         echo '</div>
@@ -526,11 +527,13 @@ class InventoryController extends Controller
         
         .page{
             font-family: monospace;
-            text-align:center;
+            display: grid;  
+            grid-gap: 5px;  
+            grid-template-columns: repeat(auto-fit, 100px);
+            grid-template-rows: repeat(2, 50px); 
         }
         .barcode {
-            border-bottom:1px dotted black;
-            padding : 10px;
+            text-align:center;
             margin:5px;
         }
         </style>
@@ -552,15 +555,15 @@ class InventoryController extends Controller
         $Data = bahan::where('kode', $id)->first();
         echo '
         <html>
-        <body onload="print()">
+        <body onload="print()" style="width:80mm">
         <div class="page">';
         if ($Data) {
             for ($i = 0; $i < $jml; $i++) {
                 echo '
             <div class="barcode">
-            <small>' . $Data['nama'] . '</small><br>
-            <img src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
-            <br>' . $Data['kode'] . '
+            <small style="font-size: 7px;">' . $Data['nama'] . '</small>
+            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
+            <br> <small style="font-size: 9px;">' . $Data['kode'] . '</small>
             </div>';
             }
         } else {
@@ -571,11 +574,13 @@ class InventoryController extends Controller
         
         .page{
             font-family: monospace;
-            text-align:center;
+            display: grid;  
+            grid-gap: 5px;  
+            grid-template-columns: repeat(auto-fit, 100px);
+            grid-template-rows: repeat(2, 50px); 
         }
         .barcode {
-            border-bottom:1px dotted black;
-            padding : 10px;
+            text-align:center;
             margin:5px;
         }
         </style>

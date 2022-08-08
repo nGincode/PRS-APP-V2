@@ -8,7 +8,13 @@
                     @csrf
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title"><b>Tambah {{ $title . ' ' . $subtitle }} </b></h3>
+                            <h3 class="card-title"><b>
+                                    @isset($order)
+                                        Edit {{ $title . ' ' . $subtitle . ' Untuk ' . $order['nama'] }}
+                                    @else
+                                        Tambah {{ $title . ' ' . $subtitle }}
+                                    @endisset
+                                </b></h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -36,24 +42,28 @@
                                     <div class="form-group">
                                         <label for="nama">Tanggal</label>
                                         <input disabled type="date"
-                                            @isset($order['tgl']) value="{{ date('Y-m-d', strtotime($order['tgl'])) }}" @else value="{{ date('Y-m-d')}}" @endif
+                                            @isset($order['tgl']) value="{{ date('Y-m-d', strtotime($order['tgl'])) }}" @else value="{{ date('Y-m-d') }}" @endif
                                             class="form-control" onchange="$('#FormOrder').submit()" id="tgl"
                                             placeholder="Tanggal" name="tgl">
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label for="nama">Nama Pengorder</label>
-                                        <input type="text"
-                                            @isset($order['nama']) value="{{ $order['nama'] }}" @endif
-                                            class="form-control" onchange="$('#FormOrder').submit()" id="nama"
-                                            placeholder="Nama Pengorder" name="nama">
-                                    </div>
-                                </div>
+
+
                                 @if (request()->session()->get('tipe') ===
                                     'Office' or
                                     request()->session()->get('tipe') ===
                                         'Logistik')
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label for="nama">Tanggal Laporan</label>
+                                            <input type="date"
+                                                @isset($order['tgl_laporan']) value="{{ date('Y-m-d', strtotime($order['tgl_laporan'])) }}" @else value="{{ date('Y-m-d') }}" @endif
+                                                class="form-control" onchange="$('#FormOrder').submit()" id="tgl_laporan"
+                                                placeholder="Tanggal" name="tgl_laporan">
+                                        </div>
+                                    </div>
+
+
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group">
                                             <label for="outlet">Outlet</label>
@@ -63,9 +73,9 @@
                                                 <option selected="true">Pilih</option>
                                                 @foreach ($store as $str)
                                                     <option
-                                                        @isset($order['store_id']) @if ($order['store_id'] == $str['id']) selected @endif
-                                                    @endisset value="{{ $str['id'] }}">
-                                                    {{ $str['nama'] }}
+                                                        @isset($order['store_id']) @if ($order['store_id'] == $str['id']) 
+                                                                selected @endif
+                                                    @endisset value="{{ $str['id'] }}"> {{ $str['nama'] }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -77,6 +87,17 @@
                                         ->session()
                                         ->get('store_id') ?>">
                             @endif
+
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label for="nama">Nama Pengorder</label>
+                                    <input type="text"
+                                        @isset($order['nama']) value="{{ $order['nama'] }}" @endif
+                                        class="form-control" onchange="$('#FormOrder').submit()" id="nama"
+                                        placeholder="Nama Pengorder" name="nama">
+                                </div>
+                            </div>
 
 
                             <div class="col-12 col-sm-6">
@@ -113,15 +134,16 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-12 col-sm-12">
+                        <div class="col-12 col-sm-12" style="overflow: auto">
                             <label>Input</label>
                             <table id="tambahorder" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nama Bahan</th>
-                                        <th scope="col">Qty Order</th>
-                                        <th scope="col">Qty Deliv</th>
+                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Order</th>
+                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Deliv</th>
+                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Arrive
+                                        </th>
                                         <th scope="col">Harga</th>
                                         <th scope="col">Total</th>
                                     </tr>
@@ -130,6 +152,7 @@
                                 <tbody id="items">
                                     <tr></tr>
                                     @isset($order_item[0])
+                                        <?php $total_seluruh = 0; ?>
                                         @foreach ($order_item as $key => $v)
                                             <tr id="tr_{{ $key }}">
                                                 <td style="padding-left: 50px;">
@@ -154,29 +177,107 @@
                                                     </select>
 
                                                 </td>
-                                                <td id="qty_td_{{ $key }}">
-                                                    <div class="input-group"><input type="number"
-                                                            onkeyup="Hitung({{ $key }})"
-                                                            value="{{ $v['qty'] }}" class="form-control is-valid"
-                                                            id="qty_val_{{ $key }}" placeholder="Qty Order"
-                                                            name="qty[]" aria-invalid="false">
-                                                        <div class="input-group-append"><span
-                                                                class="input-group-text">{{ $v['satuan'] }}</span>
+
+                                                @if (request()->session()->get('tipe') ===
+                                                    'Office' or
+                                                    request()->session()->get('tipe') ===
+                                                        'Logistik')
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" disabled
+                                                                value="{{ $v['qty_order'] }}" placeholder="Qty Order"
+                                                                class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </td>
+
+
+                                                    <td id="qty_deliv_td_{{ $key }}">
+                                                        <div class="input-group"><input type="number"
+                                                                onchange="Hitung({{ $key }})"
+                                                                value="{{ $v['qty_deliv'] }}" class="form-control"
+                                                                id="qty_deliv_val_{{ $key }}"
+                                                                placeholder="Qty Delivery" name="qty_deliv[]"
+                                                                aria-invalid="false">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+
+
+
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" disabled placeholder="Qty Arrive"
+                                                                value="{{ $v['qty_arrive'] }}" class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                @else
+                                                    <td id="qty_order_td_{{ $key }}">
+                                                        <div class="input-group"><input type="number"
+                                                                onchange="Hitung({{ $key }})"
+                                                                value="{{ $v['qty_order'] }}"
+                                                                class="form-control is-valid"
+                                                                id="qty_order_val_{{ $key }}"
+                                                                placeholder="Qty Order" name="qty_order[]"
+                                                                aria-invalid="false">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" disabled
+                                                                value="{{ $v['qty_deliv'] }}"
+                                                                placeholder="Qty Delivery" class="form-control">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td id="qty_arrive_td_{{ $key }}">
+                                                        <div class="input-group"><input type="number"
+                                                                onchange="Hitung({{ $key }})"
+                                                                value="{{ $v['qty_arrive'] }}" class="form-control"
+                                                                id="qty_arrive_val_{{ $key }}"
+                                                                placeholder="Qty Arrive" name="qty_arrive[]"
+                                                                aria-invalid="false">
+                                                            <div class="input-group-append"><span
+                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                @endif
+
+
+
+                                                <td id="harga_td_{{ $key }}">
+                                                    Rp.
+                                                    {{ number_format((int) $v['harga'], 0, '.', ',') }}/{{ $v['satuan'] }}
                                                 </td>
-                                                <td><input type="number" disabled="" class="form-control"
-                                                        id="qty_deliv" placeholder="Qty Deliv" name="qty_deliv[]">
+
+                                                <td id="total_td_{{ $key }}">
+                                                    Rp.
+                                                    {{ number_format((int) $v['harga'] * (int) $v['qty_deliv'], 0, '.', ',') }}
                                                 </td>
-                                                <td id="harga_order_{{ $key }}">
-                                                    {{ $v['harga'] }}/{{ $v['satuan'] }}</td>
-                                                <td id="total_order_{{ $key }}">
-                                                    {{ $v['harga'] * $v['qty'] }}
-                                                </td>
+
                                                 <input id="harga_val_{{ $key }}" type="hidden"
                                                     value="{{ $v['harga'] }}">
 
                                             </tr>
+
+                                            <?php $total_seluruh += (int) $v['harga'] * (int) $v['qty_deliv']; ?>
                                         @endforeach
                                     @else
                                         @isset($order['logistik'])
@@ -192,7 +293,7 @@
                                 <tfoot id="item_tambah">
                                     @isset($order['logistik'])
                                         <tr>
-                                            <td colspan="5" class="text-center"><a
+                                            <td colspan="6" class="text-center"><a
                                                     onclick="add_row_order({{ $order['logistik'] }})"
                                                     class="btn btn-block btn-success"><i class="fa fa-plus"></i></a>
                                             </td>
@@ -200,7 +301,21 @@
                                     @endisset
                                 </tfoot>
                             </table>
+                            <div class="float-right" style=" border-bottom: 2px #007bff solid">
+                                Total : <h2><b id="total_seluruh">Rp.
+                                        {{ number_format($total_seluruh, 0, '.', ',') }}</b></h2>
+                            </div>
+                            <br><br><br>
+                            @isset($order)
+                                <div>
+                                    Ket :<br>
+                                    <font color="red">*</font> Orderan ini dibuat Oleh
+                                    <b>{{ $order['users']->store }}</b>
+                                </div>
+                            @endisset
+                            <hr>
                         </div>
+
                     </div>
                     <!-- /.row -->
                 </div>
@@ -339,17 +454,27 @@
                     html += '</select> </td>';
 
                     html +=
-                        '<td id="qty_td_' + row_id + '"><input id="qty_val_' + row_id +
-                        '" type="number" class="form-control" placeholder="Qty Order" name="qty[]"></td>';
+                        '<td id="qty_order_td_' + row_id + '"><input ' + data.disabled_order +
+                        ' id="qty_order_val_' + row_id +
+                        '" type="number" onchange="Hitung(' + row_id +
+                        ')" class="form-control" placeholder="Qty Order" name="qty_order[]"></td>';
 
 
                     html +=
-                        '<td><input type="number" ' + data.disabled_deliv +
-                        ' class="form-control" id="qty_deliv" placeholder="Qty Deliv" name="qty_deliv[]"></td>';
+                        '<td id="qty_deliv_td_' + row_id + '"><input type="number" ' + data.disabled_deliv +
+                        ' class="form-control" onchange="Hitung(' + row_id +
+                        ')" id="qty_deliv" placeholder="Qty Delivery" name="qty_deliv[]"></td>';
 
-                    html += '<td id="harga_order_' + row_id + '">-</td>';
 
-                    html += '<td id="total_order_' + row_id + '">-</td>';
+                    html +=
+                        '<td id="qty_arrive_td_' + row_id + '"><input type="number" onchange="Hitung(' +
+                        row_id + ')" ' + data
+                        .disabled_arrive +
+                        ' class="form-control" id="qty_arrive" placeholder="Qty Arrive" name="qty_arrive[]"></td>';
+
+                    html += '<td id="harga_td_' + row_id + '">-</td>';
+
+                    html += '<td id="total_td_' + row_id + '">-</td>';
 
                     html +=
                         '<input id="harga_val_' + row_id +
@@ -385,18 +510,39 @@
             success: function(data) {
                 if (data.harga > 0) {
                     $('#harga_val_' + row).val(data.harga);
-                    $('#harga_order_' + row).html('Rp. ' + formatRupiah(data.harga) + '/' + data.satuan);
+                    $('#harga_td_' + row).html('Rp. ' + formatRupiah(data.harga) + '/' + data.satuan);
 
-                    $('#qty_td_' + row).html(
-                        '<div class="input-group"><input type="number" onkeyup="Hitung(' + row +
-                        ')" value="1" class="form-control"  id="qty_val_' +
+                    $('#qty_order_td_' + row).html(
+                        '<div class="input-group"><input ' + data.disabled_order +
+                        ' type="number" onchange="Hitung(' + row +
+                        ')"  class="form-control"  id="qty_order_val_' +
                         row +
-                        '" placeholder="Qty Order" name="qty[]"><div class="input-group-append"><span class="input-group-text">' +
+                        '" placeholder="Qty Order" name="qty_order[]"><div class="input-group-append"><span class="input-group-text">' +
+                        data.satuan + '</span></div></div>'
+                    );
+
+                    $('#qty_deliv_td_' + row).html(
+                        '<div class="input-group"><input ' + data.disabled_deliv +
+                        ' type="number" onchange="Hitung(' + row +
+                        ')"  class="form-control"  id="qty_deliv_val_' +
+                        row +
+                        '" placeholder="Qty Delivery" name="qty_deliv[]"><div class="input-group-append"><span class="input-group-text">' +
                         data.satuan + '</span></div></div>'
                     );
 
 
-                    $('#total_order_' + row).html('Rp. ' + formatRupiah(data.harga));
+                    $('#qty_arrive_td_' + row).html(
+                        '<div class="input-group"><input ' + data.disabled_arrive +
+                        ' type="number" onchange="Hitung(' + row +
+                        ')"  class="form-control"  id="qty_arrive_val_' +
+                        row +
+                        '" placeholder="Qty Arrive" name="qty_arrive[]"><div class="input-group-append"><span class="input-group-text">' +
+                        data.satuan + '</span></div></div>'
+                    );
+
+
+
+                    $('#total_td_' + row).html('Rp. ' + formatRupiah(data.harga));
                     $('#FormOrder').submit();
                 }
             }
@@ -446,10 +592,30 @@
     }
 
     function Hitung(row) {
-        qty = Number($('#qty_val_' + row).val());
+        qtyorder = Number($('#qty_order_val_' + row).val());
+        qtydeliv = Number($('#qty_deliv_val_' + row).val());
+        qtyarrive = Number($('#qty_arrive_val_' + row).val());
+
         harga = Number($('#harga_val_' + row).val());
-        if (qty && harga) {
-            $('#total_order_' + row).html('Rp. ' + formatRupiah(qty * harga));
+
+
+        var row_id = $("#items tr").length - 1;
+
+        if (qtydeliv) {
+            $('#total_td_' + row).html('Rp. ' + formatRupiah(qtydeliv * harga));
+            total = 0;
+            for (let index = 0; index < row_id; index++) {
+                total += Number($('#qty_deliv_val_' + index).val()) * Number($('#harga_val_' + index).val());
+            }
+            $('#total_seluruh').html('Rp. ' + formatRupiah(total));
+            $('#FormOrder').submit();
+        } else {
+            $('#total_td_' + row).html('Rp. ' + formatRupiah(qtyorder * harga));
+            total = 0;
+            for (let index = 0; index < row_id; index++) {
+                total += Number($('#qty_deliv_val_' + index).val()) * Number($('#harga_val_' + index).val());
+            }
+            $('#total_seluruh').html('Rp. ' + formatRupiah(total));
             $('#FormOrder').submit();
         }
     }

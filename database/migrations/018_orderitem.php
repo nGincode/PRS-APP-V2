@@ -31,9 +31,12 @@ return new class extends Migration
 
 
             $table->integer('logistik');
-            $table->dateTime('tgl');
+            $table->date('tgl');
+            $table->date('tgl_laporan');
             $table->string('nama', 30)->nullable();
-            $table->string('qty')->nullable();
+            $table->string('qty_order')->nullable();
+            $table->string('qty_deliv')->nullable();
+            $table->string('qty_arrive')->nullable();
             $table->integer('harga')->nullable();
             $table->string('satuan', 10)->nullable();
             $table->timestamps();

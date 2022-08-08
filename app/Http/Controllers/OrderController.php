@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
-use App\Models\Bahan_Olahan;
-use App\Models\Belanja;
-use App\Models\User;
 use App\Models\Store;
-use App\Models\Groups;
 use App\Models\Inventory;
 use App\Models\Olahan;
 use App\Models\Order;
@@ -16,7 +12,6 @@ use App\Models\Order_Item;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 
 class OrderController extends Controller
@@ -40,7 +35,7 @@ class OrderController extends Controller
 
         $this->data['store'] = store::where('tipe', 'Outlet')->where('active', true)->get();
         $this->data['logistik'] = store::where('tipe', 'Logistik')->where('active', true)->get();
-        $this->data['order'] = order::where('id', $request->session()->get('IdEditOrder'))->first();
+        $this->data['order'] = order::with('users')->where('id', $request->session()->get('IdEditOrder'))->first();
         $this->data['order_item'] = Order_Item::where('order_id', $request->session()->get('IdEditOrder'))->get();
         if ($this->data['order']) {
             $this->data['item'] = Inventory::where('store_id', $this->data['order']['logistik'])->where('delete', false)->with('Bahan')->get();
@@ -80,9 +75,13 @@ class OrderController extends Controller
                 $data['id'] = $id;
                 $data['status'] = true;
                 if (request()->session()->get('tipe') === 'Outlet') {
+                    $data['disabled_order'] = '';
                     $data['disabled_deliv'] = 'disabled';
+                    $data['disabled_arrive'] = '';
                 } else {
+                    $data['disabled_order'] = 'disabled';
                     $data['disabled_deliv'] = '';
+                    $data['disabled_arrive'] = 'disabled';
                 }
             } else {
                 if ($store = Store::where('id', $id)->first()) {
@@ -114,12 +113,25 @@ class OrderController extends Controller
             } else {
                 $harga = $bhn['harga_manual'];
             }
+
+
             $data = [
                 'id' => $bhn['id'],
                 'satuan' => $bhn['satuan'],
                 'harga' => $harga,
                 'tgl_diubah' => $bhn['tgl_harga']
             ];
+
+            if (request()->session()->get('tipe') === 'Outlet') {
+                $data['disabled_order'] = '';
+                $data['disabled_deliv'] = 'disabled';
+                $data['disabled_arrive'] = '';
+            } else {
+                $data['disabled_order'] = 'disabled';
+                $data['disabled_deliv'] = '';
+                $data['disabled_arrive'] = 'disabled';
+            }
+
             echo json_encode($data);
         }
     }
@@ -149,6 +161,7 @@ class OrderController extends Controller
             ]
         );
 
+        $store_id = $request->input('outlet');
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
@@ -162,34 +175,54 @@ class OrderController extends Controller
             if ($request->session()->get('IdEditOrder')) {
                 if (Order::where('id', $request->session()->get('IdEditOrder'))->count()) {
                     $orderid = $request->session()->get('IdEditOrder');
+                    $tgl_laporan = $request->input('tgl_laporan');
+                    Order::where('id', $orderid)->update(
+                        [
+                            'nama' => $request->input('nama'),
+                            'users_id' => $request->session()->get('id'),
+                            'store_id' =>  $store_id,
+                            'tgl' => date('Y-m-d'),
+                            'tgl_laporan' => $tgl_laporan,
+                            'ket' => $request->input('ket'),
+                            'nohp' => $request->input('no'),
+                            'logistik' => $request->input('tujuan'),
+                            'created_at' => date('Y-m-d H:i:s')
+                        ]
+                    );
                 } else {
+                    $tgl_laporan =  date('Y-m-d');
                     $orderid = Order::insertGetId(
                         [
                             'nama' => $request->input('nama'),
                             'users_id' => $request->session()->get('id'),
-                            'store_id' => $request->session()->get('store_id'),
-                            'tgl' => date('Y-m-d H:i:s'),
+                            'store_id' =>  $store_id,
+                            'tgl_laporan' =>  $tgl_laporan,
+                            'tgl' => date('Y-m-d'),
                             'ket' => $request->input('ket'),
                             'nohp' => $request->input('no'),
-                            'logistik' => $request->input('tujuan')
+                            'logistik' => $request->input('tujuan'),
+                            'created_at' => date('Y-m-d H:i:s')
                         ]
                     );
                 }
             } else {
+                $tgl_laporan =  date('Y-m-d');
                 $orderid = Order::insertGetId(
                     [
                         'nama' => $request->input('nama'),
                         'users_id' => $request->session()->get('id'),
-                        'store_id' => $request->session()->get('store_id'),
-                        'tgl' => date('Y-m-d H:i:s'),
+                        'store_id' =>  $store_id,
+                        'tgl' => date('Y-m-d'),
+                        'tgl_laporan' =>  $tgl_laporan,
                         'ket' => $request->input('ket'),
                         'nohp' => $request->input('no'),
-                        'logistik' => $request->input('tujuan')
+                        'logistik' => $request->input('tujuan'),
+                        'created_at' => date('Y-m-d H:i:s')
                     ]
                 );
             }
 
-            if ($orderid) {
+            if ($orderid && $tgl_laporan) {
                 $request->session()->put('IdEditOrder', $orderid);
                 if ($request->input('select')) {
                     if ($this->array_has_dupes($request->input('select'))) {
@@ -208,16 +241,45 @@ class OrderController extends Controller
                                 $harga = $inventory['harga_manual'];
                             }
 
+
+                            if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {
+                                $qty_order = null;
+                                $qty_deliv = $request->input('qty_deliv')[$key] ?? null;
+                                $qty_arrive = $request->input('qty_arrive')[$key] ?? null;
+                            } else {
+                                $qty_order = $request->input('qty_deliv')[$key] ?? null;
+                                $qty_deliv = null;
+                                $qty_arrive = null;
+                            }
+
+
                             $input = [
                                 'users_id' => $request->session()->get('id'),
-                                'store_id' => $request->session()->get('store_id'),
+                                'store_id' =>  $store_id,
                                 'order_id' => $orderid,
                                 'satuan' => $inventory['satuan'],
                                 'logistik' => $request->input('tujuan'),
                                 'bahan_id' => $inventory['bahan_id'],
-                                'tgl' => date('Y-m-d H:i:s'),
+                                'tgl' => $tgl_laporan,
                                 'nama' => $inventory['bahan']->nama,
-                                'qty' => $request->input('qty')[$key],
+                                'qty_order' => $qty_order,
+                                'qty_deliv' => $qty_deliv,
+                                'qty_arrive' => $qty_arrive,
+                                'harga' => $harga,
+                                'created_at' => date('Y-m-d H:i:s')
+                            ];
+                            $input2 = [
+                                'users_id' => $request->session()->get('id'),
+                                'store_id' =>  $store_id,
+                                'order_id' => $orderid,
+                                'satuan' => $inventory['satuan'],
+                                'logistik' => $request->input('tujuan'),
+                                'bahan_id' => $inventory['bahan_id'],
+                                'tgl' => $tgl_laporan,
+                                'nama' => $inventory['bahan']->nama,
+                                'qty_order' => $qty_order,
+                                'qty_deliv' => $qty_deliv,
+                                'qty_arrive' => $qty_arrive,
                                 'harga' => $harga
                             ];
 
@@ -240,7 +302,7 @@ class OrderController extends Controller
                                     ];
                                 };
                             } else {
-                                if (Order_Item::where('id', $id)->update($input)) {
+                                if (Order_Item::where('id', $id)->update($input2)) {
                                     $data = [
                                         'toast' => true,
                                         'status' => 'success',
