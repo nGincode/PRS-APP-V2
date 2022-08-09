@@ -611,7 +611,7 @@ class MasterController extends Controller
             '
             <div class="barcode">
             <small style="font-size: 7px;">' . $value['nama'] . '</small>
-            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '">
+            <img width="115px" height="30px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_39)) . '">
             <br> <small style="font-size: 9px;">' . $value['kode'] . '</small>
             </div>';
         }
@@ -622,8 +622,8 @@ class MasterController extends Controller
             font-family: monospace;
             display: grid;  
             grid-gap: 5px;  
-            grid-template-columns: repeat(auto-fit, 100px);
-            grid-template-rows: repeat(2, 50px); 
+            grid-template-columns: repeat(auto-fit, 145px);
+            grid-template-rows: repeat(2, 75px); 
         }
         .barcode {
             text-align:center;

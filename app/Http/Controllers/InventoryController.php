@@ -517,9 +517,9 @@ class InventoryController extends Controller
             echo
             '
             <div class="barcode">
-            <small style="font-size: 7px;">' . $value['bahan']->nama . '</small>
-            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '">
-            <br> <small style="font-size: 9px;">' . $value['bahan']->kode . '</small>
+            <small style="font-size: 8px;">' . $value['bahan']->nama . '</small><br>
+            <img width="115px" height="30px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_39)) . '">
+            <small style="font-size: 9px;">' . $value['bahan']->kode . '</small>
             </div>';
         }
         echo '</div>
@@ -529,8 +529,8 @@ class InventoryController extends Controller
             font-family: monospace;
             display: grid;  
             grid-gap: 5px;  
-            grid-template-columns: repeat(auto-fit, 100px);
-            grid-template-rows: repeat(2, 50px); 
+            grid-template-columns: repeat(auto-fit, 145px);
+            grid-template-rows: repeat(2, 75px); 
         }
         .barcode {
             text-align:center;
@@ -562,7 +562,7 @@ class InventoryController extends Controller
                 echo '
             <div class="barcode">
             <small style="font-size: 7px;">' . $Data['nama'] . '</small>
-            <img width="90px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
+            <img width="115px" height="30px"  src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_39)) . '">
             <br> <small style="font-size: 9px;">' . $Data['kode'] . '</small>
             </div>';
             }
@@ -576,8 +576,8 @@ class InventoryController extends Controller
             font-family: monospace;
             display: grid;  
             grid-gap: 5px;  
-            grid-template-columns: repeat(auto-fit, 100px);
-            grid-template-rows: repeat(2, 50px); 
+            grid-template-columns: repeat(auto-fit, 145px);
+            grid-template-rows: repeat(2, 75px); 
         }
         .barcode {
             text-align:center;

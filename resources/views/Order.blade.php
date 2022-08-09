@@ -113,7 +113,7 @@
                                 <div class="form-group">
                                     <label for="ket">Ket</label>
                                     <input @isset($order['ket']) value="{{ $order['ket'] }}" @endif
-                                        type="number" onchange="$('#FormOrder').submit()" class="form-control"
+                                        type="text" onchange="$('#FormOrder').submit()" class="form-control"
                                         id="ket" placeholder="Keterangan" name="ket">
                                 </div>
                             </div>
@@ -283,7 +283,7 @@
                                         @isset($order['logistik'])
                                         @else
                                             <tr>
-                                                <td colspan="5" class="text-center">
+                                                <td colspan="7" class="text-center">
                                                     Pilih Tujuan Pemesanan
                                                 </td>
                                             </tr>
@@ -293,7 +293,7 @@
                                 <tfoot id="item_tambah">
                                     @isset($order['logistik'])
                                         <tr>
-                                            <td colspan="6" class="text-center"><a
+                                            <td colspan="7" class="text-center"><a
                                                     onclick="add_row_order({{ $order['logistik'] }})"
                                                     class="btn btn-block btn-success"><i class="fa fa-plus"></i></a>
                                             </td>
@@ -303,7 +303,7 @@
                             </table>
                             <div class="float-right" style=" border-bottom: 2px #007bff solid">
                                 Total : <h2><b id="total_seluruh">Rp.
-                                        {{ number_format($total_seluruh, 0, '.', ',') }}</b></h2>
+                                        {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
                             </div>
                             <br><br><br>
                             @isset($order)

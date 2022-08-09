@@ -36,8 +36,10 @@
                                 <br><br>
                                 <div class="card card-success card-outline" style="min-height: 600px">
                                     <div class="card-header" style="display: flex">
-                                        <input type="search" class="form-control" oninput="barcode(this.value)"
-                                            id="barcode" placeholder="Barcode..">
+                                        <form id="FormBarcode" action="POS/Barcode">
+                                            <input type="search" class="form-control" name="id" id="barcode"
+                                                placeholder="Barcode..">
+                                        </form>
                                         <i class="fa fa-barcode"
                                             style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
 
@@ -64,7 +66,8 @@
                                                     </div>
                                                     <div>
                                                         <h5 class="card-title"><b>{{ $v['bahan']->nama }}</b><br>
-                                                        <small>{{ $v['bahan']->kode }}</small></h5>
+                                                            <small>{{ $v['bahan']->kode }}</small>
+                                                        </h5>
 
                                                         @if ($v['auto_harga'])
                                                             <p class="card-text">
@@ -619,9 +622,9 @@
                             if (data.status === 'success') {
                                 popup(data.status, data.toast, data.pesan);
                                 layar();
-                            } else if(data.status === 'no'){
+                            } else if (data.status === 'no') {
                                 layar();
-                            }else {
+                            } else {
                                 popup(data.status, data.toast, data.pesan);
                             }
                         }
@@ -783,32 +786,41 @@
         }
 
 
-        function barcode(id) {
+        //Input
+        $(document).ready(function() {
 
-            var sound = new Audio('assets/sound/beep.mp3');
+            $('#FormBarcode').submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData(this);
 
-            $.ajax({
-                url: "POS/Barcode",
-                type: "POST",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                error: function(xhr, status, error) {
-                    // popup(status, true, xhr.status + " " + error);
-                },
-                success: function(data) {
-                    if (data.status) {
-                        popup(data.status, data.toast, data.pesan);
-                    } else {
-                        if (!data.barcode) {
-                            layar();
-                            $('#barcode').val('');
-                            sound.play();
+                var sound = new Audio('assets/sound/beep.mp3');
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: "POST",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    success: function(data) {
+                        if (data.status) {
+                            popup(data.status, data.toast, data.pesan);
+                        } else {
+                            if (!data.barcode) {
+                                layar();
+                                $('#barcode').val('');
+                                sound.play();
+                            }
                         }
                     }
-                }
+                });
+
             });
-        }
+
+        });
     </script>
 @endsection
