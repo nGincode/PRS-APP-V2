@@ -259,6 +259,10 @@ Route::controller(OrderController::class)->group(
         Route::post('Order/Input', 'Input')->middleware('auth');
         Route::post('Order/Select', 'Select')->middleware('auth');
         Route::post('Order/Hapus', 'Hapus')->middleware('auth');
+        Route::post('Order/Manage', 'Manage')->middleware('auth');
+        Route::post('Order/RemoveSessionEdit', 'RemoveSessionEdit')->middleware('auth');
+        Route::post('Order/SessionEdit', 'SessionEdit')->middleware('auth');
+        Route::post('Order/LihatBill', 'LihatBill')->middleware('auth');
     }
 );
 

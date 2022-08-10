@@ -67,286 +67,456 @@
                                     <div class="col-12 col-sm-6">
                                         <div class="form-group">
                                             <label for="outlet">Outlet</label>
-                                            <select onchange="$('#FormOrder').submit()" name="outlet" id="outlet"
-                                                class="form-control select2 select2-danger" required
-                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                                <option selected="true">Pilih</option>
-                                                @foreach ($store as $str)
-                                                    <option
-                                                        @isset($order['store_id']) @if ($order['store_id'] == $str['id']) 
+                                            <select @isset($order_item[0]) disabled @endisset
+                                                @isset($order) @if ($order['users']->id !==
+                                                    request()->session()->get('id')) disabled @endif
+                                            @endisset onchange="$('#FormOrder').submit()" name="outlet" id="outlet"
+                                            class="form-control select2 select2-danger" required
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                            <option selected="true">Pilih</option>
+                                            @foreach ($store as $str)
+                                                <option
+                                                    @isset($order['store_id']) @if ($order['store_id'] == $str['id']) 
                                                                 selected @endif
-                                                    @endisset value="{{ $str['id'] }}"> {{ $str['nama'] }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                                @endisset value="{{ $str['id'] }}"> {{ $str['nama'] }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            </div>
+                        @else
+                            <input type="hidden" class="form-control" id="outlet" name="outlet"
+                                value="<?= request()
+                                    ->session()
+                                    ->get('store_id') ?>">
+                        @endif
+
+
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="nama">Nama Pengorder</label>
+                                <input type="text"
+                                    @isset($order) @if ($order['users']->id !==
+                                        request()->session()->get('id')) readonly @endif
+                                @endisset
+                                @isset($order['nama']) value="{{ $order['nama'] }}" @endif
+                                class="form-control" onchange="$('#FormOrder').submit()" id="nama"
+                                placeholder="Nama Pengorder" name="nama">
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="nama">No Hp</label>
+                            <input
+                                @isset($order) @if ($order['users']->id !==
+                                    request()->session()->get('id')) readonly @endif
+                            @endisset
+                            @isset($order['nohp']) value="{{ $order['nohp'] }}" @endif
+                            type="number" class="form-control" onchange="$('#FormOrder').submit()"
+                            id="no" placeholder="No HP" name="no">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="ket">Ket</label>
+                        <input
+                            @isset($order) @if ($order['users']->id !==
+                                request()->session()->get('id')) readonly @endif
+                        @endisset
+                        @isset($order['ket']) value="{{ $order['ket'] }}" @endif
+                        type="text" onchange="$('#FormOrder').submit()" class="form-control"
+                        id="ket" placeholder="Keterangan" name="ket">
+                </div>
+            </div>
+
+
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label for="tujuan">Tujuan Pemesanan</label>
+
+
+                    <select title="Hapus Item Untuk Ubah"
+                        @isset($order_item[0]) disabled @endisset
+                        @isset($order) @if ($order['users']->id !==
+                            request()->session()->get('id')) disabled @endif
+                    @endisset onchange="items(this.value)" name="tujuan" id="tujuan"
+                    class="form-control select2 select2-danger" required
+                    data-dropdown-css-class="select2-danger" style="width: 100%;">
+                    <option selected="true" disabled="disabled">Pilih</option>
+                    @foreach ($logistik as $lgs)
+                        <option
+                            @if (isset($order['logistik'])) @if ($order['logistik'] == $lgs['id']) 
+                                                    selected @endif
+                        @endisset value="{{ $lgs['id'] }}">{{ $lgs['nama'] }}</option>
+                @endforeach
+            </select>
+            @isset($order_item[0])
+                <small>
+                    <font color="red">*</font> Hapus Item Dibawah Untuk Mengubah
+                </small>
+            @endisset
+
+        </div>
+    </div>
+    <div class="col-12 col-sm-12" style="overflow: auto">
+        <label>Input</label>
+        <table id="tambahorder" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nama Bahan</th>
+                    <th scope="col" style="min-width: 175px; width: 180px">Qty Order</th>
+                    <th scope="col" style="min-width: 175px; width: 180px">Qty Deliv</th>
+                    <th scope="col" style="min-width: 175px; width: 180px">Qty Arrive
+                    </th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Total</th>
+                </tr>
+
+            </thead>
+            <tbody id="items">
+                <tr></tr>
+                @isset($order_item[0])
+                    <?php $total_seluruh = 0; ?>
+                    @foreach ($order_item as $key => $v)
+                        <tr id="tr_{{ $key }}"
+                            style="
+                                            @if ($v['qty_deliv'] === $v['qty_arrive'] && $v['qty_arrive']) background-color: #00800036; @endif
+                                            @if ($v['qty_deliv'] && !$v['qty_arrive']) background-color: #ffff0021; @endif
+                                            @if ($v['qty_deliv'] !== $v['qty_arrive'] && $v['qty_arrive']) background-color: #ff00002b; @endif
+                                            ">
+
+                            @if (!$v['qty_deliv'])
+                                <td style="padding-left: 50px;">
+                                    <input type="hidden" value="{{ $v['id'] }}"
+                                        id="id_{{ $key }}" name="id[]">
+                                    <input type="hidden" value="{{ $key }}"
+                                        id="key_{{ $key }}" name="key[]">
+                                    <a class="btn btn-danger btn-sm"
+                                        id="hapus_{{ $key }}"
+                                        onclick="HapusOrder({{ $v['id'] }},{{ $key }})"
+                                        style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i
+                                            class="fa fa-times"></i> </a>
+                                    <select
+                                        onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
+                                        name="select[]" id="nama_{{ $key }}"
+                                        class="form-control select2 select2-danger"
+                                        data-dropdown-css-class="select2-danger"
+                                        style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        @foreach ($item as $itemv)
+                                            <option
+                                                @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
+                                                value="{{ $itemv['id'] }}">
+                                                {{ $itemv['bahan']->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                @else
+                                <td>
+                                    <input type="hidden" value="{{ $v['id'] }}"
+                                        id="id_{{ $key }}" name="id[]">
+                                    <input type="hidden" value="{{ $key }}"
+                                        id="key_{{ $key }}" name="key[]">
+
+                                    <select disabled
+                                        onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
+                                        name="select[]" id="nama_{{ $key }}"
+                                        class="form-control select2 select2-danger"
+                                        data-dropdown-css-class="select2-danger"
+                                        style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        @foreach ($item as $itemv)
+                                            <option
+                                                @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
+                                                value="{{ $itemv['id'] }}">
+                                                {{ $itemv['bahan']->nama }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @foreach ($item as $itemval)
+                                        @if ($itemval['bahan_id'] == $v['bahan_id'])
+                                            <input type="hidden" name="select[]"
+                                                value="{{ $itemval['id'] }}"
+                                                class="form-control">
+                                        @endif
+                                    @endforeach
+                            @endif
+
+                            </td>
+
+                            @if (request()->session()->get('tipe') ===
+                                'Office' or
+                                request()->session()->get('tipe') ===
+                                    'Logistik')
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" disabled
+                                            value="{{ $v['qty_order'] ?? 0 }}"
+                                            placeholder="Qty Order" class="form-control">
+                                        <div class="input-group-append"><span
+                                                class="input-group-text">{{ $v['satuan'] }}</span>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" name="qty_order[]" value="false"
+                                        class="form-control">
+                                </td>
+
+
+                                <td id="qty_deliv_td_{{ $key }}">
+                                    <div class="input-group"><input type="number"
+                                            onchange="Hitung({{ $key }})"
+                                            value="{{ $v['qty_deliv'] }}" class="form-control"
+                                            id="qty_deliv_val_{{ $key }}"
+                                            placeholder="Qty Delivery" name="qty_deliv[]"
+                                            aria-invalid="false">
+                                        <div class="input-group-append"><span
+                                                class="input-group-text">{{ $v['satuan'] }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+
+
+
+
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" disabled placeholder="Qty Arrive"
+                                            value="{{ $v['qty_arrive'] ?? 0 }}"
+                                            class="form-control">
+                                        <div class="input-group-append"><span
+                                                class="input-group-text">{{ $v['satuan'] }}</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="qty_arrive[]" value="false"
+                                        class="form-control">
+                                </td>
                             @else
-                                <input type="hidden" class="form-control" id="outlet" name="outlet"
-                                    value="<?= request()
-                                        ->session()
-                                        ->get('store_id') ?>">
+                                @if (!$v['qty_deliv'])
+                                    <td id="qty_order_td_{{ $key }}">
+                                        <div class="input-group"><input type="number"
+                                                onchange="Hitung({{ $key }})"
+                                                value="{{ $v['qty_order'] }}"
+                                                class="form-control is-valid"
+                                                id="qty_order_val_{{ $key }}"
+                                                placeholder="Qty Order" name="qty_order[]"
+                                                aria-invalid="false">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" disabled
+                                                value="{{ $v['qty_order'] ?? 0 }}"
+                                                placeholder="Qty Order" class="form-control">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="qty_order[]" value="false"
+                                            class="form-control">
+                                    </td>
+                                @endif
+
+
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" disabled
+                                            value="{{ $v['qty_deliv'] ?? 0 }}"
+                                            placeholder="Qty Delivery" class="form-control">
+                                        <div class="input-group-append"><span
+                                                class="input-group-text">{{ $v['satuan'] }}</span>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="qty_deliv[]" value="false"
+                                        class="form-control">
+                                </td>
+
+                                @if ($v['qty_deliv'])
+                                    <td id="qty_arrive_td_{{ $key }}">
+                                        <div class="input-group"><input type="number"
+                                                onchange="Hitung({{ $key }})"
+                                                value="{{ $v['qty_arrive'] ?? $v['qty_deliv'] }}"
+                                                class="form-control"
+                                                id="qty_arrive_val_{{ $key }}"
+                                                placeholder="Qty Arrive" name="qty_arrive[]"
+                                                aria-invalid="false">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" disabled
+                                                placeholder="Qty Arrive"
+                                                value="{{ $v['qty_arrive'] ?? 0 }}"
+                                                class="form-control">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="qty_arrive[]" value="false"
+                                            class="form-control">
+                                    </td>
+                                @endif
                             @endif
 
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="nama">Nama Pengorder</label>
-                                    <input type="text"
-                                        @isset($order['nama']) value="{{ $order['nama'] }}" @endif
-                                        class="form-control" onchange="$('#FormOrder').submit()" id="nama"
-                                        placeholder="Nama Pengorder" name="nama">
-                                </div>
-                            </div>
 
+                            <td id="harga_td_{{ $key }}">
+                                Rp.
+                                {{ number_format((int) $v['harga'], 0, '.', ',') }}/{{ $v['satuan'] }}
+                            </td>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="nama">No Hp</label>
-                                    <input @isset($order['nohp']) value="{{ $order['nohp'] }}" @endif
-                                        type="number" class="form-control" onchange="$('#FormOrder').submit()"
-                                        id="no" placeholder="No HP" name="no">
-                                </div>
-                            </div>
+                            <td id="total_td_{{ $key }}">
+                                Rp.
+                                {{ number_format((int) $v['harga'] * (int) $v['qty_deliv'], 0, '.', ',') }}
+                            </td>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="ket">Ket</label>
-                                    <input @isset($order['ket']) value="{{ $order['ket'] }}" @endif
-                                        type="text" onchange="$('#FormOrder').submit()" class="form-control"
-                                        id="ket" placeholder="Keterangan" name="ket">
-                                </div>
-                            </div>
+                            <input id="harga_val_{{ $key }}" type="hidden"
+                                value="{{ $v['harga'] }}">
 
+                        </tr>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="tujuan">Tujuan Pemesanan</label>
-                                    <select onchange="items(this.value)" name="tujuan" id="tujuan"
-                                        class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="true" disabled="disabled">Pilih</option>
-                                        @foreach ($logistik as $lgs)
-                                            <option
-                                                @isset($order['logistik']) @if ($order['logistik'] == $lgs['id']) selected @endif
-                                            @endisset value="{{ $lgs['id'] }}">{{ $lgs['nama'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12" style="overflow: auto">
-                            <label>Input</label>
-                            <table id="tambahorder" class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nama Bahan</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Order</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Deliv</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Arrive
-                                        </th>
-                                        <th scope="col">Harga</th>
-                                        <th scope="col">Total</th>
-                                    </tr>
-
-                                </thead>
-                                <tbody id="items">
-                                    <tr></tr>
-                                    @isset($order_item[0])
-                                        <?php $total_seluruh = 0; ?>
-                                        @foreach ($order_item as $key => $v)
-                                            <tr id="tr_{{ $key }}">
-                                                <td style="padding-left: 50px;">
-                                                    <a class="btn btn-danger btn-sm" id="hapus_{{ $key }}"
-                                                        onclick="HapusOrder({{ $v['id'] }},{{ $key }})"
-                                                        style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i
-                                                            class="fa fa-times"></i> </a><input type="hidden"
-                                                        value="{{ $v['id'] }}" id="id_{{ $key }}"
-                                                        name="id[]"><input type="hidden"
-                                                        value="{{ $key }}" id="key_{{ $key }}"
-                                                        name="key[]"><select
-                                                        onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
-                                                        name="select[]" id="nama_{{ $key }}"
-                                                        class="form-control select2 select2-danger"
-                                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                                        <option selected="true" disabled="disabled">Pilih</option>
-                                                        @foreach ($item as $itemv)
-                                                            <option @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
-                                                                value="{{ $itemv['id'] }}">
-                                                                {{ $itemv['bahan']->nama }}</option>
-                                                        @endforeach
-                                                    </select>
-
-                                                </td>
-
-                                                @if (request()->session()->get('tipe') ===
-                                                    'Office' or
-                                                    request()->session()->get('tipe') ===
-                                                        'Logistik')
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled
-                                                                value="{{ $v['qty_order'] }}" placeholder="Qty Order"
-                                                                class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-
-                                                    <td id="qty_deliv_td_{{ $key }}">
-                                                        <div class="input-group"><input type="number"
-                                                                onchange="Hitung({{ $key }})"
-                                                                value="{{ $v['qty_deliv'] }}" class="form-control"
-                                                                id="qty_deliv_val_{{ $key }}"
-                                                                placeholder="Qty Delivery" name="qty_deliv[]"
-                                                                aria-invalid="false">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-
-
-
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled placeholder="Qty Arrive"
-                                                                value="{{ $v['qty_arrive'] }}" class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                @else
-                                                    <td id="qty_order_td_{{ $key }}">
-                                                        <div class="input-group"><input type="number"
-                                                                onchange="Hitung({{ $key }})"
-                                                                value="{{ $v['qty_order'] }}"
-                                                                class="form-control is-valid"
-                                                                id="qty_order_val_{{ $key }}"
-                                                                placeholder="Qty Order" name="qty_order[]"
-                                                                aria-invalid="false">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled
-                                                                value="{{ $v['qty_deliv'] }}"
-                                                                placeholder="Qty Delivery" class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-                                                    <td id="qty_arrive_td_{{ $key }}">
-                                                        <div class="input-group"><input type="number"
-                                                                onchange="Hitung({{ $key }})"
-                                                                value="{{ $v['qty_arrive'] }}" class="form-control"
-                                                                id="qty_arrive_val_{{ $key }}"
-                                                                placeholder="Qty Arrive" name="qty_arrive[]"
-                                                                aria-invalid="false">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                @endif
-
-
-
-                                                <td id="harga_td_{{ $key }}">
-                                                    Rp.
-                                                    {{ number_format((int) $v['harga'], 0, '.', ',') }}/{{ $v['satuan'] }}
-                                                </td>
-
-                                                <td id="total_td_{{ $key }}">
-                                                    Rp.
-                                                    {{ number_format((int) $v['harga'] * (int) $v['qty_deliv'], 0, '.', ',') }}
-                                                </td>
-
-                                                <input id="harga_val_{{ $key }}" type="hidden"
-                                                    value="{{ $v['harga'] }}">
-
-                                            </tr>
-
-                                            <?php $total_seluruh += (int) $v['harga'] * (int) $v['qty_deliv']; ?>
-                                        @endforeach
-                                    @else
-                                        @isset($order['logistik'])
-                                        @else
-                                            <tr>
-                                                <td colspan="7" class="text-center">
-                                                    Pilih Tujuan Pemesanan
-                                                </td>
-                                            </tr>
-                                        @endisset
-                                    @endisset
-                                </tbody>
-                                <tfoot id="item_tambah">
-                                    @isset($order['logistik'])
-                                        <tr>
-                                            <td colspan="7" class="text-center"><a
-                                                    onclick="add_row_order({{ $order['logistik'] }})"
-                                                    class="btn btn-block btn-success"><i class="fa fa-plus"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endisset
-                                </tfoot>
-                            </table>
-                            <div class="float-right" style=" border-bottom: 2px #007bff solid">
-                                Total : <h2><b id="total_seluruh">Rp.
-                                        {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
-                            </div>
-                            <br><br><br>
-                            @isset($order)
-                                <div>
-                                    Ket :<br>
-                                    <font color="red">*</font> Orderan ini dibuat Oleh
-                                    <b>{{ $order['users']->store }}</b>
-                                </div>
-                            @endisset
-                            <hr>
-                        </div>
-
-                    </div>
-                    <!-- /.row -->
-                </div>
-
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Proses</button>
-                </div>
+                        <?php $total_seluruh += (int) $v['harga'] * (int) $v['qty_deliv']; ?>
+                    @endforeach
+                @else
+                    @isset($order['logistik'])
+                    @else
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Pilih Tujuan Pemesanan
+                            </td>
+                        </tr>
+                    @endisset
+                @endisset
+            </tbody>
+            <tfoot id="item_tambah">
+                @isset($order)
+                    @if ($order['users']->id ==
+                        request()->session()->get('id'))
+                        @isset($order['logistik'])
+                            <tr>
+                                <td colspan="7" class="text-center"><a
+                                        onclick="add_row_order({{ $order['logistik'] }})"
+                                        class="btn btn-block btn-success"><i
+                                            class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+                        @endisset
+                    @else
+                        <tr>
+                            <td colspan="7" class="text-center"><b>Hubungi Username
+                                    {{ $order['users']->username }} Untuk Menambah Orderan</b></td>
+                        </tr>
+                    @endif
+                @endisset
+            </tfoot>
+        </table>
+        <div class="float-right" style=" border-bottom: 2px #007bff solid">
+            Total : <h2><b id="total_seluruh">Rp.
+                    {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
+        </div>
+        <br><br><br>
+        @isset($order)
+            <div>
+                Ket :<br>
+                <font color="red">*</font> Orderan ini dibuat Oleh Username
+                <b>{{ $order['users']->username }}</b><br>
+                <a class="btn btn-warning"></a> Qty Arive Belum
+                Terisi<br>
+                <a class="btn btn-danger"></a> Qty Arive dan Qty
+                Deliv Tidak Sama <br>
+                <a class="btn btn-success"></a> Item Telah Sesuai
             </div>
-        </form>
-    @endif
-    <div class="card">
-        <div class="card-header text-white bg-secondary mb-3">
-            <h3 class="card-title" style="font-weight: bolder">Data {{ $title . ' ' . $subtitle }}</h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <table id="manage2" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Nama</th>
-                        <th>Biaya Produksi</th>
-                        <th>Hasil Jadi</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-            </table>
-        </div>
-        <!-- /.card-body -->
+            <hr>
+        @endisset
     </div>
-    <!-- /.card -->
+
+</div>
+<!-- /.row -->
+</div>
+
+@isset($order)
+<div class="card-footer">
+    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+    <a class="btn btn-danger" onclick="KeluarEdit()"><i class="fa fa-sign-out-alt"></i> Keluar
+        Edit</a>
+    <a class="btn btn-primary" onclick="KeluarEdit()"><i class="fa fa-upload"></i> Upload</a>
+</div>
+@endisset
+</div>
+</form>
+@endif
+<div class="card">
+<div class="card-header text-white bg-secondary mb-3">
+<h3 class="card-title" style="font-weight: bolder">Data {{ $title . ' ' . $subtitle }}</h3>
+</div>
+<!-- /.card-header -->
+<div class="card-body">
+
+<div class="input-group">
+<div class="input-group-prepend">
+<span class="input-group-text">
+    <i class="far fa-calendar-alt"></i>
+</span>
+</div>
+<input type="text"
+value="<?= date('m/d/Y', strtotime('-29 days', strtotime(date('Y-m-d')))) ?> - <?= date('m/d/Y') ?>"
+onchange="manage()" name="manage_date" class="form-control" id="manage_date">
+</div>
+<br>
+
+<table id="manage" class="table table-bordered table-striped">
+<thead>
+<tr>
+    <th>Bill</th>
+    <th>Store</th>
+    <th>Tgl</th>
+    <th>Nama</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+</thead>
+</table>
+</div>
+<!-- /.card-body -->
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="lihat" tabindex="-1" role="dialog" style="width:100%"
+aria-labelledby="transaksiLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal-dialog modal-lg" role="document">
+
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title"><b>Lihat Item</b></h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<div id="OrderItem">
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- /.card -->
 </div>
 
 <!-- /.container-fluid -->
@@ -368,7 +538,7 @@
             success: function(data) {
                 if (data.status) {
                     $('#item_tambah').html(
-                        '<tr><td colspan="5" class="text-center"><a onclick="add_row_order(' + id +
+                        '<tr><td colspan="6" class="text-center"><a onclick="add_row_order(' + id +
                         ')" class="btn btn-block btn-success"><i class="fa fa-plus"></i></a></td></tr>'
                     );
                     $('#items').html('<tr></tr>');
@@ -376,7 +546,7 @@
 
                 } else {
                     $('#items').html(
-                        '<tr><td colspan="5" class="text-center"><i class="fa fa-times"></i> Tidak ditemukan item yang dapat di order ' +
+                        '<tr><td colspan="6" class="text-center"><i class="fa fa-times"></i> Tidak ditemukan item yang dapat di order ' +
                         data.store + '</td></tr>'
                     );
                     $('#item_tambah').html('');
@@ -578,6 +748,9 @@
                         success: function(data) {
                             if (data.status === 'success') {
                                 popup(data.status, data.toast, data.pesan);
+                                if (!data.item) {
+                                    $('#tujuan').prop('disabled', false);
+                                }
                                 $('#tr_' + row).html('');
                             } else {
                                 popup(data.status, data.toast, data.pesan);
@@ -618,6 +791,85 @@
             $('#total_seluruh').html('Rp. ' + formatRupiah(total));
             $('#FormOrder').submit();
         }
+    }
+
+    function KeluarEdit() {
+        $.ajax({
+            url: "Order/RemoveSessionEdit",
+            type: "POST",
+            dataType: 'json',
+            error: function(xhr, status, error) {
+                popup(status, true, xhr.status + " " + error);
+            },
+            success: function(data) {
+                if (data.status === 'success') {
+                    popup(data.status, data.toast, data.pesan);
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    popup(data.status, data.toast, data.pesan);
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                }
+
+            }
+        });
+    }
+
+    function OrderEdit(id, judul) {
+        $.ajax({
+            url: "Order/SessionEdit",
+            type: "POST",
+            data: {
+                id: id
+            },
+            dataType: 'json',
+            error: function(xhr, status, error) {
+                popup(status, true, xhr.status + " " + error);
+            },
+            success: function(data) {
+                if (data.status === 'success') {
+                    popup(data.status, data.toast, data.pesan);
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    popup(data.status, data.toast, data.pesan);
+
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                }
+
+            }
+        });
+    }
+
+
+
+    function Lihat(id, judul) {
+        $.ajax({
+            url: "Order/LihatBill",
+            type: "POST",
+            data: {
+                id: id,
+                judul: judul
+            },
+            error: function(xhr, status, error) {
+                popup(status, true, xhr.status + " " + error);
+            },
+            beforeSend: function(xhr) {
+                $('#OrderItem').html('<div class="loading-bg"><div class="loading"></div></div>');
+            },
+            success: function(data) {
+                $('#OrderItem').html(data);
+            }
+        });
     }
 
 
@@ -676,7 +928,6 @@
                         popup(status, true, xhr.status + " " + error);
                     },
                     success: function(data) {
-                        console.log(data);
                         if (data.status === 'success') {
                             $('#hapus_' + data.row).removeAttr('onclick id style class')
                                 .html('');
@@ -692,6 +943,11 @@
                                 '</small>'
                             );
                             animateCSS('#autosave', 'flash');
+
+                            if (!data.isiitem) {
+                                $('#tujuan').prop('disabled', true);
+                                $('#outlet').prop('disabled', true);
+                            }
                         } else if (data.status === 'error') {
                             $('#autosave').html(
                                 '<small  style="color:red;"> <i class="fas fa-times"></i> ' +

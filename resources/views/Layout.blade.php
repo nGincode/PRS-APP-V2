@@ -832,6 +832,7 @@ if (Auth::check()) {
 
 
 
+    <script src="{{ url('/') }}/assets/js/jQuery.print.min.js"></script>
     <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
     <script src="{{ url('/') }}/assets/js/custom.js"></script>
 
@@ -841,6 +842,170 @@ if (Auth::check()) {
     <style>
         a {
             cursor: pointer;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+        .duit {
+            display: flex;
+            flex-direction: row;
+        }
+
+        @media (max-width: 1000px) {
+            .duit {
+                flex-direction: column;
+            }
+        }
+
+        /* The container */
+        .container {
+            display: block;
+            border: #007bff 2px solid;
+            position: relative;
+            padding: 10px;
+            padding-left: 35px;
+            margin: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: 0.3s;
+        }
+
+
+        .container:hover {
+            border-radius: 15px;
+            background-color: #007bff;
+            color: white;
+        }
+
+
+        /* Hide the browser's default radio button */
+        .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 9px;
+            left: 5px;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .container .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .waiting {
+            cursor: wait;
+            color: black;
+
+        }
+
+        .item {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .item:hover {
+            color: #007bff;
+        }
+
+        .loading-bg {
+            width: 100%;
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            /* Safari */
+            animation: spin 2s linear infinite;
+        }
+
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
     <script>
@@ -874,6 +1039,10 @@ if (Auth::check()) {
             }
 
         });
+
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
         $.widget.bridge('uibutton', $.ui.button)
 
@@ -918,6 +1087,10 @@ if (Auth::check()) {
                             filter: GetURLParameter('filter')
                         }
                     },
+                    columnDefs: [{
+                        "defaultContent": "-",
+                        "targets": "_all"
+                    }],
                     "rowReorder": {
                         selector: 'td:nth-child(2)'
                     },

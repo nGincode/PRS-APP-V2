@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('qty_arrive')->nullable();
             $table->integer('harga')->nullable();
             $table->string('satuan', 10)->nullable();
+            $table->boolean('view')->default(false);
             $table->timestamps();
         });
     }

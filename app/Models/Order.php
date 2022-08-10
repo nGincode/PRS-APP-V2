@@ -14,14 +14,19 @@ class Order extends Model
     protected $guarded = ['id'];
 
 
-    public function Order_Item()
-    {
-        return $this->belongsToMany(Order_Item::class, 'orderitem');
-    }
-
-
     public function Users()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
+
+
+    public function Orderitem()
+    {
+        return $this->hasMany(Orderitem::class, 'order_id');
     }
 }

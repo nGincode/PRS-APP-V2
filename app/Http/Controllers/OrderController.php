@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
+use App\Models\Belanja;
 use App\Models\Store;
 use App\Models\Inventory;
-use App\Models\Olahan;
 use App\Models\Order;
-use App\Models\Order_Item;
+use App\Models\Orderitem;
 
 
 use Illuminate\Http\Request;
@@ -33,10 +33,14 @@ class OrderController extends Controller
             return redirect()->to('/');
         }
 
+        if (request()->session()->get('tipe') === 'Logistik') {
+            Orderitem::where('logistik', request()->session()->get('store_id'))->update(['view' => true]);
+        }
+
         $this->data['store'] = store::where('tipe', 'Outlet')->where('active', true)->get();
         $this->data['logistik'] = store::where('tipe', 'Logistik')->where('active', true)->get();
         $this->data['order'] = order::with('users')->where('id', $request->session()->get('IdEditOrder'))->first();
-        $this->data['order_item'] = Order_Item::where('order_id', $request->session()->get('IdEditOrder'))->get();
+        $this->data['order_item'] = Orderitem::where('order_id', $request->session()->get('IdEditOrder'))->get();
         if ($this->data['order']) {
             $this->data['item'] = Inventory::where('store_id', $this->data['order']['logistik'])->where('delete', false)->with('Bahan')->get();
         }
@@ -77,7 +81,7 @@ class OrderController extends Controller
                 if (request()->session()->get('tipe') === 'Outlet') {
                     $data['disabled_order'] = '';
                     $data['disabled_deliv'] = 'disabled';
-                    $data['disabled_arrive'] = '';
+                    $data['disabled_arrive'] = 'disabled';
                 } else {
                     $data['disabled_order'] = 'disabled';
                     $data['disabled_deliv'] = '';
@@ -125,7 +129,7 @@ class OrderController extends Controller
             if (request()->session()->get('tipe') === 'Outlet') {
                 $data['disabled_order'] = '';
                 $data['disabled_deliv'] = 'disabled';
-                $data['disabled_arrive'] = '';
+                $data['disabled_arrive'] = 'disabled';
             } else {
                 $data['disabled_order'] = 'disabled';
                 $data['disabled_deliv'] = '';
@@ -151,17 +155,10 @@ class OrderController extends Controller
         $validator = Validator::make(
             $request->all(),
             $rules = [
-                'nama' => 'required',
-                'no' => 'required',
-                'outlet' => 'required'
-            ],
-            $messages  = [
-                'required' => 'Form :attribute harus terisi',
-                'same' => 'Form :attribute & :other tidak sama.',
+                'nama' => 'required'
             ]
         );
 
-        $store_id = $request->input('outlet');
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $message) {
@@ -172,31 +169,73 @@ class OrderController extends Controller
                 ];
             }
         } else {
+            if ($request->input('tgl_laporan')) {
+                $tgl_laporan = $request->input('tgl_laporan');
+            } else {
+                $tgl_laporan = false;
+            }
+
+            if ($request->input('tujuan')) {
+                $tujuan = $request->input('tujuan');
+                $store_id = $request->input('outlet');
+            } else {
+                $tujuan = false;
+                $store_id = false;
+            }
+
+            $ordercount = Order::where('tgl', date('Y-m-d'))->count() + 1;
             if ($request->session()->get('IdEditOrder')) {
                 if (Order::where('id', $request->session()->get('IdEditOrder'))->count()) {
                     $orderid = $request->session()->get('IdEditOrder');
-                    $tgl_laporan = $request->input('tgl_laporan');
-                    Order::where('id', $orderid)->update(
-                        [
-                            'nama' => $request->input('nama'),
-                            'users_id' => $request->session()->get('id'),
-                            'store_id' =>  $store_id,
-                            'tgl' => date('Y-m-d'),
-                            'tgl_laporan' => $tgl_laporan,
-                            'ket' => $request->input('ket'),
-                            'nohp' => $request->input('no'),
-                            'logistik' => $request->input('tujuan'),
-                            'created_at' => date('Y-m-d H:i:s')
-                        ]
-                    );
+                    if ($tgl_laporan) {
+                        if ($tujuan) {
+                            Order::where('id', $orderid)->update(
+                                [
+                                    'nama' => $request->input('nama'),
+                                    'tgl_laporan' => $tgl_laporan,
+                                    'ket' => $request->input('ket'),
+                                    'nohp' => $request->input('no'),
+                                    'logistik' => $request->input('tujuan')
+                                ]
+                            );
+                        } else {
+                            Order::where('id', $orderid)->update(
+                                [
+                                    'nama' => $request->input('nama'),
+                                    'tgl_laporan' => $tgl_laporan,
+                                    'ket' => $request->input('ket'),
+                                    'nohp' => $request->input('no')
+                                ]
+                            );
+                        }
+                    } else {
+                        if ($tujuan) {
+                            Order::where('id', $orderid)->update(
+                                [
+                                    'nama' => $request->input('nama'),
+                                    'ket' => $request->input('ket'),
+                                    'nohp' => $request->input('no'),
+                                    'logistik' => $request->input('tujuan')
+                                ]
+                            );
+                        } else {
+                            Order::where('id', $orderid)->update(
+                                [
+                                    'nama' => $request->input('nama'),
+                                    'ket' => $request->input('ket'),
+                                    'nohp' => $request->input('no')
+                                ]
+                            );
+                        }
+                    }
                 } else {
-                    $tgl_laporan =  date('Y-m-d');
                     $orderid = Order::insertGetId(
                         [
                             'nama' => $request->input('nama'),
                             'users_id' => $request->session()->get('id'),
+                            'bill' =>  $store_id . $request->session()->get('id') .  date('ymd') . $ordercount,
                             'store_id' =>  $store_id,
-                            'tgl_laporan' =>  $tgl_laporan,
+                            'tgl_laporan' => $tgl_laporan ? $tgl_laporan : date('Y-m-d'),
                             'tgl' => date('Y-m-d'),
                             'ket' => $request->input('ket'),
                             'nohp' => $request->input('no'),
@@ -206,14 +245,14 @@ class OrderController extends Controller
                     );
                 }
             } else {
-                $tgl_laporan =  date('Y-m-d');
                 $orderid = Order::insertGetId(
                     [
                         'nama' => $request->input('nama'),
                         'users_id' => $request->session()->get('id'),
                         'store_id' =>  $store_id,
+                        'bill' =>  $store_id . $request->session()->get('id') . date('ymd') .  $ordercount,
                         'tgl' => date('Y-m-d'),
-                        'tgl_laporan' =>  $tgl_laporan,
+                        'tgl_laporan' => $tgl_laporan ? $tgl_laporan : date('Y-m-d'),
                         'ket' => $request->input('ket'),
                         'nohp' => $request->input('no'),
                         'logistik' => $request->input('tujuan'),
@@ -222,8 +261,9 @@ class OrderController extends Controller
                 );
             }
 
-            if ($orderid && $tgl_laporan) {
+            if ($orderid) {
                 $request->session()->put('IdEditOrder', $orderid);
+                $DataOrder = Order::where('id', $orderid)->first();
                 if ($request->input('select')) {
                     if ($this->array_has_dupes($request->input('select'))) {
                         $data = [
@@ -234,88 +274,107 @@ class OrderController extends Controller
                     } else {
                         foreach ($request->input('select') as $key => $select) {
                             $inventory = Inventory::where('id', $select)->with('Bahan')->first();
+                            if ($inventory) {
 
-                            if ($inventory['auto_harga'] == 1) {
-                                $harga = $inventory['harga_auto'];
-                            } else {
-                                $harga = $inventory['harga_manual'];
-                            }
+                                if ($inventory['auto_harga'] == 1) {
+                                    $harga = $inventory['harga_auto'];
+                                } else {
+                                    $harga = $inventory['harga_manual'];
+                                }
+
+                                if ($request->input('qty_order')[$key] == 'false') {
+                                    $qty_order = $inventory['qty_order'];
+                                } else {
+                                    $qty_order = $request->input('qty_order')[$key] ?: null;
+                                }
+
+                                if ($request->input('qty_deliv')[$key] == 'false') {
+                                    $qty_deliv = $inventory['qty_deliv'];
+                                } else {
+                                    $qty_deliv = $request->input('qty_deliv')[$key] ?: null;
+                                }
+
+                                if ($request->input('qty_arrive')[$key] == 'false') {
+                                    $qty_arrive = $inventory['qty_arrive'];
+                                } else {
+                                    $qty_arrive = $request->input('qty_arrive')[$key] ?: null;
+                                }
 
 
-                            if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {
-                                $qty_order = null;
-                                $qty_deliv = $request->input('qty_deliv')[$key] ?? null;
-                                $qty_arrive = $request->input('qty_arrive')[$key] ?? null;
-                            } else {
-                                $qty_order = $request->input('qty_deliv')[$key] ?? null;
-                                $qty_deliv = null;
-                                $qty_arrive = null;
-                            }
-
-
-                            $input = [
-                                'users_id' => $request->session()->get('id'),
-                                'store_id' =>  $store_id,
-                                'order_id' => $orderid,
-                                'satuan' => $inventory['satuan'],
-                                'logistik' => $request->input('tujuan'),
-                                'bahan_id' => $inventory['bahan_id'],
-                                'tgl' => $tgl_laporan,
-                                'nama' => $inventory['bahan']->nama,
-                                'qty_order' => $qty_order,
-                                'qty_deliv' => $qty_deliv,
-                                'qty_arrive' => $qty_arrive,
-                                'harga' => $harga,
-                                'created_at' => date('Y-m-d H:i:s')
-                            ];
-                            $input2 = [
-                                'users_id' => $request->session()->get('id'),
-                                'store_id' =>  $store_id,
-                                'order_id' => $orderid,
-                                'satuan' => $inventory['satuan'],
-                                'logistik' => $request->input('tujuan'),
-                                'bahan_id' => $inventory['bahan_id'],
-                                'tgl' => $tgl_laporan,
-                                'nama' => $inventory['bahan']->nama,
-                                'qty_order' => $qty_order,
-                                'qty_deliv' => $qty_deliv,
-                                'qty_arrive' => $qty_arrive,
-                                'harga' => $harga
-                            ];
-
-                            $id = $request->input('id')[$key] ?? 0;
-
-                            if (!$id) {
-                                if ($idorderitem = Order_Item::insertGetId($input)) {
-                                    $data = [
-                                        'toast' => true,
-                                        'status' => 'success',
-                                        'pesan' => 'Autosave Berhasil',
-                                        'id' => $idorderitem,
-                                        'row' => $request->input('key')[$key]
+                                if (request()->session()->get('tipe') === 'Logistik') {
+                                    $input = [
+                                        'satuan' => $inventory['satuan'],
+                                        'logistik' => ($request->input('tujuan') ?: $DataOrder['logistik']),
+                                        'bahan_id' => $inventory['bahan_id'],
+                                        'tgl' => $tgl_laporan,
+                                        'nama' => $inventory['bahan']->nama,
+                                        'qty_deliv' => $qty_deliv,
+                                        'harga' => $harga
                                     ];
                                 } else {
-                                    $data = [
-                                        'toast' => true,
-                                        'status' => 'error',
-                                        'pesan' =>  'Terjadi kegagalan system'
-                                    ];
-                                };
-                            } else {
-                                if (Order_Item::where('id', $id)->update($input2)) {
-                                    $data = [
-                                        'toast' => true,
-                                        'status' => 'success',
-                                        'pesan' => 'Autosave Berhasil'
-                                    ];
-                                } else {
+                                    $input = [
+                                        'qty_arrive' => $qty_arrive,
+                                        'qty_order' => $qty_order,
+                                        'logistik' => ($request->input('tujuan') ?: $DataOrder['logistik']),
+                                        'bahan_id' => $inventory['bahan_id'],
+                                        'nama' => $inventory['bahan']->nama
 
-                                    $data = [
-                                        'toast' => true,
-                                        'status' => 'error',
-                                        'pesan' =>  'Terjadi kegagalan system'
                                     ];
-                                };
+                                }
+
+                                $id = $request->input('id')[$key] ?: 0;
+
+                                if (!$id) {
+                                    if ($idorderitem = Orderitem::insertGetId([
+                                        'users_id' => $request->session()->get('id'),
+                                        'store_id' =>  $store_id,
+                                        'order_id' => $orderid,
+                                        'satuan' => $inventory['satuan'],
+                                        'logistik' => ($request->input('tujuan') ?: $DataOrder['logistik']),
+                                        'bahan_id' => $inventory['bahan_id'],
+                                        'tgl' => $tgl_laporan,
+                                        'nama' => $inventory['bahan']->nama,
+                                        'qty_order' => $qty_order,
+                                        'qty_deliv' => $qty_deliv,
+                                        'qty_arrive' => $qty_arrive,
+                                        'harga' => $harga,
+                                        'created_at' => date('Y-m-d H:i:s')
+                                    ])) {
+                                        $data = [
+                                            'toast' => true,
+                                            'status' => 'success',
+                                            'pesan' => 'Autosave Berhasil',
+                                            'id' => $idorderitem,
+                                            'row' => $request->input('key')[$key]
+                                        ];
+                                    } else {
+                                        $data = [
+                                            'toast' => true,
+                                            'status' => 'error',
+                                            'pesan' =>  'Terjadi kegagalan system'
+                                        ];
+                                    };
+                                } else {
+                                    if (Orderitem::where('id', $id)->update($input)) {
+                                        $data = [
+                                            'toast' => true,
+                                            'status' => 'success',
+                                            'pesan' => 'Autosave Berhasil'
+                                        ];
+                                    } else {
+                                        $data = [
+                                            'toast' => true,
+                                            'status' => 'error',
+                                            'pesan' =>  'Terjadi kegagalan system'
+                                        ];
+                                    };
+                                }
+                            } else {
+                                $data = [
+                                    'toast' => true,
+                                    'status' => 'error',
+                                    'pesan' =>  'id ' . $select . ' Tak ditemukan'
+                                ];
                             }
                         }
                     }
@@ -323,7 +382,8 @@ class OrderController extends Controller
                     $data = [
                         'toast' => true,
                         'status' => 'success',
-                        'pesan' => 'Autosave Berhasil'
+                        'pesan' => 'Autosave Berhasil',
+                        'isiitem' => true
                     ];
                 }
             } else {
@@ -340,6 +400,45 @@ class OrderController extends Controller
         echo json_encode($data);
     }
 
+    public function RemoveSessionEdit(Request $request)
+    {
+        if ($request->session()->get('IdEditOrder')) {
+            $request->session()->forget('IdEditOrder');
+            $data = [
+                'toast' => true,
+                'status' => 'success',
+                'pesan' => 'Berhasil Keluar Dari Edit'
+            ];
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Edit tidak ditemukan'
+            ];
+        }
+        echo json_encode($data);
+    }
+
+    public function SessionEdit(Request $request)
+    {
+        $id = $request->input('id');
+        if ($id) {
+            $request->session()->put('IdEditOrder', $id);
+            $data = [
+                'toast' => true,
+                'status' => 'info',
+                'pesan' => 'Mengambil Data Edit'
+            ];
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Edit tidak ditemukan'
+            ];
+        }
+        echo json_encode($data);
+    }
+
 
 
     public function Hapus(Request $request)
@@ -349,11 +448,12 @@ class OrderController extends Controller
         }
 
         $id =  $request->input('id');
-        if (Order_Item::where('id', $id)->delete()) {
+        if (Orderitem::where('id', $id)->delete()) {
             $data = [
                 'toast' => true,
                 'status' => 'success',
-                'pesan' => 'Berhasil Terhapus'
+                'pesan' => 'Berhasil Terhapus',
+                'item' => Orderitem::where('id', $id)->count()
             ];
         } else {
             $data = [
@@ -367,43 +467,181 @@ class OrderController extends Controller
     }
 
 
+    public function LihatBill(Request $request)
+    {
+        if (!in_array('viewOrder', $this->permission())) {
+            return redirect()->to('/');
+        }
+        $id = $request->input('id');
+        $judul = $request->input('judul');
+        $id_store = request()->session()->get('store_id');
+
+        $variable = Orderitem::where('order_id', $id)->get();
+        $bill = Order::with('Users')->where('id', $id)->first();
+
+        $html = ' 
+        <h5 style="float:right"><b>Bill ' . '#' . $bill['bill'] . '</b></h5>
+        <h6><b>' . $this->tanggal($bill['tgl'], true) . '</b></h6>
+        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Qty Order</th>
+                                    <th>Qty Deliv</th>
+                                    <th>Qty Arrive</th>
+                                    <th>Harga</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>';
+
+        $total = 0;
+        foreach ($variable as $key => $value) {
+            $qty = 0;
+            if ($value['qty_deliv']) {
+                $total += $value['qty_deliv'] * $value['harga'];
+                $qty += $value['qty_deliv'];
+            } else {
+                $total += $value['qty_order'] * $value['harga'];
+                $qty += $value['qty_order'];
+            }
+            $html .= '
+                    <tr>
+                        <td>' . $value['nama'] . '</td>
+                        <td>' . ($value['qty_order'] ?: 0) . ' ' . $value['satuan'] . '</td>
+                        <td>' . ($value['qty_deliv'] ?: 0) . ' ' . $value['satuan'] . '</td>
+                        <td>' . ($value['qty_arrive'] ?: 0) . ' ' . $value['satuan'] . '</td>
+                        <td>' . $this->rupiah($value['harga']) . '</td>
+                        <td>' . $this->rupiah($total) . '</td>
+                    </tr>
+                       
+            ';
+        }
+        $html .= '
+                        <tr style="background-color:#607d8b7a;">
+                            <td colspan="5"><b>Total</b> </td>
+                            <td><b>' . $this->rupiah($total) . '</b></td>
+                        </tr>
+                        </table><br>
+                        Ket :<br>
+                        <font color="red">*</font> Order Ini dibuat Oleh Username ' . $bill['users']->username . '
+                        ';
+
+        echo $html;
+    }
+
     public function Manage(Request $request)
     {
-        $this->data['subtitle'] = 'Olahan';
+        if (!in_array('viewOrder', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $this->data['subtitle'] = 'Order';
         $this->subtitle = $this->data['subtitle'];
+        $id_store = request()->session()->get('store_id');
 
         $result = array('data' => array());
-        $Data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
-        foreach ($Data as $value) {
 
-            $id = session('IdOlahan');
-            if ($id != $value['id']) {
+
+        if ($date = $request->input('tgl')) {
+            $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $date)[0]));
+            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $date)[1]));
+        } else {
+            $tgl_awal = date('Y-m-d', strtotime("-30 day", strtotime(date("Y-m-d"))));
+            $tgl_akhir = date('Y-m-d', strtotime(date("Y-m-d")));
+        }
+
+        if (request()->session()->get('tipe') === 'Office' or request()->session()->get('tipe') === 'Logistik') {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = Order::with('Orderitem')->where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            } else {
+                $Data = Order::with('Orderitem')->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            }
+        } else {
+            if (is_numeric($filter = $request->input('filter'))) {
+                $Data = Order::with('Orderitem')->where('store_id', $filter)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            } else {
+                $Data = Order::with('Orderitem')->where('store_id', $id_store)->whereBetween('tgl', [$tgl_awal, $tgl_akhir])->orderBy('id', 'DESC')->get();
+            }
+        }
+
+        if ($Data) {
+            foreach ($Data as $key => $value) {
+
                 $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
 
-                if (in_array('updateMaster', $this->permission())) {
-                    $button .= "<li><a class='dropdown-item' href='Olahan/SessionCreate?id=" . $value['id'] . "'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+                if (in_array('viewOrder', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
                 }
-                if (in_array('deleteMaster', $this->permission())) {
-                    $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
+                if (in_array('updateOrder', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='OrderEdit(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'><i class='fas fa-eye'></i> Edit</a></li>";
                 }
+
+
                 $button .= '</ul></div>';
 
+                $jumlah = 0;
 
-                if ($value['draft']) {
-                    $draft = 'Draft';
-                } else {
-                    $draft = '';
+                $status_view = false;
+                $status_deliv = false;
+                $status_arrive = false;
+                if ($value['Orderitem']) {
+                    foreach ($value['Orderitem'] as $v) {
+                        if ($v['qty_deliv']) {
+                            $qty = $v['qty_deliv'];
+                            $status_deliv = true;
+                        } else {
+                            $qty = $v['qty_order'];
+                        }
+
+                        if ($v['qty_arrive']) {
+                            $status_arrive = true;
+                        }
+
+
+                        if ($v['view']) {
+                            $status_view = true;
+                        }
+
+                        $jumlah += $qty * $v['harga'];
+                    }
                 }
 
-                $result['data'][] = array(
-                    $value['kode'],
-                    $value['nama']  . ' <span class="badge badge-info">' . $draft . '</span>',
-                    $this->rupiah($value['produksi']),
-                    $this->unrupiah($value['hasil']) . ' ' . $value['satuan_penyajian'],
+                if ($status_deliv) {
+                    $deliv = ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Telah Sampai"><i class="fa fa-truck"></i></span>';
+                } else {
+                    $deliv = ' <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Belum Diantar"><i class="fa fa-truck"></i></span>';
+                }
+
+                if ($status_arrive) {
+                    $arrive = ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Sampai"><i class="fa fa-home"></i></span>';
+                } else {
+                    $arrive = ' <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Belum Sampai"><i class="fa fa-home"></i></span>';
+                }
+
+                if ($status_view) {
+                    $view = ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Diproses"><i class="fa fa-eye"></i></span>';
+                } else {
+                    $view = ' <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Belum Diproses"><i class="fa fa-eye"></i></span>';
+                }
+
+
+                if ($value['up'] == 1) {
+                    $up = ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Stock Dikurangi"><i class="fa fa-upload"></i></span>';
+                } else {
+                    $up = ' <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Stock Belum Dikurangi"><i class="fa fa-upload"></i></span>';
+                }
+
+                $result['data'][$key] = array(
+                    '#' . $value['bill'],
+                    $value['store']->nama,
+                    $this->tanggal($value['tgl'], true),
+                    $value['nama'],
+                    $this->rupiah($jumlah),
+                    $view . $deliv . $arrive . $up,
                     $button
                 );
             }
