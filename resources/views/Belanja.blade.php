@@ -307,6 +307,18 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                            </span>
+                        </div>
+                        <input type="text"
+                            value="<?= date('m/d/Y', strtotime('-29 days', strtotime(date('Y-m-d')))) ?> - <?= date('m/d/Y') ?>"
+                            onchange="manage()" name="manage_date" class="form-control" id="manage_date">
+                    </div>
+                    <br>
+
                     <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>

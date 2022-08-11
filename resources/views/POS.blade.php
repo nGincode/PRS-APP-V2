@@ -590,29 +590,6 @@
             });
         }
 
-        $(function() {
-            $('#manage_date').daterangepicker({
-                format: 'MM/DD/YYYY',
-                minDate: '06/01/2022',
-                maxDate: moment(),
-                dateLimit: {
-                    days: 30
-                },
-                locale: {
-                    "applyLabel": "Simpan",
-                    "cancelLabel": "Kembali",
-                    "fromLabel": "Dari",
-                    "toLabel": "Ke",
-                    "daysOfWeek": ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-                    "monthNames": ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
-                        'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                    ],
-
-                },
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment()
-            })
-        });
 
         function qtyubah(id, qty) {
 

@@ -10,7 +10,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\FoodcostController;
-use App\Http\Controllers\PemesananController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\POSController;
@@ -265,6 +265,15 @@ Route::controller(OrderController::class)->group(
         Route::post('Order/LihatBill', 'LihatBill')->middleware('auth');
         Route::post('Order/Upload', 'Upload')->middleware('auth');
         Route::post('Order/UpRepair', 'UpRepair')->middleware('auth');
+    }
+);
+
+//Report
+Route::controller(ReportController::class)->group(
+    function () {
+        //Stock
+        Route::get('Report/Penjualan', 'Penjualan')->middleware('auth');
+        Route::post('Report/Export', 'Export')->middleware('auth');
     }
 );
 

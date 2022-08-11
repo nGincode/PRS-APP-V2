@@ -319,6 +319,70 @@ if (Auth::check()) {
                             </a>
                         </li>
 
+                        @if (in_array('createReportPenjualan', $user_permission) ||
+                            in_array('updateReportPenjualan', $user_permission) ||
+                            in_array('viewReportPenjualan', $user_permission) ||
+                            in_array('deleteReportPenjualan', $user_permission) ||
+                            in_array('createReportBelanja', $user_permission) ||
+                            in_array('updateReportBelanja', $user_permission) ||
+                            in_array('viewReportBelanja', $user_permission) ||
+                            in_array('deleteReportBelanja', $user_permission) ||
+                            in_array('createReportInventory', $user_permission) ||
+                            in_array('updateReportInventory', $user_permission) ||
+                            in_array('viewReportInventory', $user_permission) ||
+                            in_array('deleteReportInventory', $user_permission))
+                            <li class="nav-item @if ($title == 'Report') menu-open @endif ">
+                                <a href=" #" class="nav-link @if ($title == 'Report') active @endif ">
+                                    <i class=" nav-icon fas fa-file"></i>
+                                    <p>
+                                        Report
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    @if (in_array('createReportPenjualan', $user_permission) ||
+                                        in_array('updateReportPenjualan', $user_permission) ||
+                                        in_array('viewReportPenjualan', $user_permission) ||
+                                        in_array('deleteReportPenjualan', $user_permission))
+                                        <li class="nav-item">
+                                            <a href="{{ url('/Report/Penjualan') }}"
+                                                class="nav-link @if ($subtitle == 'Penjualan') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Penjualan</p>
+                                            </a>
+                                        </li>
+                                    @endif
+
+                                    @if (in_array('createReportBelanja', $user_permission) ||
+                                        in_array('updateReportBelanja', $user_permission) ||
+                                        in_array('viewReportBelanja', $user_permission) ||
+                                        in_array('deleteReportBelanja', $user_permission))
+                                        <li class="nav-item">
+                                            <a href="{{ url('/Report/Belanja') }}"
+                                                class="nav-link @if ($subtitle == 'Belanja') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Belanja</p>
+                                            </a>
+                                        </li>
+                                    @endif
+
+                                    @if (in_array('createReportInventory', $user_permission) ||
+                                        in_array('updateReportInventory', $user_permission) ||
+                                        in_array('viewReportInventory', $user_permission) ||
+                                        in_array('deleteReportInventory', $user_permission))
+                                        <li class="nav-item">
+                                            <a href="{{ url('/Report/Inventory') }}"
+                                                class="nav-link @if ($subtitle == 'Inventory') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Inventory</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @endif
+
+
                         @if (in_array('createStore', $user_permission) ||
                             in_array('updateStore', $user_permission) ||
                             in_array('viewStore', $user_permission) ||
@@ -587,7 +651,7 @@ if (Auth::check()) {
                             <li class="nav-item @if ($title == 'Belanja')  @endif ">
                                 <a href="{{ url('/Belanja') }}"
                                     class="nav-link @if ($title == 'Belanja') active @endif ">
-                                    <i class="             nav-icon fas fa-shopping-bag "></i>
+                                    <i class="nav-icon fas fa-shopping-bag "></i>
                                     <p>
                                         Belanja
                                         <span class="right badge badge-danger">New</span>
@@ -1025,6 +1089,53 @@ if (Auth::check()) {
         }
     </style>
     <script>
+        $(function() {
+            $('#manage_date').daterangepicker({
+                format: 'MM/DD/YYYY',
+                minDate: '06/01/2022',
+                maxDate: moment(),
+                dateLimit: {
+                    days: 30
+                },
+                locale: {
+                    "applyLabel": "Simpan",
+                    "cancelLabel": "Kembali",
+                    "fromLabel": "Dari",
+                    "toLabel": "Ke",
+                    "daysOfWeek": ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    "monthNames": ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
+                        'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                    ],
+
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            });
+
+            $('#range_date').daterangepicker({
+                format: 'MM/DD/YYYY',
+                maxDate: moment(),
+                dateLimit: {
+                    days: 60
+                },
+                locale: {
+                    "applyLabel": "Simpan",
+                    "cancelLabel": "Kembali",
+                    "fromLabel": "Dari",
+                    "toLabel": "Ke",
+                    "daysOfWeek": ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    "monthNames": ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
+                        'Agustus', 'September', 'Oktober', 'November', 'Desember'
+                    ],
+
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
         $(document).ready(function() {
             if ($("#show_hide_password").length) {
                 $("#show_hide_password span").on('click', function(event) {
@@ -1055,10 +1166,6 @@ if (Auth::check()) {
             }
 
         });
-
-        $(function() {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
 
         $.widget.bridge('uibutton', $.ui.button)
 
