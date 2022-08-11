@@ -16,7 +16,7 @@ use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\OrderController;
 
-
+use App\Models\Order;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -263,6 +263,8 @@ Route::controller(OrderController::class)->group(
         Route::post('Order/RemoveSessionEdit', 'RemoveSessionEdit')->middleware('auth');
         Route::post('Order/SessionEdit', 'SessionEdit')->middleware('auth');
         Route::post('Order/LihatBill', 'LihatBill')->middleware('auth');
+        Route::post('Order/Upload', 'Upload')->middleware('auth');
+        Route::post('Order/UpRepair', 'UpRepair')->middleware('auth');
     }
 );
 

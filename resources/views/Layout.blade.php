@@ -2,6 +2,7 @@
 use App\Models\User;
 use App\Models\Groups;
 use App\Models\GroupsUsers;
+use App\Models\Orderitem;
 
 if (Auth::check()) {
     if (
@@ -606,7 +607,22 @@ if (Auth::check()) {
                                     <i class="             nav-icon fas fa-shopping-cart "></i>
                                     <p>
                                         Order
-                                        <span class="right badge badge-danger">New</span>
+                                        <span class="right badge badge-danger"><?php
+                                        if (
+                                            $sumorder = Orderitem::where(
+                                                'logistik',
+                                                request()
+                                                    ->session()
+                                                    ->get('id'),
+                                            )
+                                                ->where('view', false)
+                                                ->count()
+                                        ) {
+                                            echo $sumorder;
+                                        } else {
+                                            echo 'New';
+                                        }
+                                        ?></span>
                                     </p>
                                 </a>
                             </li>

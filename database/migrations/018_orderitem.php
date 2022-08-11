@@ -40,6 +40,7 @@ return new class extends Migration
             $table->integer('harga')->nullable();
             $table->string('satuan', 10)->nullable();
             $table->boolean('view')->default(false);
+            $table->boolean('up')->default(false);
             $table->timestamps();
         });
     }
