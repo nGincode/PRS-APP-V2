@@ -14,7 +14,9 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/scout": "^9.4",
         "laravel/tinker": "^2.7",
+        "maatwebsite/excel": "^3.1",
         "picqer/php-barcode-generator": "^2.2",
+        "psr/simple-cache": "^2.0",
         "realrashid/sweet-alert": "^5.0",
         "teamtnt/laravel-scout-tntsearch-driver": "^11.6"
     },

@@ -172,6 +172,7 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
 
 
@@ -201,6 +202,7 @@ return [
 
         //custom sendiri
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ])->toArray(),
 
