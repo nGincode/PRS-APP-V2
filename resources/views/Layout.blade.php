@@ -366,10 +366,7 @@ if (Auth::check()) {
                                         </li>
                                     @endif
 
-                                    @if (in_array('createReportInventory', $user_permission) ||
-                                        in_array('updateReportInventory', $user_permission) ||
-                                        in_array('viewReportInventory', $user_permission) ||
-                                        in_array('deleteReportInventory', $user_permission))
+                                    {{-- @if (in_array('createReportInventory', $user_permission) || in_array('updateReportInventory', $user_permission) || in_array('viewReportInventory', $user_permission) || in_array('deleteReportInventory', $user_permission))
                                         <li class="nav-item">
                                             <a href="{{ url('/Report/Inventory') }}"
                                                 class="nav-link @if ($subtitle == 'Inventory') active @endif">
@@ -377,7 +374,7 @@ if (Auth::check()) {
                                                 <p>Inventory</p>
                                             </a>
                                         </li>
-                                    @endif
+                                    @endif --}}
                                 </ul>
                             </li>
                         @endif

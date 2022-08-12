@@ -10,4 +10,10 @@ class POSBillItem extends Model
     use HasFactory;
     protected $table = 'posbillitem';
     protected $guarded = ['id'];
+
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

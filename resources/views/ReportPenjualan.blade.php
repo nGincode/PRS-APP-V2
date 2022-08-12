@@ -4,7 +4,7 @@
     <section class="content">
         <div class="container-fluid">
             @if (in_array('createReportPenjualan', $user_permission))
-                <form id="FormReportPenjualan" action="{{ url('/Report/Export') }}">
+                <form id="FormReportPenjualan" method="GET" action="{{ url('/Report/PenjualanExport') }}">
                     @csrf
                     <div class="card card-primary">
                         <div class="card-header">
@@ -48,7 +48,7 @@
                                             </div>
                                             <input type="text" class="form-control"
                                                 value="<?= date('m/d/Y', strtotime('-29 days', strtotime(date('Y-m-d')))) ?> - <?= date('m/d/Y') ?>"
-                                                name=range_date" class="form-control" id="range_date">
+                                                name="range_date" class="form-control" id="range_date">
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,8 @@
                             <!-- /.row -->
                         </div>
 
-                        <div class="card-footer">
+                        <div class="card-footer">Ket :<br>
+                            <font color="red">*</font> Data Berasal Dari POS & Order<br><br>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>

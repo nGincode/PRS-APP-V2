@@ -271,9 +271,11 @@ Route::controller(OrderController::class)->group(
 //Report
 Route::controller(ReportController::class)->group(
     function () {
-        //Stock
         Route::get('Report/Penjualan', 'Penjualan')->middleware('auth');
-        Route::post('Report/Export', 'Export')->middleware('auth');
+        Route::get('Report/PenjualanExport', 'PenjualanExport')->middleware('auth');
+
+        Route::get('Report/Belanja', 'Belanja')->middleware('auth');
+        Route::get('Report/BelanjaExport', 'BelanjaExport')->middleware('auth');
     }
 );
 

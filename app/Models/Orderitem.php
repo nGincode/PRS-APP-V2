@@ -11,4 +11,10 @@ class Orderitem extends Model
 
     protected $table = 'orderitem';
     protected $guarded = ['id'];
+
+
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }
