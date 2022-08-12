@@ -125,6 +125,7 @@ Route::controller(MasterController::class)->group(
 
         Route::post('Master/Manage/Bahan', 'BahanManage')->middleware('auth');
         Route::get('Master/Bahan/PrintBarcode', 'PrintBarcode')->middleware('auth');
+        Route::get('Master/Bahan/BahanExport', 'BahanExport')->middleware('auth');
 
 
         Route::get('Master/Peralatan', 'Peralatan')->middleware('auth');

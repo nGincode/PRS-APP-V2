@@ -161,9 +161,16 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <a class="btn btn-primary float-lg-right" target="_blank" href="Bahan/PrintBarcode"><i
-                            class="fa fa-barcode"></i>
-                        Print Barcode</a><br>
+
+                    <div class="float-lg-right">
+                        <a class="btn btn-success" href="Bahan/BahanExport"><i class="fa fa-file-excel"></i>
+                            Export</a> &nbsp;
+
+                        <a class="btn btn-default " target="_blank" href="Bahan/PrintBarcode"><i
+                                class="fa fa-barcode"></i>
+                            Print Barcode</a>
+                    </div><br>
+
                     <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>

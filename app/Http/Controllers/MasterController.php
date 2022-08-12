@@ -10,6 +10,9 @@ use App\Models\Pegawai;
 use App\Models\Satuan;
 
 
+use App\Exports\BahanExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Picqer\Barcode\BarcodeGeneratorPNG;
@@ -633,6 +636,12 @@ class MasterController extends Controller
         </body>
         </html>
         ';
+    }
+
+
+    public function BahanExport(Request $request)
+    {
+        return Excel::download(new BahanExport, 'Master Bahan.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
     ////////////////////////////////// BAHAN ///////////////////////////
 

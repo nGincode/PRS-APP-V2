@@ -66,6 +66,7 @@ class PenjualanExport implements
                 $event->sheet->getDelegate()->mergeCells('A1:H1');
                 $event->sheet->getDelegate()->mergeCells('A2:H2');
                 $event->sheet->getDelegate()->getStyle('1')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('1')->getFont()->setSize('12');
                 $event->sheet->getDelegate()->getStyle('3')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle('1')->getAlignment()->setHorizontal('center');
             },

@@ -83,8 +83,7 @@
                             <!-- /.row -->
                         </div>
 
-                        <div class="card-footer">Ket :<br>
-                            <font color="red">*</font> Data Berasal Dari POS & Order<br><br>
+                        <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
