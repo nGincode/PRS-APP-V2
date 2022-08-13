@@ -117,15 +117,13 @@ Route::controller(MasterController::class)->group(
 
         Route::get('Master/Bahan', 'Bahan')->middleware('auth');
         Route::post('Master/Bahan', 'BahanTambah')->middleware('auth');
-
         Route::post('Master/Bahan/Hapus', 'BahanHapus')->middleware('auth');
-
         Route::post('Master/Bahan/Edit', 'BahanEdit')->middleware('auth');
         Route::post('Master/Bahan/BahanEdit', 'BahanEditTambah')->middleware('auth');
-
         Route::post('Master/Manage/Bahan', 'BahanManage')->middleware('auth');
         Route::get('Master/Bahan/PrintBarcode', 'PrintBarcode')->middleware('auth');
         Route::get('Master/Bahan/BahanExport', 'BahanExport')->middleware('auth');
+        Route::post('Master/Bahan/BahanImport', 'BahanImport')->middleware('auth');
 
 
         Route::get('Master/Peralatan', 'Peralatan')->middleware('auth');

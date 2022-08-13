@@ -163,7 +163,11 @@
                 <div class="card-body">
 
                     <div class="float-lg-right">
-                        <a class="btn btn-success" href="Bahan/BahanExport"><i class="fa fa-file-excel"></i>
+
+                        <a class="btn btn-info" data-toggle="modal" data-target="#import"><i class="fa fa-upload"></i>
+                            Import</a> &nbsp;
+
+                        <a class="btn btn-success" href="Bahan/BahanExport"><i class="fa fa-download"></i>
                             Export</a> &nbsp;
 
                         <a class="btn btn-default " target="_blank" href="Bahan/PrintBarcode"><i
@@ -192,6 +196,89 @@
 
         <!-- /.container-fluid -->
     </section>
+
+
+    <div class="modal fade" id="import" tabindex="-1" role="dialog" style="width:100%" aria-hidden="true"
+        data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <form id="FormImport" method="POST" enctype="multipart/form-data"
+                    action="{{ url('Master/Bahan/BahanImport') }}">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title"><b>Import Master Data Bahan</b></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Ket :<br>
+
+                            <font color="red">*</font> Untuk Format Import Anda Bisa Download File Tersebut Pada Tombol
+                            Export<br>
+                            <font color="red">*</font> Pastikan Kode Barang Tidak Ada Duplikat<br>
+                            <font color="red">* Penting !!!</font> Jika Anda Ingin Edit Maka Pastikan Kolom ID Terisi
+                            Benar<br>
+                            <font color="red">* Penting !!!</font> Jika ID Kosong Maka Data Bersifat Baru<br>
+
+
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label for="import_file">Import</label>
+                                <div class="custom-file">
+                                    <input type="file" onclick="importfile()" class="custom-file-input"
+                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                                        id="import_file" name="import">
+                                    <label class="custom-file-label" for="import_file">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="cekfile">
+
+                        </div>
+                        </p>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="float-left"><button type="submit" class="btn btn-primary">Upload</button></div>
+                        <a class="btn btn-success" href="Bahan/BahanExport"><i class="fa fa-download"></i>
+                            Export</a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #spin {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 3px;
+            border: 3px solid rgba(156, 152, 152, 0.3);
+            border-radius: 50%;
+            border-top-color: rgb(255, 11, 11);
+            animation: spin 1s ease-in-out infinite;
+            -webkit-animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes spin {
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+    </style>
     <script>
         $(function() {
             $('input').keyup(function() {
@@ -202,6 +289,80 @@
                     this.value = this.value.replace(/\b\w/g, l => l.toUpperCase());
                 }
             });
+        });
+
+        function importfile() {
+            $('#cekfile').html('');
+        }
+
+        $(document).ready(function() {
+            if ($('#FormImport').length) {
+                $('#FormImport').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'import': {
+                            required: true
+                        }
+                    },
+                    messages: {}
+                });
+
+                $('#FormImport').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                $('#cekfile').html(
+                                    '<div style="color:red"><i class="fa fa-times"></i> ' +
+                                    error + '</div>');
+                            },
+                            beforeSend: function() {
+                                $('#cekfile').html('<div id="spin"></div> Cek File');
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#cekfile').html(
+                                        '<font style="color:green"><i class="fa fa-check"></i> Cek File </font><br><font style="color:green"><i class="fa fa-check"></i> Format File Oke </font><br><div style="color:green"><i class="fa fa-check"></i> ' +
+                                        data.pesan + '</div>');
+                                    $('#manage').DataTable().ajax.reload();
+                                    $('#import_file').val("");
+                                    $('#import_file').next('label').html('Choose File');
+                                } else {
+                                    $('#cekfile').html(data.pesan);
+                                    $('#import_file').next('label').html('Choose File');
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+
+
+
         });
     </script>
 @endsection

@@ -11,6 +11,7 @@ use App\Models\Satuan;
 
 
 use App\Exports\BahanExport;
+use App\Imports\BahanImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Http\Request;
@@ -638,10 +639,113 @@ class MasterController extends Controller
         ';
     }
 
-
     public function BahanExport(Request $request)
     {
         return Excel::download(new BahanExport, 'Master Bahan.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
+
+
+    public function BahanImport(Request $request)
+    {
+        $rows = Excel::toArray(new BahanImport, $request->file('import'));
+        $error = '';
+        if (isset($rows[0][0]['nama']) && isset($rows[0][0]['satuan_pembelian'])) {
+            if ($rows[0][0]['kode']) {
+
+                foreach ($rows[0] as $key => $row) {
+                    if (
+                        isset($row['nama']) &&
+                        isset($row['kode']) &&
+                        isset($row['kategori']) &&
+                        isset($row['satuan_pembelian']) &&
+                        isset($row['harga']) &&
+                        isset($row['satuan_pemakaian']) &&
+                        isset($row['pembelian_ke_pemakaian']) &&
+                        isset($row['satuan_pengeluaran']) &&
+                        isset($row['pembelian_ke_pengeluaran'])
+                    ) {
+                        if (
+                            $row['kategori'] == 1 ||
+                            $row['kategori'] == 2 ||
+                            $row['kategori'] == 3 ||
+                            $row['kategori'] == 4 ||
+                            $row['kategori'] == 11 ||
+                            $row['kategori'] == 21
+                        ) {
+                            if ($row['id']) {
+                                if (Bahan::where('id', $row['id'])->count()) {
+                                    if (Bahan::where('kode', $row['kode'])->count() < 2) {
+                                    } else {
+                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Duplicate</font><br>';
+                                    }
+                                } else {
+                                    $error .= '<font style="color:red"><i class="fa fa-times"></i> ID ' . $row['id'] . ' Tidak ditemukan, Gagal Update</font><br>';
+                                }
+                            } else {
+                                if (!Bahan::where('kode', $row['kode'])->count()) {
+                                    if (strlen($row['kode']) == 8) {
+                                    } else {
+                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Tidak Valid</font><br>';
+                                    }
+                                } else {
+                                    $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Telah Ada</font><br>';
+                                }
+                            }
+                        } else {
+                            $error .= '<font style="color:red"><i class="fa fa-times"></i> Kategori ' . $row['kode'] . ' Tidak Valid</font><br>';
+                        }
+                    } else {
+                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Format Excel Tidak didukung </font><br>';
+                    }
+                }
+            } else {
+                $error .= '<font style="color:red"><i class="fa fa-times"></i> Tidak Ada Isi </font><br>';
+            }
+        } else {
+            $error .= '<font style="color:red"><i class="fa fa-times"></i> Format Excel Tidak didukung </font><br>';
+        }
+        if ($error) {
+
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  $error
+            ];
+        } else {
+            foreach ($rows[0] as $key => $row) {
+                if ($row['id']) {
+                    Bahan::where('id', $row['id'])->update([
+                        'nama' => ucwords($row['nama']),
+                        'kode' => $row['kode'],
+                        'kategori' => $row['kategori'],
+                        'satuan_pembelian' => $row['satuan_pembelian'],
+                        'harga' => $row['harga'],
+                        'satuan_pemakaian' => $row['satuan_pemakaian'],
+                        'konversi_pemakaian' => $row['pembelian_ke_pemakaian'],
+                        'satuan_pengeluaran' => $row['satuan_pengeluaran'],
+                        'konversi_pengeluaran' => $row['pembelian_ke_pengeluaran']
+                    ]);
+                } else {
+                    Bahan::create([
+                        'nama' => $row['nama'],
+                        'kode' => $row['kode'],
+                        'kategori' => $row['kategori'],
+                        'satuan_pembelian' => $row['satuan_pembelian'],
+                        'harga' => $row['harga'],
+                        'satuan_pemakaian' => $row['satuan_pemakaian'],
+                        'konversi_pemakaian' => $row['pembelian_ke_pemakaian'],
+                        'satuan_pengeluaran' => $row['satuan_pengeluaran'],
+                        'konversi_pengeluaran' => $row['pembelian_ke_pengeluaran']
+                    ]);
+                }
+            }
+            $data = [
+                'toast' => true,
+                'status' => 'success',
+                'pesan' =>  'Berhasil diimport'
+            ];
+        }
+        echo json_encode($data);
     }
     ////////////////////////////////// BAHAN ///////////////////////////
 
