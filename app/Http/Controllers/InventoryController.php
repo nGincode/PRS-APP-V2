@@ -407,28 +407,16 @@ class InventoryController extends Controller
             } else {
                 $qtyjml = '';
             }
-            $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">';
-
-            if (in_array('deleteInventoryOpname', $this->permission())) {
-                // $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
-            }
-
-            $button .= '</ul></div>';
 
 
             $result['data'][] = array(
-                $value['tgl'],
+                $this->tanggal($value['tgl']),
                 $value['nama'],
                 $value['status'],
                 $value['qty'] . '/' . $value['uom'],
                 $value['qty_sebelum'] . '/' . $value['uom'],
                 $qtyjml . '/' . $value['uom'],
-                $value['ket'],
-                $button
+                $value['ket']
 
             );
         }
@@ -450,13 +438,16 @@ class InventoryController extends Controller
         if ($bahan) {
             if ($status == 'Tambah') {
                 $qtyjml = $qty + $bahan['qty'];
+                $pesan = 'Menambah';
             } elseif ($status == 'Kurang') {
                 $qtyjml = $bahan['qty'] - $qty;
+                $pesan = 'Mengurangi';
             } else {
                 $qtyjml = '';
+                $pesan = '';
             }
             $input = [
-                'tgl' => date('Y-m-d'),
+                'tgl' => date('Y-m-d H:i:s'),
                 'bahan_id' => $nama,
                 'nama' => $bahan['bahan']->nama,
                 'uom' => $bahan['satuan'],
@@ -474,7 +465,7 @@ class InventoryController extends Controller
                         $data = [
                             'toast' => true,
                             'status' => 'success',
-                            'pesan' =>  'Berhasil Menambah Stock'
+                            'pesan' =>  'Berhasil ' . $pesan . ' Stock'
                         ];
                     } else {
                         $data = [
