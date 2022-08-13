@@ -246,6 +246,7 @@ Route::controller(InventoryController::class)->group(
         Route::get('Inventory/Bahan/BarcodeCustom', 'BarcodeCustom')->middleware('auth');
         Route::post('Inventory/Stock/Edit', 'InventoryStockEdit')->middleware('auth');
         Route::post('Inventory/Stock/InventoryStockEditTambah', 'InventoryStockEditTambah')->middleware('auth');
+        Route::post('Inventory/Opname/NamaInventory', 'NamaInventory')->middleware('auth');
     }
 );
 

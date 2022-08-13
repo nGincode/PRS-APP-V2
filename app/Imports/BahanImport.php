@@ -43,44 +43,4 @@ class BahanImport implements
             'konversi_pengeluaran' => $row['pembelian_ke_pengeluaran']
         ]);
     }
-
-    // public function collection(Collection $rows)
-    // {
-    //     Validator::make($rows->toArray(), [
-    //         '*.nama' => 'required',
-    //         '*.kode' => 'required|unique:bahan',
-    //     ])->validate();
-
-    //     foreach ($rows as $key => $row) {
-    //         if ($row['id']) {
-    //             Bahan::where('id', $row['id'])->update([
-    //                 'nama' => $row['nama'],
-    //                 'kode' => $row['kode'],
-    //                 'kategori' => $row['kategori'],
-    //                 'satuan_pembelian' => $row['satuan_pembelian'],
-    //                 'harga' => $row['harga'],
-    //                 'satuan_pemakaian' => $row['satuan_pemakaian'],
-    //                 'konversi_pemakaian' => $row['pembelian_ke_pemakaian'],
-    //                 'satuan_pengeluaran' => $row['satuan_pengeluaran'],
-    //                 'konversi_pengeluaran' => $row['pembelian_ke_pengeluaran']
-    //             ]);
-    //         } else {
-    //             Bahan::create([
-    //                 'nama' => $row['nama'],
-    //                 'kode' => $row['kode'],
-    //                 'kategori' => $row['kategori'],
-    //                 'satuan_pembelian' => $row['satuan_pembelian'],
-    //                 'harga' => $row['harga'],
-    //                 'satuan_pemakaian' => $row['satuan_pemakaian'],
-    //                 'konversi_pemakaian' => $row['pembelian_ke_pemakaian'],
-    //                 'satuan_pengeluaran' => $row['satuan_pengeluaran'],
-    //                 'konversi_pengeluaran' => $row['pembelian_ke_pengeluaran']
-    //             ]);
-    //         }
-    //     }
-    // }
-
-    // public function onError(Throwable $error)
-    // {
-    // }
 }

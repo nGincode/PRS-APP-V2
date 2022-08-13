@@ -24,20 +24,26 @@
                             <div class="row">
 
 
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Store</label>
-                                        <select name="store" id="store" class="form-control select2 select2-danger"
-                                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                            <option selected="true" disabled="disabled">Pilih</option>
-                                            @foreach ($Store as $v)
-                                                @if ($v['id'] != 1)
-                                                    <option value="{{ $v['id'] }}">{{ $v['nama'] }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
+                                @if (request()->session()->get('tipe') == 'Outlet')
+                                    <input type="hidden" name="store" id="store"
+                                        value="{{ request()->session()->get('store_id') }}">
+                                @else
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Store</label>
+                                            <select name="store" id="store"
+                                                class="form-control select2 select2-danger" required
+                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                @foreach ($Store as $v)
+                                                    @if ($v['id'] != 1)
+                                                        <option value="{{ $v['id'] }}">{{ $v['nama'] }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">

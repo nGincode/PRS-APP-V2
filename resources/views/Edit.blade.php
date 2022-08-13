@@ -358,6 +358,69 @@
                             <td><input type="checkbox" name="permission[]" id="permission" value="deleteGroup"
                                     @if (in_array('deleteGroup', $permission)) checked @endif class="minimal"></td>
                         </tr>
+                        <tr>
+                            <td style="border: none;"><b>Report</b></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Penjualan</td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('createReportPenjualan', $permission)) checked @endif value="createReportPenjualan"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('updateReportPenjualan', $permission)) checked @endif value="updateReportPenjualan"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('viewReportPenjualan', $permission)) checked @endif value="viewReportPenjualan"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('deleteReportPenjualan', $permission)) checked @endif value="deleteReportPenjualan"
+                                    class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Belanja</td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('createReportBelanja', $permission)) checked @endif value="createReportBelanja"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('updateReportBelanja', $permission)) checked @endif value="updateReportBelanja"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('viewReportBelanja', $permission)) checked @endif value="viewReportBelanja"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('deleteReporBelanja', $permission)) checked @endif value="deleteReportBelanja"
+                                    class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Inventory</td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('createReportInventory', $permission)) checked @endif value="createReportInventory"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('updateReportInventory', $permission)) checked @endif value="updateReportInventory"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('viewReportInventory', $permission)) checked @endif value="viewReportInventory"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('deleteReportInventory', $permission)) checked @endif value="deleteReportInventory"
+                                    class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Foodcost</td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('createReportFoodcost', $permission)) checked @endif value="createReportFoodcost"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('updateReportFoodcost', $permission)) checked @endif value="updateReportFoodcost"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('viewReportFoodcost', $permission)) checked @endif value="viewReportFoodcost"
+                                    class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission"
+                                    @if (in_array('deleteReportFoodcost', $permission)) checked @endif value="deleteReportFoodcost"
+                                    class="minimal"></td>
+                        </tr>
 
                         <tr>
                             <td style="border: none;"><b>Master Data</b></td>
@@ -697,7 +760,8 @@
                             style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             @foreach ($satuan as $s1)
-                                <option value="{{ $s1['singkat'] }}" @if ($BahanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                <option value="{{ $s1['singkat'] }}"
+                                    @if ($BahanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
                                     {{ $s1['nama'] }}
                                 </option>
                             @endforeach
@@ -724,7 +788,8 @@
 
                             <option selected="true" disabled="disabled">Pilih</option>
                             @foreach ($satuan as $s2)
-                                <option value="{{ $s2['singkat'] }}" @if ($BahanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                <option value="{{ $s2['singkat'] }}"
+                                    @if ($BahanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
                                     {{ $s2['nama'] }}
                                 </option>
                             @endforeach
@@ -759,7 +824,8 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s3)
-                                <option value="{{ $s3['singkat'] }}" @if ($BahanData['satuan_pengeluaran'] == $s3['singkat']) selected @endif>
+                                <option value="{{ $s3['singkat'] }}"
+                                    @if ($BahanData['satuan_pengeluaran'] == $s3['singkat']) selected @endif>
                                     {{ $s3['nama'] }}
                                 </option>
                             @endforeach
@@ -863,7 +929,8 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s1)
-                                <option value="{{ $s1['singkat'] }}" @if ($PeralatanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
+                                <option value="{{ $s1['singkat'] }}"
+                                    @if ($PeralatanData['satuan_pembelian'] == $s1['singkat']) selected @endif>
                                     {{ $s1['nama'] }}
                                 </option>
                             @endforeach
@@ -891,7 +958,8 @@
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s2)
-                                <option value="{{ $s2['singkat'] }}" @if ($PeralatanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
+                                <option value="{{ $s2['singkat'] }}"
+                                    @if ($PeralatanData['satuan_pemakaian'] == $s2['singkat']) selected @endif>
                                     {{ $s2['nama'] }}
                                 </option>
                             @endforeach
@@ -983,8 +1051,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="nama">Nama Pegawai</label>
-                        <input type="text" value="{{ $PegawaiData['nama'] }}" class="form-control" id="nama"
-                            placeholder="Nama Pegawai" name="nama">
+                        <input type="text" value="{{ $PegawaiData['nama'] }}" class="form-control"
+                            id="nama" placeholder="Nama Pegawai" name="nama">
                     </div>
                 </div>
 

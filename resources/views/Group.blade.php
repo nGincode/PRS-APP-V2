@@ -103,7 +103,7 @@
                                         <td><input type="checkbox" name="permission[]" id="permission"
                                                 value="viewReportBelanja" class="minimal"></td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
-                                                value="deleteReporBelanja" class="minimal"></td>
+                                                value="deleteReportBelanja" class="minimal"></td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp;&nbsp; Inventory</td>

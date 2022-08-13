@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bahan;
 use App\Models\Inventory;
 use App\Models\Satuan;
+use App\Models\Store;
 use App\Models\OpnameStock;
 
 use Illuminate\Http\Request;
@@ -319,7 +320,39 @@ class InventoryController extends Controller
         echo json_encode($data);
     }
 
-
+    public function NamaInventory(request $request)
+    {
+        $id = $request->input('id');
+        if ($id) {
+            $inv = Inventory::where('store_id', $id)->with('Bahan')->get();
+            if ($inv) {
+                $data = [
+                    'status' => 'success',
+                ];
+                foreach ($inv as $key => $value) {
+                    $data['select2'] = [
+                        [
+                            'id' => $value['bahan_id'],
+                            'nama' => $value['bahan']->nama
+                        ]
+                    ];
+                }
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' => 'ID Gagal Mengambil Inventory'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' => 'Gagal Mengambil Inventory'
+            ];
+        }
+        echo json_encode($data);
+    }
 
     public function Opname(Request $request)
     {
@@ -330,23 +363,26 @@ class InventoryController extends Controller
 
         $this->data['subtitle'] = 'Opname';
 
-        $bahan = [];
-        $inv = [];
-        $inventory = Inventory::where('delete', false)->get();
-        foreach ($inventory as $v) {
-            $inv[] = $v['bahan_id'];
-        }
-
-        foreach (Bahan::where('delete', false)->get() as $key => $value) {
-            if (in_array($value['id'], $inv)) {
-                $bahan[] = array(
-                    'nama' => $value['nama'],
-                    'id' => $value['id'],
-                    'satuan' => $value['satuan_pengeluaran'],
-                );
+        if ($request->session()->get('tipe') == 'Outlet') {
+            $bahan = [];
+            $inv = [];
+            $inventory = Inventory::where('delete', false)->get();
+            foreach ($inventory as $v) {
+                $inv[] = $v['bahan_id'];
             }
+
+            foreach (Bahan::where('delete', false)->get() as $key => $value) {
+                if (in_array($value['id'], $inv)) {
+                    $bahan[] = array(
+                        'nama' => $value['nama'],
+                        'id' => $value['id'],
+                        'satuan' => $value['satuan_pengeluaran'],
+                    );
+                }
+            }
+            $this->data['bahan'] = $bahan;
         }
-        $this->data['bahan'] = $bahan;
+        $this->data['store'] = Store::all();
 
         return view('OpnameStock', $this->data);
     }
