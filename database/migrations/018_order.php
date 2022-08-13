@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->string('bill');
             $table->date('tgl');
-            $table->string('nama', 20)->nullable();
+            $table->string('nama', 50)->nullable();
             $table->string('nohp', 15)->nullable();
             $table->string('ket')->nullable();
             $table->boolean('up')->default(false);

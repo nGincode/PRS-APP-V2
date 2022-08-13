@@ -25,7 +25,7 @@ return new class extends Migration
             $table->dateTime('tgl');
             $table->string('no_bill');
             $table->string('no_hp', 15)->nullable();
-            $table->string('nama_bill', 30)->nullable();
+            $table->string('nama_bill', 50)->nullable();
             $table->integer('gross_total');
             $table->string('disc', 2)->nullable();
             $table->string('tax', 2)->nullable();

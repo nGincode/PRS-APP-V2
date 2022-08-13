@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('supplier', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 30);
+            $table->string('nama', 50);
             $table->string('alamat')->nullable();
             $table->boolean('hutang')->nullable();
             $table->string('tipe', 20)->nullable();

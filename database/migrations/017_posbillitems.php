@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
             $table->dateTime('tgl');
-            $table->string('nama', 30);
+            $table->string('nama', 50);
             $table->string('qty');
             $table->string('satuan', 10);
             $table->integer('harga');
