@@ -193,11 +193,11 @@
                                         <td><input type="checkbox" name="permission[]" id="permission"
                                                 value="createFoodcostBahanOlahan" class="minimal"></td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
-                                                value="updateBelanjaFoodcostBahanOlahan" class="minimal"></td>
+                                                value="updateFoodcostBahanOlahan" class="minimal"></td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
-                                                value="viewBelanjaFoodcostBahanOlahan" class="minimal"></td>
+                                                value="viewFoodcostBahanOlahan" class="minimal"></td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
-                                                value="deleteBelanjaFoodcostBahanOlahan" class="minimal"></td>
+                                                value="deleteFoodcostBahanOlahan" class="minimal"></td>
                                     </tr>
                                     <tr>
                                         <td>&nbsp;&nbsp; 2.) Varian</td>

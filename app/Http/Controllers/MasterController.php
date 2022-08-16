@@ -672,24 +672,38 @@ class MasterController extends Controller
                             $row['kategori'] == 11 ||
                             $row['kategori'] == 21
                         ) {
-                            if ($row['id']) {
-                                if (Bahan::where('id', $row['id'])->count()) {
-                                    if (Bahan::where('kode', $row['kode'])->count() < 2) {
+                            if (
+                                strlen($row['nama']) <= 50 &&
+                                strlen($row['kode']) <= 20 &&
+                                strlen($row['kategori']) <= 20 &&
+                                strlen($row['satuan_pembelian']) <= 10 &&
+                                strlen($row['harga']) <= 11 &&
+                                strlen($row['satuan_pemakaian']) <= 10 &&
+                                strlen($row['pembelian_ke_pemakaian']) <= 20 &&
+                                strlen($row['satuan_pengeluaran']) <= 10 &&
+                                strlen($row['pembelian_ke_pengeluaran']) <= 20
+                            ) {
+                                if ($row['id']) {
+                                    if (Bahan::where('id', $row['id'])->count()) {
+                                        if (Bahan::where('kode', $row['kode'])->count() < 2) {
+                                        } else {
+                                            $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Duplicate</font><br>';
+                                        }
                                     } else {
-                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Duplicate</font><br>';
+                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> ID ' . $row['id'] . ' Tidak ditemukan, Gagal Update</font><br>';
                                     }
                                 } else {
-                                    $error .= '<font style="color:red"><i class="fa fa-times"></i> ID ' . $row['id'] . ' Tidak ditemukan, Gagal Update</font><br>';
+                                    if (!Bahan::where('kode', $row['kode'])->count()) {
+                                        if (strlen($row['kode']) == 8) {
+                                        } else {
+                                            $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Tidak Valid</font><br>';
+                                        }
+                                    } else {
+                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Telah Ada</font><br>';
+                                    }
                                 }
                             } else {
-                                if (!Bahan::where('kode', $row['kode'])->count()) {
-                                    if (strlen($row['kode']) == 8) {
-                                    } else {
-                                        $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Tidak Valid</font><br>';
-                                    }
-                                } else {
-                                    $error .= '<font style="color:red"><i class="fa fa-times"></i> Kode Barang ' . $row['kode'] . ' Telah Ada</font><br>';
-                                }
+                                $error .= '<font style="color:red"><i class="fa fa-times"></i> Pada ' . $row['kode'] . ' Ada Text Terlalu Panjang</font><br>';
                             }
                         } else {
                             $error .= '<font style="color:red"><i class="fa fa-times"></i> Kategori ' . $row['kode'] . ' Tidak Valid</font><br>';

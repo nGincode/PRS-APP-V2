@@ -19,8 +19,11 @@ return new class extends Migration
             $table->unsignedBigInteger('olahan_id');
             $table->foreign('olahan_id')->references('id')->on('olahan');
 
-            $table->unsignedBigInteger('bahan_id');
+            $table->unsignedBigInteger('bahan_id')->nullable();
             $table->foreign('bahan_id')->references('id')->on('bahan');
+
+            $table->unsignedBigInteger('bahanolahan_id')->nullable();
+            $table->foreign('bahanolahan_id')->references('id')->on('olahan');
 
             $table->string('pemakaian')->default(0);
             $table->boolean('draft')->default(true);

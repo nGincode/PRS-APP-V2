@@ -40,7 +40,7 @@ class FoodcostController extends Controller
     public function Olahan(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -49,7 +49,7 @@ class FoodcostController extends Controller
         $this->data['satuan'] = Satuan::all();
 
 
-        $id = session('IdOlahan');
+        $id = $request->session()->get('IdOlahan');
         $this->data['Olahan'] = Olahan::where('id', $id)->with('Bahan')->first();
 
         $jumlahbb = 0;
@@ -61,9 +61,11 @@ class FoodcostController extends Controller
                     $jumlahbb += ($value->bahan['harga'] / $value->bahan['konversi_pemakaian']) * $value['pemakaian'];
                 }
 
-                if ($value['olahan']) {
-                    $dtol = Olahan::where('id', $value['olahan'])->first();
-                    $jumlahb0 += $dtol['produksi'];
+                if ($value['bahanolahan_id']) {
+                    $bahanolahan = Olahan::where('id', $value['bahanolahan_id'])->first();
+                    if ($bahanolahan) {
+                        $jumlahb0 += $bahanolahan['produksi'];
+                    }
                 }
             }
         }
@@ -77,7 +79,7 @@ class FoodcostController extends Controller
     {
 
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -88,7 +90,7 @@ class FoodcostController extends Controller
         $Data = Olahan::where('delete', false)->with('Bahan')->latest()->get();
         foreach ($Data as $value) {
 
-            $id = session('IdOlahan');
+            $id = $request->session()->get('IdOlahan');
             if ($id != $value['id']) {
                 $button = '<div class="btn-group dropleft">
                 <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
@@ -96,10 +98,10 @@ class FoodcostController extends Controller
                 </button>
                 <ul class="dropdown-menu">';
 
-                if (in_array('updateMaster', $this->permission())) {
+                if (in_array('updateFoodcostBahanOlahan', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' href='Olahan/SessionCreate?id=" . $value['id'] . "'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
                 }
-                if (in_array('deleteMaster', $this->permission())) {
+                if (in_array('deleteFoodcostBahanOlahan', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='Hapus(" . $value['id'] . "," . '"' . $this->subtitle . '"' . ")'  ><i class='fas fa-trash-alt'></i> Hapus</a></li>";
                 }
                 $button .= '</ul></div>';
@@ -128,7 +130,7 @@ class FoodcostController extends Controller
 
 
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('createOlahan', $this->permission())) {
+        if (!in_array('createFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -156,19 +158,21 @@ class FoodcostController extends Controller
             }
         } else {
 
-            $id = session('IdOlahan');
+            $id = $request->session()->get('IdOlahan');
 
             $jumlah = 0;
-            $jmlolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
+            $jmlolh = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
             if ($jmlolh) {
                 foreach ($jmlolh as $jmlpro) {
                     if ($jmlpro['bahan']) {
-                        $jumlah += ($jmlpro->bahan['harga'] / $jmlpro->bahan['konversi_pemakaian']) * $jmlpro['pemakaian'];
+                        $jumlah += ($jmlpro->bahan['harga'] / $jmlpro['bahan']->konversi_pemakaian) * $jmlpro['pemakaian'];
                     }
 
-                    if ($jmlpro['olahan']) {
-                        $dtol = Olahan::where('id', $jmlpro['olahan'])->first();
-                        $jumlah += $dtol['produksi'];
+                    if ($jmlpro['bahanolahan_id']) {
+                        $bahanolahan = Olahan::where('id', $jmlpro['bahanolahan_id'])->first();
+                        if ($bahanolahan) {
+                            $jumlah += $bahanolahan['produksi'];
+                        }
                     }
                 }
             }
@@ -208,7 +212,7 @@ class FoodcostController extends Controller
             $pakaiolahan =  $request->input('pakaiolahan');
             $pakai =  $request->input('pakai');
             if ($Olahan && $pakai) {
-                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->where('olahan', null)->get();
+                $cekolahan = Bahan_Olahan::where('olahan_id', $id)->where('bahanolahan_id', null)->get();
                 foreach ($cekolahan as $no => $v) {
 
                     if (!Bahan_Olahan::where('id', $v['id'])->update([
@@ -276,12 +280,13 @@ class FoodcostController extends Controller
                     'satuan_penyajian' => $request->input('satuan_penyajian'),
                     'konversi_penyajian' => $this->unrupiah($request->input('konversi_penyajian')),
                     'kode' => 'BO' . $this->kode,
-                    'produksi' => $jumlah
+                    'produksi' => $jumlah,
+                    'created_at' => date('Y-m-d H:i:s')
                 ];
-                if ($olahan = Olahan::create($input)) {
-                    request()->session()->put('IdOlahan', $olahan->id);
+                if ($olahanid = Olahan::insertGetId($input)) {
+                    $request->session()->put('IdOlahan', $olahanid);
                     $data = [
-                        'id' => $olahan->id,
+                        'id' => $olahanid,
                         'toast' => true,
                         'status' => 'success',
                         'pesan' => 'Autosave Berhasil'
@@ -300,7 +305,7 @@ class FoodcostController extends Controller
                 Olahan::where('id', $id)->update(['draft' => false]);
                 Bahan_Olahan::where('olahan_id', $id)->update(['draft' => false]);
 
-                session()->forget('IdOlahan');
+                $request->session()->forget('IdOlahan');
             }
         }
 
@@ -313,7 +318,7 @@ class FoodcostController extends Controller
     public function PilihBahanBaku(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -339,7 +344,7 @@ class FoodcostController extends Controller
     public function OlahanItemBahanBaku(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -347,9 +352,9 @@ class FoodcostController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
 
-        $id = session('IdOlahan');
+        $id = $request->session()->get('IdOlahan');
         if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+            $Data = Bahan_Olahan::where('olahan_id', $id)->where('bahanolahan_id', null)->with('Bahan', 'Olahan')->get();
         } else {
             $Data = array();
         }
@@ -384,7 +389,7 @@ class FoodcostController extends Controller
 
 
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('createOlahan', $this->permission())) {
+        if (!in_array('createFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -394,9 +399,10 @@ class FoodcostController extends Controller
             $input = array();
             foreach ($id as $v) {
                 $input[] = array(
-                    'olahan_id' => session('IdEdit'),
+                    'olahan_id' => $request->session()->get('IdEdit'),
                     'bahan_id' => $v,
-                    'pemakaian' => 0
+                    'pemakaian' => 0,
+                    'created_at' => date('Y-m-d H:i:s')
                 );
             }
             if (Bahan_Olahan::insert($input)) {
@@ -429,7 +435,7 @@ class FoodcostController extends Controller
     {
 
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -441,8 +447,8 @@ class FoodcostController extends Controller
             $data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan')->get();
             $cekid = array();
             foreach ($data as $v) {
-                if ($v['olahan']) {
-                    $cekid[] = $v['olahan'];
+                if ($v['bahanolahan_id']) {
+                    $cekid[] = $v['bahanolahan_id'];
                 }
             }
             $this->data['cekid'] = $cekid;
@@ -456,7 +462,7 @@ class FoodcostController extends Controller
     public function OlahanItemBahanOlahan(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -464,39 +470,37 @@ class FoodcostController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
 
-        $id = session('IdOlahan');
+        $id = $request->session()->get('IdOlahan');
         if ($id) {
-            $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
+            $Data = Bahan_Olahan::where('olahan_id', $id)->where('bahan_id', null)->get();
         } else {
             $Data = array();
         }
 
         $result = array('data' => array());
         $key = 0;
-        foreach ($Data as $value) {
-            if ($value['olahan']) {
-                $olhan =  Olahan::where('id', $value['olahan'])->first();
-                $byproduksi =  Bahan_Olahan::where('olahan_id', $value['olahan'])->with('Bahan')->get();
-                $produksi = 0;
-                foreach ($byproduksi as $v) {
-                    $produksi += ($v->Bahan['harga'] / $v->Bahan['konversi_pemakaian']) * $v['pemakaian'];
-                }
+        if ($Data) {
+            foreach ($Data as $value) {
+                if ($value['bahanolahan_id']) {
+                    $olahan = Olahan::where('id', $value['bahanolahan_id'])->with('Bahan')->first();
 
-                $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
-                $result['data'][$key] = array(
-                    $olhan['nama'],
-                    $olhan['hasil'] . ' ' . $olhan['satuan_penyajian'],
-                    $this->rupiah($produksi),
-                    '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" onkeyup="jumlaholahan(' . $key . ', this.value)" name="pakaiolahan[]" id="pakaiolahan_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $olhan['satuan_penyajian'] . '</span></div></div>',
-                    '<font id="jmlolah_' . $key . '">' . $this->rupiah(($olhan['produksi'] / $olhan['hasil']) * $value['pemakaian']) . '</font>',
-                    $button . '
-                    <input type="hidden" class="totalolah" id="hargaolah_' . $key . '" value="' . $olhan['produksi'] . '" >
-                    <input type="hidden" id="hasil_' . $key . '" value="' . $olhan['hasil'] . '" >
-                    <input type="hidden" id="totalolah_' . $key . '" value="' . ($olhan['produksi'] / $olhan['hasil']) * $value['pemakaian'] . '" >
+                    $button = '<a onclick="hapusitemoalahan(' . $value['id'] . ')" class="btn btn-danger" ><i class="fas fa-trash"></i> </a>';
+
+                    $result['data'][$key] = array(
+                        $olahan->nama,
+                        $olahan->hasil . ' ' . $olahan->satuan_penyajian,
+                        $this->rupiah($olahan['produksi']),
+                        '<div class="input-group"><input class="form-control" type="number" value="' . $value['pemakaian'] . '" onkeyup="jumlaholahan(' . $key . ', this.value)" name="pakaiolahan[]" id="pakaiolahan_' . $key . '" /> <div class="input-group-append"><span class="input-group-text">' . $olahan->satuan_penyajian . '</span></div></div>',
+                        '<font id="jmlolah_' . $key . '">' . $this->rupiah($olahan['produksi']) . '</font>',
+                        $button . '
+                    <input type="hidden" class="totalolah" id="hargaolah_' . $key . '" value="' . $olahan->produksi . '" >
+                    <input type="hidden" id="hasil_' . $key . '" value="' . $olahan->hasil . '" >
+                    <input type="hidden" id="totalolah_' . $key . '" value="' . $olahan['produksi'] . '" >
                     '
-                );
+                    );
 
-                $key++;
+                    $key++;
+                }
             }
         }
         echo json_encode($result);
@@ -504,7 +508,7 @@ class FoodcostController extends Controller
     public function TambahItemBahanOlahan(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('createOlahan', $this->permission())) {
+        if (!in_array('createFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -515,9 +519,10 @@ class FoodcostController extends Controller
             $input = array();
             foreach ($id as $v) {
                 $input[] = array(
-                    'olahan_id' => session('IdEdit'),
-                    'olahan' => $v,
-                    'pemakaian' => 0
+                    'olahan_id' => $request->session()->get('IdEdit'),
+                    'bahanolahan_id' => $v,
+                    'pemakaian' => 0,
+                    'created_at' => date('Y-m-d H:i:s')
                 );
             }
             if (Bahan_Olahan::insert($input)) {
@@ -553,7 +558,7 @@ class FoodcostController extends Controller
     {
 
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('viewOlahan', $this->permission())) {
+        if (!in_array('viewFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -561,7 +566,7 @@ class FoodcostController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
 
-        $id = session('IdOlahan');
+        $id = $request->session()->get('IdOlahan');
         if ($id) {
             $Data = Bahan_Olahan::where('olahan_id', $id)->with('Bahan', 'Olahan')->get();
         } else {
@@ -595,7 +600,7 @@ class FoodcostController extends Controller
     public function OlahanHapus(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('deleteOlahan', $this->permission())) {
+        if (!in_array('deleteFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 
@@ -620,7 +625,7 @@ class FoodcostController extends Controller
     public function ItemOlahanHapus(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
-        if (!in_array('deleteOlahan', $this->permission())) {
+        if (!in_array('deleteFoodcostBahanOlahan', $this->permission())) {
             return redirect()->to('/');
         }
 

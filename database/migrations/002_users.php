@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('firstname', 20)->nullable();
             $table->string('lastname', 20)->nullable();
-            $table->string('phone', 15)->nullable();
+            $table->string('phone', 15)->nullable()->unique();
             $table->enum('gender', ['Pria', 'Wanita'])->nullable();
             $table->string('img')->nullable();
             $table->boolean('izin');

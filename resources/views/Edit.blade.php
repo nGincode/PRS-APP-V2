@@ -1244,6 +1244,12 @@
                                     @if ($v['kategori'] == 4)
                                         Bahan Baku Dingin
                                     @endif
+                                    @if ($v['kategori'] == 11)
+                                        Bahan Supplay
+                                    @endif
+                                    @if ($v['kategori'] == 21)
+                                        Bahan Oprasional
+                                    @endif
                                 </td>
                                 <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
                             </tr>
@@ -1374,20 +1380,9 @@
                                 <td>{{ $v['kode'] }}</td>
                                 <td>{{ $v['nama'] }}</td>
                                 <td>
-                                    @if ($v['kategori'] == 1)
-                                        Bahan Baku Segar
-                                    @endif
-                                    @if ($v['kategori'] == 2)
-                                        Bahan Baku Beku
-                                    @endif
-                                    @if ($v['kategori'] == 3)
-                                        Bahan Baku Dalam Kemasan
-                                    @endif
-                                    @if ($v['kategori'] == 4)
-                                        Bahan Baku Dingin
-                                    @endif
+                                    {{ $v['hasil'] . ' ' . $v['satuan_penyajian'] }}
                                 </td>
-                                <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
+                                <td>{{ $v['produksi'] . '/' . $v['satuan_penyajian'] }}</td>
                             </tr>
                         @endif
                     @endforeach

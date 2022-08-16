@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('olahan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 50);
-            $table->string('kode', 20);
+            $table->string('nama', 50)->unique();
+            $table->string('kode', 20)->unique();
             $table->string('satuan_pengeluaran', 10);
             $table->string('satuan_penyajian', 10);
             $table->integer('konversi_penyajian');

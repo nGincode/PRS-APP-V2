@@ -1266,12 +1266,12 @@ function pemakaianedit(value) {
 
 function penyajian(value) {
     $('#konversib1').html('<span class="input-group-text">' + value + '</span>');
-    $('#konversib2').html('<span class="input-group-text">' + value + '</span>');
+    $('#konversihasil').html('<span class="input-group-text">' + value + '</span>');
 }
 
 function penyajianedit(value) {
     $('#konversib1edit').html('<span class="input-group-text">' + value + '</span>');
-    $('#konversib2edit').html('<span class="input-group-text">' + value + '</span>');
+    $('#konversihasiledit').html('<span class="input-group-text">' + value + '</span>');
 }
 
 function hapusbelanja(id, row) {

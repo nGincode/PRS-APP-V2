@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 30);
-            $table->string('kode', 20);
+            $table->string('nama', 30)->unique();
+            $table->string('kode', 20)->unique();
 
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('store');

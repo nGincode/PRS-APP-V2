@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('satuan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama', 20);
-            $table->string('singkat', 10)->nullable();
+            $table->string('nama', 20)->unique();
+            $table->string('singkat', 10)->nullable()->unique();
             $table->boolean('delete')->default(false);
             $table->timestamps();
         });

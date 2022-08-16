@@ -24,21 +24,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $permession = array(
-            'createUser',
-            'updateUser',
-            'viewUser',
-            'deleteUser',
-            'createGroup',
-            'updateGroup',
-            'viewGroup',
-            'deleteGroup',
-            'createStore',
-            'updateStore',
-            'viewStore',
-            'deleteStore',
-        );
 
+        ///////////////////////////////////////////////////// SUPER ADMIN ////////////////////////
         Store::create([
             'nama' => 'SUPERADMIN',
             'active' => 1,
@@ -51,20 +38,6 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
-        // Store::create([
-        //     'nama' => 'CV Prima Rasa Selaras',
-        //     'active' => 1,
-        //     'tipe' => 'Outlet',
-        //     'alamat' => 'BENGKULU',
-        //     'img' => null,
-        //     'wa' => '085369957606',
-        //     'jam_kerja' => '[{"No":0,"Nama":"Shift 1","Masuk":"15:16","Pulang":"15:16"}]',
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
-
-        // ]);
-
-
         User::create([
             'store' => 'SUPERADMIN',
             'store_id' => 1,
@@ -84,27 +57,20 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
-
-        // User::create([
-        //     'store' => 'CV Prima Rasa Selaras',
-        //     'store_id' => 2,
-        //     'username' => 'prsprs',
-        //     'password' => bcrypt('prsprs'),
-        //     'email' => 'primarasaselaras@gmail.com',
-        //     'firstname' => 'PRS',
-        //     'lastname' => 'Prima Rasa Selaras',
-        //     'phone' => '085369957606',
-        //     'gender' => 1,
-        //     'izin' => 1,
-        //     'img' => null,
-        //     'last_login' => date('Y-m-d H:i:s'),
-        //     'email_verified_at' => null,
-        //     'remember_token' => null,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
-
-        // ]);
-
+        $permession = array(
+            'createUser',
+            'updateUser',
+            'viewUser',
+            'deleteUser',
+            'createGroup',
+            'updateGroup',
+            'viewGroup',
+            'deleteGroup',
+            'createStore',
+            'updateStore',
+            'viewStore',
+            'deleteStore',
+        );
         Groups::create([
             'nama' => 'SUPERADMIN',
             'permission' => serialize($permession),
@@ -112,15 +78,6 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
-        $v2 = 'a:48:{i:0;s:14:"createSupplier";i:1;s:14:"updateSupplier";i:2;s:12:"viewSupplier";i:3;s:14:"deleteSupplier";i:4;s:12:"createSatuan";i:5;s:12:"updateSatuan";i:6;s:10:"viewSatuan";i:7;s:12:"deleteSatuan";i:8;s:11:"createBahan";i:9;s:11:"updateBahan";i:10;s:9:"viewBahan";i:11;s:11:"deleteBahan";i:12;s:15:"createPeralatan";i:13;s:15:"updatePeralatan";i:14;s:13:"viewPeralatan";i:15;s:15:"deletePeralatan";i:16;s:13:"createPegawai";i:17;s:13:"updatePegawai";i:18;s:11:"viewPegawai";i:19;s:13:"deletePegawai";i:20;s:25:"createFoodcostBahanOlahan";i:21;s:25:"updateFoodcostBahanOlahan";i:22;s:23:"viewFoodcostBahanOlahan";i:23;s:25:"deleteFoodcostBahanOlahan";i:24;s:20:"createFoodcostVarian";i:25;s:20:"updateFoodcostVarian";i:26;s:18:"viewFoodcostVarian";i:27;s:20:"deleteFoodcostVarian";i:28;s:19:"createFoodcostResep";i:29;s:19:"updateFoodcostResep";i:30;s:17:"viewFoodcostResep";i:31;s:19:"deleteFoodcostResep";i:32;s:9:"createPOS";i:33;s:9:"updatePOS";i:34;s:7:"viewPOS";i:35;s:9:"deletePOS";i:36;s:13:"createBelanja";i:37;s:13:"updateBelanja";i:38;s:11:"viewBelanja";i:39;s:13:"deleteBelanja";i:40;s:20:"createInventoryStock";i:41;s:20:"updateInventoryStock";i:42;s:18:"viewInventoryStock";i:43;s:20:"deleteInventoryStock";i:44;s:21:"createInventoryOpname";i:45;s:21:"updateInventoryOpname";i:46;s:19:"viewInventoryOpname";i:47;s:21:"deleteInventoryOpname";}';
-        // Groups::create([
-        //     'nama' => 'Office',
-        //     'permission' => $v2,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
-
-        // ]);
-
         GroupsUsers::create([
             'users_id' => 1,
             'groups_id' => 1,
@@ -128,63 +85,6 @@ class DatabaseSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s')
 
         ]);
-        // GroupsUsers::create([
-        //     'users_id' => 2,
-        //     'groups_id' => 2,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
-
-        // ]);
-
-
-
-        // Bahan::create([
-        //     'nama' => 'Ayam',
-        //     'kode' => 'FD22121',
-        //     'satuan_pembelian' => 'Pcs',
-        //     'satuan_pengeluaran' => 'Pcs',
-        //     'konversi_pengeluaran' => 100,
-        //     'satuan_pemakaian' => 'Gram',
-        //     'konversi_pemakaian' => 50,
-        //     'harga' => 10000,
-        //     'kategori' => 1
-
-        // ]);
-
-        // Bahan::create([
-        //     'nama' => 'Gula',
-        //     'kode' => 'FD22121',
-        //     'satuan_pembelian' => 'Pcs',
-        //     'satuan_pengeluaran' => 'Pcs',
-        //     'konversi_pengeluaran' => 100,
-        //     'satuan_pemakaian' => 'Gram',
-        //     'konversi_pemakaian' => 50,
-        //     'harga' => 10000,
-        //     'kategori' => 1
-        // ]);
-
-        // Olahan::create([
-        //     'nama' => 'AYam Bakar',
-        //     'kode' => 'FD22121',
-        //     'satuan_pengeluaran' => 'Pcs',
-        //     'satuan_penyajian' => 'Gram',
-        //     'konversi_penyajian' => 50
-
-        // ]);
-
-        // Bahan_Olahan::create([
-        //     'olahan_id' => 1,
-        //     'bahan_id' => 1,
-        //     'pemakaian' => 100
-
-        // ]);
-        // Bahan_Olahan::create([
-        //     'olahan_id' => 1,
-        //     'bahan_id' => 2,
-        //     'pemakaian' => 10000
-
-        // ]);
-
         $satuan = [
             [
                 'nama' => 'Kilogram',
@@ -252,12 +152,82 @@ class DatabaseSeeder extends Seeder
             ],
 
         ];
-
         foreach ($satuan as $s) {
             Satuan::create($s);
         }
+        ///////////////////////////////////////////////////// SUPER ADMIN ////////////////////////
 
-        // \App\Models\User::factory(10)->create();
-        // \App\Models\Store::factory(10)->create();
+
+        ///////////////////////////////////////////////////// DUMMY /////////////////////////////
+        Store::create([
+            'nama' => 'CV Prima Rasa Selaras',
+            'active' => 1,
+            'tipe' => 'Outlet',
+            'alamat' => 'BENGKULU',
+            'img' => null,
+            'wa' => '085369957606',
+            'jam_kerja' => '[{"No":0,"Nama":"Shift 1","Masuk":"15:16","Pulang":"15:16"}]',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        User::create([
+            'store' => 'CV Prima Rasa Selaras',
+            'store_id' => 2,
+            'username' => 'prsprs',
+            'password' => bcrypt('prsprs'),
+            'email' => 'primarasaselaras@gmail.com',
+            'firstname' => 'PRS',
+            'lastname' => 'Prima Rasa Selaras',
+            'phone' => '085369952606',
+            'gender' => 1,
+            'izin' => 1,
+            'img' => null,
+            'last_login' => date('Y-m-d H:i:s'),
+            'email_verified_at' => null,
+            'remember_token' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        $permessionall = 'a:80:{i:0;s:10:"createUser";i:1;s:10:"updateUser";i:2;s:8:"viewUser";i:3;s:10:"deleteUser";i:4;s:11:"createStore";i:5;s:11:"updateStore";i:6;s:9:"viewStore";i:7;s:11:"deleteStore";i:8;s:11:"createGroup";i:9;s:11:"updateGroup";i:10;s:9:"viewGroup";i:11;s:11:"deleteGroup";i:12;s:21:"createReportPenjualan";i:13;s:21:"updateReportPenjualan";i:14;s:19:"viewReportPenjualan";i:15;s:21:"deleteReportPenjualan";i:16;s:19:"createReportBelanja";i:17;s:19:"updateReportBelanja";i:18;s:17:"viewReportBelanja";i:19;s:19:"deleteReportBelanja";i:20;s:21:"createReportInventory";i:21;s:21:"updateReportInventory";i:22;s:19:"viewReportInventory";i:23;s:21:"deleteReportInventory";i:24;s:20:"createReportFoodcost";i:25;s:20:"updateReportFoodcost";i:26;s:18:"viewReportFoodcost";i:27;s:20:"deleteReportFoodcost";i:28;s:14:"createSupplier";i:29;s:14:"updateSupplier";i:30;s:12:"viewSupplier";i:31;s:14:"deleteSupplier";i:32;s:12:"createSatuan";i:33;s:12:"updateSatuan";i:34;s:10:"viewSatuan";i:35;s:12:"deleteSatuan";i:36;s:11:"createBahan";i:37;s:11:"updateBahan";i:38;s:9:"viewBahan";i:39;s:11:"deleteBahan";i:40;s:15:"createPeralatan";i:41;s:15:"updatePeralatan";i:42;s:13:"viewPeralatan";i:43;s:15:"deletePeralatan";i:44;s:13:"createPegawai";i:45;s:13:"updatePegawai";i:46;s:11:"viewPegawai";i:47;s:13:"deletePegawai";i:48;s:25:"createFoodcostBahanOlahan";i:49;s:25:"updateFoodcostBahanOlahan";i:50;s:23:"viewFoodcostBahanOlahan";i:51;s:25:"deleteFoodcostBahanOlahan";i:52;s:20:"createFoodcostVarian";i:53;s:20:"updateFoodcostVarian";i:54;s:18:"viewFoodcostVarian";i:55;s:20:"deleteFoodcostVarian";i:56;s:19:"createFoodcostResep";i:57;s:19:"updateFoodcostResep";i:58;s:17:"viewFoodcostResep";i:59;s:19:"deleteFoodcostResep";i:60;s:9:"createPOS";i:61;s:9:"updatePOS";i:62;s:7:"viewPOS";i:63;s:9:"deletePOS";i:64;s:13:"createBelanja";i:65;s:13:"updateBelanja";i:66;s:11:"viewBelanja";i:67;s:13:"deleteBelanja";i:68;s:20:"createInventoryStock";i:69;s:20:"updateInventoryStock";i:70;s:18:"viewInventoryStock";i:71;s:20:"deleteInventoryStock";i:72;s:21:"createInventoryOpname";i:73;s:21:"updateInventoryOpname";i:74;s:19:"viewInventoryOpname";i:75;s:21:"deleteInventoryOpname";i:76;s:11:"createOrder";i:77;s:11:"updateOrder";i:78;s:9:"viewOrder";i:79;s:11:"deleteOrder";}';
+        Groups::create([
+            'nama' => 'Office',
+            'permission' => $permessionall,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        GroupsUsers::create([
+            'users_id' => 2,
+            'groups_id' => 2,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+
+        ]);
+        Bahan::create([
+            'nama' => 'Ayam',
+            'kode' => 'FD22161',
+            'satuan_pembelian' => 'Pcs',
+            'satuan_pengeluaran' => 'Pcs',
+            'konversi_pengeluaran' => 100,
+            'satuan_pemakaian' => 'Gram',
+            'konversi_pemakaian' => 50,
+            'harga' => 10000,
+            'kategori' => 1
+
+        ]);
+        Bahan::create([
+            'nama' => 'Gula',
+            'kode' => 'FD22121',
+            'satuan_pembelian' => 'Pcs',
+            'satuan_pengeluaran' => 'Pcs',
+            'konversi_pengeluaran' => 100,
+            'satuan_pemakaian' => 'Gram',
+            'konversi_pemakaian' => 50,
+            'harga' => 10000,
+            'kategori' => 1
+        ]);
+        \App\Models\User::factory(10)->create();
+        \App\Models\Store::factory(10)->create();
     }
 }

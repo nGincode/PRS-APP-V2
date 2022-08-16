@@ -82,6 +82,11 @@
                                     <label>Konversi Ke Penyajian</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend" id="konversib2">
+                                            @isset($Olahan['satuan_pengeluaran'])
+                                                <span class="input-group-text">
+                                                    {{ $Olahan['satuan_pengeluaran'] }}
+                                                </span>
+                                            @endisset
                                         </div>
                                         <input type="text"
                                             @isset($Olahan['konversi_penyajian']) value="{{ $Olahan['konversi_penyajian'] }}" @endisset
@@ -182,7 +187,7 @@
                                             @isset($Olahan['hasil']) value="{{ $Olahan['hasil'] }}" @endisset
                                             id="hasil" placeholder="Hasil Jadi" name="hasil">
 
-                                        <div class="input-group-append" id="konversib2">
+                                        <div class="input-group-append" id="konversihasil">
                                             @isset($Olahan['satuan_penyajian'])
                                                 <span class="input-group-text">
                                                     {{ $Olahan['satuan_penyajian'] }}
@@ -603,49 +608,5 @@
                 }
             })
         }
-
-        // $(document).ready(function() {
-
-        //     var stickyNavTop = $('#divautosave').offset().top;
-
-        //     var stickyNav = function() {
-
-        //         var scrollTop = $(window).scrollTop();
-
-        //         if (scrollTop > stickyNavTop) {
-
-        //             $('#divautosave').css({
-        //                 'position': 'fixed',
-        //                 'top': 0,
-        //                 'right': 0,
-        //                 'padding': '10px',
-        //                 'z-index': 9999,
-        //                 'background': 'white',
-        //                 'border-radius': '10px 0px 10px 0px',
-        //                 'box-shadow': '5px 0px 5px 5px #888888'
-        //             });
-
-        //         } else {
-
-        //             $('#divautosave').css({
-        //                 'position': 'relative',
-        //                 'background': 'unset',
-        //                 'border-radius': 'unset',
-        //                 'box-shadow': 'unset'
-        //             });
-
-        //         }
-
-        //     };
-
-        //     stickyNav();
-
-        //     $(window).scroll(function() {
-
-        //         stickyNav();
-
-        //     });
-
-        // });
     </script>
 @endsection

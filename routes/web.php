@@ -177,13 +177,13 @@ Route::controller(FoodcostController::class)->group(
     }
 );
 Route::get('Foodcost/Olahan/Session',  function () {
-    session()->forget('IdOlahan');
+    request()->session()->forget('IdOlahan');
     return redirect('Foodcost/Olahan')->withToastSuccess('Berhasil Clear Autosave');
 })->middleware('auth');
 Route::get('Foodcost/Olahan/SessionCreate',  function () {
     $id = request()->input('id');
     if ($id) {
-        session()->put('IdOlahan', $id);
+        request()->session()->put('IdOlahan', $id);
         return redirect('Foodcost/Olahan')->withToastSuccess('Berhasil Mengambil ID');
     } else {
         return redirect('Foodcost/Olahan')->withToastError('Terjadi Kegagalan Mengambil ID');
