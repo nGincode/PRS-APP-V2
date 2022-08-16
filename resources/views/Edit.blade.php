@@ -713,7 +713,6 @@
     </form>
 @endisset
 
-
 @isset($BahanData)
     <form id="BahanEdit" action="{{ url('/Master/Bahan/BahanEdit') }}">
         @csrf
@@ -1264,96 +1263,6 @@
         </div>
         </div>
     </form>
-    <script>
-        //DataTable
-        $("#checkAll").click(function() {
-            $(".check").prop('checked', $(this).prop('checked'));
-        });
-
-        if ($("#pilihbahanolahan").length) {
-            $("#pilihbahanolahan").DataTable({
-                "columnDefs": [{
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [2, "asc"]
-                ],
-                "responsive": true,
-                "autoWidth": false,
-                "processing": true,
-                "searching": true,
-                "sort": true,
-                "paging": true,
-                'info': true,
-                "destroy": true
-            });
-        }
-
-
-        $('#ModalLabel').html('Pilih Item Bahan Baku');
-        $(document).ready(function() {
-            if ($('#formItemBahanBaku').length) {
-                $('#formItemBahanBaku').validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'id[]': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // id : "pesan"
-                    }
-                });
-
-                $('#formItemBahanBaku').on('submit', function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr('action'),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: 'json',
-                            error: function(xhr, status, error) {
-                                popup(status, true, xhr.status + " " + error);
-                            },
-                            success: function(data) {
-                                if (data.status === 'success') {
-                                    $('#Modal').modal('hide');
-                                    $('#managebahanbaku').DataTable().ajax.reload();
-                                    popup(data.status, data.toast, data.pesan);
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    } else {
-                        popup('error', true, 'Belum Memilih Bahan');
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($OlahanDataBahanOlahan)
@@ -1395,97 +1304,6 @@
         </div>
         </div>
     </form>
-    <script>
-        //DataTable
-        $("#checkAll").click(function() {
-            $(".check").prop('checked', $(this).prop('checked'));
-        });
-
-        if ($("#pilihbahanolahan").length) {
-            $("#pilihbahanolahan").DataTable({
-                "columnDefs": [{
-                    "orderable": false,
-                    "targets": 0
-                }],
-                "order": [
-                    [2, "asc"]
-                ],
-                "responsive": true,
-                "autoWidth": false,
-                "processing": true,
-                "searching": true,
-                "sort": true,
-                "paging": true,
-                'info': true,
-                "destroy": true
-            });
-        }
-
-
-        $('#ModalLabel').html('Pilih Item Bahan Olahan');
-
-        $(document).ready(function() {
-            if ($('#formItemBahanOlahan').length) {
-                $('#formItemBahanOlahan').validate({
-                    errorElement: 'span',
-                    errorPlacement: function(error, element) {
-                        error.addClass('invalid-feedback');
-                        element.closest('.form-group').append(error);
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        $(element).addClass('is-invalid');
-                    },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).removeClass('is-invalid');
-                    },
-                    success: function(validClass, element) {
-                        $(element).addClass('is-valid');
-                    },
-                    rules: {
-                        'id[]': {
-                            required: true
-                        }
-                    },
-                    messages: {
-                        // id : "pesan"
-                    }
-                });
-
-                $('#formItemBahanOlahan').on('submit', function(event) {
-                    var isValid = $(this).valid();
-                    event.preventDefault();
-                    var formData = new FormData(this);
-
-                    if (isValid) {
-                        $.ajax({
-                            url: $(this).attr('action'),
-                            type: "POST",
-                            data: formData,
-                            cache: false,
-                            contentType: false,
-                            processData: false,
-                            dataType: 'json',
-                            error: function(xhr, status, error) {
-                                popup(status, true, xhr.status + " " + error);
-                            },
-                            success: function(data) {
-                                if (data.status === 'success') {
-                                    $('#Modal').modal('hide');
-                                    $('#managebahanolahan').DataTable().ajax.reload();
-                                    popup(data.status, data.toast, data.pesan);
-                                } else {
-                                    popup(data.status, data.toast, data.pesan);
-                                }
-                            }
-                        });
-
-                    } else {
-                        popup('error', true, 'Belum Memilih Bahan');
-                    }
-                });
-            }
-        });
-    </script>
 @endisset
 
 @isset($InventoryStockData)
@@ -1598,40 +1416,95 @@
 
 <script>
     $(function() {
-        $('.select2').select2().on("change", function(e) {
-            $(this).valid()
+        bsCustomFileInput.init();
+
+        $("#checkAll").click(function() {
+            $(".check").prop('checked', $(this).prop('checked'));
         });
 
-        bsCustomFileInput.init();
+        $('.select2').select2().on("change", function(e) {
+            $(this).valid();
+        });
 
     });
 
-    if ($("#show_hide_password_edit")) {
-        $("#show_hide_password_edit span").on('click', function(event) {
-            event.preventDefault();
-            if ($('#show_hide_password_edit input').attr("type") == "text") {
-                $('#show_hide_password_edit input').attr('type', 'password');
-                $('#show_hide_password_edit i').addClass("fa-eye-slash");
-                $('#show_hide_password_edit i').removeClass("fa-eye");
-            } else if ($('#show_hide_password_edit input').attr("type") == "password") {
-                $('#show_hide_password_edit input').attr('type', 'text');
-                $('#show_hide_password_edit i').removeClass("fa-eye-slash");
-                $('#show_hide_password_edit i').addClass("fa-eye");
-            }
-        });
+    $("#show_hide_password_edit span").on('click', function(event) {
+        event.preventDefault();
+        if ($('#show_hide_password_edit input').attr("type") == "text") {
+            $('#show_hide_password_edit input').attr('type', 'password');
+            $('#show_hide_password_edit i').addClass("fa-eye-slash");
+            $('#show_hide_password_edit i').removeClass("fa-eye");
+        } else if ($('#show_hide_password_edit input').attr("type") == "password") {
+            $('#show_hide_password_edit input').attr('type', 'text');
+            $('#show_hide_password_edit i').removeClass("fa-eye-slash");
+            $('#show_hide_password_edit i').addClass("fa-eye");
+        }
+    });
 
-        $("#show_hide_password_edit_ulang span").on('click', function(event) {
-            event.preventDefault();
-            if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
-                $('#show_hide_password_edit_ulang input').attr('type', 'password');
-                $('#show_hide_password_edit_ulang i').addClass("fa-eye-slash");
-                $('#show_hide_password_edit_ulang i').removeClass("fa-eye");
-            } else if ($('#show_hide_password_edit_ulang input').attr("type") == "password") {
-                $('#show_hide_password_edit_ulang input').attr('type', 'text');
-                $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
-                $('#show_hide_password_edit_ulang i').addClass("fa-eye");
-            }
+    $("#show_hide_password_edit_ulang span").on('click', function(event) {
+        event.preventDefault();
+        if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
+            $('#show_hide_password_edit_ulang input').attr('type', 'password');
+            $('#show_hide_password_edit_ulang i').addClass("fa-eye-slash");
+            $('#show_hide_password_edit_ulang i').removeClass("fa-eye");
+        } else if ($('#show_hide_password_edit_ulang input').attr("type") == "password") {
+            $('#show_hide_password_edit_ulang input').attr('type', 'text');
+            $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
+            $('#show_hide_password_edit_ulang i').addClass("fa-eye");
+        }
+    });
+
+    $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
+        var row_id = $(".row #isi_jam_kerja_edit").length + 1;
+        var html =
+            '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
+            row_id +
+            '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
+        if (row_id >= 2) {
+            $(".row #akhir_isi_jam_kerja_edit:last").after(html);
+        }
+    });
+
+    if ($("#pilihbahanolahan").length) {
+        $("#pilihbahanolahan").DataTable({
+            "columnDefs": [{
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [
+                [2, "asc"]
+            ],
+            "responsive": true,
+            "autoWidth": false,
+            "processing": true,
+            "searching": true,
+            "sort": true,
+            "paging": true,
+            'info': true,
+            "destroy": true
         });
+        $('#ModalLabel').html('Pilih Item Bahan Baku');
+    }
+
+    if ($("#pilihbahanolahan").length) {
+        $("#pilihbahanolahan").DataTable({
+            "columnDefs": [{
+                "orderable": false,
+                "targets": 0
+            }],
+            "order": [
+                [2, "asc"]
+            ],
+            "responsive": true,
+            "autoWidth": false,
+            "processing": true,
+            "searching": true,
+            "sort": true,
+            "paging": true,
+            'info': true,
+            "destroy": true
+        });
+        $('#ModalLabel').html('Pilih Item Bahan Olahan');
     }
 
     $(document).ready(function() {
@@ -2285,16 +2158,127 @@
         }
 
 
-        $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
-            var row_id = $(".row #isi_jam_kerja_edit").length + 1;
-            var html =
-                '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
-                row_id +
-                '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
-            if (row_id >= 2) {
-                $(".row #akhir_isi_jam_kerja_edit:last").after(html);
-            }
-        });
+        //Bahan Baku Olahan
+        if ($('#formItemBahanBaku').length) {
+            $('#formItemBahanBaku').validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'id[]': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // id : "pesan"
+                }
+            });
+
+            $('#formItemBahanBaku').on('submit', function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#Modal').modal('hide');
+                                $('#managebahanbaku').DataTable().ajax.reload();
+                                popup(data.status, data.toast, data.pesan);
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                } else {
+                    popup('error', true, 'Belum Memilih Bahan');
+                }
+            });
+        }
+
+        //Bahan Olahan
+        if ($('#formItemBahanOlahan').length) {
+            $('#formItemBahanOlahan').validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'id[]': {
+                        required: true
+                    }
+                },
+                messages: {
+                    // id : "pesan"
+                }
+            });
+
+            $('#formItemBahanOlahan').on('submit', function(event) {
+                var isValid = $(this).valid();
+                event.preventDefault();
+                var formData = new FormData(this);
+
+                if (isValid) {
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: "POST",
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $('#Modal').modal('hide');
+                                $('#managebahanolahan').DataTable().ajax.reload();
+                                popup(data.status, data.toast, data.pesan);
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+
+                } else {
+                    popup('error', true, 'Belum Memilih Bahan');
+                }
+            });
+        }
 
     });
 </script>

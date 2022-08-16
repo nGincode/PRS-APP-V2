@@ -204,7 +204,9 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <a href="{{ url('/Foodcost/Olahan/Session') }}" class="btn btn-danger">Clear</a>
+                        @if (request()->session()->get('IdOlahan'))
+                            <a href="{{ url('/Foodcost/Olahan/Session') }}" class="btn btn-danger">Keluar</a>
+                        @endif
                     </div>
                 </div>
             </form>
