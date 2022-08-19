@@ -172,8 +172,31 @@ Route::controller(FoodcostController::class)->group(
         Route::post('Foodcost/Olahan/TambahItemBahanOlahan', 'TambahItemBahanOlahan')->middleware('auth');
         //bahan olahan
 
-
         Route::post('Foodcost/Olahan/OlahanItemHapus', 'ItemOlahanHapus')->middleware('auth');
+
+
+
+
+
+        //OLAHAN
+        Route::get('Foodcost/Resep', 'Resep')->middleware('auth');
+        Route::post('Foodcost/Resep', 'ResepTambah')->middleware('auth');
+        Route::post('Foodcost/Manage/Resep', 'ResepManage')->middleware('auth');
+        Route::post('Foodcost/Resep/Hapus', 'ResepnHapus')->middleware('auth');
+
+        //bahan baku
+        Route::post('Foodcost/Resep/ResepItemBahanBaku', 'ResepItemBahanBaku')->middleware('auth');
+        Route::post('Foodcost/Resep/PilihBahanBaku', 'PilihResepBahanBaku')->middleware('auth');
+        Route::post('Foodcost/Resep/TambahItemBahanBaku', 'TambahResepItemBahanBaku')->middleware('auth');
+        //bahan baku
+
+        //bahan olahan
+        Route::post('Foodcost/Resep/PilihBahanOlahan', 'PilihResepBahanOlahan')->middleware('auth');
+        Route::post('Foodcost/Resep/ResepItemBahanOlahan', 'ResepItemBahanOlahan')->middleware('auth');
+        Route::post('Foodcost/Resep/TambahItemBahanOlahan', 'TambahResepItemBahanOlahan')->middleware('auth');
+        //bahan olahan
+
+        Route::post('Foodcost/Resep/ResepItemHapus', 'ItemResepHapus')->middleware('auth');
     }
 );
 Route::get('Foodcost/Olahan/Session',  function () {
@@ -189,6 +212,21 @@ Route::get('Foodcost/Olahan/SessionCreate',  function () {
         return redirect('Foodcost/Olahan')->withToastError('Terjadi Kegagalan Mengambil ID');
     }
 })->middleware('auth');
+
+Route::get('Foodcost/Resep/Session',  function () {
+    request()->session()->forget('IdResep');
+    return redirect('Foodcost/Resep')->withToastSuccess('Berhasil Clear Autosave');
+})->middleware('auth');
+Route::get('Foodcost/Resep/SessionCreate',  function () {
+    $id = request()->input('id');
+    if ($id) {
+        request()->session()->put('IdResep', $id);
+        return redirect('Foodcost/Resep')->withToastSuccess('Berhasil Mengambil ID');
+    } else {
+        return redirect('Foodcost/Resep')->withToastError('Terjadi Kegagalan Mengambil ID');
+    }
+})->middleware('auth');
+
 
 //Belanja
 Route::controller(BelanjaController::class)->group(

@@ -557,7 +557,8 @@ if (Auth::check()) {
                                         in_array('viewFoodcostVarian', $user_permission) ||
                                         in_array('deleteFoodcostVarian', $user_permission))
                                         <li class="nav-item">
-                                            <a href="{{ url('/Foodcost/Varian') }}" class="nav-link">
+                                            <a href="{{ url('/Foodcost/Varian') }}"
+                                                class="nav-link @if ($subtitle == 'Varian') active @endif">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Varian</p>
                                             </a>
@@ -568,7 +569,8 @@ if (Auth::check()) {
                                         in_array('viewFoodcostResep', $user_permission) ||
                                         in_array('deleteFoodcostResep', $user_permission))
                                         <li class="nav-item">
-                                            <a href="{{ url('/Foodcost/Resep') }}" class="nav-link">
+                                            <a href="{{ url('/Foodcost/Resep') }}"
+                                                class="nav-link @if ($subtitle == 'Resep') active @endif">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Resep Menu</p>
                                             </a>
@@ -1202,6 +1204,10 @@ if (Auth::check()) {
                         processing: false,
                         serverSide: false,
                         destroy: true,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
+                            '_method': 'patch'
+                        },
                         data: {
                             tgl: $('#manage_date').val(),
                             filter: GetURLParameter('filter')

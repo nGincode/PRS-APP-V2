@@ -3,7 +3,7 @@
 @section('isi')
     <section class="content">
         <div class="container-fluid">
-            <form id="FormOlahan" action="{{ url('/Foodcost/Olahan') }}">
+            <form id="FormResep" action="{{ url('/Foodcost/Resep') }}">
                 @csrf
                 <div class="card card-primary">
                     <div class="card-header">
@@ -22,9 +22,9 @@
                     <div class="card-body">
                         <div id="divautosave">
                             <div class="text-right" id="autosave">
-                                @if ($Olahan)
-                                    <small> <i class="fas fa-check"></i> Autosave dari nama olahan
-                                        {{ $Olahan['nama'] }}</small>
+                                @if ($Resep)
+                                    <small> <i class="fas fa-check"></i> Autosave dari resep
+                                        {{ $Resep['nama'] }}</small>
                                 @else
                                     <small> <i class="fas fa-check"></i> Autosave on</small>
                                 @endif
@@ -33,24 +33,47 @@
                         <div class="row">
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label for="nama">Nama Olahan</label>
+                                    <label for="nama">Nama Resep</label>
                                     <input type="text" class="form-control"
-                                        @isset($Olahan['nama']) value="{{ $Olahan['nama'] }}" @endisset
-                                        id="nama" placeholder="Nama Olahan" name="nama">
+                                        @isset($Resep['nama']) value="{{ $Resep['nama'] }}" @endisset
+                                        id="nama" placeholder="Nama Resep" name="nama">
                                 </div>
                             </div>
 
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
-                                    <label>Satuan Pengeluaran</label>
-                                    <select name="satuan_pengeluaran" onchange="pengeluaran(this.value)"
-                                        id="satuan_pengeluaran" class="form-control select2 select2-danger" required
+                                    <label>Kategori</label>
+                                    <select name="kategori" id="kategori" class="form-control select2" required
+                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true" disabled="disabled">Pilih</option>
+                                        <option value="Makanan"
+                                            @if ($Resep) @if ($Resep['kategori'] == 'Makanan') selected @endif
+                                            @endif>Makanan</option>
+                                        <option value="Minuman"
+                                            @if ($Resep) @if ($Resep['kategori'] == 'Minuman') selected @endif
+                                            @endif>Minuman</option>
+                                        <option value="Dessert"
+                                            @if ($Resep) @if ($Resep['kategori'] == 'Dessert') selected @endif
+                                            @endif>Dessert</option>
+                                        <option value="Snack"
+                                            @if ($Resep) @if ($Resep['kategori'] == 'Snack') selected @endif
+                                            @endif>Snack</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-12 col-sm-6">
+                                <div class="form-group">
+                                    <label>Satuan </label>
+                                    <select name="satuan" id="satuan" class="form-control select2" required
                                         data-dropdown-css-class="select2-danger" style="width: 100%;">
                                         <option selected="true" disabled="disabled">Pilih</option>
                                         @foreach ($satuan as $s1)
                                             <option value="{{ $s1['singkat'] }}"
-                                                @if (isset($Olahan['satuan_pengeluaran'])) @if ($Olahan['satuan_pengeluaran'] == $s1['singkat']) selected @endif
+                                                @if (isset($Resep['satuan'])) @if ($Resep['satuan'] == $s1['singkat']) selected @endif
                                                 @endif>
                                                 {{ $s1['nama'] }}
                                             </option>
@@ -59,55 +82,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>Satuan Penyajian</label>
-                                    <select name="satuan_penyajian" onchange="penyajian(this.value)" id="satuan_penyajian"
-                                        class="form-control select2 select2-danger" required
-                                        data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="true" disabled="disabled">Pilih</option>
-                                        @foreach ($satuan as $s2)
-                                            <option value="{{ $s2['singkat'] }}"
-                                                @if (isset($Olahan['satuan_penyajian'])) @if ($Olahan['satuan_penyajian'] == $s2['singkat']) selected @endif
-                                                @endif>
-                                                {{ $s2['nama'] }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label>Konversi Ke Penyajian</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend" id="konversib2">
-                                            @isset($Olahan['satuan_pengeluaran'])
-                                                <span class="input-group-text">
-                                                    {{ $Olahan['satuan_pengeluaran'] }}
-                                                </span>
-                                            @endisset
-                                        </div>
-                                        <input type="text"
-                                            @isset($Olahan['konversi_penyajian']) value="{{ $Olahan['konversi_penyajian'] }}" @endisset
-                                            name="konversi_penyajian" id="konversi_penyajian" class="form-control"
-                                            placeholder="Satuan Pengeluaran">
-                                        <div class="input-group-append" id="konversib1">
-                                            @isset($Olahan['satuan_penyajian'])
-                                                <span class="input-group-text">
-                                                    {{ $Olahan['satuan_penyajian'] }}
-                                                </span>
-                                            @endisset
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="col-12 col-sm-6">
                                 <div class="form-group">
                                     <label for="kode">Kode Product</label>
                                     <input type="text"
-                                        @isset($Olahan['nama']) value="{{ $Olahan['kode'] }}" @else  value="{{ $kode }}" @endisset
+                                        @isset($Resep['nama']) value="{{ $Resep['kode'] }}" @else  value="{{ $kode }}" @endisset
                                         disabled class="form-control" value="Pilih Kategori" id="kode" name="kode">
                                 </div>
                             </div>
@@ -130,9 +110,9 @@
                                     </thead>
                                 </table>
                                 <div id="idpilihitembahan">
-                                    @isset($Olahan['id'])
+                                    @isset($Resep['id'])
                                         <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="pilihbahanbaku({{ $Olahan['id'] }})"><i class="fas fa-plus"></i></a>
+                                            onclick="pilihbahanbaku({{ $Resep['id'] }})"><i class="fas fa-plus"></i></a>
                                         <hr>
                                     @endisset
                                 </div>
@@ -159,9 +139,9 @@
                                     </thead>
                                 </table>
                                 <div id="olahanitemolahan">
-                                    @isset($Olahan['id'])
+                                    @isset($Resep['id'])
                                         <a class="btn btn-sm btn-success btn-block" data-toggle='modal' data-target='#Modal'
-                                            onclick="pilihbahanolahan({{ $Olahan['id'] }})"><i class="fas fa-plus"></i></a>
+                                            onclick="pilihbahanolahan({{ $Resep['id'] }})"><i class="fas fa-plus"></i></a>
                                         <hr>
                                     @endisset
                                 </div>
@@ -174,38 +154,25 @@
                             <div class="col-12 col-sm-12 ">
                                 <table class="table float-right font-weight-bold text-right">
                                     <tr>
-                                        <td>Biaya Produksi : </td>
-                                        <td id="biayaproduksi">{{ $totaljml }}</td>
+                                        <td>HPP : </td>
+                                        <td id="hpp">{{ $totaljml }}</td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="hasil">Hasil Jadi</label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control"
-                                            @isset($Olahan['hasil']) value="{{ $Olahan['hasil'] }}" @endisset
-                                            id="hasil" placeholder="Hasil Jadi" name="hasil">
 
-                                        <div class="input-group-append" id="konversihasil">
-                                            @isset($Olahan['satuan_penyajian'])
-                                                <span class="input-group-text">
-                                                    {{ $Olahan['satuan_penyajian'] }}
-                                                </span>
-                                            @endisset
-                                        </div>
-                                    </div>
+                            @if (request()->session()->get('IdResep'))
+                                <div>Ket : <br>
+                                    <font color="red">*</font> Jika anda ubah akan menjadi draft (nonaktif)<br>
+                                    <font color="red">*</font> Simpan untuk aktif
                                 </div>
-                            </div>
-
+                            @endif
                         </div>
                         <!-- /.row -->
                     </div>
-
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        @if (request()->session()->get('IdOlahan'))
-                            <a href="{{ url('/Foodcost/Olahan/Session') }}" class="btn btn-danger">Keluar</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        @if (request()->session()->get('IdResep'))
+                            <a href="{{ url('/Foodcost/Resep/Session') }}" class="btn btn-danger">Keluar</a>
                         @endif
                     </div>
                 </div>
@@ -236,17 +203,16 @@
         <!-- /.container-fluid -->
     </section>
     <script>
-        //Format Penulisan
-        document.getElementById("konversi_penyajian").addEventListener("keyup", function(e) {
-            this.value = numeral(this.value).format('0,0');
-        });
-
         //item bahan baku
         if ($("#managebahanbaku").length) {
             $("#managebahanbaku").DataTable({
                 "ajax": {
-                    url: "/Foodcost/Olahan/OlahanItemBahanBaku",
-                    type: "POST"
+                    url: "/Foodcost/Resep/ResepItemBahanBaku",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
+                        '_method': 'patch'
+                    },
                 },
                 "responsive": true,
                 "autoWidth": true,
@@ -261,7 +227,7 @@
 
         function pilihbahanbaku(id) {
             $.ajax({
-                url: 'Olahan/PilihBahanBaku',
+                url: 'Resep/PilihBahanBaku',
                 type: "POST",
                 data: {
                     id: id
@@ -284,8 +250,12 @@
         if ($("#managebahanolahan").length) {
             $("#managebahanolahan").DataTable({
                 "ajax": {
-                    url: "/Foodcost/Olahan/OlahanItemBahanOlahan",
-                    type: "POST"
+                    url: "/Foodcost/Resep/ResepItemBahanOlahan",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf_token"]').attr('content'),
+                        '_method': 'patch'
+                    },
                 },
                 "responsive": true,
                 "autoWidth": true,
@@ -300,7 +270,7 @@
 
         function pilihbahanolahan(id) {
             $.ajax({
-                url: 'Olahan/PilihBahanOlahan',
+                url: 'Resep/PilihBahanOlahan',
                 type: "POST",
                 data: {
                     id: id
@@ -321,8 +291,8 @@
         //Input
         $(document).ready(function() {
             //Olahan
-            if ($('#FormOlahan').length) {
-                $('#FormOlahan').validate({
+            if ($('#FormResep').length) {
+                $('#FormResep').validate({
                     errorElement: 'span',
                     errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
@@ -341,18 +311,11 @@
                         'nama': {
                             required: true
                         },
-                        'satuan_pengeluaran': {
+                        'satuan': {
                             required: true
                         },
-                        'satuan_penyajian': {
+                        'kategori': {
                             required: true
-                        },
-                        'konversi_penyajian': {
-                            required: true
-                        },
-                        'pakai[]': {
-                            required: true
-
                         }
                     },
                     messages: {
@@ -360,7 +323,7 @@
                     }
                 });
 
-                $('#FormOlahan').on('submit', function(event) {
+                $('#FormResep').on('submit', function(event) {
                     var isValid = $(this).valid();
                     event.preventDefault();
                     var formData = new FormData(this);
@@ -394,9 +357,9 @@
                 });
             }
 
-            $('#FormOlahan').on('change', function(event) {
+            $('#FormResep').on('change', function(event) {
 
-                $('#FormOlahan').validate({
+                $('#FormResep').validate({
                     errorElement: 'span',
                     errorPlacement: function(error, element) {
                         error.addClass('invalid-feedback');
@@ -415,13 +378,10 @@
                         'nama': {
                             required: true
                         },
-                        'satuan_pengeluaran': {
+                        'satuan': {
                             required: true
                         },
-                        'satuan_penyajian': {
-                            required: true
-                        },
-                        'konversi_penyajian': {
+                        'kategori': {
                             required: true
                         }
                     },
@@ -503,7 +463,7 @@
             }
             $('#totalbahanbaku').html('Total : Rp ' + formatRupiah(total.toFixed()) + '');
 
-            jumlah(0, total);
+            jumlah(total, 0);
 
         }
 
@@ -528,33 +488,31 @@
             }
             $('#totalolahan').html('Total : Rp ' + formatRupiah(total.toFixed()) + '');
 
-            jumlah(total, 0);
+            jumlah(0, total);
 
         }
 
 
-        function jumlah(olahan, bahanbaku) {
-
-            if (bahanbaku) {
+        function jumlah(bahan, olahan) {
+            if (bahan) {
                 var totalolahan = parseInt($('#totalolahan').html().replace('Total : Rp', '').replace('.', ''));
-                j = formatRupiah((totalolahan + bahanbaku).toFixed());
-                $('#biayaproduksi').html('Rp. ' + j + '');
+                j = formatRupiah((bahan + totalolahan).toFixed());
+                $('#hpp').html('Rp ' + j + '');
             } else if (olahan) {
-                var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace('Total : Rp', '').replace('.', ''));
-                j = formatRupiah((olahan + totalbahanbaku).toFixed());
-                $('#biayaproduksi').html('Rp. ' + j + '');
+                var totalbahan = parseInt($('#totalbahanbaku').html().replace('Total : Rp', '').replace('.', ''));
+                j = formatRupiah((olahan + totalbahan).toFixed());
+                $('#hpp').html('Rp ' + j + '');
             } else {
                 var totalolahan = parseInt($('#totalolahan').html().replace('Total : Rp', '').replace('.', ''));
-                var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace(
-                    'Total : Rp', ''));
+                var totalbahanbaku = parseInt($('#totalbahanbaku').html().replace('Total : Rp', '').replace('.', ''));
                 j = formatRupiah((totalbahanbaku + totalolahan).toFixed());
-                $('#biayaproduksi').html('Rp. ' + j + '');
+                $('#hpp').html('Rp ' + j + '');
             }
 
         }
 
         //delete
-        function hapusitemolahan(id) {
+        function hapusitemresep(id) {
             Swal.fire({
                 title: 'Yakin Menghapus?',
                 text: "Data Akan Dihapus Permanen!",
@@ -567,7 +525,7 @@
                 if (result.isConfirmed) {
 
                     $.ajax({
-                        url: '/Foodcost/Olahan/OlahanItemHapus',
+                        url: '/Foodcost/Resep/ResepItemHapus',
                         data: {
                             id: id
                         },

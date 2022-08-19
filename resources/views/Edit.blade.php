@@ -1306,6 +1306,105 @@
     </form>
 @endisset
 
+@isset($ResepDataBahanBaku)
+    <form id="formItemBahanBaku" action="{{ url('Foodcost/Resep/TambahItemBahanBaku') }}">
+        @csrf
+        <div class="modal-body">
+            <table id="pilihbahanolahan" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="check" id="checkAll"></th>
+                        <th>Kode Bahan</th>
+                        <th>Nama Bahan</th>
+                        <th>Kategori</th>
+                        <th>Harga Beli</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($ResepDataBahanBaku as $v)
+                        @if (!in_array($v['id'], $cekid))
+                            <tr>
+                                <td><input type="checkbox" name="id[]" value="{{ $v['id'] }}"
+                                        class="check">
+                                </td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td>{{ $v['nama'] }}</td>
+                                <td>
+                                    @if ($v['kategori'] == 1)
+                                        Bahan Baku Segar
+                                    @endif
+                                    @if ($v['kategori'] == 2)
+                                        Bahan Baku Beku
+                                    @endif
+                                    @if ($v['kategori'] == 3)
+                                        Bahan Baku Dalam Kemasan
+                                    @endif
+                                    @if ($v['kategori'] == 4)
+                                        Bahan Baku Dingin
+                                    @endif
+                                    @if ($v['kategori'] == 11)
+                                        Bahan Supplay
+                                    @endif
+                                    @if ($v['kategori'] == 21)
+                                        Bahan Oprasional
+                                    @endif
+                                </td>
+                                <td>{{ $v['harga'] . '/' . $v['satuan_pembelian'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        </div>
+        </div>
+    </form>
+@endisset
+
+@isset($ResepDataBahanOlahan)
+    <form id="formItemBahanOlahan" action="{{ url('Foodcost/Resep/TambahItemBahanOlahan') }}">
+        @csrf
+        <div class="modal-body">
+            <table id="pilihbahanolahan" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="check" id="checkAll"></th>
+                        <th>Kode Bahan</th>
+                        <th>Nama Olahan</th>
+                        <th>Hasil Jadi</th>
+                        <th>Biaya Produksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($ResepDataBahanOlahan as $v)
+                        @if (!in_array($v['id'], $cekid) && session('IdEdit') != $v['id'])
+                            <tr>
+                                <td><input type="checkbox" name="id[]" value="{{ $v['id'] }}"
+                                        class="check">
+                                </td>
+                                <td>{{ $v['kode'] }}</td>
+                                <td>{{ $v['nama'] }}</td>
+                                <td>
+                                    {{ $v['hasil'] . ' ' . $v['satuan_penyajian'] }}
+                                </td>
+                                <td>{{ $v['produksi'] . '/' . $v['satuan_penyajian'] }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        </div>
+        </div>
+    </form>
+@endisset
+
 @isset($InventoryStockData)
     <form id="InventoryStockEdit" action="{{ url('/Inventory/Stock/InventoryStockEditTambah') }}">
         @csrf
@@ -2158,7 +2257,7 @@
         }
 
 
-        //Bahan Baku Olahan
+        //Bahan Baku
         if ($('#formItemBahanBaku').length) {
             $('#formItemBahanBaku').validate({
                 errorElement: 'span',
