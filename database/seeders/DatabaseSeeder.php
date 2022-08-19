@@ -227,7 +227,7 @@ class DatabaseSeeder extends Seeder
             'harga' => 10000,
             'kategori' => 1
         ]);
-        \App\Models\User::factory(10)->create();
-        \App\Models\Store::factory(10)->create();
+        // \App\Models\User::factory(10)->create();
+        // \App\Models\Store::factory(10)->create();
     }
 }
