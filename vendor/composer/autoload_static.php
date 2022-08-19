@@ -156,6 +156,7 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
             'Laravel\\SerializableClosure\\' => 28,
             'Laravel\\Scout\\' => 14,
             'Laravel\\Sanctum\\' => 16,
+            'Laravel\\Sail\\' => 13,
             'Laravel\\Breeze\\' => 15,
         ),
         'K' => 
@@ -560,6 +561,10 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'Laravel\\Sanctum\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sanctum/src',
+        ),
+        'Laravel\\Sail\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel/sail/src',
         ),
         'Laravel\\Breeze\\' => 
         array (
@@ -4162,6 +4167,9 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'Laravel\\Breeze\\Console\\InstallsApiStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsApiStack.php',
         'Laravel\\Breeze\\Console\\InstallsBladeStack' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsBladeStack.php',
         'Laravel\\Breeze\\Console\\InstallsInertiaStacks' => __DIR__ . '/..' . '/laravel/breeze/src/Console/InstallsInertiaStacks.php',
+        'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',
+        'Laravel\\Sail\\Console\\PublishCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/PublishCommand.php',
+        'Laravel\\Sail\\SailServiceProvider' => __DIR__ . '/..' . '/laravel/sail/src/SailServiceProvider.php',
         'Laravel\\Sanctum\\Console\\Commands\\PruneExpired' => __DIR__ . '/..' . '/laravel/sanctum/src/Console/Commands/PruneExpired.php',
         'Laravel\\Sanctum\\Contracts\\HasAbilities' => __DIR__ . '/..' . '/laravel/sanctum/src/Contracts/HasAbilities.php',
         'Laravel\\Sanctum\\Contracts\\HasApiTokens' => __DIR__ . '/..' . '/laravel/sanctum/src/Contracts/HasApiTokens.php',
