@@ -774,13 +774,13 @@
                         <tr>
                             <td>&nbsp;&nbsp; Inventory (MENU)</td>
                             <td><input type="checkbox" name="permission[]" id="permission" value="createInventoryMenu"
-                                    @if (in_array('createInventoryStock', $permission)) checked @endif class="minimal"></td>
+                                    @if (in_array('createInventoryMenu', $permission)) checked @endif class="minimal"></td>
                             <td><input type="checkbox" name="permission[]" id="permission" value="updateInventoryMenu"
-                                    @if (in_array('updateInventoryStock', $permission)) checked @endif class="minimal"></td>
+                                    @if (in_array('updateInventoryMenu', $permission)) checked @endif class="minimal"></td>
                             <td><input type="checkbox" name="permission[]" id="permission" value="viewInventoryMenu"
-                                    @if (in_array('viewInventoryStock', $permission)) checked @endif class="minimal"></td>
+                                    @if (in_array('viewInventoryMenu', $permission)) checked @endif class="minimal"></td>
                             <td><input type="checkbox" name="permission[]" id="permission" value="deleteInventoryMenu"
-                                    @if (in_array('deleteInventoryStock', $permission)) checked @endif class="minimal"></td>
+                                    @if (in_array('deleteInventoryMenu', $permission)) checked @endif class="minimal"></td>
                         </tr>
                         <tr>
                             <td>&nbsp;&nbsp; Inventory (STOCK)</td>
