@@ -1123,6 +1123,174 @@ $(document).ready(function () {
         });
     }
 
+
+    //Ticket
+    if ($('#FormTicket').length) {
+        $('#FormTicket').validate({
+            rules: {
+                'ticket':{
+                    required:true
+                },
+                'nama': {
+                    required: true,
+                    maxlength: 40
+                },
+                'wa': {
+                    required: true,
+                    maxlength: 15
+                },
+                'email': {
+                    required: true,
+                    maxlength: 40
+                },
+                'jumlah': {
+                    required: true,
+                    maxlength: 11
+                },
+                'harga_ticket':{
+                    required:true
+                }
+            },
+            messages: {},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+                $(element).removeClass('is-valid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            success: function (validClass, element) {
+                $(element).addClass('is-valid');
+            },
+        });
+
+        $('#FormTicket').on('submit', function (event) {
+            var isValid = $(this).valid();
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            if (isValid) {
+                
+                        let hargaticket = $('#harga_ticket').val();
+                        let jumlah = $('#jumlah').val();
+                        let hasil = formatRupiah(hargaticket * jumlah);
+                        
+                Swal.fire({
+                    title: 'Yakin Akan Dibuat?',
+                    text: "Uang Yang Harus dibayarkan Rp."+hasil+" !!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Buat'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function (xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function (data) {
+                                if (data.status === 'success') {
+                                    popup(data.status, data.toast, data.pesan, '#FormTicket');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });  
+                    }
+                })
+
+            }
+        });
+    }
+
+    
+    if ($('#FormTicketNama').length) {
+        $('#FormTicketNama').validate({
+            rules: {
+                'nama': {
+                    required: true,
+                    maxlength: 40
+                },
+                'harga': {
+                    required: true,
+                    maxlength: 11
+                },
+                'store': {
+                    required: true
+                },
+                'berlaku': {
+                    required: true
+                },
+                'img_voc': {
+                    required: true
+                },
+                'img_benner': {
+                    required: true
+                }
+            },
+            messages: {},
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+                $(element).removeClass('is-valid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            },
+            success: function (validClass, element) {
+                $(element).addClass('is-valid');
+            },
+        });
+
+        $('#FormTicketNama').on('submit', function (event) {
+            var isValid = $(this).valid();
+            event.preventDefault();
+            var formData = new FormData(this);
+            if (isValid) {
+                             $.ajax({
+                                url: $(this).attr('action'),
+                                type: "POST",
+                                data: formData,
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                error: function (xhr, status, error) {
+                                    popup(status, true, xhr.status + " " + error);
+                                },
+                                success: function (data) {
+                                    if (data.status === 'success') {
+                                        popup(data.status, data.toast, data.pesan, '#FormTicketNama');
+                                    } else {
+                                        popup(data.status, data.toast, data.pesan);
+                                    }
+                                }
+                            });
+                   
+
+                
+            }
+        });
+    }
+
+
 });
 
 //Lainnya

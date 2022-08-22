@@ -15,6 +15,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\BelanjaController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TicketController;
 
 use App\Models\Order;
 /*
@@ -271,11 +272,11 @@ Route::controller(InventoryController::class)->group(
         //Stock
         Route::get('Inventory/Stock', 'Stock')->middleware('auth');
         Route::post('Inventory/Stock', 'Tambah')->middleware('auth');
-
         Route::post('Inventory/Manage/Stock', 'Manage')->middleware('auth');
         Route::post('Inventory/Stock/Hapus', 'Hapus')->middleware('auth');
 
 
+        //Opname
         Route::get('Inventory/Opname', 'Opname')->middleware('auth');
         Route::post('Inventory/Opname', 'TambahOpname')->middleware('auth');
         Route::post('Inventory/Manage/Opname', 'ManageOpname')->middleware('auth');
@@ -285,6 +286,10 @@ Route::controller(InventoryController::class)->group(
         Route::post('Inventory/Stock/Edit', 'InventoryStockEdit')->middleware('auth');
         Route::post('Inventory/Stock/InventoryStockEditTambah', 'InventoryStockEditTambah')->middleware('auth');
         Route::post('Inventory/Opname/NamaInventory', 'NamaInventory')->middleware('auth');
+
+        //Menu
+        Route::get('Inventory/Menu', 'Menu')->middleware('auth');
+        Route::post('Inventory/Nama', 'KetersedianMenu')->middleware('auth');
     }
 );
 
@@ -314,6 +319,31 @@ Route::controller(ReportController::class)->group(
 
         Route::get('Report/Belanja', 'Belanja')->middleware('auth');
         Route::get('Report/BelanjaExport', 'BelanjaExport')->middleware('auth');
+    }
+);
+
+
+//Ticekt
+Route::controller(TicketController::class)->group(
+    function () {
+        Route::get('Ticket/Scan', 'Scan')->middleware('auth');
+        Route::post('Ticket/Manage/Scan', 'ManageScan')->middleware('auth');
+        Route::post('Ticket/TambahScan', 'TambahScan')->middleware('auth');
+        Route::post('Ticket/CekScan', 'CekScan')->middleware('auth');
+        Route::get('Ticket/Masuk', 'Masuk');
+        Route::post('Ticket/Harga', 'Harga')->middleware('auth');
+        Route::post('Ticket/Gunakan', 'Gunakan')->middleware('auth');
+
+        Route::get('Ticket/Nama', 'Nama')->middleware('auth');
+        Route::post('Ticket/Manage/Nama', 'ManageNama')->middleware('auth');
+        Route::post('Ticket/TambahNama', 'TambahNama')->middleware('auth');
+        Route::post('Ticket/Ticket/Hapus', 'Hapus')->middleware('auth');
+        Route::post('Ticket/Ticket/Edit', 'Edit')->middleware('auth');
+        Route::post('Ticket/TambahEdit', 'TambahEdit')->middleware('auth');
+
+        Route::get('Ticket', 'Pelanggan');
+        Route::post('Ticket/Daftar', 'Daftar');
+        Route::post('Ticket/Login', 'Login');
     }
 );
 

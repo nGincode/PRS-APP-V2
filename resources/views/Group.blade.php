@@ -259,6 +259,17 @@
                                                 value="deleteInventoryStock" class="minimal"></td>
                                     </tr>
                                     <tr>
+                                        <td>&nbsp;&nbsp; Inventory (MENU)</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createInventoryMenu" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateInventoryMenu" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewInventoryMenu" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteInventoryMenu" class="minimal"></td>
+                                    </tr>
+                                    <tr>
                                         <td>&nbsp;&nbsp; Inventory (OPNAME)</td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
                                                 value="createInventoryOpname" class="minimal"></td>
@@ -279,6 +290,29 @@
                                                 class="minimal"></td>
                                         <td><input type="checkbox" name="permission[]" id="permission"
                                                 value="deleteOrder" class="minimal"></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Ticket (Nama)</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createTicketNama" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateTicketNama" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewTicketNama" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteTicketNama" class="minimal"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;&nbsp; Ticket (Scan)</td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="createTicketScan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="updateTicketScan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="viewTicketScan" class="minimal"></td>
+                                        <td><input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteTicketScan" class="minimal"></td>
                                     </tr>
                                 </tbody>
                             </table>

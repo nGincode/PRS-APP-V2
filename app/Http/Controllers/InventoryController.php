@@ -7,7 +7,7 @@ use App\Models\Inventory;
 use App\Models\Satuan;
 use App\Models\Store;
 use App\Models\OpnameStock;
-
+use App\Models\Resep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Picqer\Barcode\BarcodeGeneratorPNG;
@@ -24,6 +24,7 @@ class InventoryController extends Controller
     }
 
 
+    ///////////////////////////////////////////STOCK////////////////////////////////////////////
     public function Stock(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
@@ -68,7 +69,7 @@ class InventoryController extends Controller
         }
 
         $this->data['BahanPrint'] = $Data;
-        return view('Stock', $this->data);
+        return view('InventoryStock', $this->data);
     }
 
     public function Tambah(Request $request)
@@ -354,6 +355,13 @@ class InventoryController extends Controller
         echo json_encode($data);
     }
 
+    ///////////////////////////////////////////STOCK////////////////////////////////////////////
+
+
+
+
+
+    ///////////////////////////////////////////OPNAME////////////////////////////////////////////
     public function Opname(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
@@ -384,7 +392,7 @@ class InventoryController extends Controller
         }
         $this->data['store'] = Store::all();
 
-        return view('OpnameStock', $this->data);
+        return view('InventoryOpname', $this->data);
     }
     public function ManageOpname(Request $request)
     {
@@ -615,4 +623,62 @@ class InventoryController extends Controller
         </html>
         ';
     }
+    ///////////////////////////////////////////OPNAME////////////////////////////////////////////
+
+    ///////////////////////////////////////////MENU////////////////////////////////////////////
+    public function Menu(Request $request)
+    {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewInventoryMenu', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $this->data['subtitle'] = 'Menu';
+
+        $nama = [];
+        $resep = Resep::with('Bahan')->where('delete', false)->get();
+        foreach ($resep as $v) {
+            $nama[] = ['id' => $v->id, 'nama' => $v->nama];
+        }
+
+        $this->data['satuan'] = Satuan::all();
+        $this->data['nama'] = $nama;
+
+        return view('InventoryMenu', $this->data);
+    }
+
+    public function KetersedianMenu(Request $request)
+    {
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewInventoryMenu', $this->permission())) {
+            return redirect()->to('/');
+        }
+
+        $id = $request->input('id');
+
+        $resep = Resep::where('id', $id)->with('Bahan')->where('delete', false)->where('draft', false)->get();
+
+        $output = '';
+        $status = true;
+        foreach ($resep as $v) {
+            if ($v['bahan_id']) {
+                $ivn = Inventory::where('store_id', request()->session()->get('store_id'))->where('bahan_id', $v['bahan_id'])->first();
+                if ($ivn) {
+                    $output .= '<i class="fa fa-check"></i> ' . $v->nama . ' <br>';
+                    $status .= false;
+                } else {
+                    $output .= '<i class="fa fa-times"></i> ' . $v->nama . ' Tidak Ada Diinventory <br>';
+                    $status .= false;
+                }
+            } else {
+                $output .= '<i class="fa fa-times"></i> ' . $v->nama . ' Tidak Ada Dibahan <br>';
+                $status .= false;
+            }
+        }
+        echo $output;
+    }
+
+
+    ///////////////////////////////////////////MENU////////////////////////////////////////////
+
 }

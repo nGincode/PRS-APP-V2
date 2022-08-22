@@ -623,6 +623,18 @@ if (Auth::check()) {
                                             </a>
                                         </li>
                                     @endif
+                                    @if (in_array('createInventoryMenu', $user_permission) ||
+                                        in_array('updateInventoryMenu', $user_permission) ||
+                                        in_array('viewInventoryMenu', $user_permission) ||
+                                        in_array('deleteInventoryMenu', $user_permission))
+                                        <li class="nav-item  ">
+                                            <a href="{{ url('/Inventory/Menu') }}"
+                                                class="nav-link @if ($subtitle == 'Menu') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Menu</p>
+                                            </a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </li>
                         @endif
@@ -688,6 +700,54 @@ if (Auth::check()) {
                                         ?></span>
                                     </p>
                                 </a>
+                            </li>
+                        @endif
+
+
+
+                        @if (in_array('createTicketNama', $user_permission) ||
+                            in_array('updateTicketNama', $user_permission) ||
+                            in_array('viewTicketNama', $user_permission) ||
+                            in_array('deleteTicketNama', $user_permission) ||
+                            in_array('createTicketScan', $user_permission) ||
+                            in_array('updateTicketScan', $user_permission) ||
+                            in_array('viewTicketScan', $user_permission) ||
+                            in_array('deleteTicketScan', $user_permission))
+                            <li
+                                class="nav-item  @if ($title == 'Ticket') menu-is-opening menu-open @endif ">
+                                <a href="{{ url('/Ticket') }}"
+                                    class="nav-link @if ($title == 'Ticket') active @endif ">
+                                    <i class=" nav-icon fas fa-cube"></i>
+                                    <p>
+                                        Ticket
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    @if (in_array('createTicketScan', $user_permission) ||
+                                        in_array('updateTicketScan', $user_permission) ||
+                                        in_array('viewTicketScan', $user_permission) ||
+                                        in_array('deleteTicketScan', $user_permission))
+                                        <li class="nav-item ">
+                                            <a href="{{ url('/Ticket/Scan') }}"
+                                                class="nav-link  @if ($subtitle == 'Scan') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Scan</p>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if (in_array('createTicketNama', $user_permission) ||
+                                        in_array('updateTicketNama', $user_permission) ||
+                                        in_array('viewTicketNama', $user_permission) ||
+                                        in_array('deleteTicketNama', $user_permission))
+                                        <li class="nav-item ">
+                                            <a href="{{ url('/Ticket/Nama') }}"
+                                                class="nav-link  @if ($subtitle == 'Nama') active @endif">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Create</p>
+                                            </a>
+                                        </li>
+                                    @endif
                             </li>
                         @endif
 
@@ -1088,6 +1148,26 @@ if (Auth::check()) {
         }
     </style>
     <script>
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {
+                    once: true
+                });
+            });
+
         $(function() {
             $('#manage_date').daterangepicker({
                 format: 'MM/DD/YYYY',
@@ -1277,29 +1357,88 @@ if (Auth::check()) {
             }
         }
         manage();
-        $('#manage')
+
+
         //hilangkan alert datatables
         $.fn.dataTable.ext.errMode = 'throw';
 
-        const animateCSS = (element, animation, prefix = 'animate__') =>
-            // We create a Promise and return it
-            new Promise((resolve, reject) => {
-                const animationName = `${prefix}${animation}`;
-                const node = document.querySelector(element);
-
-                node.classList.add(`${prefix}animated`, animationName);
-
-                // When the animation ends, we clean the classes and resolve the Promise
-                function handleAnimationEnd(event) {
-                    event.stopPropagation();
-                    node.classList.remove(`${prefix}animated`, animationName);
-                    resolve('Animation ended');
+        function hargaTicket(id) {
+            $.ajax({
+                url: "Harga",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                beforeSend: function(xhr) {},
+                success: function(data) {
+                    $('#harga_ticket').val(data);
                 }
-
-                node.addEventListener('animationend', handleAnimationEnd, {
-                    once: true
-                });
             });
+        }
+
+        function tukarTicket(id) {
+
+            Swal.fire({
+                title: 'Yakin Menggunakan?',
+                text: "Hanya Dapat digunakan Sekali!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Gunakan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: "Gunakan",
+                        type: "POST",
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        beforeSend: function(xhr) {},
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                popup(data.status, data.toast, data.pesan);
+                                console.log(data);
+                                Swal.fire(
+                                    'Berhasil Menukar',
+                                    'Nama : <b>' + data.array.nama + '</b><br>' + 'Jumlah : <b>' +
+                                    data.array.jumlah + '</b>',
+                                    'success'
+                                );
+                                Swal.fire({
+                                    title: 'Berhasil Menukar',
+                                    text: 'Nama : ' + data.array.nama + ' ' +
+                                        ' Jumlah : ' + data.array.jumlah + ' ',
+                                    icon: 'success',
+                                    showCancelButton: false,
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Kembali'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        setTimeout(
+                                            function() {
+                                                location.reload();
+                                            },
+                                            1500);
+                                    }
+                                })
+
+                            } else {
+                                popup(data.status, data.toast, data.pesan);
+                            }
+                        }
+                    });
+                }
+            })
+        }
     </script>
 </body>
 

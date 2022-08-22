@@ -153,6 +153,135 @@
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $("#show_hide_password_edit span").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password_edit input').attr("type") == "text") {
+                $('#show_hide_password_edit input').attr('type', 'password');
+                $('#show_hide_password_edit i').addClass("fa-eye-slash");
+                $('#show_hide_password_edit i').removeClass("fa-eye");
+            } else if ($('#show_hide_password_edit input').attr("type") == "password") {
+                $('#show_hide_password_edit input').attr('type', 'text');
+                $('#show_hide_password_edit i').removeClass("fa-eye-slash");
+                $('#show_hide_password_edit i').addClass("fa-eye");
+            }
+        });
+
+        $("#show_hide_password_edit_ulang span").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
+                $('#show_hide_password_edit_ulang input').attr('type', 'password');
+                $('#show_hide_password_edit_ulang i').addClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang i').removeClass("fa-eye");
+            } else if ($('#show_hide_password_edit_ulang input').attr("type") == "password") {
+                $('#show_hide_password_edit_ulang input').attr('type', 'text');
+                $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang i').addClass("fa-eye");
+            }
+        });
+
+        $(document).ready(function() {
+            if ($("#UsersEdit").length) {
+                $("#UsersEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        "OutletUsers": {
+                            required: true
+                        },
+                        "Email": {
+                            required: true,
+                            email: true
+                        },
+                        "Username": {
+                            required: true,
+                            minlength: 6
+                        },
+                        "PasswordUsersLama": {
+                            required: true,
+                            minlength: 6
+                        },
+                        "PasswordUsersEdit": {
+                            required: true,
+                            minlength: 6
+                        },
+                        "PasswordRipetEdit": {
+                            required: true,
+                            equalTo: "#PasswordUsersEdit"
+                        },
+                        "NamaDepanUsers": {
+                            required: true
+                        },
+                        "NamaBelakangUsers": {
+                            required: true
+                        },
+                        "NoUsers": {
+                            required: true
+                        },
+                        "izin": {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                $("#UsersEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#UsersEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($StoreData)
@@ -296,6 +425,102 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
+            var row_id = $(".row #isi_jam_kerja_edit").length + 1;
+            var html =
+                '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
+                row_id +
+                '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
+            if (row_id >= 2) {
+                $(".row #akhir_isi_jam_kerja_edit:last").after(html);
+            }
+        });
+
+        $(document).ready(function() {
+            //Store Edit
+            if ($("#StoreEdit").length) {
+                $("#StoreEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'status': {
+                            required: true
+                        },
+                        'tipe': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        },
+                        'wa': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                $("#StoreEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#StoreEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($GroupsData)
@@ -388,7 +613,7 @@
                                     @if (in_array('viewReportBelanja', $permission)) checked @endif value="viewReportBelanja"
                                     class="minimal"></td>
                             <td><input type="checkbox" name="permission[]" id="permission"
-                                    @if (in_array('deleteReporBelanja', $permission)) checked @endif value="deleteReportBelanja"
+                                    @if (in_array('deleteReportBelanja', $permission)) checked @endif value="deleteReportBelanja"
                                     class="minimal"></td>
                         </tr>
                         <tr>
@@ -547,6 +772,17 @@
                                     @if (in_array('deleteBelanja', $permission)) checked @endif class="minimal"></td>
                         </tr>
                         <tr>
+                            <td>&nbsp;&nbsp; Inventory (MENU)</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createInventoryMenu"
+                                    @if (in_array('createInventoryStock', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateInventoryMenu"
+                                    @if (in_array('updateInventoryStock', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewInventoryMenu"
+                                    @if (in_array('viewInventoryStock', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteInventoryMenu"
+                                    @if (in_array('deleteInventoryStock', $permission)) checked @endif class="minimal"></td>
+                        </tr>
+                        <tr>
                             <td>&nbsp;&nbsp; Inventory (STOCK)</td>
                             <td><input type="checkbox" name="permission[]" id="permission" value="createInventoryStock"
                                     @if (in_array('createInventoryStock', $permission)) checked @endif class="minimal"></td>
@@ -579,6 +815,28 @@
                             <td><input type="checkbox" name="permission[]" id="permission" value="deleteOrder"
                                     @if (in_array('deleteOrder', $permission)) checked @endif class="minimal"></td>
                         </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Ticket (Nama)</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createTicketNama"
+                                    @if (in_array('createTicketNama', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateTicketNama"
+                                    @if (in_array('updateTicketNama', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewTicketNama"
+                                    @if (in_array('viewTicketNama', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteTicketNama"
+                                    @if (in_array('deleteTicketNama', $permission)) checked @endif class="minimal"></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp; Ticket (Scan)</td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="createTicketScan"
+                                    @if (in_array('createTicketScan', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="updateTicketScan"
+                                    @if (in_array('updateTicketScan', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="viewTicketScan"
+                                    @if (in_array('viewTicketScan', $permission)) checked @endif class="minimal"></td>
+                            <td><input type="checkbox" name="permission[]" id="permission" value="deleteTicketScan"
+                                    @if (in_array('deleteTicketScan', $permission)) checked @endif class="minimal"></td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -606,6 +864,94 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Group Edit
+            if ($("#GroupsEdit").length) {
+                $("#GroupsEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'status': {
+                            required: true
+                        },
+                        'tipe': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        },
+                        'wa': {
+                            required: true
+                        },
+                        'usersedit[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                $("#GroupsEdit").on("submit", function(event) {
+                    var isValid = $("#GroupsEdit").valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $("#GroupsEdit").attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#GroupsEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($SupplierData)
@@ -679,6 +1025,81 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Supplier Edit
+            if ($("#SupplierEdit").length) {
+                $("#SupplierEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                $("#SupplierEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#SupplierEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($SatuanData)
@@ -711,6 +1132,81 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Satuan Edit
+            if ($("#SatuanEdit").length) {
+                $("#SatuanEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'singkat': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    }
+                });
+
+                $("#SatuanEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#SatuanEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($BahanData)
@@ -881,6 +1377,100 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Bahan Edit
+            if ($("#BahanEdit").length) {
+                $("#BahanEdit").validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pembelian': {
+                            required: true
+                        },
+                        'harga': {
+                            required: true
+                        },
+                        'satuan_pemakaian': {
+                            required: true
+                        },
+                        'konversi_pemakaian': {
+                            required: true
+                        },
+                        'satuan_pengeluaran': {
+                            required: true
+                        },
+                        'konversi_pengeluaran': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                $("#BahanEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#BahanEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+            $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+            $("#harga_edit").keyup(function() {
+                $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+            });
+        });
+    </script>
 @endisset
 
 @isset($PeralatanData)
@@ -892,8 +1482,8 @@
                     <div class="form-group">
                         <label>Kategori</label>
                         <select disabled name="kategori" id="kategori" onchange="clickkategoriedit(this.value)"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                            class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="1" @if ($PeralatanData['kategori'] == 1) selected @endif>Peralatan Dapur
                             </option>
@@ -913,8 +1503,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="nama">Nama Peralatan</label>
-                        <input type="text" class="form-control" value="{{ $PeralatanData['nama'] }}" id="nama"
-                            placeholder="Nama Peralatan" name="nama">
+                        <input type="text" class="form-control" value="{{ $PeralatanData['nama'] }}"
+                            id="nama" placeholder="Nama Peralatan" name="nama">
                     </div>
                 </div>
 
@@ -923,8 +1513,8 @@
                     <div class="form-group">
                         <label>Satuan Pembelian</label>
                         <select onchange="pembelianedit(this.value)" name="satuan_pembelian" id="satuan_pembelian"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                            class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
 
                             @foreach ($satuan as $s1)
@@ -941,8 +1531,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="hargaa">Harga</label>
-                        <input type="text" value="{{ $PeralatanData['harga'] }}" class="form-control" id="hargaa"
-                            placeholder="Harga" name="hargaa">
+                        <input type="text" value="{{ $PeralatanData['harga'] }}" class="form-control"
+                            id="hargaa" placeholder="Harga" name="hargaa">
                     </div>
                 </div>
 
@@ -951,8 +1541,8 @@
                     <div class="form-group">
                         <label>Satuan Pemakaian</label>
                         <select name="satuan_pemakaian" onchange="pemakaianedit(this.value)" id="satuan_pemakaian"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                            class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
 
                             <option selected="true" disabled="disabled">Pilih</option>
 
@@ -1015,6 +1605,95 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Peralatan Edit
+            if ($("#PeralatanEdit").length) {
+                $("#PeralatanEdit").validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'satuan_pembelian': {
+                            required: true
+                        },
+                        'hargaa': {
+                            required: true
+                        },
+                        'satuan_pemakaian': {
+                            required: true
+                        },
+                        'konversi_pemakaiann': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                $("#PeralatanEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan,
+                                        "#PeralatanEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+            $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
+            $("#hargaa").keyup(function() {
+                $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
+            });
+        });
+    </script>
 @endisset
 
 @isset($PegawaiData)
@@ -1205,6 +1884,111 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        $(document).ready(function() {
+            //Pegawai Edit
+            if ($("#PegawaiEdit").length) {
+                $("#PegawaiEdit").validate({
+                    rules: {
+                        'nama': {
+                            required: true
+                        },
+                        'store': {
+                            required: true
+                        },
+                        'tempat_lahir': {
+                            required: true
+                        },
+                        'tanggal_lahir': {
+                            required: true
+                        },
+                        'tanggal_masuk': {
+                            required: true
+                        },
+                        'agama': {
+                            required: true
+                        },
+                        'gender': {
+                            required: true
+                        },
+                        'alamat': {
+                            required: true
+                        },
+                        'wa': {
+                            required: true
+                        },
+                        'divisi': {
+                            required: true
+                        },
+                        'jabatan': {
+                            required: true
+                        },
+                        'status_pekerja': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                $("#PegawaiEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan, "#PegawaiEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($OlahanDataBahanBaku)
@@ -1263,6 +2047,125 @@
         </div>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Baku');
+        }
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Olahan');
+        }
+
+        $(document).ready(function() {
+            //Bahan Baku
+            if ($('#formItemBahanBaku').length) {
+                $('#formItemBahanBaku').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#formItemBahanBaku').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanbaku').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($OlahanDataBahanOlahan)
@@ -1304,6 +2207,125 @@
         </div>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Baku');
+        }
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Olahan');
+        }
+
+        $(document).ready(function() {
+            //Bahan Olahan
+            if ($('#formItemBahanOlahan').length) {
+                $('#formItemBahanOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#formItemBahanOlahan').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanolahan').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($ResepDataBahanBaku)
@@ -1362,6 +2384,125 @@
         </div>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Baku');
+        }
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Olahan');
+        }
+
+        $(document).ready(function() {
+            //Bahan Baku
+            if ($('#formItemBahanBaku').length) {
+                $('#formItemBahanBaku').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#formItemBahanBaku').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanbaku').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($ResepDataBahanOlahan)
@@ -1403,6 +2544,125 @@
         </div>
         </div>
     </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Baku');
+        }
+
+        if ($("#pilihbahanolahan").length) {
+            $("#pilihbahanolahan").DataTable({
+                "columnDefs": [{
+                    "orderable": false,
+                    "targets": 0
+                }],
+                "order": [
+                    [2, "asc"]
+                ],
+                "responsive": true,
+                "autoWidth": false,
+                "processing": true,
+                "searching": true,
+                "sort": true,
+                "paging": true,
+                'info': true,
+                "destroy": true
+            });
+            $('#ModalLabel').html('Pilih Item Bahan Olahan');
+        }
+
+        $(document).ready(function() {
+            //Bahan Olahan
+            if ($('#formItemBahanOlahan').length) {
+                $('#formItemBahanOlahan').validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    },
+                    rules: {
+                        'id[]': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // id : "pesan"
+                    }
+                });
+
+                $('#formItemBahanOlahan').on('submit', function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: 'json',
+                            error: function(xhr, status, error) {
+                                popup(status, true, xhr.status + " " + error);
+                            },
+                            success: function(data) {
+                                if (data.status === 'success') {
+                                    $('#Modal').modal('hide');
+                                    $('#managebahanolahan').DataTable().ajax.reload();
+                                    popup(data.status, data.toast, data.pesan);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    } else {
+                        popup('error', true, 'Belum Memilih Bahan');
+                    }
+                });
+            }
+        });
+    </script>
 @endisset
 
 @isset($InventoryStockData)
@@ -1513,871 +2773,193 @@
     </form>
 @endisset
 
-<script>
-    $(function() {
-        bsCustomFileInput.init();
 
-        $("#checkAll").click(function() {
-            $(".check").prop('checked', $(this).prop('checked'));
+@isset($TicketNama)
+    <form id="FormTicketNamaEdit" action="{{ url('/Ticket/TambahEdit') }}">
+        @csrf
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="nama">Nama </label>
+                        <input type="text" value="{{ $TicketNama['nama'] }}" class="form-control"
+                            id="nama" placeholder="Nama" name="nama">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="harga">Harga </label>
+                        <input type="text" value="{{ $TicketNama['harga'] }}" class="form-control"
+                            id="harga_edit" placeholder="Harga" name="harga">
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Tujuan Store</label>
+                        <select name="store" id="store" class="form-control select2"
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                            <option selected="true" disabled="disabled">Pilih</option>
+                            <option @if ($TicketNama['store_id'] == null) selected @endif value="semua">Semua</option>
+                            @foreach ($store as $str)
+                                @if ($str['id'] != 1)
+                                    <option @if ($str['id'] == $TicketNama['store_id']) selected @endif
+                                        value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label>Berlaku</label>
+                        <input type="date" min="{{ date('Y-m-d') }}" value="{{ $TicketNama['berlaku'] }}"
+                            class="form-control" id="berlaku" name="berlaku">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="img_benner">Benner Ukuran (100x50)</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" accept="image/*" id="img_benner"
+                                name="img_benner">
+                            <label class="custom-file-label" for="img_benner">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="img_voc">Voucher Ukuran (100x50)</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" accept="image/*" id="img_voc"
+                                name="img_voc">
+                            <label class="custom-file-label" for="img_voc">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+
+
+                @if ($TicketNama['img_benner'] && $TicketNama['img_voc'])
+                    <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <img src="{{ url('uploads/ticket/' . $TicketNama['img_benner']) }}" width="50px">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                            <img src="{{ url('uploads/ticket/' . $TicketNama['img_voc']) }}" width="50px">
+                        </div>
+                    </div>
+                @endif
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        </div>
+    </form>
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
         });
 
-        $('.select2').select2().on("change", function(e) {
-            $(this).valid();
-        });
-
-    });
-
-    $("#show_hide_password_edit span").on('click', function(event) {
-        event.preventDefault();
-        if ($('#show_hide_password_edit input').attr("type") == "text") {
-            $('#show_hide_password_edit input').attr('type', 'password');
-            $('#show_hide_password_edit i').addClass("fa-eye-slash");
-            $('#show_hide_password_edit i').removeClass("fa-eye");
-        } else if ($('#show_hide_password_edit input').attr("type") == "password") {
-            $('#show_hide_password_edit input').attr('type', 'text');
-            $('#show_hide_password_edit i').removeClass("fa-eye-slash");
-            $('#show_hide_password_edit i').addClass("fa-eye");
-        }
-    });
-
-    $("#show_hide_password_edit_ulang span").on('click', function(event) {
-        event.preventDefault();
-        if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
-            $('#show_hide_password_edit_ulang input').attr('type', 'password');
-            $('#show_hide_password_edit_ulang i').addClass("fa-eye-slash");
-            $('#show_hide_password_edit_ulang i').removeClass("fa-eye");
-        } else if ($('#show_hide_password_edit_ulang input').attr("type") == "password") {
-            $('#show_hide_password_edit_ulang input').attr('type', 'text');
-            $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
-            $('#show_hide_password_edit_ulang i').addClass("fa-eye");
-        }
-    });
-
-    $("#add_row_jam_kerja_edit").unbind('click').bind('click', function() {
-        var row_id = $(".row #isi_jam_kerja_edit").length + 1;
-        var html =
-            '<div class="col-12 col-sm-12" id="isi_jam_kerja_edit"><div class="form-group"><label for="nama_shift">Nama Shift</label> <input class="form-control" id="nama_shift" placeholder="Nama Shift" value="Shift ' +
-            row_id +
-            '" required name="nama_shift[]"></div></div><div class="col-12 col-sm-6"><div class="form-group"><label for="masuk_kerja">Masuk</label> <input type="time" class="form-control" id="masuk_kerja" name="masuk_kerja[]" value="06:00" required></div></div><div class="col-12 col-sm-6" id="akhir_isi_jam_kerja_edit"><div class="form-group"><label for="pulang_kerja">Pulang</label> <input type="time" class="form-control" id="pulang_kerja" name="pulang_kerja[]" value="18:00" required></div></div>';
-        if (row_id >= 2) {
-            $(".row #akhir_isi_jam_kerja_edit:last").after(html);
-        }
-    });
-
-    if ($("#pilihbahanolahan").length) {
-        $("#pilihbahanolahan").DataTable({
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 0
-            }],
-            "order": [
-                [2, "asc"]
-            ],
-            "responsive": true,
-            "autoWidth": false,
-            "processing": true,
-            "searching": true,
-            "sort": true,
-            "paging": true,
-            'info': true,
-            "destroy": true
-        });
-        $('#ModalLabel').html('Pilih Item Bahan Baku');
-    }
-
-    if ($("#pilihbahanolahan").length) {
-        $("#pilihbahanolahan").DataTable({
-            "columnDefs": [{
-                "orderable": false,
-                "targets": 0
-            }],
-            "order": [
-                [2, "asc"]
-            ],
-            "responsive": true,
-            "autoWidth": false,
-            "processing": true,
-            "searching": true,
-            "sort": true,
-            "paging": true,
-            'info': true,
-            "destroy": true
-        });
-        $('#ModalLabel').html('Pilih Item Bahan Olahan');
-    }
-
-    $(document).ready(function() {
-        //Users Edit
-        if ($("#UsersEdit").length) {
-            $("#UsersEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    "OutletUsers": {
-                        required: true
+        $(document).ready(function() {
+            //Ticket Edit
+            if ($("#FormTicketNamaEdit").length) {
+                $("#FormTicketNamaEdit").validate({
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
                     },
-                    "Email": {
-                        required: true,
-                        email: true
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
                     },
-                    "Username": {
-                        required: true,
-                        minlength: 6
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
                     },
-                    "PasswordUsersLama": {
-                        required: true,
-                        minlength: 6
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
                     },
-                    "PasswordUsersEdit": {
-                        required: true,
-                        minlength: 6
-                    },
-                    "PasswordRipetEdit": {
-                        required: true,
-                        equalTo: "#PasswordUsersEdit"
-                    },
-                    "NamaDepanUsers": {
-                        required: true
-                    },
-                    "NamaBelakangUsers": {
-                        required: true
-                    },
-                    "NoUsers": {
-                        required: true
-                    },
-                    "izin": {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
-            });
-
-            $("#UsersEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#UsersEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
+                    rules: {
+                        'nama': {
+                            required: true,
+                            maxlength: 40
+                        },
+                        'harga': {
+                            required: true,
+                            maxlength: 11
+                        },
+                        'store': {
+                            required: true
+                        },
+                        'berlaku': {
+                            required: true
                         }
-                    });
-
-                }
-            });
-        }
-
-        //Store Edit
-        if ($("#StoreEdit").length) {
-            $("#StoreEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'nama': {
-                        required: true
                     },
-                    'status': {
-                        required: true
-                    },
-                    'tipe': {
-                        required: true
-                    },
-                    'alamat': {
-                        required: true
-                    },
-                    'wa': {
-                        required: true
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
                     }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
-            });
+                });
 
-            $("#StoreEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
+                $("#FormTicketNamaEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
 
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#StoreEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan);
+                                    $('#Modal').modal('hide');
+                                    setTimeout(
+                                        function() {
+                                            location.reload();
+                                        },
+                                        1500);
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
                             }
-                        }
-                    });
+                        });
 
-                }
-            });
-        }
-
-        //Group Edit
-        if ($("#GroupsEdit").length) {
-            $("#GroupsEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'status': {
-                        required: true
-                    },
-                    'tipe': {
-                        required: true
-                    },
-                    'alamat': {
-                        required: true
-                    },
-                    'wa': {
-                        required: true
-                    },
-                    'usersedit[]': {
-                        required: true
                     }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
+                });
+            }
+
+
+            $("#harga_edit").keyup(function() {
+                $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
             });
 
-            $("#GroupsEdit").on("submit", function(event) {
-                var isValid = $("#GroupsEdit").valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $("#GroupsEdit").attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#GroupsEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-
-        //Supplier Edit
-        if ($("#SupplierEdit").length) {
-            $("#SupplierEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'alamat': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
-            });
-
-            $("#SupplierEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#SupplierEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-
-        //Satuan Edit
-        if ($("#SatuanEdit").length) {
-            $("#SatuanEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'singkat': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
-            });
-
-            $("#SatuanEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#SatuanEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-
-        //Bahan Edit
-        if ($("#BahanEdit").length) {
-            $("#BahanEdit").validate({
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'satuan_pembelian': {
-                        required: true
-                    },
-                    'harga': {
-                        required: true
-                    },
-                    'satuan_pemakaian': {
-                        required: true
-                    },
-                    'konversi_pemakaian': {
-                        required: true
-                    },
-                    'satuan_pengeluaran': {
-                        required: true
-                    },
-                    'konversi_pengeluaran': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                }
-            });
-
-            $("#BahanEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#BahanEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-        $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
-        $("#harga_edit").keyup(function() {
             $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
         });
-
-        //Peralatan Edit
-        if ($("#PeralatanEdit").length) {
-            $("#PeralatanEdit").validate({
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'satuan_pembelian': {
-                        required: true
-                    },
-                    'hargaa': {
-                        required: true
-                    },
-                    'satuan_pemakaian': {
-                        required: true
-                    },
-                    'konversi_pemakaiann': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                }
-            });
-
-            $("#PeralatanEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan,
-                                    "#PeralatanEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-        $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
-        $("#hargaa").keyup(function() {
-            $("#hargaa").val(numeral($("#hargaa").val()).format('0,0'));
-        });
-
-        //Pegawai Edit
-        if ($("#PegawaiEdit").length) {
-            $("#PegawaiEdit").validate({
-                rules: {
-                    'nama': {
-                        required: true
-                    },
-                    'store': {
-                        required: true
-                    },
-                    'tempat_lahir': {
-                        required: true
-                    },
-                    'tanggal_lahir': {
-                        required: true
-                    },
-                    'tanggal_masuk': {
-                        required: true
-                    },
-                    'agama': {
-                        required: true
-                    },
-                    'gender': {
-                        required: true
-                    },
-                    'alamat': {
-                        required: true
-                    },
-                    'wa': {
-                        required: true
-                    },
-                    'divisi': {
-                        required: true
-                    },
-                    'jabatan': {
-                        required: true
-                    },
-                    'status_pekerja': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                }
-            });
-
-            $("#PegawaiEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan, "#PegawaiEdit");
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-
-
-        //Stock Edit
-        if ($("#InventoryStockEdit").length) {
-            $("#InventoryStockEdit").validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                    $(element).removeClass('is-valid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'harga': {
-                        required: true
-                    },
-                    'auto_harga_edit': {
-                        required: true
-                    },
-                    'margin': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // OutletUsers : "Masih Kosong"
-                }
-            });
-
-            $("#InventoryStockEdit").on("submit", function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr("action"),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: "json",
-                        success: function(data) {
-                            if (data.status === "success") {
-                                popup(data.status, data.toast, data.pesan,
-                                    '#InventoryStockEdit');
-                                $('#Modal').modal('hide');
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                }
-            });
-        }
-
-
-        //Bahan Baku
-        if ($('#formItemBahanBaku').length) {
-            $('#formItemBahanBaku').validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'id[]': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // id : "pesan"
-                }
-            });
-
-            $('#formItemBahanBaku').on('submit', function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: 'json',
-                        error: function(xhr, status, error) {
-                            popup(status, true, xhr.status + " " + error);
-                        },
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $('#Modal').modal('hide');
-                                $('#managebahanbaku').DataTable().ajax.reload();
-                                popup(data.status, data.toast, data.pesan);
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                } else {
-                    popup('error', true, 'Belum Memilih Bahan');
-                }
-            });
-        }
-
-        //Bahan Olahan
-        if ($('#formItemBahanOlahan').length) {
-            $('#formItemBahanOlahan').validate({
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-                success: function(validClass, element) {
-                    $(element).addClass('is-valid');
-                },
-                rules: {
-                    'id[]': {
-                        required: true
-                    }
-                },
-                messages: {
-                    // id : "pesan"
-                }
-            });
-
-            $('#formItemBahanOlahan').on('submit', function(event) {
-                var isValid = $(this).valid();
-                event.preventDefault();
-                var formData = new FormData(this);
-
-                if (isValid) {
-                    $.ajax({
-                        url: $(this).attr('action'),
-                        type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        dataType: 'json',
-                        error: function(xhr, status, error) {
-                            popup(status, true, xhr.status + " " + error);
-                        },
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $('#Modal').modal('hide');
-                                $('#managebahanolahan').DataTable().ajax.reload();
-                                popup(data.status, data.toast, data.pesan);
-                            } else {
-                                popup(data.status, data.toast, data.pesan);
-                            }
-                        }
-                    });
-
-                } else {
-                    popup('error', true, 'Belum Memilih Bahan');
-                }
-            });
-        }
-
-    });
-</script>
+    </script>
+@endisset
