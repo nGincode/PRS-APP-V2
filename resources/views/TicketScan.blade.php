@@ -21,10 +21,11 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6" id="qr-reader"></div>
+                            <div class="col-12 col-sm-6" id="qr-reader"></div>
                             <hr>
                             <br>
-                            <div class="col-6 text-center" id='hasil-scan'>
+                            <div class="col-12 col-sm-6 text-center"
+                                style="border: 1px solid silver;padding:10px;min-height: 200px;" id='hasil-scan'>
                                 <h4>Scanning...</h4>
                             </div>
 

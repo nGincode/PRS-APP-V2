@@ -55,6 +55,7 @@ class UsersController extends Controller
                 'Username' => 'required|min:6|unique:users',
                 'PasswordUsers' => 'required|min:6',
                 'PasswordRipet' => 'required|same:PasswordUsers',
+                'NoUsers' => 'required|unique:users',
                 'NamaDepanUsers' => 'required',
                 'NamaBelakangUsers' => 'required',
                 'NoUsers' => 'required',

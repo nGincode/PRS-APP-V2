@@ -26,135 +26,135 @@ class DatabaseSeeder extends Seeder
     {
 
         ///////////////////////////////////////////////////// SUPER ADMIN ////////////////////////
-        // Store::create([
-        //     'nama' => 'SUPERADMIN',
-        //     'active' => 1,
-        //     'tipe' => 'SUPERADMIN',
-        //     'alamat' => 'BENGKULU',
-        //     'img' => null,
-        //     'wa' => '085369957606',
-        //     'jam_kerja' => null,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
+        Store::create([
+            'nama' => 'SUPERADMIN',
+            'active' => 1,
+            'tipe' => 'SUPERADMIN',
+            'alamat' => 'BENGKULU',
+            'img' => null,
+            'wa' => '085369957606',
+            'jam_kerja' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
 
-        // ]);
-        // User::create([
-        //     'store' => 'SUPERADMIN',
-        //     'store_id' => 1,
-        //     'username' => 'superadmin',
-        //     'password' => bcrypt('superadmin'),
-        //     'email' => 'fembinurilham@gmail.com',
-        //     'firstname' => 'Fembi',
-        //     'lastname' => 'Nur Ilham',
-        //     'phone' => '085369957606',
-        //     'gender' => 'Pria',
-        //     'izin' => 1,
-        //     'img' => null,
-        //     'last_login' => date('Y-m-d H:i:s'),
-        //     'email_verified_at' => null,
-        //     'remember_token' => null,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        User::create([
+            'store' => 'SUPERADMIN',
+            'store_id' => 1,
+            'username' => 'superadmin',
+            'password' => bcrypt('superadmin'),
+            'email' => 'fembinurilham@gmail.com',
+            'firstname' => 'Fembi',
+            'lastname' => 'Nur Ilham',
+            'phone' => '085369957606',
+            'gender' => 'Pria',
+            'izin' => 1,
+            'img' => null,
+            'last_login' => date('Y-m-d H:i:s'),
+            'email_verified_at' => null,
+            'remember_token' => null,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
 
-        // ]);
-        // $permession = array(
-        //     'createUser',
-        //     'updateUser',
-        //     'viewUser',
-        //     'deleteUser',
-        //     'createGroup',
-        //     'updateGroup',
-        //     'viewGroup',
-        //     'deleteGroup',
-        //     'createStore',
-        //     'updateStore',
-        //     'viewStore',
-        //     'deleteStore',
-        // );
-        // Groups::create([
-        //     'nama' => 'SUPERADMIN',
-        //     'permission' => serialize($permession),
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        $permession = array(
+            'createUser',
+            'updateUser',
+            'viewUser',
+            'deleteUser',
+            'createGroup',
+            'updateGroup',
+            'viewGroup',
+            'deleteGroup',
+            'createStore',
+            'updateStore',
+            'viewStore',
+            'deleteStore',
+        );
+        Groups::create([
+            'nama' => 'SUPERADMIN',
+            'permission' => serialize($permession),
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
 
-        // ]);
-        // GroupsUsers::create([
-        //     'users_id' => 1,
-        //     'groups_id' => 1,
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'updated_at' => date('Y-m-d H:i:s')
+        ]);
+        GroupsUsers::create([
+            'users_id' => 1,
+            'groups_id' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
 
-        // ]);
-        // $satuan = [
-        //     [
-        //         'nama' => 'Kilogram',
-        //         'singkat' => 'Kg',
-        //     ],
-        //     [
-        //         'nama' => 'Gram',
-        //         'singkat' => 'Gr',
-        //     ],
-        //     [
-        //         'nama' => 'Ons',
-        //         'singkat' => 'Ons',
-        //     ],
-        //     [
-        //         'nama' => 'Pack',
-        //         'singkat' => 'Pck',
-        //     ],
-        //     [
-        //         'nama' => 'Pieces',
-        //         'singkat' => 'Pcs',
-        //     ],
-        //     [
-        //         'nama' => 'Potong',
-        //         'singkat' => 'Ptg',
-        //     ],
-        //     [
-        //         'nama' => 'Liter',
-        //         'singkat' => 'Ltr',
-        //     ],
-        //     [
-        //         'nama' => 'Mililiter',
-        //         'singkat' => 'Mil',
-        //     ],
-        //     [
-        //         'nama' => 'Butir',
-        //         'singkat' => 'Btr',
-        //     ],
-        //     [
-        //         'nama' => 'Galon',
-        //         'singkat' => 'Gln',
-        //     ],
-        //     [
-        //         'nama' => 'Pouch',
-        //         'singkat' => 'Poc',
-        //     ],
-        //     [
-        //         'nama' => 'Lembar',
-        //         'singkat' => 'Lbr',
-        //     ],
-        //     [
-        //         'nama' => 'Roll',
-        //         'singkat' => 'Rll',
-        //     ],
-        //     [
-        //         'nama' => 'Ikat',
-        //         'singkat' => 'Ikt',
-        //     ],
-        //     [
-        //         'nama' => 'Bal',
-        //         'singkat' => 'Bal',
-        //     ],
-        //     [
-        //         'nama' => 'Karung',
-        //         'singkat' => 'Krg',
-        //     ],
+        ]);
+        $satuan = [
+            [
+                'nama' => 'Kilogram',
+                'singkat' => 'Kg',
+            ],
+            [
+                'nama' => 'Gram',
+                'singkat' => 'Gr',
+            ],
+            [
+                'nama' => 'Ons',
+                'singkat' => 'Ons',
+            ],
+            [
+                'nama' => 'Pack',
+                'singkat' => 'Pck',
+            ],
+            [
+                'nama' => 'Pieces',
+                'singkat' => 'Pcs',
+            ],
+            [
+                'nama' => 'Potong',
+                'singkat' => 'Ptg',
+            ],
+            [
+                'nama' => 'Liter',
+                'singkat' => 'Ltr',
+            ],
+            [
+                'nama' => 'Mililiter',
+                'singkat' => 'Mil',
+            ],
+            [
+                'nama' => 'Butir',
+                'singkat' => 'Btr',
+            ],
+            [
+                'nama' => 'Galon',
+                'singkat' => 'Gln',
+            ],
+            [
+                'nama' => 'Pouch',
+                'singkat' => 'Poc',
+            ],
+            [
+                'nama' => 'Lembar',
+                'singkat' => 'Lbr',
+            ],
+            [
+                'nama' => 'Roll',
+                'singkat' => 'Rll',
+            ],
+            [
+                'nama' => 'Ikat',
+                'singkat' => 'Ikt',
+            ],
+            [
+                'nama' => 'Bal',
+                'singkat' => 'Bal',
+            ],
+            [
+                'nama' => 'Karung',
+                'singkat' => 'Krg',
+            ],
 
-        // ];
-        // foreach ($satuan as $s) {
-        //     Satuan::create($s);
-        // }
+        ];
+        foreach ($satuan as $s) {
+            Satuan::create($s);
+        }
         ///////////////////////////////////////////////////// SUPER ADMIN ////////////////////////
 
 

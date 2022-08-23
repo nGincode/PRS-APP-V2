@@ -485,7 +485,7 @@
                             Keluar
                             Edit</a>
                     @endif
-                    @if ($logistik_id)
+                    @if (request()->session()->get('tipe') === 'Logistik')
                         @if (!$up)
                             <a class="btn btn-primary"
                                 onclick="Upload({{ request()->session()->get('IdEditOrder') }})"><i

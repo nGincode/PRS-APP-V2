@@ -756,7 +756,7 @@ class OrderController extends Controller
                     $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
                 }
                 if (in_array('updateOrder', $this->permission())) {
-                    $button .= "<li><a class='dropdown-item' onclick='OrderEdit(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'><i class='fas fa-eye'></i> Edit</a></li>";
+                    $button .= "<li><a class='dropdown-item' onclick='OrderEdit(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
                 }
 
 

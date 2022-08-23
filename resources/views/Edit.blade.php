@@ -91,8 +91,15 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label for="PasswordRipet_edit">Password Ulangi</label>
-                        <input type="password" class="form-control" id="PasswordRipet_edit" placeholder="Passworrd"
-                            name="PasswordRipetEdit">
+                        <div class="input-group" id="show_hide_password_edit_ulang_ripet">
+                            <input type="password" class="form-control" id="PasswordRipet_edit" placeholder="Password"
+                                name="PasswordRipetEdit">
+                            <div class="input-group-append">
+                                <span class="input-group-text" style="cursor: pointer">
+                                    <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -108,7 +115,7 @@
                     <div class="form-group">
                         <label for="NamaBelakangUsers_edit">Nama Belakang</label>
                         <input value="{{ $UsersData['lastname'] }}" type="text" class="form-control"
-                            id="NamaBelakangUsers" placeholder="Nama Belakang" name="NamaBelakangUsers_edit">
+                            id="NamaBelakangUsers_edit" placeholder="Nama Belakang" name="NamaBelakangUsers">
                     </div>
                 </div>
 
@@ -137,12 +144,12 @@
                         <div class="icheck-primary d-inline">
                             <input type="radio" id="GenderUsersPerempuan_edit" name="gender" value="1"
                                 @if ($UsersData['gender'] == 'Wanita') checked @endif>
-                            <label for="GenderUsersPerempuanedit"> Perempuan</label>
+                            <label for="GenderUsersPerempuan_edit"> Perempuan</label>
                         </div>
                         <div class="icheck-primary d-inline">
                             <input type="radio" id="GenderUsersPria_edit" value="2" name="gender"
                                 @if ($UsersData['gender'] == 'Pria') checked @endif>
-                            <label for="GenderUsersPriaedit"> Laki-Laki</label>
+                            <label for="GenderUsersPria_edit"> Laki-Laki</label>
                         </div>
                     </div>
                 </div>
@@ -180,6 +187,7 @@
             }
         });
 
+
         $("#show_hide_password_edit_ulang span").on('click', function(event) {
             event.preventDefault();
             if ($('#show_hide_password_edit_ulang input').attr("type") == "text") {
@@ -190,6 +198,19 @@
                 $('#show_hide_password_edit_ulang input').attr('type', 'text');
                 $('#show_hide_password_edit_ulang i').removeClass("fa-eye-slash");
                 $('#show_hide_password_edit_ulang i').addClass("fa-eye");
+            }
+        });
+
+        $("#show_hide_password_edit_ulang_ripet span").on('click', function(event) {
+            event.preventDefault();
+            if ($('#show_hide_password_edit_ulang_ripet input').attr("type") == "text") {
+                $('#show_hide_password_edit_ulang_ripet input').attr('type', 'password');
+                $('#show_hide_password_edit_ulang_ripet i').addClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang_ripet i').removeClass("fa-eye");
+            } else if ($('#show_hide_password_edit_ulang_ripet input').attr("type") == "password") {
+                $('#show_hide_password_edit_ulang_ripet input').attr('type', 'text');
+                $('#show_hide_password_edit_ulang_ripet i').removeClass("fa-eye-slash");
+                $('#show_hide_password_edit_ulang_ripet i').addClass("fa-eye");
             }
         });
 
@@ -233,7 +254,7 @@
                         },
                         "PasswordRipetEdit": {
                             required: true,
-                            equalTo: "#PasswordUsersEdit"
+                            equalTo: "#PasswordUsers_edit"
                         },
                         "NamaDepanUsers": {
                             required: true

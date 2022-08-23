@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->integer('logistik');
             $table->date('tgl');
-            $table->date('tgl_laporan');
+            $table->date('tgl_laporan')->nullable();
             $table->string('nama', 50)->nullable();
             $table->string('qty_order')->nullable();
             $table->string('qty_deliv')->nullable();

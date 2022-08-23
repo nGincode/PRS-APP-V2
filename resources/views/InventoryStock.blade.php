@@ -75,8 +75,8 @@
                                     <div class="form-group clearfix">
                                         <label>Auto Harga</label><br>
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" id="auto_harga_1" name="auto_harga" value="1"
-                                                checked>
+                                            <input type="radio" id="auto_harga_1" max="100" name="auto_harga"
+                                                value="1" checked>
                                             <label for="auto_harga_1">
                                                 Aktif
                                             </label>
@@ -122,7 +122,7 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <a class="btn btn-primary float-lg-right" target="_blank" href="Bahan/PrintBarcode"><i
+                    <a class="btn btn-primary float-lg-right m-1" target="_blank" href="Bahan/PrintBarcode"><i
                             class="fa fa-barcode"></i>
                         Print Barcode</a><br>
                     <table id="manage" class="table table-bordered table-striped">
