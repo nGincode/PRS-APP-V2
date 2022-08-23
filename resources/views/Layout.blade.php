@@ -1403,17 +1403,18 @@ if (Auth::check()) {
                         error: function(xhr, status, error) {
                             popup(status, true, xhr.status + " " + error);
                         },
-                        beforeSend: function(xhr) {},
+                        beforeSend: function(xhr) {
+                            Swal.showLoading();
+                        },
                         success: function(data) {
                             if (data.status === 'success') {
                                 popup(data.status, data.toast, data.pesan);
-                                console.log(data);
-                                Swal.fire(
-                                    'Berhasil Menukar',
-                                    'Nama : <b>' + data.array.nama + '</b><br>' + 'Jumlah : <b>' +
-                                    data.array.jumlah + '</b>',
-                                    'success'
-                                );
+                                if (data.email) {
+                                    Swal.fire(
+                                        '<b>Email Terkirim</b>',
+                                        'success'
+                                    );
+                                }
                                 Swal.fire({
                                     title: 'Berhasil Menukar',
                                     text: 'Nama : ' + data.array.nama + ' ' +
@@ -1433,6 +1434,7 @@ if (Auth::check()) {
                                 })
 
                             } else {
+                                swal.close();
                                 popup(data.status, data.toast, data.pesan);
                             }
                         }

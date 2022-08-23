@@ -28,15 +28,15 @@ return new class extends Migration
             $table->date('tgl');
             $table->string('nama', 30);
             $table->string('kategori', 20);
-            $table->string('qty')->nullable();
+            $table->string('qty', 20)->nullable();
             $table->string('uom', 20)->nullable();
             $table->integer('harga')->nullable();
 
 
             $table->string('stock')->nullable();
-            $table->integer('stock_harga')->nullable();
+            $table->string('stock_harga', 100)->nullable();
             $table->string('stock_uom', 10)->nullable();
-            $table->integer('total')->nullable();
+            $table->integer('total', 100)->nullable();
             $table->string('ket')->nullable();
             $table->boolean('hutang')->default(false);
             $table->boolean('up')->default(false);

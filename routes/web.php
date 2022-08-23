@@ -238,8 +238,6 @@ Route::controller(BelanjaController::class)->group(
         Route::post('Belanja', 'Input')->middleware('auth');
         Route::post('Belanja/HapusItem', 'HapusItem')->middleware('auth');
         Route::post('Belanja/Manage', 'Manage')->middleware('auth');
-
-
         Route::post('Belanja/ViewItem', 'ViewItem')->middleware('auth');
         Route::post('Belanja/Upload', 'Upload')->middleware('auth');
     }

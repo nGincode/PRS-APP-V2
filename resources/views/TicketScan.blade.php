@@ -21,7 +21,12 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12 col-sm-6" id="qr-reader"></div>
+                            <div class="col-12 col-sm-6">
+                                <div id="qr-reader"></div>
+                                <input type="text" onchange="scan(this.value)" id="barcodeTicket" placeholder="Barcode Scanner"
+                                    class="form-control" style="margin-top: 5px;">
+                            </div>
+
                             <hr>
                             <br>
                             <div class="col-12 col-sm-6 text-center"
@@ -76,26 +81,31 @@
             }, false);
 
         function onScanSuccess(decodedText, decodedResult) {
-            new Audio('/assets/sound/beep.mp3').play();
             console.log(`Code scanned = ${decodedText}`, decodedResult);
 
+            scan(decodedText);
+        }
+
+        html5QrcodeScanner.render(onScanSuccess);
+
+
+        function scan(id) {
             $.ajax({
                 url: "CekScan",
                 type: "POST",
                 data: {
-                    id: decodedText
+                    id: id
                 },
                 error: function(xhr, status, error) {
                     // popup(status, true, xhr.status + " " + error);
                 },
                 beforeSend: function(xhr) {},
                 success: function(data) {
+                    new Audio('/assets/sound/beep.mp3').play();
+                    $('#barcodeTicket').val('');
                     $('#hasil-scan').html(data);
                 }
             });
-
         }
-
-        html5QrcodeScanner.render(onScanSuccess);
     </script>
 @endsection

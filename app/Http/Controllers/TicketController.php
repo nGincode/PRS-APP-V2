@@ -19,8 +19,12 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Picqer\Barcode\BarcodeGeneratorHTML;
 
-use File;
+
+use App\Mail\Email;
+use Illuminate\Support\Facades\Mail;
+
 
 class TicketController extends Controller
 {
@@ -220,11 +224,14 @@ class TicketController extends Controller
     public function Masuk(Request $request)
     {
         $id = $request->input('id');
-        $generator = new BarcodeGeneratorPNG();
+
+        $generator = new BarcodeGeneratorHTML();
         if ($data = Ticket_Tukar::where('kode', $id)->with('Ticket')->first()) {
             if ($data['ticket']->img_voc) {
                 echo '<img  width="800px" src="' . url('/uploads/ticket/' . $data['ticket']->img_voc) . '"> <br>';
-                echo '<div style="position: relative;margin-top: -100px;margin-left: 32px;"><img  width="310px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '"> <br><font>' . $id . '</font></div>';
+                echo '<div style="position: relative;margin-top: -245px;margin-left: 65px;">' . $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110) . '</div>';
+                echo '<div style="position: relative;margin-top: -282px;font-size: 30px;width: 800px;text-align: center;font-weight: bolder;font-family: monospace;">' . $data['nama'] . '</div>';
+                echo '<div style="position: absolute;font-family: fantasy;top: 43px;font-size: 50px;left: 27px;width: 77px;text-align: center;">' . $data['jumlah'] . '</div>';
             } else {
                 echo 'Voucher Tidak ditemukan';
             }
@@ -239,10 +246,24 @@ class TicketController extends Controller
 
         if ($Ticket_Tukar = Ticket_Tukar::where('id', $id)->with('Ticket')->first()) {
             if (Ticket_Tukar::where('id', $id)->update(['di' => $request->session()->get('store'), 'claim' => date('Y-m-d H:i:s')])) {
+
+                $subject = $Ticket_Tukar['ticket']->nama;
+                $img_voc =  $Ticket_Tukar['ticket']->img_voc;
+                $generator = new BarcodeGeneratorHTML();
+                $barcode = $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110);
+                $nama = $Ticket_Tukar['nama'];
+                $jumlah = $Ticket_Tukar['jumlah'];
+                if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $img_voc, $barcode, $nama, $jumlah))) {
+                    $email = true;
+                } else {
+                    $email = false;
+                };
+
                 $data = [
                     'toast' => true,
                     'status' => 'success',
                     'pesan' => 'Berhasil ditukar',
+                    'email' => $email,
                     'array' => $Ticket_Tukar
                 ];
             } else {

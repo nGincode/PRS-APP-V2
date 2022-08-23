@@ -133,7 +133,7 @@ class InventoryController extends Controller
                     $data = [
                         'toast' => true,
                         'status' => 'error',
-                        'pesan' =>  'Terjadi kegagalan system'
+                        'pesan' =>  'Gagal Input Database'
                     ];
                 };
             }

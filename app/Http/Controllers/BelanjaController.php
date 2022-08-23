@@ -280,7 +280,6 @@ class BelanjaController extends Controller
                         if (!$jml or $id) {
 
                             if ($id) {
-
                                 $input = [
                                     'nama' => $inventory['bahan']->nama,
                                     'bahan_id' => $inventory['bahan_id'],
@@ -303,14 +302,15 @@ class BelanjaController extends Controller
                                     $data = [
                                         'toast' => true,
                                         'status' => 'success',
-                                        'pesan' => 'Autosave Berhasil'
+                                        'pesan' => 'Autosave Berhasil 1',
+                                        'data' => $input
                                     ];
                                 } else {
-
                                     $data = [
                                         'toast' => true,
                                         'status' => 'error',
-                                        'pesan' =>  'Terjadi kegagalan system'
+                                        'pesan' =>  'Terjadi kegagalan system 1',
+                                        'data' => $input
                                     ];
                                 };
                             } else {
@@ -343,7 +343,6 @@ class BelanjaController extends Controller
                                         'row' => $request->input('key')[$key]
                                     ];
                                 } else {
-
                                     $data = [
                                         'toast' => true,
                                         'status' => 'error',

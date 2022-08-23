@@ -248,6 +248,14 @@
 
                                                                 </div>
                                                             @else
+                                                                <input type="hidden" value="{{ $v['stock'] }}"
+                                                                    name="stock[]" class="form-control">
+                                                                <input type="hidden" name="stock_uom[]"
+                                                                    value="{{ $v['stock_uom'] }}"
+                                                                    id="stock_satuan_{{ $key }}">
+                                                                <input type="hidden" value="{{ $v['stock_harga'] }}"
+                                                                    name="stock_harga[]">
+
                                                                 -
                                                             @endif
                                                         </div>
