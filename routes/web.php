@@ -327,6 +327,7 @@ Route::controller(TicketController::class)->group(
         Route::get('Ticket/Scan', 'Scan')->middleware('auth');
         Route::post('Ticket/Manage/Scan', 'ManageScan')->middleware('auth');
         Route::post('Ticket/TambahScan', 'TambahScan')->middleware('auth');
+        Route::post('Ticket/EmailSend', 'EmailSend')->middleware('auth');
         Route::post('Ticket/CekScan', 'CekScan')->middleware('auth');
         Route::get('Ticket/Masuk', 'Masuk');
         Route::post('Ticket/Harga', 'Harga')->middleware('auth');

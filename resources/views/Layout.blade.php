@@ -1408,13 +1408,6 @@ if (Auth::check()) {
                         },
                         success: function(data) {
                             if (data.status === 'success') {
-                                popup(data.status, data.toast, data.pesan);
-                                if (data.email) {
-                                    Swal.fire(
-                                        '<b>Email Terkirim</b>',
-                                        'success'
-                                    );
-                                }
                                 Swal.fire({
                                     title: 'Berhasil Menukar',
                                     text: 'Nama : ' + data.array.nama + ' ' +
@@ -1432,7 +1425,6 @@ if (Auth::check()) {
                                             1500);
                                     }
                                 })
-
                             } else {
                                 swal.close();
                                 popup(data.status, data.toast, data.pesan);
@@ -1441,6 +1433,31 @@ if (Auth::check()) {
                     });
                 }
             })
+        }
+
+        function EmailSend(id) {
+
+            $.ajax({
+                url: "EmailSend",
+                type: "POST",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                beforeSend: function(xhr) {
+                    Swal.showLoading();
+                },
+                success: function(data) {
+                    if (data.email) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
         }
     </script>
 </body>

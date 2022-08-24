@@ -1182,7 +1182,7 @@ $(document).ready(function () {
                         
                 Swal.fire({
                     title: 'Yakin Akan Dibuat?',
-                    text: "Uang Yang Harus dibayarkan Rp."+hasil+" !!",
+                    text: "Uang Yang Harus dibayarkan Rp."+hasil+" , Dengan Jumlah "+jumlah+" !!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -1203,7 +1203,39 @@ $(document).ready(function () {
                             },
                             success: function (data) {
                                 if (data.status === 'success') {
-                                    popup(data.status, data.toast, data.pesan, '#FormTicket');
+                                    if(EmailSend(data.email)){
+                                        Swal.fire({
+                                            position: 'top-end',
+                                            icon: 'success',
+                                            title: 'Email Terkirim & Berhasil di buat',
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                            })
+                                    }else{
+                                        Swal.fire({
+                                            position: 'top-end',
+                                            icon: 'info',
+                                            title: 'Email Gagal Terkirim & Input Berhasil di buat',
+                                            showConfirmButton: false,
+                                            timer: 2000
+                                            })
+                                    };
+
+                                    if ($('#FormTicket')) {
+                                        $(".select2").val("").trigger("change.select2");
+                                        $(".select2").select2({
+                                            placeholder: "Pilih",
+                                        });
+                                        $('.form-control').removeClass('is-valid');
+                                        $('#FormTicket')[0].reset();
+
+                                            if ($('.input-group-prepend').length) {
+                                                $('.input-group-prepend').html('');
+                                            } 
+                                            if ($('.input-group-append').length && !$('#show_hide_password').length) {
+                                                $('.input-group-append').html('');
+                                            }
+                                    }
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }

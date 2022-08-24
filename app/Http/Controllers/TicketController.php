@@ -148,6 +148,30 @@ class TicketController extends Controller
         echo $hasil;
     }
 
+    public function EmailSend(Request $request)
+    {
+
+        $id = $request->input('id');
+        $Ticket_Tukar = Ticket_Tukar::where('id', $id)->with('Ticket')->first();
+        if ($Ticket_Tukar) {
+            $subject = $Ticket_Tukar['ticket']->nama;
+            $img_voc =  $Ticket_Tukar['ticket']->img_voc;
+            $generator = new BarcodeGeneratorHTML();
+            $barcode = $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110);
+            $nama = $Ticket_Tukar['nama'];
+            $jumlah = $Ticket_Tukar['jumlah'];
+
+            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $img_voc, $barcode, $nama, $jumlah))) {
+                $email = true;
+            } else {
+                $email = false;
+            };
+        } else {
+            $email = false;
+        }
+        return $email;
+    }
+
     public function TambahScan(Request $request)
     {
         if (!in_array('createTicketScan', $this->permission())) {
@@ -194,11 +218,13 @@ class TicketController extends Controller
                         'berlaku' => $ticket['berlaku'],
                         'harga' => round($ticket['harga'] * $request->input('jumlah'))
                     ];
-                    if (Ticket_Tukar::create($input)) {
+                    if ($id = Ticket_Tukar::insertGetId($input)) {
+
                         $data = [
                             'toast' => true,
                             'status' => 'success',
-                            'pesan' => 'Berhasil dibuat'
+                            'pesan' => 'Berhasil dibuat',
+                            'email' => $id
                         ];
                     } else {
                         $data = [
@@ -246,24 +272,10 @@ class TicketController extends Controller
 
         if ($Ticket_Tukar = Ticket_Tukar::where('id', $id)->with('Ticket')->first()) {
             if (Ticket_Tukar::where('id', $id)->update(['di' => $request->session()->get('store'), 'claim' => date('Y-m-d H:i:s')])) {
-
-                $subject = $Ticket_Tukar['ticket']->nama;
-                $img_voc =  $Ticket_Tukar['ticket']->img_voc;
-                $generator = new BarcodeGeneratorHTML();
-                $barcode = $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110);
-                $nama = $Ticket_Tukar['nama'];
-                $jumlah = $Ticket_Tukar['jumlah'];
-                if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $img_voc, $barcode, $nama, $jumlah))) {
-                    $email = true;
-                } else {
-                    $email = false;
-                };
-
                 $data = [
                     'toast' => true,
                     'status' => 'success',
                     'pesan' => 'Berhasil ditukar',
-                    'email' => $email,
                     'array' => $Ticket_Tukar
                 ];
             } else {
