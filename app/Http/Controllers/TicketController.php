@@ -70,7 +70,7 @@ class TicketController extends Controller
                 '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"> <br>' . $value['kode'] . '</center>',
                 '<a href="Masuk?id=' . $value['kode'] . '">' . $value['nama'] . '</a>',
                 '<a target="_blank" href="https://api.whatsapp.com/send?phone=+62' . $value['wa'] . '&text=' . url('Ticket/Masuk?id=' . $value['kode']) . '">' . $value['wa'] . '</a>',
-                $value['email'],
+                '<a href="#" onclick="EmailSend(' . $value['id'] . ', 1)">' . $value['email'] . '</a>',
                 $value['jumlah'] . ' (' . $this->rupiah($value['harga']) . ')',
                 $value['pembuat'],
                 $claim,

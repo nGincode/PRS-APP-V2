@@ -1432,7 +1432,7 @@ if (Auth::check()) {
             })
         }
 
-        function EmailSend(id) {
+        function EmailSend(id, pesan = null) {
 
             $.ajax({
                 url: "EmailSend",
@@ -1448,10 +1448,30 @@ if (Auth::check()) {
                     Swal.showLoading();
                 },
                 success: function(data) {
-                    if (data.email) {
-                        return true;
+                    if (pesan) {
+                        if (data.email) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Email Terkirim ',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        } else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'info',
+                                title: 'Email Gagal Terkirim',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
                     } else {
-                        return false;
+                        if (data.email) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             });
