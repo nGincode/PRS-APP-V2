@@ -40,7 +40,7 @@ class Email extends Mailable
     public function build()
     {
         return $this
-            ->from('office@primarasaselaras.com',  $this->from)
+            ->from($this->from)
             ->view('Email')
             ->subject($this->subject)
             ->with(
