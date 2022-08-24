@@ -1445,35 +1445,41 @@ if (Auth::check()) {
                     popup(status, true, xhr.status + " " + error);
                 },
                 beforeSend: function(xhr) {
-                    Swal.showLoading();
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Tunggu hingga 1 menit ',
+                        showConfirmButton: false,
+                        timer: 2000
+                    })
                 },
-                success: function(data) {
-                    if (pesan) {
-                        if (data) {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'success',
-                                title: 'Email Terkirim ',
-                                showConfirmButton: false,
-                                timer: 2000
-                            })
-                        } else {
-                            Swal.fire({
-                                position: 'top-end',
-                                icon: 'info',
-                                title: 'Email Gagal Terkirim',
-                                showConfirmButton: false,
-                                timer: 2000
-                            })
-                        }
-                    } else {
-                        if (data.email) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
+                // success: function(data) {
+                //     if (pesan) {
+                //         if (data) {
+                //             Swal.fire({
+                //                 position: 'top-end',
+                //                 icon: 'success',
+                //                 title: 'Email Terkirim ',
+                //                 showConfirmButton: false,
+                //                 timer: 2000
+                //             })
+                //         } else {
+                //             Swal.fire({
+                //                 position: 'top-end',
+                //                 icon: 'info',
+                //                 title: 'Email Gagal Terkirim',
+                //                 showConfirmButton: false,
+                //                 timer: 2000
+                //             })
+                //         }
+                //     } else {
+                //         if (data.email) {
+                //             return true;
+                //         } else {
+                //             return false;
+                //         }
+                //     }
+                // }
             });
         }
     </script>
