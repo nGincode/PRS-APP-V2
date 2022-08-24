@@ -1476,21 +1476,6 @@ if (Auth::check()) {
                 }
             });
         }
-
-
-        Swal.fire({
-            position: 'top-end',
-            icon: 'info',
-            title: 'Email Gagal Terkirim',
-        })
-
-        Swal.fire({
-            position: 'top-end',
-            icon: 'info',
-            title: 'Email Gagal Terkirim',
-            showConfirmButton: false,
-            timer: 2000
-        })
     </script>
 </body>
 
