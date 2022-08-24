@@ -36,10 +36,10 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Jenis Izin</th>
-                                        <th scope="col"><i class="fa fa-plus"></i> Tambah</th>
-                                        <th scope="col"><i class="fa fa-pen"></i> Edit</th>
-                                        <th scope="col"><i class="fa fa-eye"></i> lihat</th>
-                                        <th scope="col"><i class="fa fa-trash"></i> Hapus</th>
+                                        <th scope="col"><i class="fa fa-plus"></i></th>
+                                        <th scope="col"><i class="fa fa-pen"></i></th>
+                                        <th scope="col"><i class="fa fa-eye"></i></th>
+                                        <th scope="col"><i class="fa fa-trash"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>

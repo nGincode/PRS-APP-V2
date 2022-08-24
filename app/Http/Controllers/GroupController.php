@@ -72,6 +72,7 @@ class GroupController extends Controller
         }
         $nama = array_unique($nama);
 
+        $no = 0;
         foreach ($nama as $key => $v1) {
 
             $username = '';
@@ -118,7 +119,7 @@ class GroupController extends Controller
                 }
             }
 
-            $result['data'][$key] = array(
+            $result['data'][$no++] = array(
                 $v1,
                 $izin,
                 $username,
