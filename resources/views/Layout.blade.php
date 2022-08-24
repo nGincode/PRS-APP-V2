@@ -332,7 +332,7 @@ if (Auth::check()) {
                             in_array('viewReportInventory', $user_permission) ||
                             in_array('deleteReportInventory', $user_permission))
                             <li class="nav-item @if ($title == 'Report') menu-open @endif ">
-                                <a href=" #" class="nav-link @if ($title == 'Report') active @endif ">
+                                <a class="nav-link @if ($title == 'Report') active @endif ">
                                     <i class=" nav-icon fas fa-file"></i>
                                     <p>
                                         Report
@@ -447,7 +447,7 @@ if (Auth::check()) {
                             in_array('deletePegawai', $user_permission))
 
                             <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
-                                <a href="#" class="nav-link @if ($title == 'Master') active @endif ">
+                                <a class="nav-link @if ($title == 'Master') active @endif ">
                                     <i class=" nav-icon fas fa-database"></i>
                                     <p>
                                         Master Data
@@ -528,7 +528,7 @@ if (Auth::check()) {
                             in_array('viewFoodcostVarian', $user_permission) ||
                             in_array('deleteFoodcostVarian', $user_permission))
                             <li class="nav-item @if ($title == 'Foodcost') menu-open @endif ">
-                                <a href=" #" class="nav-link @if ($title == 'Foodcost') active @endif ">
+                                <a class="nav-link @if ($title == 'Foodcost') active @endif ">
                                     <i class=" nav-icon fas fa-pepper-hot"></i>
                                     <p>
                                         Foodcost
@@ -590,8 +590,7 @@ if (Auth::check()) {
                             in_array('deleteInventoryStock', $user_permission))
                             <li
                                 class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
-                                <a href="{{ url('/Inventory') }}"
-                                    class="nav-link @if ($title == 'Inventory') active @endif ">
+                                <a class="nav-link @if ($title == 'Inventory') active @endif ">
                                     <i class=" nav-icon fas fa-cube"></i>
                                     <p>
                                         Inventory
@@ -677,9 +676,8 @@ if (Auth::check()) {
                             in_array('viewOrder', $user_permission) ||
                             in_array('deleteOrder', $user_permission))
                             <li class="nav-item @if ($title == 'Order')  @endif ">
-                                <a href="{{ url('/Order') }}"
-                                    class="nav-link @if ($title == 'Order') active @endif ">
-                                    <i class="             nav-icon fas fa-shopping-cart "></i>
+                                <a class="nav-link @if ($title == 'Order') active @endif ">
+                                    <i class="nav-icon fas fa-shopping-cart "></i>
                                     <p>
                                         Order
                                         <span class="right badge badge-danger"><?php
@@ -715,8 +713,7 @@ if (Auth::check()) {
                             in_array('deleteTicketScan', $user_permission))
                             <li
                                 class="nav-item  @if ($title == 'Ticket') menu-is-opening menu-open @endif ">
-                                <a href="{{ url('/Ticket') }}"
-                                    class="nav-link @if ($title == 'Ticket') active @endif ">
+                                <a class="nav-link @if ($title == 'Ticket') active @endif ">
                                     <i class=" nav-icon fas fa-cube"></i>
                                     <p>
                                         Ticket
