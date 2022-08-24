@@ -39,13 +39,12 @@ class TicketController extends Controller
     /////////////////////////////////// Scan //////////////////////////
     public function Scan(Request $request)
     {
-        // $this->data['user_permission'] = $this->permission();
-        // if (!in_array('viewTicketScan', $this->permission())) {
-        //     return redirect()->to('/');
-        // }
-        // $this->data['subtitle'] = 'Scan';
+        $this->data['user_permission'] = $this->permission();
+        if (!in_array('viewTicketScan', $this->permission())) {
+            return redirect()->to('/');
+        }
+        $this->data['subtitle'] = 'Scan';
 
-        // return view('TicketScan', $this->data);
         return view('TicketScan', $this->data);
     }
 
