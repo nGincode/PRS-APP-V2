@@ -156,9 +156,9 @@ class TicketController extends Controller
         if ($Ticket_Tukar) {
             $subject = $Ticket_Tukar['ticket']->nama;
             if ($store = Store::where('id', $Ticket_Tukar['ticket']->store_id)->first()) {
-                $from = $store['nama'];
+                $from = str_replace(' ', '', $store['nama']);
             } else {
-                $from = 'Ticket Event';
+                $from = 'TicketEvent';
             }
             $nama = $Ticket_Tukar['nama'];
             $kode = $Ticket_Tukar['kode'];
