@@ -155,13 +155,11 @@ class TicketController extends Controller
         $Ticket_Tukar = Ticket_Tukar::where('id', $id)->with('Ticket')->first();
         if ($Ticket_Tukar) {
             $subject = $Ticket_Tukar['ticket']->nama;
-            $img_voc =  $Ticket_Tukar['ticket']->img_voc;
-            $generator = new BarcodeGeneratorHTML();
-            $barcode = $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110);
             $nama = $Ticket_Tukar['nama'];
+            $kode = $Ticket_Tukar['kode'];
             $jumlah = $Ticket_Tukar['jumlah'];
 
-            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $img_voc, $barcode, $nama, $jumlah))) {
+            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $kode, $nama, $jumlah))) {
                 $email = true;
             } else {
                 $email = false;

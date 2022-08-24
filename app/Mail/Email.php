@@ -18,16 +18,14 @@ class Email extends Mailable
      */
 
     public $subject;
-    public $img_voc;
-    public $barcode;
+    public $kode;
     public $nama;
     public $jumlah;
 
-    public function __construct($subject, $img_voc, $barcode, $nama, $jumlah)
+    public function __construct($subject, $kode, $nama, $jumlah)
     {
         $this->subject = $subject;
-        $this->img_voc = $img_voc;
-        $this->barcode = $barcode;
+        $this->kode = $kode;
         $this->nama = $nama;
         $this->jumlah = $jumlah;
     }
@@ -44,10 +42,9 @@ class Email extends Mailable
             ->subject($this->subject)
             ->with(
                 [
-                    'img_voc' => $this->img_voc,
-                    'barcode' => $this->barcode,
                     'nama' => $this->nama,
                     'jumlah' => $this->jumlah,
+                    'kode' => $this->kode
                 ]
             );
     }

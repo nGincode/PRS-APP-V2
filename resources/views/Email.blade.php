@@ -8,12 +8,12 @@
 </head>
 
 <body>
-    <?php
-    echo '<img  width="800px" src="' . url('/uploads/ticket/' . $img_voc) . '"> <br>';
-    echo '<div style="position: relative;margin-top: -245px;margin-left: 65px;">' . $barcode . '</div>';
-    echo '<div style="position: relative;margin-top: -282px;font-size: 30px;width: 800px;text-align: center;font-weight: bolder;font-family: monospace;">' . $nama . '</div>';
-    echo '<div style="position: absolute;font-family: fantasy;top: 43px;font-size: 50px;left: 27px;width: 77px;text-align: center;">' . $jumlah . '</div>';
-    ?>
+    <h1>Terima Kasih Telah Membeli Tiket <br> {{ $nama }}</h1>
+    <br>
+    Jumlah Yang anda beli : {{ $jumlah }} <br>
+    Silahkan kunjungi link berikut untuk akses voucher :<br>
+    {{ url('Ticket/Masuk?id=' . $kode) }}
+
 </body>
 
 </html>
