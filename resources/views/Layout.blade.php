@@ -970,7 +970,7 @@ if (Auth::check()) {
 
     <script src="{{ url('/') }}/assets/js/jQuery.print.min.js"></script>
     <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
-    <script src="{{ url('/') }}/assets/js/custom.js"></script>
+    <script src="{{ url('/') }}/assets/js/fembi.js"></script>
 
     @include('sweetalert::alert')
 
@@ -1476,6 +1476,21 @@ if (Auth::check()) {
                 }
             });
         }
+
+
+        Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: 'Email Gagal Terkirim',
+        })
+
+        Swal.fire({
+            position: 'top-end',
+            icon: 'info',
+            title: 'Email Gagal Terkirim',
+            showConfirmButton: false,
+            timer: 2000
+        })
     </script>
 </body>
 

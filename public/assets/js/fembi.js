@@ -1201,25 +1201,11 @@ $(document).ready(function () {
                             error: function (xhr, status, error) {
                                 popup(status, true, xhr.status + " " + error);
                             },
+                            beforeSend: function(xhr) {
+                                Swal.showLoading();
+                            },
                             success: function (data) {
                                 if (data.status === 'success') {
-                                    if(EmailSend(data.email)){
-                                        Swal.fire({
-                                            position: 'top-end',
-                                            icon: 'success',
-                                            title: 'Email Terkirim & Berhasil di buat',
-                                            showConfirmButton: false,
-                                            timer: 2000
-                                            })
-                                    }else{
-                                        Swal.fire({
-                                            position: 'top-end',
-                                            icon: 'info',
-                                            title: 'Email Gagal Terkirim & Input Berhasil di buat',
-                                            showConfirmButton: false,
-                                            timer: 2000
-                                            })
-                                    };
 
                                     if ($('#FormTicket')) {
                                         $(".select2").val("").trigger("change.select2");
@@ -1236,6 +1222,8 @@ $(document).ready(function () {
                                                 $('.input-group-append').html('');
                                             }
                                     }
+                                    
+                                    EmailSend(data.email, 1);
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }

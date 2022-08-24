@@ -21,10 +21,12 @@ class Email extends Mailable
     public $kode;
     public $nama;
     public $jumlah;
+    public $from;
 
-    public function __construct($subject, $kode, $nama, $jumlah)
+    public function __construct($subject, $from, $kode, $nama, $jumlah)
     {
         $this->subject = $subject;
+        $this->from = $from;
         $this->kode = $kode;
         $this->nama = $nama;
         $this->jumlah = $jumlah;
@@ -37,9 +39,10 @@ class Email extends Mailable
      */
     public function build()
     {
-        return $this->from('office@primarasaselaras.com')
+        return $this
             ->view('Email')
             ->subject($this->subject)
+            ->from('office@primarasaselaras.com',  $this->form)
             ->with(
                 [
                     'nama' => $this->nama,
