@@ -1432,55 +1432,40 @@ if (Auth::check()) {
             })
         }
 
-        function EmailSend(id, pesan = null) {
+        function EmailSend(id) {
 
-            $.ajax({
-                url: "EmailSend",
-                type: "POST",
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
-                },
-                beforeSend: function(xhr) {
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Tunggu hingga 1 menit ',
-                        showConfirmButton: false,
-                        timer: 2000
-                    })
-                },
-                // success: function(data) {
-                //     if (pesan) {
-                //         if (data) {
-                //             Swal.fire({
-                //                 position: 'top-end',
-                //                 icon: 'success',
-                //                 title: 'Email Terkirim ',
-                //                 showConfirmButton: false,
-                //                 timer: 2000
-                //             })
-                //         } else {
-                //             Swal.fire({
-                //                 position: 'top-end',
-                //                 icon: 'info',
-                //                 title: 'Email Gagal Terkirim',
-                //                 showConfirmButton: false,
-                //                 timer: 2000
-                //             })
-                //         }
-                //     } else {
-                //         if (data.email) {
-                //             return true;
-                //         } else {
-                //             return false;
-                //         }
-                //     }
-                // }
-            });
+            Swal.fire({
+                title: 'Akan Mengirimkan Email?',
+                text: "Yakin Ingin Mengirimkan Email!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Gunakan'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "EmailSend",
+                        type: "POST",
+                        data: {
+                            id: id
+                        },
+                        dataType: 'json',
+                        error: function(xhr, status, error) {
+                            popup(status, true, xhr.status + " " + error);
+                        },
+                        beforeSend: function(xhr) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Tunggu hingga 1 menit ',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                        }
+                    });
+                }
+            })
         }
     </script>
 </body>

@@ -1222,8 +1222,9 @@ $(document).ready(function () {
                                                 $('.input-group-append').html('');
                                             }
                                     }
-                                    
-                                    EmailSend(data.email, 1);
+                                    if(data.email){
+                                        EmailSend(data.email);
+                                    }
                                 } else {
                                     popup(data.status, data.toast, data.pesan);
                                 }
