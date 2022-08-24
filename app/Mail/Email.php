@@ -29,6 +29,7 @@ class Email extends Mailable
         $this->kode = $kode;
         $this->nama = $nama;
         $this->jumlah = $jumlah;
+        $this->store = $store;
     }
 
     /**
@@ -38,7 +39,7 @@ class Email extends Mailable
      */
     public function build()
     {
-        return $this->from('office@primarasaselaras.com', 'Ticket Event')
+        return $this->from('office@primarasaselaras.com', 'Ticket ' . $this->store)
             ->view('Email')
             ->subject($this->subject)
             ->with(
