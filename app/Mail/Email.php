@@ -42,7 +42,7 @@ class Email extends Mailable
         return $this
             ->view('Email')
             ->subject($this->subject)
-            ->from('office@primarasaselaras.com',  $this->from)
+            ->from('office@primarasaselaras.com',  "'" . $this->from . "'")
             ->with(
                 [
                     'nama' => $this->nama,
