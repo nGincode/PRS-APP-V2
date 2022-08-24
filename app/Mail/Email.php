@@ -37,7 +37,7 @@ class Email extends Mailable
      */
     public function build()
     {
-        return $this->from('office@primarasaselaras.com')
+        return $this->from('office@primarasaselaras.com', 'Ticket Event')
             ->view('Email')
             ->subject($this->subject)
             ->with(
