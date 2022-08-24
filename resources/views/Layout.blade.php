@@ -1441,7 +1441,7 @@ if (Auth::check()) {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Gunakan'
+                confirmButtonText: 'Kirim'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -1458,7 +1458,7 @@ if (Auth::check()) {
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
-                                title: 'Tunggu hingga 1 menit ',
+                                title: 'Tunggu hingga 1 menit, Cek di Spam jika tidak muncul',
                                 showConfirmButton: false,
                                 timer: 2000
                             })
