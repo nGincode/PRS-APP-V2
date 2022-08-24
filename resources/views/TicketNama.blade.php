@@ -4,7 +4,7 @@
     <section class="content">
         <div class="container-fluid">
 
-            @if (in_array('createUser', $user_permission))
+            @if (in_array('createTicketNama', $user_permission))
                 <form id="FormTicketNama" action="{{ url('/Ticket/TambahNama') }}">
                     @csrf
                     <div class="card card-primary">
