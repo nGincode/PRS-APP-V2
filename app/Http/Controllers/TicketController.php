@@ -156,15 +156,15 @@ class TicketController extends Controller
         if ($Ticket_Tukar) {
             $subject = $Ticket_Tukar['ticket']->nama;
             if ($store = Store::where('id', $Ticket_Tukar['ticket']->store_id)->first()) {
-                $from = str_replace(' ', '', $store['nama'] . '@primarasaselaras.com');
+                $from = $store['nama'];
             } else {
-                $from = 'TicketEvent@primarasaselaras.com';
+                $from = 'Ticket Event';
             }
             $nama = $Ticket_Tukar['nama'];
             $kode = $Ticket_Tukar['kode'];
             $jumlah = $Ticket_Tukar['jumlah'];
 
-            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $kode, $nama, $jumlah))) {
+            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $from, $kode, $nama, $jumlah))) {
                 $email = true;
             } else {
                 $email = false;

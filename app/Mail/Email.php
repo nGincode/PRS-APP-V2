@@ -18,11 +18,12 @@ class Email extends Mailable
      */
 
     public $subject;
+    public $store;
     public $kode;
     public $nama;
     public $jumlah;
 
-    public function __construct($subject, $kode, $nama, $jumlah)
+    public function __construct($subject, $store, $kode, $nama, $jumlah)
     {
         $this->subject = $subject;
         $this->kode = $kode;
