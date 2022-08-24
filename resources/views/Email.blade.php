@@ -8,7 +8,8 @@
 </head>
 
 <body>
-    <h1>Terima Kasih Telah Membeli Tiket <br> {{ $nama }}</h1>
+    <h2>Terima Kasih Telah Membeli Tiket <br><br></h2>
+    <h3>{{ $nama }}</h3>
     <br>
     Jumlah Yang anda beli : {{ $jumlah }} <br>
     Silahkan kunjungi link berikut untuk akses voucher :<br>

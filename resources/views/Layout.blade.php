@@ -1449,7 +1449,7 @@ if (Auth::check()) {
                 },
                 success: function(data) {
                     if (pesan) {
-                        if (data.email) {
+                        if (data) {
                             Swal.fire({
                                 position: 'top-end',
                                 icon: 'success',
