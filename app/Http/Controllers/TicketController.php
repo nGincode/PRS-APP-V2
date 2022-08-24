@@ -164,7 +164,7 @@ class TicketController extends Controller
             $kode = $Ticket_Tukar['kode'];
             $jumlah = $Ticket_Tukar['jumlah'];
 
-            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $from, $kode, $nama, $jumlah))) {
+            if (Mail::to($Ticket_Tukar['email'])->send(new Email($subject, $kode, $nama, $jumlah))) {
                 $email = true;
             } else {
                 $email = false;
