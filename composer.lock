@@ -350,16 +350,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.4.0",
+            "version": "3.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "118a360e9437e88d49024f36283c8bcbd76105f5"
+                "reference": "22de295f10edbe00df74f517612f1fbd711131e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/118a360e9437e88d49024f36283c8bcbd76105f5",
-                "reference": "118a360e9437e88d49024f36283c8bcbd76105f5",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/22de295f10edbe00df74f517612f1fbd711131e2",
+                "reference": "22de295f10edbe00df74f517612f1fbd711131e2",
                 "shasum": ""
             },
             "require": {
@@ -441,7 +441,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.4.0"
+                "source": "https://github.com/doctrine/dbal/tree/3.4.2"
             },
             "funding": [
                 {
@@ -457,7 +457,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-06T20:35:57+00:00"
+            "time": "2022-08-21T14:21:06+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1259,16 +1259,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.47.1",
+            "version": "v1.47.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "14d856517d18b14754b364896b28210df2738df0"
+                "reference": "f30823d6ff2bf3d7d3a4b089804f8dc5a1680501"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/14d856517d18b14754b364896b28210df2738df0",
-                "reference": "14d856517d18b14754b364896b28210df2738df0",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/f30823d6ff2bf3d7d3a4b089804f8dc5a1680501",
+                "reference": "f30823d6ff2bf3d7d3a4b089804f8dc5a1680501",
                 "shasum": ""
             },
             "require": {
@@ -1283,10 +1283,10 @@
             },
             "require-dev": {
                 "erusev/parsedown": "^1.6",
-                "google/common-protos": "^1.0||^2.0",
                 "google/gax": "^1.9",
                 "opis/closure": "^3",
                 "phpdocumentor/reflection": "^3.0||^4.0",
+                "phpspec/prophecy": "^1.10.3",
                 "phpunit/phpunit": "^4.8|^5.0|^8.0",
                 "squizlabs/php_codesniffer": "2.*",
                 "yoast/phpunit-polyfills": "^1.0"
@@ -1318,22 +1318,22 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.47.1"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.47.2"
             },
-            "time": "2022-08-05T00:41:21+00:00"
+            "time": "2022-08-23T20:22:22+00:00"
         },
         {
             "name": "google/cloud-storage",
-            "version": "v1.28.0",
+            "version": "v1.28.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "017c14eeb2a3717a1ce9c27a39c66a779e6914cf"
+                "reference": "83e8beac404f38d2e869da4c3fbb7bdf96193f77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/017c14eeb2a3717a1ce9c27a39c66a779e6914cf",
-                "reference": "017c14eeb2a3717a1ce9c27a39c66a779e6914cf",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/83e8beac404f38d2e869da4c3fbb7bdf96193f77",
+                "reference": "83e8beac404f38d2e869da4c3fbb7bdf96193f77",
                 "shasum": ""
             },
             "require": {
@@ -1345,6 +1345,7 @@
                 "google/cloud-pubsub": "^1.0",
                 "phpdocumentor/reflection": "^3.0||^4.0",
                 "phpseclib/phpseclib": "^2.0||^3.0",
+                "phpspec/prophecy": "^1.10.3",
                 "phpunit/phpunit": "^4.8|^5.0|^8.0",
                 "squizlabs/php_codesniffer": "2.*",
                 "yoast/phpunit-polyfills": "^1.0"
@@ -1373,9 +1374,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.28.0"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v1.28.1"
             },
-            "time": "2022-07-29T00:07:49+00:00"
+            "time": "2022-08-23T20:22:22+00:00"
         },
         {
             "name": "google/crc32",
@@ -1947,16 +1948,16 @@
         },
         {
             "name": "kreait/firebase-php",
-            "version": "6.7.0",
+            "version": "6.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-php.git",
-                "reference": "b091648d8cc81548248a94cb87f2ff8eaab5c01e"
+                "reference": "3fd1fb244cd6ef109146addb74c2d836303c409c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/b091648d8cc81548248a94cb87f2ff8eaab5c01e",
-                "reference": "b091648d8cc81548248a94cb87f2ff8eaab5c01e",
+                "url": "https://api.github.com/repos/kreait/firebase-php/zipball/3fd1fb244cd6ef109146addb74c2d836303c409c",
+                "reference": "3fd1fb244cd6ef109146addb74c2d836303c409c",
                 "shasum": ""
             },
             "require": {
@@ -2038,20 +2039,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-07-28T17:24:19+00:00"
+            "time": "2022-08-20T14:04:47+00:00"
         },
         {
             "name": "kreait/firebase-tokens",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kreait/firebase-tokens-php.git",
-                "reference": "3d69ddbce698c0f90b163730e60cb3734ef3ac0d"
+                "reference": "3f732ae04f6548f5130709daf06fcc1ca0561002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kreait/firebase-tokens-php/zipball/3d69ddbce698c0f90b163730e60cb3734ef3ac0d",
-                "reference": "3d69ddbce698c0f90b163730e60cb3734ef3ac0d",
+                "url": "https://api.github.com/repos/kreait/firebase-tokens-php/zipball/3f732ae04f6548f5130709daf06fcc1ca0561002",
+                "reference": "3f732ae04f6548f5130709daf06fcc1ca0561002",
                 "shasum": ""
             },
             "require": {
@@ -2104,7 +2105,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kreait/firebase-tokens-php/issues",
-                "source": "https://github.com/kreait/firebase-tokens-php/tree/3.0.2"
+                "source": "https://github.com/kreait/firebase-tokens-php/tree/3.0.3"
             },
             "funding": [
                 {
@@ -2112,7 +2113,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-21T22:33:04+00:00"
+            "time": "2022-08-22T21:40:00+00:00"
         },
         {
             "name": "kreait/laravel-firebase",
@@ -2208,16 +2209,16 @@
         },
         {
             "name": "laravel/breeze",
-            "version": "v1.11.4",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/breeze.git",
-                "reference": "a6817a45c9f49e2bf342c4a38e27a610cbda787a"
+                "reference": "6d95e9aacbe992e19c81d5cd6f7eec994e50dd8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/breeze/zipball/a6817a45c9f49e2bf342c4a38e27a610cbda787a",
-                "reference": "a6817a45c9f49e2bf342c4a38e27a610cbda787a",
+                "url": "https://api.github.com/repos/laravel/breeze/zipball/6d95e9aacbe992e19c81d5cd6f7eec994e50dd8d",
+                "reference": "6d95e9aacbe992e19c81d5cd6f7eec994e50dd8d",
                 "shasum": ""
             },
             "require": {
@@ -2265,20 +2266,20 @@
                 "issues": "https://github.com/laravel/breeze/issues",
                 "source": "https://github.com/laravel/breeze"
             },
-            "time": "2022-08-08T13:25:54+00:00"
+            "time": "2022-08-15T22:57:15+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v9.24.0",
+            "version": "v9.26.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "053840f579cf01d353d81333802afced79b1c0af"
+                "reference": "1ccfb91afee7a351b09ba1f1b97739096a3ad1cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/053840f579cf01d353d81333802afced79b1c0af",
-                "reference": "053840f579cf01d353d81333802afced79b1c0af",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1ccfb91afee7a351b09ba1f1b97739096a3ad1cf",
+                "reference": "1ccfb91afee7a351b09ba1f1b97739096a3ad1cf",
                 "shasum": ""
             },
             "require": {
@@ -2445,7 +2446,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-08-09T13:43:22+00:00"
+            "time": "2022-08-23T19:00:07+00:00"
         },
         {
             "name": "laravel/sail",
@@ -2895,16 +2896,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "4.1.5",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "fe2d89f2eaa7087af4aa166c6f480ef04e000582"
+                "reference": "72ac6d807ee51a70ad376ee03a2387e8646e10f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/fe2d89f2eaa7087af4aa166c6f480ef04e000582",
-                "reference": "fe2d89f2eaa7087af4aa166c6f480ef04e000582",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/72ac6d807ee51a70ad376ee03a2387e8646e10f3",
+                "reference": "72ac6d807ee51a70ad376ee03a2387e8646e10f3",
                 "shasum": ""
             },
             "require": {
@@ -2920,12 +2921,12 @@
                 "infection/infection": "^0.21",
                 "lcobucci/coding-standard": "^6.0",
                 "mikey179/vfsstream": "^1.6.7",
-                "phpbench/phpbench": "^1.0",
+                "phpbench/phpbench": "^1.2",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/php-invoker": "^3.1",
                 "phpunit/phpunit": "^9.5"
             },
@@ -2953,7 +2954,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lcobucci/jwt/issues",
-                "source": "https://github.com/lcobucci/jwt/tree/4.1.5"
+                "source": "https://github.com/lcobucci/jwt/tree/4.2.1"
             },
             "funding": [
                 {
@@ -2965,7 +2966,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-09-28T19:34:56+00:00"
+            "time": "2022-08-19T23:14:07+00:00"
         },
         {
             "name": "league/commonmark",
@@ -3561,16 +3562,16 @@
         },
         {
             "name": "masterminds/html5",
-            "version": "2.7.5",
+            "version": "2.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Masterminds/html5-php.git",
-                "reference": "f640ac1bdddff06ea333a920c95bbad8872429ab"
+                "reference": "897eb517a343a2281f11bc5556d6548db7d93947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/f640ac1bdddff06ea333a920c95bbad8872429ab",
-                "reference": "f640ac1bdddff06ea333a920c95bbad8872429ab",
+                "url": "https://api.github.com/repos/Masterminds/html5-php/zipball/897eb517a343a2281f11bc5556d6548db7d93947",
+                "reference": "897eb517a343a2281f11bc5556d6548db7d93947",
                 "shasum": ""
             },
             "require": {
@@ -3624,9 +3625,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Masterminds/html5-php/issues",
-                "source": "https://github.com/Masterminds/html5-php/tree/2.7.5"
+                "source": "https://github.com/Masterminds/html5-php/tree/2.7.6"
             },
-            "time": "2021-07-01T14:25:37+00:00"
+            "time": "2022-08-18T16:18:26+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -9078,251 +9079,24 @@
             "time": "2022-02-21T01:04:05+00:00"
         },
         {
-            "name": "phpdocumentor/reflection-common",
-            "version": "2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "reference": "1d01c49d4ed62f25aa84a747ad35d5a16924662b",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "phpDocumentor\\Reflection\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jaap van Otterdijk",
-                    "email": "opensource@ijaap.nl"
-                }
-            ],
-            "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
-            "homepage": "http://www.phpdoc.org",
-            "keywords": [
-                "FQSEN",
-                "phpDocumentor",
-                "phpdoc",
-                "reflection",
-                "static analysis"
-            ],
-            "support": {
-                "issues": "https://github.com/phpDocumentor/ReflectionCommon/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionCommon/tree/2.x"
-            },
-            "time": "2020-06-27T09:03:43+00:00"
-        },
-        {
-            "name": "phpdocumentor/reflection-docblock",
-            "version": "5.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/622548b623e81ca6d78b721c5e029f4ce664f170",
-                "reference": "622548b623e81ca6d78b721c5e029f4ce664f170",
-                "shasum": ""
-            },
-            "require": {
-                "ext-filter": "*",
-                "php": "^7.2 || ^8.0",
-                "phpdocumentor/reflection-common": "^2.2",
-                "phpdocumentor/type-resolver": "^1.3",
-                "webmozart/assert": "^1.9.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.3.2",
-                "psalm/phar": "^4.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "phpDocumentor\\Reflection\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                },
-                {
-                    "name": "Jaap van Otterdijk",
-                    "email": "account@ijaap.nl"
-                }
-            ],
-            "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "support": {
-                "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
-                "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/5.3.0"
-            },
-            "time": "2021-10-19T17:43:47+00:00"
-        },
-        {
-            "name": "phpdocumentor/type-resolver",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "77a32518733312af16a44300404e945338981de3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/77a32518733312af16a44300404e945338981de3",
-                "reference": "77a32518733312af16a44300404e945338981de3",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0",
-                "phpdocumentor/reflection-common": "^2.0"
-            },
-            "require-dev": {
-                "ext-tokenizer": "*",
-                "psalm/phar": "^4.8"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "phpDocumentor\\Reflection\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mike van Riel",
-                    "email": "me@mikevanriel.com"
-                }
-            ],
-            "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "support": {
-                "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.1"
-            },
-            "time": "2022-03-15T21:29:03+00:00"
-        },
-        {
-            "name": "phpspec/prophecy",
-            "version": "v1.15.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
-                "reference": "bbcd7380b0ebf3961ee21409db7b38bc31d69a13",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/instantiator": "^1.2",
-                "php": "^7.2 || ~8.0, <8.2",
-                "phpdocumentor/reflection-docblock": "^5.2",
-                "sebastian/comparator": "^3.0 || ^4.0",
-                "sebastian/recursion-context": "^3.0 || ^4.0"
-            },
-            "require-dev": {
-                "phpspec/phpspec": "^6.0 || ^7.0",
-                "phpunit/phpunit": "^8.0 || ^9.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Prophecy\\": "src/Prophecy"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
-                },
-                {
-                    "name": "Marcello Duarte",
-                    "email": "marcello.duarte@gmail.com"
-                }
-            ],
-            "description": "Highly opinionated mocking framework for PHP 5.3+",
-            "homepage": "https://github.com/phpspec/prophecy",
-            "keywords": [
-                "Double",
-                "Dummy",
-                "fake",
-                "mock",
-                "spy",
-                "stub"
-            ],
-            "support": {
-                "issues": "https://github.com/phpspec/prophecy/issues",
-                "source": "https://github.com/phpspec/prophecy/tree/v1.15.0"
-            },
-            "time": "2021-12-08T12:19:24+00:00"
-        },
-        {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.15",
+            "version": "9.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "2e9da11878c4202f97915c1cb4bb1ca318a63f5f"
+                "reference": "2593003befdcc10db5e213f9f28814f5aa8ac073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2e9da11878c4202f97915c1cb4bb1ca318a63f5f",
-                "reference": "2e9da11878c4202f97915c1cb4bb1ca318a63f5f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/2593003befdcc10db5e213f9f28814f5aa8ac073",
+                "reference": "2593003befdcc10db5e213f9f28814f5aa8ac073",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
                 "ext-xmlwriter": "*",
-                "nikic/php-parser": "^4.13.0",
+                "nikic/php-parser": "^4.14",
                 "php": ">=7.3",
                 "phpunit/php-file-iterator": "^3.0.3",
                 "phpunit/php-text-template": "^2.0.2",
@@ -9371,7 +9145,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.15"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.16"
             },
             "funding": [
                 {
@@ -9379,7 +9153,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-03-07T09:28:20+00:00"
+            "time": "2022-08-20T05:26:47+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -9624,16 +9398,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.5.21",
+            "version": "9.5.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1"
+                "reference": "888556852e7e9bbeeedb9656afe46118765ade34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/0e32b76be457de00e83213528f6bb37e2a38fcb1",
-                "reference": "0e32b76be457de00e83213528f6bb37e2a38fcb1",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/888556852e7e9bbeeedb9656afe46118765ade34",
+                "reference": "888556852e7e9bbeeedb9656afe46118765ade34",
                 "shasum": ""
             },
             "require": {
@@ -9648,7 +9422,6 @@
                 "phar-io/manifest": "^2.0.3",
                 "phar-io/version": "^3.0.2",
                 "php": ">=7.3",
-                "phpspec/prophecy": "^1.12.1",
                 "phpunit/php-code-coverage": "^9.2.13",
                 "phpunit/php-file-iterator": "^3.0.5",
                 "phpunit/php-invoker": "^3.1.1",
@@ -9665,9 +9438,6 @@
                 "sebastian/resource-operations": "^3.0.3",
                 "sebastian/type": "^3.0",
                 "sebastian/version": "^3.0.2"
-            },
-            "require-dev": {
-                "phpspec/prophecy-phpunit": "^2.0.1"
             },
             "suggest": {
                 "ext-soap": "*",
@@ -9710,7 +9480,7 @@
             ],
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.21"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.5.23"
             },
             "funding": [
                 {
@@ -9722,7 +9492,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-19T12:14:25+00:00"
+            "time": "2022-08-22T14:01:36+00:00"
         },
         {
             "name": "sebastian/cli-parser",

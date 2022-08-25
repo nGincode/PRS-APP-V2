@@ -194,6 +194,22 @@
                                 aria-describedby="No" placeholder="Masukan Data">
                         </div>
 
+
+                        <div class="col-12 col-sm-6">
+                            <div class="form-group">
+                                <label>Outlet</label>
+                                <select name="Outlet" id="Outlet" class="form-control select2"
+                                    data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                    <option selected="true" disabled="disabled">Pilih</option>
+                                    @foreach ($Store as $str)
+                                        @if ($str['id'] != 1)
+                                            <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                         <hr>
                         <center>
                             <h4><b id="totalbelanja1"></b></h4>

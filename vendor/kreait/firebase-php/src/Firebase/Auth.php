@@ -20,6 +20,7 @@ use Kreait\Firebase\Auth\SignInWithEmailAndOobCode;
 use Kreait\Firebase\Auth\SignInWithEmailAndPassword;
 use Kreait\Firebase\Auth\SignInWithIdpCredentials;
 use Kreait\Firebase\Auth\SignInWithRefreshToken;
+use Kreait\Firebase\Auth\UserQuery;
 use Kreait\Firebase\Auth\UserRecord;
 use Kreait\Firebase\Exception\Auth\AuthError;
 use Kreait\Firebase\Exception\Auth\FailedToVerifySessionCookie;
@@ -103,6 +104,25 @@ final class Auth implements Contract\Auth
 
         return $users;
     }
+
+    public function queryUsers($query): array
+    {
+        $userQuery = $query instanceof UserQuery ? $query : UserQuery::fromArray($query);
+
+        $response = $this->client->queryUsers($userQuery);
+
+        $data = Json::decode((string) $response->getBody(), true);
+
+        $users = [];
+
+        foreach ($data['userInfo'] ?? [] as $userData) {
+            $userRecord = UserRecord::fromResponseData($userData);
+            $users[$userRecord->uid] = $userRecord;
+        }
+
+        return $users;
+    }
+
 
     public function listUsers(int $maxResults = 1000, int $batchSize = 1000): Traversable
     {

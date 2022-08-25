@@ -1,6 +1,63 @@
 # Release Notes for 9.x
 
-## [Unreleased](https://github.com/laravel/framework/compare/v9.23.0...9.x)
+## [Unreleased](https://github.com/laravel/framework/compare/v9.25.1...9.x)
+
+
+## [v9.25.1](https://github.com/laravel/framework/compare/v9.25.0...v9.25.1) - 2022-08-16
+
+### Fixes
+- [Fixed typos](https://github.com/laravel/framework/compare/v9.25.0...v9.25.1) 
+
+
+## [v9.25.0](https://github.com/laravel/framework/compare/v9.24.0...v9.25.0) - 2022-08-16
+
+### Added
+- Added whenNotExactly to Stringable ([#43700](https://github.com/laravel/framework/pull/43700))
+- Added ability to Model::query()->touch() to mass update timestamps ([#43665](https://github.com/laravel/framework/pull/43665))
+
+### Fixed
+- Prevent error in db/model commands when using unsupported columns ([#43635](https://github.com/laravel/framework/pull/43635))
+- Fixes ensureDependenciesExist runtime error ([#43626](https://github.com/laravel/framework/pull/43626))
+- Null value for auto-cast field caused deprication warning in php 8.1 ([#43706](https://github.com/laravel/framework/pull/43706))
+- db:table command properly handle table who doesn't exist ([#43669](https://github.com/laravel/framework/pull/43669))
+
+### Changed
+- Handle assoc mode within db commands ([#43636](https://github.com/laravel/framework/pull/43636))
+- Allow chunkById on Arrays, as well as Models ([#43666](https://github.com/laravel/framework/pull/43666))
+- Allow for int value parameters to whereMonth() and whereDay() ([#43668](https://github.com/laravel/framework/pull/43668))
+- Cleaning up old if-else statement ([#43712](https://github.com/laravel/framework/pull/43712))
+- Ensure correct 'integrity' value is used for css assets ([#43714](https://github.com/laravel/framework/pull/43714))
+
+
+## [v9.24.0](https://github.com/laravel/framework/compare/v9.23.0...v9.24.0) - 2022-08-09
+
+### Added
+- New db:show, db:table and db:monitor commands ([#43367](https://github.com/laravel/framework/pull/43367))
+- Added validation doesnt_end_with rule ([#43518](https://github.com/laravel/framework/pull/43518))
+- Added `Illuminate/Database/Eloquent/SoftDeletes::restoreQuietly()` ([#43550](https://github.com/laravel/framework/pull/43550))
+- Added mergeUnless to resource ConditionallyLoadsAttributes trait ([#43567](https://github.com/laravel/framework/pull/43567))
+- Added `Illuminate/Support/Testing/Fakes/NotificationFake::sentNotifications()` ([#43558](https://github.com/laravel/framework/pull/43558))
+- Added `implode` to `Passthru` in `Illuminate/Database/Eloquent/Builder.php` ([#43574](https://github.com/laravel/framework/pull/43574))
+- Make Config repository macroable ([#43598](https://github.com/laravel/framework/pull/43598))
+- Add whenNull to ConditionallyLoadsAtrribute trait ([#43600](https://github.com/laravel/framework/pull/43600))
+- Extract child route model relationship name into a method ([#43597](https://github.com/laravel/framework/pull/43597))
+
+### Revert
+- Reverted [Added `whereIn` to  `Illuminate/Routing/RouteRegistrar::allowedAttributes`](https://github.com/laravel/framework/pull/43509) ([#43523](https://github.com/laravel/framework/pull/43523))
+
+### Fixed
+- Fix unique locking on broadcast events ([#43516](https://github.com/laravel/framework/pull/43516))
+- Fixes the issue of running docs command on windows ([#43566](https://github.com/laravel/framework/pull/43566), [#43585](https://github.com/laravel/framework/pull/43585))
+- Fixes output when running db:seed or using --seed in migrate commands ([#43593](https://github.com/laravel/framework/pull/43593))
+
+### Changed
+- Gracefully fail when unable to locate expected binary on the system for artisan docs command ([#43521](https://github.com/laravel/framework/pull/43521))
+- Improve output for some Artisan commands ([#43547](https://github.com/laravel/framework/pull/43547))
+- Alternative database name in Postgres DSN, allow pgbouncer aliased databases to continue working on 9.x ([#43542](https://github.com/laravel/framework/pull/43542))
+- Allow @class() for component tags ([#43140](https://github.com/laravel/framework/pull/43140))
+- Attribute Cast Performance Improvements ([#43554](https://github.com/laravel/framework/pull/43554))
+- Queue worker daemon should also listen for SIGQUIT ([#43607](https://github.com/laravel/framework/pull/43607))
+- Keep original keys when using Collection->sortBy() with an array of sort operations ([#43609](https://github.com/laravel/framework/pull/43609))
 
 
 ## [v9.23.0](https://github.com/laravel/framework/compare/v9.22.1...v9.23.0) - 2022-08-02

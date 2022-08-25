@@ -15,7 +15,7 @@ trait InstallsInertiaStacks
     protected function installInertiaVueStack()
     {
         // Install Inertia...
-        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.5.4', 'laravel/sanctum:^2.8', 'tightenco/ziggy:^1.0');
+        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.6.3', 'laravel/sanctum:^2.8', 'tightenco/ziggy:^1.0');
 
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
@@ -81,8 +81,10 @@ trait InstallsInertiaStacks
             $this->installInertiaVueSsrStack();
         }
 
+        $this->runCommands(['npm install', 'npm run build']);
+
+        $this->line('');
         $this->components->info('Breeze scaffolding installed successfully.');
-        $this->components->warn('Please execute the [npm install && npm run dev] commands to build your assets.');
     }
 
     /**
@@ -122,7 +124,7 @@ trait InstallsInertiaStacks
     protected function installInertiaReactStack()
     {
         // Install Inertia...
-        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.5.4', 'laravel/sanctum:^2.8', 'tightenco/ziggy:^1.0');
+        $this->requireComposerPackages('inertiajs/inertia-laravel:^0.6.3', 'laravel/sanctum:^2.8', 'tightenco/ziggy:^1.0');
 
         // NPM Packages...
         $this->updateNodePackages(function ($packages) {
@@ -197,8 +199,10 @@ trait InstallsInertiaStacks
             $this->installInertiaReactSsrStack();
         }
 
+        $this->runCommands(['npm install', 'npm run build']);
+
+        $this->line('');
         $this->components->info('Breeze scaffolding installed successfully.');
-        $this->components->warn('Please execute the [npm install && npm run dev] commands to build your assets.');
     }
 
     /**

@@ -85,7 +85,8 @@ class PenjualanExport implements
             [
                 '#',
                 'Tgl',
-                'Ke',
+                'Dari',
+                'Tujuan',
                 'Nama Barang',
                 'Qty',
                 'UOM',
@@ -99,7 +100,7 @@ class PenjualanExport implements
     public function array(): array
     {
         $data = [];
-        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
+        $pos = POSBillItem::with('posbill')->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
         $order = Orderitem::where('up', true)->where('logistik', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
 
         $no = 1;
@@ -110,6 +111,7 @@ class PenjualanExport implements
                     $no++,
                     date('Y/m/d', strtotime($row->tgl)),
                     'POS',
+                    $row['posbill']->store,
                     $row->nama,
                     $row->qty,
                     $row->satuan,
@@ -125,6 +127,7 @@ class PenjualanExport implements
                 $data[] = [
                     $no++,
                     date('Y/m/d', strtotime($v->tgl)),
+                    'Order',
                     $v->store->nama,
                     $v->nama,
                     $v->qty_deliv,

@@ -40,6 +40,7 @@ class POSController extends Controller
         }
 
         $this->data['item'] = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->get();
+        $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
 
 
         return view('POS', $this->data);

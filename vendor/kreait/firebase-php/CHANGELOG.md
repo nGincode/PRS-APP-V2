@@ -2,11 +2,28 @@
 
 ## [Unreleased]
 
+## [6.8.0] - 2022-08-20
+
+### Added
+
+* Added `Auth::queryUsers()` to process subsets of users with more parameters than `Auth::listUsers()`. 
+  `listUsers()` is a fast and memory-efficient way to process a large list of users. `queryUsers()` provides 
+  sorting and filtering by given fields and pagination.
+  ([#727](https://github.com/kreait/firebase-php/pull/727)/[#728](https://github.com/kreait/firebase-php/pull/728)) 
+  ([Documentation](https://firebase-php.readthedocs.io/en/latest/user-management.html#query-users))
+
+## [6.7.1] - 2022-08-17
+
+### Fixed
+
+* Limits and filters were not applied to Realtime Database Queries
+  ([#725](https://github.com/kreait/firebase-php/pull/725))
+
 ## [6.7.0] - 2022-07-28
 
 ### Added
 
-* Added support for the Firebase Auth Emulator.
+* Added support for the Firebase Realtime Database Emulator.
   ([#722](https://github.com/kreait/firebase-php/pull/722)) ([Documentation](https://firebase-php.readthedocs.io/en/latest/testing.html))
 
 ### Changed
@@ -266,7 +283,9 @@ methods.
     * `Kreait\Firebase\Value\Uid`
     * `Kreait\Firebase\Value\Url`
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/6.7.0...6.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/6.8.0...6.x
+[6.8.0]: https://github.com/kreait/firebase-php/compare/6.7.1...6.8.0
+[6.7.1]: https://github.com/kreait/firebase-php/compare/6.7.0...6.7.1
 [6.7.0]: https://github.com/kreait/firebase-php/compare/6.6.1...6.7.0
 [6.6.1]: https://github.com/kreait/firebase-php/compare/6.6.0...6.6.1
 [6.6.0]: https://github.com/kreait/firebase-php/compare/6.5.1...6.6.0
