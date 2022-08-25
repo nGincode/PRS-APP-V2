@@ -676,7 +676,8 @@ if (Auth::check()) {
                             in_array('viewOrder', $user_permission) ||
                             in_array('deleteOrder', $user_permission))
                             <li class="nav-item @if ($title == 'Order')  @endif ">
-                                <a class="nav-link @if ($title == 'Order') active @endif ">
+                                <a href="{{ url('/Order') }}"
+                                    class="nav-link @if ($title == 'Order') active @endif ">
                                     <i class="nav-icon fas fa-shopping-cart "></i>
                                     <p>
                                         Order
