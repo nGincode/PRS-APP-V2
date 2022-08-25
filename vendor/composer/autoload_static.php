@@ -47,6 +47,10 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         array (
             'voku\\' => 5,
         ),
+        'n' => 
+        array (
+            'nguyenary\\QRCodeMonkey\\' => 23,
+        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -233,6 +237,10 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'voku\\' => 
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
+        ),
+        'nguyenary\\QRCodeMonkey\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nguyenary/qr-code-monkey/src',
         ),
         'ZipStream\\' => 
         array (
@@ -746,6 +754,13 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
+        'C' => 
+        array (
+            'Curl' => 
+            array (
+                0 => __DIR__ . '/..' . '/curl/curl/src',
+            ),
+        ),
     );
 
     public static $classMap = array (
@@ -1030,6 +1045,10 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'Cron\\HoursField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/HoursField.php',
         'Cron\\MinutesField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/dragonmantank/cron-expression/src/Cron/MonthField.php',
+        'Curl\\Curl' => __DIR__ . '/..' . '/curl/curl/src/Curl/Curl.php',
+        'Database\\Factories\\StoreFactory' => __DIR__ . '/../..' . '/database/factories/StoreFactory.php',
+        'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
+        'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
         'DeepCopy\\Exception\\PropertyException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/PropertyException.php',
@@ -8189,6 +8208,10 @@ class ComposerStaticInitda5f999516984a3092a02ef84a7c82e7
         'ZipStream\\Option\\Version' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Option/Version.php',
         'ZipStream\\Stream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Stream.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
+        'nguyenary\\QRCodeMonkey\\Constants\\Constant' => __DIR__ . '/..' . '/nguyenary/qr-code-monkey/src/Constants/Constant.php',
+        'nguyenary\\QRCodeMonkey\\QRCode' => __DIR__ . '/..' . '/nguyenary/qr-code-monkey/src/QRCode.php',
+        'nguyenary\\QRCodeMonkey\\Request\\Data' => __DIR__ . '/..' . '/nguyenary/qr-code-monkey/src/Request/Data.php',
+        'nguyenary\\QRCodeMonkey\\Request\\Request' => __DIR__ . '/..' . '/nguyenary/qr-code-monkey/src/Request/Request.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
         '©' => __DIR__ . '/..' . '/symfony/cache/Traits/ValueWrapper.php',
     );

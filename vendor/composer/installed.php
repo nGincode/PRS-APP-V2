@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '88a77a79ef42f8e4fee567b02ffd92cad6b23784',
+        'reference' => 'eae28a58097229000607bc111f30ca702a0d9f7d',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -42,6 +42,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'curl/curl' => array(
+            'pretty_version' => '2.3.3',
+            'version' => '2.3.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../curl/curl',
+            'aliases' => array(),
+            'reference' => 'ec22ad27dead47093f0944f5e651df4b12846f5a',
+            'dev_requirement' => false,
         ),
         'davedevelopment/hamcrest-php' => array(
             'dev_requirement' => true,
@@ -559,7 +568,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '88a77a79ef42f8e4fee567b02ffd92cad6b23784',
+            'reference' => 'eae28a58097229000607bc111f30ca702a0d9f7d',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -791,6 +800,15 @@
             'install_path' => __DIR__ . '/../nette/utils',
             'aliases' => array(),
             'reference' => '0af4e3de4df9f1543534beab255ccf459e7a2c99',
+            'dev_requirement' => false,
+        ),
+        'nguyenary/qr-code-monkey' => array(
+            'pretty_version' => 'v1.0',
+            'version' => '1.0.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../nguyenary/qr-code-monkey',
+            'aliases' => array(),
+            'reference' => '77a3941f73eba25d1ef749bb75de8f5a7755c2df',
             'dev_requirement' => false,
         ),
         'nikic/php-parser' => array(

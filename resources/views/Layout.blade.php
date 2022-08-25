@@ -285,11 +285,13 @@ if (Auth::check()) {
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
+                    <div class="image" style="padding-top: 0.7rem;">
                         <img src="{{ $urlLogo }}" class="img-circle elevation-2" alt="User Image">
                     </div>
-                    <div class="info">
+                    <div class="info" style="color: white;">
                         <a href="#" class="d-block">{{ $Username }}</a>
+                        <i class="fa fa-circle text-success"></i>
+                        <small>{{ request()->session()->get('tipe') }}</small>
                     </div>
                 </div>
 

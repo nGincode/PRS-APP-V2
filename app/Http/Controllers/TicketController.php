@@ -25,6 +25,8 @@ use Picqer\Barcode\BarcodeGeneratorHTML;
 use App\Mail\Email;
 use Illuminate\Support\Facades\Mail;
 
+use nguyenary\QRCodeMonkey\QRCode;
+
 
 class TicketController extends Controller
 {
