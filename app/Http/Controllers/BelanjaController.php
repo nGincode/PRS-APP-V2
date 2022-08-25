@@ -154,7 +154,7 @@ class BelanjaController extends Controller
 
         $this->data['satuan'] = Satuan::all();
         $this->data['bahan'] = $bahan;
-        $this->data['Data'] = Belanja::where('tgl', date('Y-m-d'))->where('delete', false)->where('store_id', $request->session()->get('store_id'))->orderBy('up', 'DESC')->get();
+        $this->data['Data'] = Belanja::where('tgl', date('Y-m-d'))->where('delete', false)->where('store_id', $request->session()->get('store_id'))->orderBy('up', 'DESC')->orderBy('id', 'ASC')->get();
         return view('Belanja', $this->data);
     }
 
@@ -302,14 +302,14 @@ class BelanjaController extends Controller
                                     $data = [
                                         'toast' => true,
                                         'status' => 'success',
-                                        'pesan' => 'Autosave Berhasil 1',
+                                        'pesan' => 'Autosave Berhasil',
                                         'data' => $input
                                     ];
                                 } else {
                                     $data = [
                                         'toast' => true,
                                         'status' => 'error',
-                                        'pesan' =>  'Terjadi kegagalan system 1',
+                                        'pesan' =>  'Terjadi kegagalan system',
                                         'data' => $input
                                     ];
                                 };
@@ -433,7 +433,7 @@ class BelanjaController extends Controller
                 }
             }
             if ($cek) {
-                if ($item) {
+                if (!$item) {
                     $data = [
                         'toast' => true,
                         'status' => 'success',

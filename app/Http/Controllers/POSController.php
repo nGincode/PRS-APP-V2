@@ -438,6 +438,7 @@ class POSController extends Controller
                 'no_hp' => $no,
                 'nama_bill' => $pengorder,
                 'gross_total' => $jumlahbelanja,
+                'store' => $request->input('outlet'),
                 'disc' => null,
                 'tax' => null,
                 'paid' => 1,
@@ -651,6 +652,7 @@ class POSController extends Controller
                         <br> No Bill : ' . $Bill['no_bill'] . ' 
                         <br>A/N     : ' . $Bill['nama_bill'] . ' 
                         <br>No Hp   : ' . $Bill['no_hp'] . ' 
+                        <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . ' 
                     </div>
                     <div style="padding-left:5px;margin-top:5px;border-bottom:solid 1px black;">
             ';

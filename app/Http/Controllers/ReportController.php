@@ -47,7 +47,7 @@ class ReportController extends Controller
 
         if ($date = $request->input('range_date')) {
             $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $date)[0]));
-            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $date)[1]));
+            $tgl_akhir = date('Y-m-d', strtotime("+1 day", strtotime(explode(" - ", $date)[1])));
         } else {
             $tgl_awal = null;
             $tgl_akhir = null;

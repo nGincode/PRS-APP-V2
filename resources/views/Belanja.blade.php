@@ -106,9 +106,11 @@
                                                             </select>
                                                         @else
                                                             <input title="Nama Barang" type="text" class="form-control"
-                                                                oninput="$('#FormBelanja').submit()"
-                                                                id="nama_{{ $key }}" value="{{ $v['nama'] }}"
-                                                                placeholder="Nama Barang" name="nama[]">
+                                                                onchange="$('#FormBelanja').submit()"
+                                                                id="nama_{{ $key }}"
+                                                                @if ($v['up']) disabled @endif
+                                                                value="{{ $v['nama'] }}" placeholder="Nama Barang"
+                                                                name="nama[]">
                                                         @endif
                                                         @if (!$v['up'])
                                                             <input type="hidden" value="{{ $v['id'] }}"
@@ -145,7 +147,8 @@
                                                                 id="kategori_val_{{ $key }}"
                                                                 value="<?= $v['kategori'] ?>">
                                                         @else
-                                                            <select oninput="$('#FormBelanja').submit()"
+                                                            <select @if ($v['up']) disabled @endif
+                                                                onchange="$('#FormBelanja').submit()"
                                                                 id="kategori_{{ $key }}" name="kategori[]"
                                                                 class="form-control select2 select2-danger"
                                                                 data-dropdown-css-class="select2-danger"
@@ -172,7 +175,7 @@
                                                                     type="number" class="form-control"
                                                                     id="qty_{{ $key }}"
                                                                     value="{{ $v['qty'] }}"
-                                                                    oninput="hitung_belanja(this.value, {{ $key }})"
+                                                                    onchange="hitung_belanja(this.value, {{ $key }})"
                                                                     placeholder="Qty" name="qty[]">
                                                             </div>
                                                             <div class="col">
@@ -197,9 +200,9 @@
                                                             <div class="col">
                                                                 <input @if ($v['up']) disabled @endif
                                                                     title="Harga 1 nya" data-toggle="tooltip"
-                                                                    data-placement="top" type="text"
+                                                                    data-placement="top" type="number"
                                                                     class="form-control"
-                                                                    oninput="hitung_belanja(this.value, {{ $key }})"
+                                                                    onchange="hitung_belanja(this.value, {{ $key }})"
                                                                     id="harga_{{ $key }}"
                                                                     value="{{ $v['harga'] }}" placeholder="Harga"
                                                                     name="harga[]">
@@ -212,7 +215,7 @@
                                                                 <div class="input-group">
                                                                     <input
                                                                         @if ($v['up']) disabled @endif
-                                                                        oninput="hitung_belanja(this.value,{{ $key }})"
+                                                                        onchange="hitung_belanja(this.value,{{ $key }})"
                                                                         style="text-align: right;max-width:100px;"
                                                                         type="number" value="{{ $v['stock'] }}"
                                                                         name="stock[]" id="stock_{{ $key }}"
@@ -223,7 +226,8 @@
                                                                             {{ $v['stock_uom'] }}</span></div>
                                                                 </div>
 
-                                                                <input type="hidden" name="stock_uom[]"
+                                                                <input @if ($v['up']) disabled @endif
+                                                                    type="hidden" name="stock_uom[]"
                                                                     value="{{ $v['stock_uom'] }}"
                                                                     id="stock_satuan_{{ $key }}">
 
@@ -239,7 +243,7 @@
                                                                         @if ($v['up']) disabled @endif
                                                                         title="Harga 1 nya" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        oninput="hitung_belanja(this.value,{{ $key }})"
+                                                                        onchange="hitung_belanja(this.value,{{ $key }})"
                                                                         style="text-align: right;max-width:100px;"
                                                                         type="number" value="{{ $v['stock_harga'] }}"
                                                                         name="stock_harga[]"
@@ -248,13 +252,17 @@
 
                                                                 </div>
                                                             @else
-                                                                <input type="hidden" value="{{ $v['stock'] }}"
-                                                                    name="stock[]" class="form-control">
-                                                                <input type="hidden" name="stock_uom[]"
-                                                                    value="{{ $v['stock_uom'] }}"
+                                                                <input type="hidden"
+                                                                    @if ($v['up']) disabled @endif
+                                                                    value="{{ $v['stock'] }}" name="stock[]"
+                                                                    class="form-control">
+                                                                <input type="hidden"
+                                                                    @if ($v['up']) disabled @endif
+                                                                    name="stock_uom[]" value="{{ $v['stock_uom'] }}"
                                                                     id="stock_satuan_{{ $key }}">
-                                                                <input type="hidden" value="{{ $v['stock_harga'] }}"
-                                                                    name="stock_harga[]">
+                                                                <input type="hidden"
+                                                                    @if ($v['up']) disabled @endif
+                                                                    value="{{ $v['stock_harga'] }}" name="stock_harga[]">
 
                                                                 -
                                                             @endif
@@ -273,8 +281,9 @@
                                                             name="ket[]" onchange="$('#FormBelanja').submit()">
                                                     </td>
                                                     <td>
-                                                        <select style="border: unset;background: transparent;"
-                                                            name="hutang[]" onchange="$('#FormBelanja').submit()">
+                                                        <select @if ($v['up']) disabled @endif
+                                                            style="border: unset;background: transparent;" name="hutang[]"
+                                                            onchange="$('#FormBelanja').submit()">
                                                             <option value="0">Lunas</option>
                                                             <option value="1"
                                                                 @if ($v['hutang']) selected @endif>
@@ -359,7 +368,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="Lihat">
+                    <div id="Lihat" style="overflow: auto">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -372,6 +381,10 @@
 
     <script>
         function clicknama(id, row, tersimpan = null) {
+            var itemss =
+                '<input type="hidden" value="" name="stock[]" class="form-control"> <input type="hidden" name="stock_uom[]" value=""id="stock_satuan_' +
+                row + '"><input type="hidden" value="" name="stock_harga[]"></input> -';
+
             if (id === 'Oprasional') {
 
                 var isi = prompt('Nama Barang Oprasional');
@@ -404,6 +417,9 @@
                     }
                 }
 
+
+                $('#item_' + row).html(itemss);
+
             } else if (id === 'Supplay') {
                 var isi = prompt('Nama Barang Supplay');
                 var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
@@ -434,6 +450,9 @@
                         hapusbelanja(false, row)
                     }
                 }
+
+
+                $('#item_' + row).html(itemss);
             } else if (id == 'ART') {
                 var isi = prompt('Nama Barang ART');
                 var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
@@ -463,6 +482,9 @@
                         hapusbelanja(false, row)
                     }
                 }
+
+
+                $('#item_' + row).html(itemss);
             } else if (id > 0) {
                 $('#kategori_val_' + row).val('Item');
                 $('#kategori_' + row).val('Item');
@@ -477,7 +499,7 @@
                     dataType: "json",
                     success: function(data) {
                         $('#item_' + row).html(
-                            '<div style="display: flex;"><div class="input-group" style="height: fit-content;" ><input oninput="hitung_belanja(this.value,' +
+                            '<div style="display: flex;"><div class="input-group" style="height: fit-content;" ><input onchange="hitung_belanja(this.value,' +
                             row +
                             ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock[]" id="stock_' +
                             row +
@@ -485,7 +507,7 @@
                             data.satuan +
                             '</span></div></div><input type="hidden" name="stock_uom[]" value="' + data
                             .satuan + '" id="stock_uom_' + row + '"> &nbsp; ' +
-                            '<div class="input-group" style="height: fit-content;"><div class="input-group-prepend" ><span class="input-group-text">Rp.</span></div><input oninput="hitung_belanja(this.value,' +
+                            '<div class="input-group" style="height: fit-content;"><div class="input-group-prepend" ><span class="input-group-text">Rp.</span></div><input onchange="hitung_belanja(this.value,' +
                             row +
                             ')" style="text-align: right;max-width:100px;" type="number" value="1" name="stock_harga[]" id="stock_harga_' +
                             row +

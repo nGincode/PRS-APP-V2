@@ -63,8 +63,8 @@ class PenjualanExport implements
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getDelegate()->mergeCells('A1:H1');
-                $event->sheet->getDelegate()->mergeCells('A2:H2');
+                $event->sheet->getDelegate()->mergeCells('A1:I1');
+                $event->sheet->getDelegate()->mergeCells('A2:I2');
                 $event->sheet->getDelegate()->getStyle('1')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle('1')->getFont()->setSize('12');
                 $event->sheet->getDelegate()->getStyle('3')->getFont()->setBold(true);
@@ -100,18 +100,19 @@ class PenjualanExport implements
     public function array(): array
     {
         $data = [];
-        $pos = POSBillItem::with('posbill')->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
+        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'Posbill')->orderBy('tgl', 'ASC')->orderBy('tgl', 'ASC')->get();
         $order = Orderitem::where('up', true)->where('logistik', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
 
         $no = 1;
         $total = 0;
+        // dd($pos);
         if ($pos) {
             foreach ($pos as $row) {
                 $data[] = [
                     $no++,
                     date('Y/m/d', strtotime($row->tgl)),
                     'POS',
-                    $row['posbill']->store,
+                    ($row['Posbill']->store ?? 'Pelanggan'),
                     $row->nama,
                     $row->qty,
                     $row->satuan,
@@ -139,9 +140,9 @@ class PenjualanExport implements
             }
         }
         if ($data) {
-            $data[] = ['Total', '', '', '', '', '', '', $total];
+            $data[] = ['Total', '', '', '', '', '', '', '', $total];
         } else {
-            $data[] = ['Tidak Ditemukan', '', '', '', '', '', '', ''];
+            $data[] = ['Tidak Ditemukan', '', '', '', '', '', '', '', ''];
         }
         // dd($data);
         return $data;

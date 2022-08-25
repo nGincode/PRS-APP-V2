@@ -195,19 +195,17 @@
                         </div>
 
 
-                        <div class="col-12 col-sm-6">
-                            <div class="form-group">
-                                <label>Outlet</label>
-                                <select name="Outlet" id="Outlet" class="form-control select2"
-                                    data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                    <option selected="true" disabled="disabled">Pilih</option>
-                                    @foreach ($Store as $str)
-                                        @if ($str['id'] != 1)
-                                            <option value="{{ $str['id'] }}">{{ $str['nama'] }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
+                        <div class="form-group">
+                            <label>Pemesan</label>
+                            <select name="outlet_store" id="outlet_store" class="form-control select2"
+                                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                <option selected="true" disabled="disabled">Pilih</option>
+                                @foreach ($Store as $str)
+                                    @if ($str['id'] != 1)
+                                        <option value="{{ $str['nama'] }}">{{ $str['nama'] }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
 
                         <hr>
@@ -345,17 +343,14 @@
                     }
 
                     var html = '';
+
+                    html += '<label  onclick="inputkosong()" class="container">Rp. ' + formatRupiah(data
+                            .no) +
+                        ' <input type="radio" name="duit" value="' + data.no +
+                        '" id="duit"> <span class="checkmark"></span> </label>';
+
                     if (data.no > 100000) {
-                        html += '<label  onclick="inputkosong()" class="container">Rp. ' + formatRupiah(data
-                                .no) +
-                            ' <input type="radio" name="duit" value="' + data.no +
-                            '" id="duit"> <span class="checkmark"></span> </label>';
 
-
-                        if (data.no < 150000) {
-                            html +=
-                                '<label  onclick="inputkosong()" class="container">Rp. 150.000<input type="radio" name="duit" value="150000" id="duit"> <span class="checkmark"></span> </label>';
-                        }
                         if (data.no < 200000) {
                             html +=
                                 '<label  onclick="inputkosong()" class="container">Rp. 200.000<input type="radio" name="duit" value="200000"  id="duit"> <span class="checkmark"></span> </label>';
@@ -510,6 +505,7 @@
                 type: "POST",
                 data: {
                     pengorder: $('#pengorder').val(),
+                    outlet: $('#outlet_store').val(),
                     no: $('#no').val(),
                     jumlah: $('#jumlah').val(),
                     duit: $("input[name='duit']:checked").val()

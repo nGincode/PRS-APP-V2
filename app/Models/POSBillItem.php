@@ -16,4 +16,9 @@ class POSBillItem extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    public function Posbill()
+    {
+        return $this->belongsTo(POSBill::class);
+    }
 }
