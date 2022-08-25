@@ -332,6 +332,7 @@ Route::controller(TicketController::class)->group(
         Route::get('Ticket/Masuk', 'Masuk');
         Route::post('Ticket/Harga', 'Harga')->middleware('auth');
         Route::post('Ticket/Gunakan', 'Gunakan')->middleware('auth');
+        Route::post('Ticket/Scan/Edit', 'EditScan')->middleware('auth');
 
         Route::get('Ticket/Nama', 'Nama')->middleware('auth');
         Route::post('Ticket/Manage/Nama', 'ManageNama')->middleware('auth');

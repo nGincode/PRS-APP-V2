@@ -178,6 +178,21 @@
                                             placeholder="Jumlah Voucher" name="jumlah">
                                     </div>
                                 </div>
+
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Tipe Pembayaran</label>
+                                        <select name="tipe" id="tipe" class="form-control select2 select2-danger"
+                                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                            <option selected="true" disabled="disabled">Pilih</option>
+                                            <option value="Tunai">Tunai</option>
+                                            <option value="Tranfer">Tranfer</option>
+                                            <option value="QRis">QRis</option>
+                                            <option value="Dana">Dana</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.row -->
                         </div>

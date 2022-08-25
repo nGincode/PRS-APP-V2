@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('ke', 40)->nullable();
             $table->dateTime('claim')->nullable();
             $table->date('berlaku')->nullable();
+            $table->string('pembayaran', 20)->nullable();
             $table->timestamps();
         });
     }

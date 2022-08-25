@@ -23,8 +23,8 @@
                         <div class="row">
                             <div class="col-12 col-sm-6">
                                 <div id="qr-reader"></div>
-                                <input type="text" onchange="scan(this.value)" id="barcodeTicket" placeholder="Barcode Scanner"
-                                    class="form-control" style="margin-top: 5px;">
+                                <input type="text" onchange="scan(this.value)" id="barcodeTicket"
+                                    placeholder="Barcode Scanner" class="form-control" style="margin-top: 5px;">
                             </div>
 
                             <hr>
@@ -53,7 +53,7 @@
                     <table id="manage" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Pay</th>
                                 <th>Nama</th>
                                 <th>Wa</th>
                                 <th>Email</th>
@@ -61,6 +61,7 @@
                                 <th>Pembuat</th>
                                 <th>Ditukar</th>
                                 <th>Berlaku</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                     </table>

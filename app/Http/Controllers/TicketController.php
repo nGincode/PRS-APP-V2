@@ -58,7 +58,6 @@ class TicketController extends Controller
         $result = array('data' => array());
         $Data = Ticket_Tukar::latest()->get();
 
-        $generator = new BarcodeGeneratorPNG();
 
         foreach ($Data as $value) {
             if ($value['claim']) {
@@ -66,15 +65,32 @@ class TicketController extends Controller
             } else {
                 $claim = '<font color="red"> Belum</font>';
             }
+
+
+
+            $button = '<div class="btn-group dropleft">
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">';
+
+            if (in_array('updateTicketScan', $this->permission())) {
+                $button .= "<li><a class='dropdown-item' onclick='Edit(" . $value['id'] . "," . '"Scan"' . ")' data-toggle='modal' data-target='#Modal' ><i class='fas fa-pencil-alt'></i> Edit</a></li>";
+            }
+
+            $button .= '</ul></div>';
+
+
             $result['data'][] = array(
-                '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"> <br>' . $value['kode'] . '</center>',
+                ($value['pembayaran']),
                 '<a href="Masuk?id=' . $value['kode'] . '">' . $value['nama'] . '</a>',
                 '<a target="_blank" href="https://api.whatsapp.com/send?phone=+62' . $value['wa'] . '&text=' . url('Ticket/Masuk?id=' . $value['kode']) . '">' . $value['wa'] . '</a>',
                 '<a href="#" onclick="EmailSend(' . $value['id'] . ', 1)">' . $value['email'] . '</a>',
                 $value['jumlah'] . ' (' . $this->rupiah($value['harga']) . ')',
                 $value['pembuat'],
                 $claim,
-                $value['berlaku']
+                $value['berlaku'],
+                $button
             );
         }
 
@@ -185,6 +201,7 @@ class TicketController extends Controller
             $request->all(),
             $rules = [
                 'wa' => 'required',
+                'tipe' => 'required',
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -219,6 +236,7 @@ class TicketController extends Controller
                         'jumlah' => $request->input('jumlah'),
                         'pembuat' => $request->session()->get('store'),
                         'berlaku' => $ticket['berlaku'],
+                        'pembayaran' => $request->input('tipe'),
                         'harga' => round($ticket['harga'] * $request->input('jumlah'))
                     ];
                     if ($id = Ticket_Tukar::insertGetId($input)) {
@@ -314,7 +332,6 @@ class TicketController extends Controller
 
         return view('TicketNama', $this->data);
     }
-
 
     public function ManageNama(Request $request)
     {

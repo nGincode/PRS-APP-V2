@@ -1131,6 +1131,9 @@ $(document).ready(function () {
                 'ticket':{
                     required:true
                 },
+                'tipe':{
+                    required:true
+                },
                 'nama': {
                     required: true,
                     maxlength: 40
