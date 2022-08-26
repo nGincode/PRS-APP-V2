@@ -65,19 +65,19 @@
                                         <div class="form-group">
                                             <label for="outlet">Outlet</label>
                                             <select @isset($order_item[0]) disabled @endisset
-                                                @if (!$pemilik_order) disabled @endif
-                                                @if ($up) disabled @endif
-                                                onchange="$('#FormOrder').submit()" name="outlet" id="outlet"
-                                                class="form-control select2 select2-danger" required
-                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                                <option selected="true">Pilih</option>
-                                                @foreach ($store as $str)
-                                                    <option
-                                                        @isset($order['store_id']) @if ($order['store_id'] == $str['id']) 
-                                                                selected @endif
-                                                    @endisset value="{{ $str['id'] }}"> {{ $str['nama'] }}
-                                                </option>
-                                            @endforeach
+                                            @if (!$pemilik_order) disabled @endif
+                                            @if ($up) disabled @endif
+                                            onchange="$('#FormOrder').submit()" name="outlet" id="outlet"
+                                            class="form-control select2 select2-danger" required
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                        <option selected="true">Pilih</option>
+                                        @foreach ($store as $str)
+                                            <option
+                                                @isset($order['store_id']) @if ($order['store_id'] == $str['id']) 
+                                                                selected @endif @endisset
+                                                value="{{ $str['id'] }}"> {{ $str['nama'] }}
+                                            </option>
+                                        @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -86,93 +86,91 @@
                                     value="<?= request()
                                         ->session()
                                         ->get('store_id') ?>">
-                            @endif
+            @endif
 
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="nama">Nama Pengorder</label>
-                                    <input type="text" @if (!$pemilik_order) readonly @endif
-                                        @if ($up) readonly @endif
-                                        @isset($order['nama']) value="{{ $order['nama'] }}" @endisset
-                                        class="form-control" onchange="$('#FormOrder').submit()" id="nama"
-                                        placeholder="Nama Pengorder" name="nama">
-                                </div>
-                            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label for="nama">Nama Pengorder</label>
+                    <input type="text" @if (!$pemilik_order) readonly @endif
+                        @if ($up) readonly @endif
+                        @isset($order['nama']) value="{{ $order['nama'] }}" @endisset class="form-control"
+                        onchange="$('#FormOrder').submit()" id="nama" placeholder="Nama Pengorder" name="nama">
+                </div>
+            </div>
 
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="nama">No Hp</label>
-                                    <input @if (!$pemilik_order) readonly @endif
-                                        @if ($up) readonly @endif
-                                        @isset($order['nohp']) value="{{ $order['nohp'] }}" @endisset
-                                        type="number" class="form-control" onchange="$('#FormOrder').submit()"
-                                        id="no" placeholder="No HP" name="no">
-                                </div>
-                            </div>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label for="nama">No Hp</label>
+                    <input @if (!$pemilik_order) readonly @endif
+                        @if ($up) readonly @endif
+                        @isset($order['nohp']) value="{{ $order['nohp'] }}" @endisset type="number"
+                        class="form-control" onchange="$('#FormOrder').submit()" id="no" placeholder="No HP"
+                        name="no">
+                </div>
+            </div>
 
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="ket">Ket</label>
-                                    <input @if (!$pemilik_order) readonly @endif
-                                        @if ($up) readonly @endif
-                                        @isset($order['ket']) value="{{ $order['ket'] }}" @endisset
-                                        type="text" onchange="$('#FormOrder').submit()" class="form-control"
-                                        id="ket" placeholder="Keterangan" name="ket">
-                                </div>
-                            </div>
-
-
-                            <div class="col-12 col-sm-6">
-                                <div class="form-group">
-                                    <label for="tujuan">Tujuan Pemesanan</label>
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label for="ket">Ket</label>
+                    <input @if (!$pemilik_order) readonly @endif
+                        @if ($up) readonly @endif
+                        @isset($order['ket']) value="{{ $order['ket'] }}" @endisset type="text"
+                        onchange="$('#FormOrder').submit()" class="form-control" id="ket" placeholder="Keterangan"
+                        name="ket">
+                </div>
+            </div>
 
 
-                                    <select title="Hapus Item Untuk Ubah"
-                                        @isset($order_item[0]) disabled @endisset
-                                        @if ($up) disabled @endif
-                                        @if (!$pemilik_order) disabled @endif onchange="items(this.value)"
-                                        name="tujuan" id="tujuan" class="form-control select2 select2-danger"
-                                        required data-dropdown-css-class="select2-danger" style="width: 100%;">
-                                        <option selected="true" disabled="disabled">Pilih</option>
-                                        @foreach ($logistik as $lgs)
-                                            <option
-                                                @if (isset($order['logistik'])) @if ($order['logistik'] == $lgs['id']) 
+            <div class="col-12 col-sm-6">
+                <div class="form-group">
+                    <label for="tujuan">Tujuan Pemesanan</label>
+
+
+                    <select title="Hapus Item Untuk Ubah" @isset($order_item[0]) disabled @endisset
+                        @if ($up) disabled @endif
+                        @if (!$pemilik_order) disabled @endif onchange="items(this.value)" name="tujuan"
+                        id="tujuan" class="form-control select2 select2-danger" required
+                        data-dropdown-css-class="select2-danger" style="width: 100%;">
+                        <option selected="true" disabled="disabled">Pilih</option>
+                        @foreach ($logistik as $lgs)
+                            <option
+                                @if (isset($order['logistik'])) @if ($order['logistik'] == $lgs['id']) 
                                                     selected @endif
-                                            @endisset value="{{ $lgs['id'] }}">{{ $lgs['nama'] }}</option>
-                                    @endforeach
-                                </select>
-                                @isset($order_item[0])
-                                    <small>
-                                        <font color="red">*</font> Hapus Item Dibawah Untuk Mengubah
-                                    </small>
-                                @endisset
+                            @endisset value="{{ $lgs['id'] }}">{{ $lgs['nama'] }}</option>
+                    @endforeach
+                </select>
+                @isset($order_item[0])
+                    <small>
+                        <font color="red">*</font> Hapus Item Dibawah Untuk Mengubah
+                    </small>
+                @endisset
 
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12" style="overflow: auto">
-                            <label>Input</label>
-                            <table id="tambahorder" class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nama Bahan</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Order</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Deliv</th>
-                                        <th scope="col" style="min-width: 175px; width: 180px">Qty Arrive
-                                        </th>
-                                        <th scope="col">Harga</th>
-                                        <th scope="col">Total</th>
-                                    </tr>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12" style="overflow: auto">
+            <label>Input</label>
+            <table id="tambahorder" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nama Bahan</th>
+                        <th scope="col" style="min-width: 175px; width: 180px">Qty Order</th>
+                        <th scope="col" style="min-width: 175px; width: 180px">Qty Deliv</th>
+                        <th scope="col" style="min-width: 175px; width: 180px">Qty Arrive
+                        </th>
+                        <th scope="col">Harga</th>
+                        <th scope="col">Total</th>
+                    </tr>
 
-                                </thead>
-                                <tbody id="items">
-                                    <tr></tr>
-                                    @isset($order_item[0])
-                                        <?php $total_seluruh = 0; ?>
-                                        @foreach ($order_item as $key => $v)
-                                            <tr id="tr_{{ $key }}"
-                                                style="
+                </thead>
+                <tbody id="items">
+                    <tr></tr>
+                    @isset($order_item[0])
+                        <?php $total_seluruh = 0; ?>
+                        @foreach ($order_item as $key => $v)
+                            <tr id="tr_{{ $key }}"
+                                style="
                                                 @if ($up) background-color: #0000002b;
                                                 @else
                                             @if ($v['qty_deliv'] === $v['qty_arrive'] && $v['qty_arrive']) background-color: #00800036; @endif
@@ -181,321 +179,297 @@
                                             @endif
                                             ">
 
-                                                @if (!$v['qty_deliv'] && $pemilik_order && !$up)
-                                                    <td style="padding-left: 50px;">
-                                                        <input type="hidden" value="{{ $v['id'] }}"
-                                                            id="id_{{ $key }}" name="id[]">
-                                                        <input type="hidden" value="{{ $key }}"
-                                                            id="key_{{ $key }}" name="key[]">
-                                                        <a class="btn btn-danger btn-sm"
-                                                            id="hapus_{{ $key }}"
-                                                            onclick="HapusOrder({{ $v['id'] }},{{ $key }})"
-                                                            style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i
-                                                                class="fa fa-times"></i> </a>
-                                                        <select
-                                                            onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
-                                                            name="select[]" id="nama_{{ $key }}"
-                                                            class="form-control select2 select2-danger"
-                                                            data-dropdown-css-class="select2-danger"
-                                                            style="width: 100%;">
-                                                            <option selected="true" disabled="disabled">Pilih</option>
-                                                            @foreach ($item as $itemv)
-                                                                <option
-                                                                    @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
-                                                                    value="{{ $itemv['id'] }}">
-                                                                    {{ $itemv['bahan']->nama }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @else
-                                                    <td>
-                                                        <input type="hidden" value="{{ $v['id'] }}"
-                                                            id="id_{{ $key }}" name="id[]">
-                                                        <input type="hidden" value="{{ $key }}"
-                                                            id="key_{{ $key }}" name="key[]">
+                                @if (!$v['qty_deliv'] && $pemilik_order && !$up)
+                                    <td style="padding-left: 50px;">
+                                        <input type="hidden" value="{{ $v['id'] }}" id="id_{{ $key }}"
+                                            name="id[]">
+                                        <input type="hidden" value="{{ $key }}" id="key_{{ $key }}"
+                                            name="key[]">
+                                        <a class="btn btn-danger btn-sm" id="hapus_{{ $key }}"
+                                            onclick="HapusOrder({{ $v['id'] }},{{ $key }})"
+                                            style="margin-top: 3px;position: absolute;z-index: 9;left:20px;"><i
+                                                class="fa fa-times"></i> </a>
+                                        <select onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
+                                            name="select[]" id="nama_{{ $key }}"
+                                            class="form-control select2 select2-danger"
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                            <option selected="true" disabled="disabled">Pilih</option>
+                                            @foreach ($item as $itemv)
+                                                <option @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
+                                                    value="{{ $itemv['id'] }}">
+                                                    {{ $itemv['bahan']->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                    <td>
+                                        <input type="hidden" value="{{ $v['id'] }}" id="id_{{ $key }}"
+                                            name="id[]">
+                                        <input type="hidden" value="{{ $key }}" id="key_{{ $key }}"
+                                            name="key[]">
 
-                                                        <select disabled
-                                                            onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
-                                                            name="select[]" id="nama_{{ $key }}"
-                                                            class="form-control select2 select2-danger"
-                                                            data-dropdown-css-class="select2-danger"
-                                                            style="width: 100%;">
-                                                            <option selected="true" disabled="disabled">Pilih</option>
-                                                            @foreach ($item as $itemv)
-                                                                <option
-                                                                    @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
-                                                                    value="{{ $itemv['id'] }}">
-                                                                    {{ $itemv['bahan']->nama }}</option>
-                                                            @endforeach
-                                                        </select>
+                                        <select disabled
+                                            onchange="select(this.value,{{ $key }},{{ $v['logistik'] }})"
+                                            name="select[]" id="nama_{{ $key }}"
+                                            class="form-control select2 select2-danger"
+                                            data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                            <option selected="true" disabled="disabled">Pilih</option>
+                                            @foreach ($item as $itemv)
+                                                <option @if ($itemv['bahan_id'] == $v['bahan_id']) selected @endif
+                                                    value="{{ $itemv['id'] }}">
+                                                    {{ $itemv['bahan']->nama }}</option>
+                                            @endforeach
+                                        </select>
 
-                                                        @foreach ($item as $itemval)
-                                                            @if ($itemval['bahan_id'] == $v['bahan_id'])
-                                                                <input type="hidden" name="select[]"
-                                                                    value="{{ $itemval['id'] }}"
-                                                                    class="form-control">
-                                                            @endif
-                                                        @endforeach
-                                                @endif
-
-                                                </td>
-
-                                                @if (request()->session()->get('tipe') === 'Logistik')
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled
-                                                                value="{{ $v['qty_order'] ?? 0 }}"
-                                                                id="qty_order_val_{{ $key }}"
-                                                                placeholder="Qty Order" class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-
-                                                        <input type="hidden" name="qty_order[]" value="false"
-                                                            class="form-control">
-                                                    </td>
-
-
-                                                    <td id="qty_deliv_td_{{ $key }}">
-                                                        <div class="input-group"><input type="number"
-                                                                onchange="Hitung({{ $key }})"
-                                                                @if ($up) readonly @endif
-                                                                value="{{ $v['qty_deliv'] }}" class="form-control"
-                                                                id="qty_deliv_val_{{ $key }}"
-                                                                placeholder="Qty Delivery" name="qty_deliv[]"
-                                                                aria-invalid="false">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-
-
-
-
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled placeholder="Qty Arrive"
-                                                                value="{{ $v['qty_arrive'] ?? 0 }}"
-                                                                id="qty_arrive_val_{{ $key }}"
-                                                                class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                        <input type="hidden" name="qty_arrive[]" value="false"
-                                                            class="form-control">
-                                                    </td>
-                                                @else
-                                                    @if (!$v['qty_deliv'])
-                                                        <td id="qty_order_td_{{ $key }}">
-                                                            <div class="input-group"><input type="number"
-                                                                    onchange="Hitung({{ $key }})"
-                                                                    value="{{ $v['qty_order'] }}"
-                                                                    class="form-control"
-                                                                    id="qty_order_val_{{ $key }}"
-                                                                    placeholder="Qty Order" name="qty_order[]"
-                                                                    aria-invalid="false">
-                                                                <div class="input-group-append"><span
-                                                                        class="input-group-text">{{ $v['satuan'] }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    @else
-                                                        <td>
-                                                            <div class="input-group">
-                                                                <input type="number" disabled
-                                                                    value="{{ $v['qty_order'] ?? 0 }}"
-                                                                    id="qty_order_val_{{ $key }}"
-                                                                    placeholder="Qty Order" class="form-control">
-                                                                <div class="input-group-append"><span
-                                                                        class="input-group-text">{{ $v['satuan'] }}</span>
-                                                                </div>
-                                                            </div>
-                                                            <input type="hidden" name="qty_order[]" value="false"
-                                                                class="form-control">
-                                                        </td>
-                                                    @endif
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" disabled
-                                                                value="{{ $v['qty_deliv'] ?? 0 }}"
-                                                                id="qty_deliv_val_{{ $key }}"
-                                                                placeholder="Qty Delivery" class="form-control">
-                                                            <div class="input-group-append"><span
-                                                                    class="input-group-text">{{ $v['satuan'] }}</span>
-                                                            </div>
-                                                        </div>
-                                                        <input type="hidden" name="qty_deliv[]" value="false"
-                                                            class="form-control">
-                                                    </td>
-
-                                                    @if ($v['qty_deliv'])
-                                                        <td id="qty_arrive_td_{{ $key }}">
-                                                            <div class="input-group"><input type="number"
-                                                                    @if ($up) readonly @endif
-                                                                    onchange="Hitung({{ $key }})"
-                                                                    value="{{ $v['qty_arrive'] ?? $v['qty_deliv'] }}"
-                                                                    class="form-control"
-                                                                    id="qty_arrive_val_{{ $key }}"
-                                                                    placeholder="Qty Arrive" name="qty_arrive[]"
-                                                                    aria-invalid="false">
-                                                                <div class="input-group-append"><span
-                                                                        class="input-group-text">{{ $v['satuan'] }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    @else
-                                                        <td>
-                                                            <div class="input-group">
-                                                                <input type="number" disabled
-                                                                    placeholder="Qty Arrive"
-                                                                    id="qty_arrive_val_{{ $key }}"
-                                                                    value="{{ $v['qty_arrive'] ?? 0 }}"
-                                                                    class="form-control">
-                                                                <div class="input-group-append"><span
-                                                                        class="input-group-text">{{ $v['satuan'] }}</span>
-                                                                </div>
-                                                            </div>
-                                                            <input type="hidden" name="qty_arrive[]" value="false"
-                                                                class="form-control">
-                                                        </td>
-                                                    @endif
-                                                @endif
-
-
-
-                                                <td id="harga_td_{{ $key }}">
-                                                    Rp.
-                                                    {{ number_format((int) $v['harga'], 0, '.', ',') }}/{{ $v['satuan'] }}
-                                                </td>
-
-                                                <td id="total_td_{{ $key }}">
-                                                    Rp.
-                                                    {{ number_format((int) $v['harga'] * (int) ($v['qty_deliv'] ?? $v['qty_order']), 0, '.', ',') }}
-                                                    @if (!$v['up'] && $logistik_id)
-                                                        @if ($up)
-                                                            <div class="float-right">
-                                                                <a class="btn btn-danger"
-                                                                    onclick="UpRepair({{ $v['id'] }}, 'Hapus')"><i
-                                                                        class="fa fa-times"></i></a>
-                                                                <a class="btn btn-success"
-                                                                    onclick="UpRepair({{ $v['id'] }}, 'Upload')"><i
-                                                                        class="fa fa-upload"></i></a>
-                                                            </div>
-                                                        @endif
-                                                    @endif
-                                                </td>
-
-                                                <input id="harga_val_{{ $key }}" type="hidden"
-                                                    value="{{ $v['harga'] }}">
-
-                                            </tr>
-
-                                            <?php $total_seluruh += (int) $v['harga'] * (int) ($v['qty_deliv'] ?? $v['qty_order']); ?>
+                                        @foreach ($item as $itemval)
+                                            @if ($itemval['bahan_id'] == $v['bahan_id'])
+                                                <input type="hidden" name="select[]" value="{{ $itemval['id'] }}"
+                                                    class="form-control">
+                                            @endif
                                         @endforeach
+                                @endif
+
+                                </td>
+
+                                @if (request()->session()->get('tipe') === 'Logistik')
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" disabled value="{{ $v['qty_order'] ?? 0 }}"
+                                                id="qty_order_val_{{ $key }}" placeholder="Qty Order"
+                                                class="form-control">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="qty_order[]" value="false" class="form-control">
+                                    </td>
+
+
+                                    <td id="qty_deliv_td_{{ $key }}">
+                                        <div class="input-group"><input type="number"
+                                                onchange="Hitung({{ $key }})"
+                                                @if ($up) readonly @endif
+                                                value="{{ $v['qty_deliv'] }}" class="form-control"
+                                                id="qty_deliv_val_{{ $key }}" placeholder="Qty Delivery"
+                                                name="qty_deliv[]" aria-invalid="false">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
+
+
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" disabled placeholder="Qty Arrive"
+                                                value="{{ $v['qty_arrive'] ?? 0 }}"
+                                                id="qty_arrive_val_{{ $key }}" class="form-control">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="qty_arrive[]" value="false" class="form-control">
+                                    </td>
+                                @else
+                                    @if (!$v['qty_deliv'])
+                                        <td id="qty_order_td_{{ $key }}">
+                                            <div class="input-group"><input type="number"
+                                                    onchange="Hitung({{ $key }})" value="{{ $v['qty_order'] }}"
+                                                    class="form-control" id="qty_order_val_{{ $key }}"
+                                                    placeholder="Qty Order" name="qty_order[]" aria-invalid="false">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">{{ $v['satuan'] }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
                                     @else
-                                        @isset($order['logistik'])
-                                            @if ($up)
-                                                <tr>
-                                                    <td colspan="7" class="text-center">
-                                                        Tidak ditemukan item
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @else
-                                            @if ($up)
-                                                <tr>
-                                                    <td colspan="7" class="text-center">
-                                                        Tidak ada item
-                                                    </td>
-                                                </tr>
-                                            @else
-                                                <tr>
-                                                    <td colspan="7" class="text-center">
-                                                        Pilih Tujuan Pemesanan
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endisset
-                                    @endisset
-                                </tbody>
-                                <tfoot id="item_tambah">
-                                    @if (!$up)
-                                        @if ($pemilik_order)
-                                            @isset($order['logistik'])
-                                                <tr>
-                                                    <td colspan="7" class="text-center"><a
-                                                            onclick="add_row_order({{ $order['logistik'] }})"
-                                                            class="btn btn-block btn-success"><i
-                                                                class="fa fa-plus"></i></a>
-                                                    </td>
-                                                </tr>
-                                            @endisset
-                                        @else
-                                            @if (isset($order['users']->username))
-                                                <tr>
-                                                    <td colspan="7" class="text-center"><b>Hubungi Username
-                                                            {{ $order['users']->username }} Untuk Menambah
-                                                            Orderan</b>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endif
-                                    @else
-                                        <tr>
-                                            <td colspan="7" class="text-center">
-                                                <h2><b> Orderan ini telah diupload</h2>
-                                                </b>
-                                            </td>
-                                        </tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="number" disabled value="{{ $v['qty_order'] ?? 0 }}"
+                                                    id="qty_order_val_{{ $key }}" placeholder="Qty Order"
+                                                    class="form-control">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">{{ $v['satuan'] }}</span>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="qty_order[]" value="false"
+                                                class="form-control">
+                                        </td>
                                     @endif
-                                </tfoot>
-                            </table>
-                            <div class="float-right" style=" border-bottom: 2px #007bff solid">
-                                Total : <h2><b id="total_seluruh">Rp.
-                                        {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
-                            </div>
-                            <br><br><br>
-                            @isset($order)
-                                <div>
-                                    Ket :<br>
-                                    <font color="red">*</font> Orderan ini dibuat Oleh Username
-                                    <b>{{ $order['users']->username }}</b><br>
-                                    <a class="btn btn-warning"></a> Qty Arive Belum
-                                    Terisi<br>
-                                    <a class="btn btn-danger"></a> Qty Arive dan Qty
-                                    Deliv Tidak Sama <br>
-                                    <a class="btn btn-success"></a> Qty Telah Sesuai
-                                </div>
-                                <hr>
-                            @endisset
-                        </div>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="number" disabled value="{{ $v['qty_deliv'] ?? 0 }}"
+                                                id="qty_deliv_val_{{ $key }}" placeholder="Qty Delivery"
+                                                class="form-control">
+                                            <div class="input-group-append"><span
+                                                    class="input-group-text">{{ $v['satuan'] }}</span>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="qty_deliv[]" value="false" class="form-control">
+                                    </td>
 
-                    </div>
-                    <!-- /.row -->
-                </div>
+                                    @if ($v['qty_deliv'])
+                                        <td id="qty_arrive_td_{{ $key }}">
+                                            <div class="input-group"><input type="number"
+                                                    @if ($up) readonly @endif
+                                                    onchange="Hitung({{ $key }})"
+                                                    value="{{ $v['qty_arrive'] ?? $v['qty_deliv'] }}"
+                                                    class="form-control" id="qty_arrive_val_{{ $key }}"
+                                                    placeholder="Qty Arrive" name="qty_arrive[]" aria-invalid="false">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">{{ $v['satuan'] }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    @else
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="number" disabled placeholder="Qty Arrive"
+                                                    id="qty_arrive_val_{{ $key }}"
+                                                    value="{{ $v['qty_arrive'] ?? 0 }}" class="form-control">
+                                                <div class="input-group-append"><span
+                                                        class="input-group-text">{{ $v['satuan'] }}</span>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="qty_arrive[]" value="false"
+                                                class="form-control">
+                                        </td>
+                                    @endif
+                                @endif
 
-                <div class="card-footer">
+
+
+                                <td id="harga_td_{{ $key }}">
+                                    Rp.
+                                    {{ number_format((int) $v['harga'], 0, '.', ',') }}/{{ $v['satuan'] }}
+                                </td>
+
+                                <td id="total_td_{{ $key }}">
+                                    Rp.
+                                    {{ number_format((int) $v['harga'] * (int) ($v['qty_deliv'] ?? $v['qty_order']), 0, '.', ',') }}
+                                    @if (!$v['up'] && $logistik_id)
+                                        @if ($up)
+                                            <div class="float-right">
+                                                <a class="btn btn-danger"
+                                                    onclick="UpRepair({{ $v['id'] }}, 'Hapus')"><i
+                                                        class="fa fa-times"></i></a>
+                                                <a class="btn btn-success"
+                                                    onclick="UpRepair({{ $v['id'] }}, 'Upload')"><i
+                                                        class="fa fa-upload"></i></a>
+                                            </div>
+                                        @endif
+                                    @endif
+                                </td>
+
+                                <input id="harga_val_{{ $key }}" type="hidden" value="{{ $v['harga'] }}">
+
+                            </tr>
+
+                            <?php $total_seluruh += (int) $v['harga'] * (int) ($v['qty_deliv'] ?? $v['qty_order']); ?>
+                        @endforeach
+                    @else
+                        @isset($order['logistik'])
+                            @if ($up)
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        Tidak ditemukan item
+                                    </td>
+                                </tr>
+                            @endif
+                        @else
+                            @if ($up)
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        Tidak ada item
+                                    </td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        Pilih Tujuan Pemesanan
+                                    </td>
+                                </tr>
+                            @endif
+                        @endisset
+                    @endisset
+                </tbody>
+                <tfoot id="item_tambah">
                     @if (!$up)
-                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
-                    @endif
-                    @if (request()->session()->get('IdEditOrder'))
-                        <a class="btn btn-danger" onclick="KeluarEdit()"><i class="fa fa-sign-out-alt"></i>
-                            Keluar
-                            Edit</a>
-                    @endif
-                    @if (request()->session()->get('tipe') === 'Logistik')
-                        @if (!$up)
-                            <a class="btn btn-primary"
-                                onclick="Upload({{ request()->session()->get('IdEditOrder') }})"><i
-                                    class="fa fa-upload"></i>
-                                Upload</a>
+                        @if ($pemilik_order)
+                            @isset($order['logistik'])
+                                <tr>
+                                    <td colspan="7" class="text-center"><a
+                                            onclick="add_row_order({{ $order['logistik'] }})"
+                                            class="btn btn-block btn-success"><i class="fa fa-plus"></i></a>
+                                    </td>
+                                </tr>
+                            @endisset
+                        @else
+                            @if (isset($order['users']->username))
+                                <tr>
+                                    <td colspan="7" class="text-center"><b>Hubungi Username
+                                            {{ $order['users']->username }} Untuk Menambah
+                                            Orderan</b>
+                                    </td>
+                                </tr>
+                            @endif
                         @endif
+                    @else
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                <h2><b> Orderan ini telah diupload</h2>
+                                </b>
+                            </td>
+                        </tr>
                     @endif
-                </div>
+                </tfoot>
+            </table>
+            <div class="float-right" style=" border-bottom: 2px #007bff solid">
+                Total : <h2><b id="total_seluruh">Rp.
+                        {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
             </div>
-        </form>
+            <br><br><br>
+            @isset($order)
+                <div>
+                    Ket :<br>
+                    <font color="red">*</font> Orderan ini dibuat Oleh Username
+                    <b>{{ $order['users']->username }}</b><br>
+                    <a class="btn btn-warning"></a> Qty Arive Belum
+                    Terisi<br>
+                    <a class="btn btn-danger"></a> Qty Arive dan Qty
+                    Deliv Tidak Sama <br>
+                    <a class="btn btn-success"></a> Qty Telah Sesuai
+                </div>
+                <hr>
+            @endisset
+        </div>
+
+    </div>
+    <!-- /.row -->
+    </div>
+
+    <div class="card-footer">
+        @if (!$up)
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+        @endif
+        @if (request()->session()->get('IdEditOrder'))
+            <a class="btn btn-danger" onclick="KeluarEdit()"><i class="fa fa-sign-out-alt"></i>
+                Keluar
+                Edit</a>
+        @endif
+        @if (request()->session()->get('tipe') === 'Logistik' &&
+            request()->session()->get('IdEditOrder'))
+            @if (!$up)
+                <a class="btn btn-primary" onclick="Upload({{ request()->session()->get('IdEditOrder') }})"><i
+                        class="fa fa-upload"></i>
+                    Upload</a>
+            @endif
+        @endif
+    </div>
+    </div>
+    </form>
     @endif
     <div class="card">
         <div class="card-header text-white bg-secondary mb-3">
@@ -559,9 +533,9 @@
     </div>
 
     <!-- /.card -->
-</div>
+    </div>
 
-<!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 </section>
 
 <script>

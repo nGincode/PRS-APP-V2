@@ -68,7 +68,7 @@ class ReportController extends Controller
     /////////////////////////////////// Penjualan //////////////////////////
 
 
-    /////////////////////////////////// Penjualan //////////////////////////
+    /////////////////////////////////// Belanja //////////////////////////
     public function Belanja(Request $request)
     {
         $this->data['user_permission'] = $this->permission();
@@ -88,7 +88,7 @@ class ReportController extends Controller
 
         if ($date = $request->input('range_date')) {
             $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $date)[0]));
-            $tgl_akhir = date('Y-m-d', strtotime(explode(" - ", $date)[1]));
+            $tgl_akhir = date('Y-m-d', strtotime("+1 day", strtotime(explode(" - ", $date)[1])));
         } else {
             $tgl_awal = null;
             $tgl_akhir = null;
@@ -106,7 +106,7 @@ class ReportController extends Controller
             return back()->with('toast_error', 'Input Belum Lengkap');
         }
     }
-    /////////////////////////////////// Penjualan //////////////////////////
+    /////////////////////////////////// Belanja //////////////////////////
 
 
 

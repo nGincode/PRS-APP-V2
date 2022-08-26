@@ -80,7 +80,7 @@ class BelanjaExport implements
         $store = Store::where('id', $this->store)->first();
         return [
             [
-                strtoupper('LAPORAN Belanja ' . $store->nama . ' Tanggal ' . date('d/m/Y', strtotime($this->tgl_awal)) . ' - ' . date('d/m/Y', strtotime($this->tgl_akhir)))
+                strtoupper('LAPORAN Belanja ' . $store->nama . ' Tanggal ' . date('d/m/Y', strtotime("-1 day", strtotime($this->tgl_awal))) . ' - ' . date('d/m/Y', strtotime($this->tgl_akhir)))
             ],
             [],
             [
@@ -101,42 +101,48 @@ class BelanjaExport implements
     {
         $data = [];
         $belanja = Belanja::where('up', true)->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->orderBy('kategori', 'DESC')->get();
-
-        $no = 1;
-        $total = 0;
+        $kategori = Belanja::select('kategori')->distinct()->where('up', true)->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])
+            ->get();
 
         if ($belanja) {
-            foreach ($belanja as $row) {
-                if ($row->bahan_id) {
-                    $harga = $row->stock_harga;
-                    $qty = $row->stock;
-                    $uom = $row->stock_uom;
-                } else {
-                    $harga = $row->harga;
-                    $qty = $row->qty;
-                    $uom = $row->uom;
+            foreach ($kategori as $v) {
+                $total = 0;
+                $no = 1;
+                $array = [];
+                foreach ($belanja as $row) {
+                    if ($v['kategori'] == $row['kategori']) {
+                        if ($row->bahan_id) {
+                            $harga = $row->stock_harga;
+                            $qty = $row->stock;
+                            $uom = $row->stock_uom;
+                        } else {
+                            $harga = $row->harga;
+                            $qty = $row->qty;
+                            $uom = $row->uom;
+                        }
+
+                        $array[] = [
+                            $no++,
+                            date('Y/m/d', strtotime($row->tgl)),
+                            $row->kategori,
+                            $row->nama,
+                            $qty,
+                            $uom,
+                            $harga,
+                            $harga * $qty
+                        ];
+                        $total += $harga * $qty;
+                    }
                 }
-
-                $data[] = [
-                    $no++,
-                    date('Y/m/d', strtotime($row->tgl)),
-                    $row->kategori,
-                    $row->nama,
-                    $qty,
-                    $uom,
-                    $harga,
-                    $harga * $qty
-                ];
-                $total += $harga * $qty;
+                $array[] = ['Total', '', '', '', '', '', '', $total];
+                $array[] = [''];
+                $data[] = $array;
             }
-        }
-
-        if ($data) {
-            $data[] = ['Total', '', '', '', '', '', '', $total];
         } else {
             $data[] = ['Tidak Ditemukan', '', '', '', '', '', '', ''];
         }
-        // dd($data);
+
+        // dd($kategori);
         return $data;
     }
 

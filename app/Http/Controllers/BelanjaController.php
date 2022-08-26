@@ -190,7 +190,7 @@ class BelanjaController extends Controller
         } else {
             foreach ($request->input('kategori') as $key => $kategori) {
                 if (isset($request->input('qty')[$key]) && isset($request->input('nama')[$key])) {
-                    if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART') {
+                    if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART' or $kategori == 'DAPRO') {
 
                         $id = $request->input('id')[$key] ?? 0;
                         if ($id) {

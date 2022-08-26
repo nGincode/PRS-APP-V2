@@ -96,6 +96,8 @@
                                                                 </option>
                                                                 <option value="ART">ART
                                                                 </option>
+                                                                <option value="DAPRO">DAPRO
+                                                                </option>
 
                                                                 @foreach ($bahan as $bhn)
                                                                     <option value="{{ $bhn['id'] }}"
@@ -141,6 +143,9 @@
                                                                 <option value="ART"
                                                                     @if ($v['kategori'] == 'ART') selected @endif>ART
                                                                 </option>
+                                                                <option value="DAPRO"
+                                                                    @if ($v['kategori'] == 'DAPRO') selected @endif>DAPRO
+                                                                </option>
                                                             </select>
                                                             <input @if ($v['up']) disabled @endif
                                                                 type="hidden" name="kategori[]"
@@ -164,6 +169,10 @@
                                                                 </option>
                                                                 <option value="ART"
                                                                     @if ($v['kategori'] == 'ART') selected @endif>ART
+                                                                </option>
+                                                                <option value="DAPRO"
+                                                                    @if ($v['kategori'] == 'DAPRO') selected @endif>
+                                                                    DAPRO
                                                                 </option>
                                                             </select>
                                                         @endif
@@ -394,7 +403,7 @@
 
 
                 if (isi) {
-                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi > 0) {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi == 'DAPRO' || isi > 0) {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
                     } else {
@@ -428,7 +437,7 @@
 
 
                 if (isi) {
-                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi == 'DAPRO') {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
                     } else {
@@ -460,12 +469,44 @@
                     row + '" value="' + isi + '" placeholder="Nama Barang" name="nama[]">';
 
                 if (isi) {
-                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART') {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi == 'DAPRO') {
                         alert('Nama Tidak diizinkan');
                         hapusbelanja(false, row);
                     } else {
                         $('#kategori_val_' + row).val('ART');
                         $('#kategori_' + row).val('ART');
+                        $('#kategori_' + row).trigger('change');
+                        $('#item_' + row).html('-');
+                        $('#uombelanja_' + row).prop('disabled', false);
+                        $('#qty_' + row).val('');
+                        $('#total_' + row).html('-');
+
+                        $('#nama_' + row).replaceWith(html);
+                        $("#nama_" + row).select2('destroy');
+                    }
+                } else {
+                    if (tersimpan) {
+                        $('#nama_' + row).val(tersimpan).trigger("change.select2");
+                    } else {
+                        hapusbelanja(false, row)
+                    }
+                }
+
+
+                $('#item_' + row).html(itemss);
+            } else if (id == 'DAPRO') {
+                var isi = prompt('Nama Barang DAPRO');
+                var html = '<input title="Nama Barang" type="text" class="form-control" onchange="$(' + "'" +
+                    '#FormBelanja' + "'" + ').submit()" id="nama_' +
+                    row + '" value="' + isi + '" placeholder="Nama Barang" name="nama[]">';
+
+                if (isi) {
+                    if (isi == 'Oprasional' || isi == 'Supplay' || isi == 'ART' || isi == 'DAPRO') {
+                        alert('Nama Tidak diizinkan');
+                        hapusbelanja(false, row);
+                    } else {
+                        $('#kategori_val_' + row).val('DAPRO');
+                        $('#kategori_' + row).val('DAPRO');
                         $('#kategori_' + row).trigger('change');
                         $('#item_' + row).html('-');
                         $('#uombelanja_' + row).prop('disabled', false);
@@ -527,10 +568,11 @@
         function hitung_belanja(id, row) {
             qty = parseInt($('#qty_' + row).val());
             harga = parseInt($('#harga_' + row).val());
+            harga_stock = parseInt($('#stock_harga_' + row).val());
             stock = parseInt($('#stock_' + row).val());
             if (qty && harga) {
                 if (stock) {
-                    total = stock * harga;
+                    total = stock * harga_stock;
                     $('#total_' + row).html('Rp. ' + total);
                 } else {
                     total = qty * harga;
@@ -558,7 +600,6 @@
                         popup(status, true, xhr.status + " " + error);
                     },
                     success: function(data) {
-                        console.log(data);
                         if (data.status === 'success') {
                             $('#hapus_' + data.row).removeAttr('onclick id style class')
                                 .html('');

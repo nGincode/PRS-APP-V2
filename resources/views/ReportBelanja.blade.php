@@ -24,7 +24,7 @@
                             <div class="row">
 
 
-                                @if (request()->session()->get('tipe') == 'Outlet')
+                                @if (request()->session()->get('tipe') !== 'Office')
                                     <input type="hidden" name="store" id="store"
                                         value="{{ request()->session()->get('store_id') }}">
                                 @else

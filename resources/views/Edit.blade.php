@@ -870,8 +870,7 @@
                     @foreach ($Users as $v)
                         @if ($v['id'] != 1)
                             <option value="{{ $v['id'] }}"
-                                @foreach ($GroupsUsers as $v1) @if ($v1['users_id'] == $v['id']) selected @endif
-                                @endforeach>
+                                @foreach ($GroupsUsers as $v1) @if ($v1['users_id'] == $v['id']) selected @endif @endforeach>
                                 {{ $v['username'] }}</option>
                         @endif
                     @endforeach
@@ -2792,8 +2791,93 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
         </div>
     </form>
-@endisset
 
+    <script>
+        $(function() {
+            bsCustomFileInput.init();
+
+            $("#checkAll").click(function() {
+                $(".check").prop('checked', $(this).prop('checked'));
+            });
+
+            $('.select2').select2().on("change", function(e) {
+                $(this).valid();
+            });
+
+        });
+
+
+        $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+        $("#harga_edit").keyup(function() {
+            $("#harga_edit").val(numeral($("#harga_edit").val()).format('0,0'));
+        });
+
+
+        $(document).ready(function() {
+            if ($("#InventoryStockEdit").length) {
+                $("#InventoryStockEdit").validate({
+                    rules: {
+                        'harga': {
+                            required: true
+                        },
+                        'auto_harga_edit': {
+                            required: true
+                        },
+                        'margin': {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        // OutletUsers : "Masih Kosong"
+                    },
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                        $(element).removeClass('is-valid');
+                    },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    },
+                    success: function(validClass, element) {
+                        $(element).addClass('is-valid');
+                    }
+                });
+
+                $("#InventoryStockEdit").on("submit", function(event) {
+                    var isValid = $(this).valid();
+                    event.preventDefault();
+                    var formData = new FormData(this);
+
+                    if (isValid) {
+                        $.ajax({
+                            url: $(this).attr("action"),
+                            type: "POST",
+                            data: formData,
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.status === "success") {
+                                    popup(data.status, data.toast, data.pesan,
+                                        "#InventoryStockEdit");
+                                    $('#Modal').modal('hide');
+                                } else {
+                                    popup(data.status, data.toast, data.pesan);
+                                }
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
+    </script>
+@endisset
 
 @isset($TicketNama)
     <form id="FormTicketNamaEdit" action="{{ url('/Ticket/TambahEdit') }}">
