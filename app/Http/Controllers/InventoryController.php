@@ -511,7 +511,7 @@ class InventoryController extends Controller
     {
         $id = $request->input('id');
         if ($id) {
-            if ($array = Bahan::where('store_id', $id)->first()) {
+            if ($array = Bahan::where('id', $id)->first()) {
                 $data = [
                     'satuan' => $array['satuan_pengeluaran'],
                     'harga' => $array['harga']
