@@ -221,48 +221,40 @@ class TicketController extends Controller
             }
         } else {
 
-            if (Ticket_Tukar::where('wa', $request->input('wa'))->count()) {
-                $data = [
-                    'toast' => true,
-                    'status' => 'error',
-                    'pesan' => 'No Wa Telah Ada'
+            if ($ticket = Ticket::where('id', $request->input('ticket'))->first()) {
+                $input = [
+                    'ticket_id' => $ticket['id'],
+                    'kode' => 'TIC' . rand(10000, 99999) . Ticket_Tukar::count(),
+                    'nama' => $request->input('nama'),
+                    'wa' => $request->input('wa'),
+                    'email' => $request->input('email'),
+                    'jumlah' => $request->input('jumlah'),
+                    'pembuat' => $request->session()->get('store'),
+                    'berlaku' => $ticket['berlaku'],
+                    'pembayaran' => $request->input('tipe'),
+                    'harga' => round($ticket['harga'] * $request->input('jumlah'))
                 ];
-            } else {
-                if ($ticket = Ticket::where('id', $request->input('ticket'))->first()) {
-                    $input = [
-                        'ticket_id' => $ticket['id'],
-                        'kode' => 'TIC' . rand(10000, 99999) . Ticket_Tukar::count(),
-                        'nama' => $request->input('nama'),
-                        'wa' => $request->input('wa'),
-                        'email' => $request->input('email'),
-                        'jumlah' => $request->input('jumlah'),
-                        'pembuat' => $request->session()->get('store'),
-                        'berlaku' => $ticket['berlaku'],
-                        'pembayaran' => $request->input('tipe'),
-                        'harga' => round($ticket['harga'] * $request->input('jumlah'))
-                    ];
-                    if ($id = Ticket_Tukar::insertGetId($input)) {
+                if ($id = Ticket_Tukar::insertGetId($input)) {
 
-                        $data = [
-                            'toast' => true,
-                            'status' => 'success',
-                            'pesan' => 'Berhasil dibuat',
-                            'email' => $id
-                        ];
-                    } else {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  'Terjadi kegagalan system'
-                        ];
-                    };
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' => 'Berhasil dibuat',
+                        'email' => $id
+                    ];
                 } else {
                     $data = [
                         'toast' => true,
                         'status' => 'error',
-                        'pesan' =>  'Ticket Tidak ditemukan'
+                        'pesan' =>  'Terjadi kegagalan system'
                     ];
-                }
+                };
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Ticket Tidak ditemukan'
+                ];
             }
         }
 
