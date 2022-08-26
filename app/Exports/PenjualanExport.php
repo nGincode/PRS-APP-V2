@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Orderitem;
 use App\Models\POSBillItem;
 use App\Models\Store;
+use App\Models\Belanja;
 
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithProperties;
@@ -88,6 +89,7 @@ class PenjualanExport implements
                 'Dari',
                 'Tujuan',
                 'Nama Barang',
+                'Harga Beli',
                 'Qty',
                 'UOM',
                 'Harga',
@@ -108,12 +110,20 @@ class PenjualanExport implements
         // dd($pos);
         if ($pos) {
             foreach ($pos as $row) {
+                $belanja = Belanja::where('bahan_id', $row->bahan_id)->latest()->first();
+
+                if ($belanja) {
+                    $hargabeli = $belanja['stock_harga'];
+                } else {
+                    $hargabeli = '-';
+                }
                 $data[] = [
                     $no++,
                     date('Y/m/d', strtotime($row->tgl)),
                     'POS',
                     ($row['Posbill']->store ?? 'Pelanggan'),
                     $row->nama,
+                    $hargabeli,
                     $row->qty,
                     $row->satuan,
                     $row->harga,
