@@ -175,9 +175,13 @@
                         $('#nama_tambah').prop('disabled', false);
                         $("#nama_tambah").empty();
                         $('#nama_tambah').append('<option selected="true" disabled="disabled">Pilih</option>');
+                        // console.log(data.select2);
+
                         data.select2.forEach(id => {
-                            var newOption = new Option(id.nama, id.id, false, false);
-                            $('#nama_tambah').append(newOption);
+                            id.forEach(id2 => {
+                                var newOption = new Option(id2.nama, id2.id, false, false);
+                                $('#nama_tambah').append(newOption);
+                            });
                         });
                     } else {
                         popup(data.status, data.toast, data.pesan);

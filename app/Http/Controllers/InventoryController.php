@@ -330,14 +330,16 @@ class InventoryController extends Controller
                 $data = [
                     'status' => 'success',
                 ];
+                $select2 = [];
                 foreach ($inv as $key => $value) {
-                    $data['select2'] = [
+                    $select2[] = [
                         [
                             'id' => $value['bahan_id'],
                             'nama' => $value['bahan']->nama
                         ]
                     ];
                 }
+                $data['select2'] = $select2;
             } else {
                 $data = [
                     'toast' => true,
