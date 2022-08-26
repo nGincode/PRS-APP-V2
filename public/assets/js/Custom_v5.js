@@ -1071,7 +1071,7 @@ $(document).ready(function () {
             },
             success: function (validClass, element) {
                 $(element).addClass('is-valid');
-            },
+            }, 
         });
 
         $('#FormInventoryOpname').on('submit', function (event) {
@@ -1079,7 +1079,8 @@ $(document).ready(function () {
             event.preventDefault();
             var formData = new FormData(this);
 
-            if ($('#status').val() == 'Tambah') {
+            var status = formData.get('status');
+            if (status == 'Tambah') {
                 var status = 'Menambah';
             } else {
                 var status = 'Mengurangi';

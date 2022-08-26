@@ -157,37 +157,40 @@
 
     <script>
         function inventory(id) {
-            $.ajax({
-                url: 'Opname/NamaInventory',
-                type: 'POST',
-                data: {
-                    id: id
-                },
-                dataType: 'json',
-                error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
-                },
-                beforeSend: function() {
-                    $('#nama_tambah').prop('disabled', true);
-                },
-                success: function(data) {
-                    if (data.status === 'success') {
-                        $('#nama_tambah').prop('disabled', false);
-                        $("#nama_tambah").empty();
-                        $('#nama_tambah').append('<option selected="true" disabled="disabled">Pilih</option>');
-                        // console.log(data.select2);
+            if (id) {
+                $.ajax({
+                    url: 'Opname/NamaInventory',
+                    type: 'POST',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    beforeSend: function() {
+                        $('#nama_tambah').prop('disabled', true);
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            $('#nama_tambah').prop('disabled', false);
+                            $("#nama_tambah").empty();
+                            $('#nama_tambah').append(
+                                '<option selected="true" disabled="disabled">Pilih</option>');
+                            // console.log(data.select2);
 
-                        data.select2.forEach(id => {
-                            id.forEach(id2 => {
-                                var newOption = new Option(id2.nama, id2.id, false, false);
-                                $('#nama_tambah').append(newOption);
+                            data.select2.forEach(id => {
+                                id.forEach(id2 => {
+                                    var newOption = new Option(id2.nama, id2.id, false, false);
+                                    $('#nama_tambah').append(newOption);
+                                });
                             });
-                        });
-                    } else {
-                        popup(data.status, data.toast, data.pesan);
+                        } else {
+                            popup(data.status, data.toast, data.pesan);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     </script>
 @endsection
