@@ -571,36 +571,36 @@
         }
 
 
-        function Print(id) {
-            $.ajax({
-                url: "POS/Print",
-                type: "POST",
-                data: {
-                    id: id,
-                },
-                error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
-                },
-                success: function(data) {
-                    $('#printaera').html(data);
+        // function Print(id) {
+        //     $.ajax({
+        //         url: "POS/Print",
+        //         type: "POST",
+        //         data: {
+        //             id: id,
+        //         },
+        //         error: function(xhr, status, error) {
+        //             popup(status, true, xhr.status + " " + error);
+        //         },
+        //         success: function(data) {
+        //             $('#printaera').html(data);
 
-                    $("#printaera").print({
-                        globalStyles: true,
-                        mediaPrint: false,
-                        stylesheet: null,
-                        noPrintSelector: ".no-print",
-                        iframe: true,
-                        append: null,
-                        prepend: null,
-                        manuallyCopyFormValues: true,
-                        deferred: $.Deferred(),
-                        timeout: 750,
-                        title: null,
-                        doctype: '<!doctype html>'
-                    });
-                }
-            });
-        }
+        //             $("#printaera").print({
+        //                 globalStyles: true,
+        //                 mediaPrint: false,
+        //                 stylesheet: null,
+        //                 noPrintSelector: ".no-print",
+        //                 iframe: true,
+        //                 append: null,
+        //                 prepend: null,
+        //                 manuallyCopyFormValues: true,
+        //                 deferred: $.Deferred(),
+        //                 timeout: 750,
+        //                 title: null,
+        //                 doctype: '<!doctype html>'
+        //             });
+        //         }
+        //     });
+        // }
 
 
         function qtyubah(id, qty) {
