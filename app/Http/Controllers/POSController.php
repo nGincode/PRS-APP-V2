@@ -637,7 +637,20 @@ class POSController extends Controller
 
         $store = Store::where('id', $request->session()->get('store_id'))->first();
 
-        $html = '';
+        $html = '
+        
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice Order</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			</head>
+			<body onload="window.print();">
+			<style>html, body {height:unset;}</style>
+            ';
         if ($BillItem && $Bill) {
             $jumlah = 0;
             $html .= '<div class="wrapper" style="width: 55mm;height:unset;font-size: 12px;">
@@ -694,6 +707,9 @@ class POSController extends Controller
             </div>
             ';
         }
+        $html .= '
+			</body>
+			</html>';
         echo $html;
     }
 }
