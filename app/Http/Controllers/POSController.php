@@ -649,20 +649,19 @@ class POSController extends Controller
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			</head>
 			<body onload="window.print();">
-			<style>html, body {height:unset;}</style>
             ';
         if ($BillItem && $Bill) {
             $jumlah = 0;
             $html .= '<div class="wrapper" style="width: 55mm;height:unset;font-size: 12px;">
                     <div style="border-bottom:dashed 1px black;">
                     <center >
-                    <h5><b>' . $request->session()->get('store') . '</b></h5>
+                    <font style="font-size: 18px; text-align:center;"><b>' . $request->session()->get('store') . '</b></font><br>
                     ' . $store['alamat'] . '<br>' . $store['wa'] . '
                     </center>
                     </div>
                     <div style="padding-left: 5px; border-bottom:solid 1px black;">
-                        <p style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</p>
-                        <br> No Bill : ' . $Bill['no_bill'] . ' 
+                        <p style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</p><br>
+                        <br>No Bill : ' . $Bill['no_bill'] . ' 
                         <br>A/N     : ' . $Bill['nama_bill'] . ' 
                         <br>No Hp   : ' . $Bill['no_hp'] . ' 
                         <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . ' 
@@ -672,7 +671,7 @@ class POSController extends Controller
             foreach ($BillItem as $key => $value) {
                 $jumlah += $value['qty'] * $value['harga'];
                 $html .=
-                    $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br>';
+                    $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
             }
             $html .= '</div>
 
@@ -708,6 +707,8 @@ class POSController extends Controller
             ';
         }
         $html .= '
+        
+			<style>html,body{height:unset;font-family: monospace;}</style>
 			</body>
 			</html>';
         echo $html;
