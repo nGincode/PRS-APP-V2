@@ -661,7 +661,7 @@ class POSController extends Controller
                     </div>
                     <div style="padding-left: 5px; border-bottom:solid 1px black;">
                         <p style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</p><br>
-                        <br>No Bill : ' . $Bill['no_bill'] . ' 
+                        <br>' . $Bill['no_bill'] . ' 
                         <br>A/N     : ' . $Bill['nama_bill'] . ' 
                         <br>No Hp   : ' . $Bill['no_hp'] . ' 
                         <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . ' 
@@ -674,7 +674,7 @@ class POSController extends Controller
                     $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
             }
             $html .= '</div>
-
+            
             <div style="padding-left: 5px;margin-top:5px;border-bottom:solid 1px black;">
             <b>
             Jumlah
@@ -700,7 +700,7 @@ class POSController extends Controller
             <br>
             <br>
             <br>
-            <div style="padding-left: 5px">
+            <div style="padding-left: 5px"><br>
 			Note:<div style=" border: 1px solid;height: 60px;border-radius: 0px 10px;"></div>
             </div>
             </div>
@@ -708,7 +708,7 @@ class POSController extends Controller
         }
         $html .= '
         
-			<style>html,body{height:unset;font-family: monospace;}</style>
+			<style>html,body{height:unset;font-family: monospace;} div{padding-top:5px;padding-bottom:5px;}</style>
 			</body>
 			</html>';
         echo $html;
