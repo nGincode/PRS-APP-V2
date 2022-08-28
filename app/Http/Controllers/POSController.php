@@ -99,7 +99,7 @@ class POSController extends Controller
         if (!in_array('viewPOS', $this->permission())) {
             return redirect()->to('/');
         }
-        $dtpos = POS::all();
+        $dtpos = POS::where('store_id', $request->session()->get('store_id'))->get();
         $jumlah = 0;
         foreach ($dtpos as $key => $value) {
             $jumlah += $value['qty'] * $value['harga'];
@@ -156,7 +156,7 @@ class POSController extends Controller
         $id = $request->input('id');
         if ($id) {
 
-            $cek = Inventory::count();
+            $cek = Inventory::where('store_id', $request->session()->get('store_id'))->count();
 
             if ($cek) {
                 $pos = Inventory::search($id)->where('delete', false)->get()->toArray();
@@ -193,7 +193,7 @@ class POSController extends Controller
                     echo 'Tidak Ditemukan';
                 }
             } else {
-                echo 'Tidak Ditemukan';
+                echo 'Tidak ditemukan';
             }
         } else {
             $data = '';
@@ -539,7 +539,7 @@ class POSController extends Controller
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
-            $button .= "<li><a class='dropdown-item' href='POS/Print?id=" . $value['id'] . "' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
+            $button .= "<li><a class='dropdown-item' target='_blank' href='POS/Print?id=" . $value['id'] . "' style='cursor:pointer'><i class='fas fa-print'></i> Print</a></li>";
 
             if (in_array('viewPOS', $this->permission())) {
                 $button .= "<li><a class='dropdown-item' onclick='lihat(" . $value['id'] . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
@@ -644,7 +644,7 @@ class POSController extends Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Order</title>
+			  <title>Invoice</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			</head>
@@ -660,8 +660,8 @@ class POSController extends Controller
                     </center>
                     </div>
                     <div style="padding-left: 5px; border-bottom:solid 1px black;">
-                        <p style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</p><br>
-                        <br>' . $Bill['no_bill'] . ' 
+                        <font style="float:left">' . $Bill['no_bill'] . ' </font>
+                        <font style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</font>
                         <br>A/N     : ' . $Bill['nama_bill'] . ' 
                         <br>No Hp   : ' . $Bill['no_hp'] . ' 
                         <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . ' 

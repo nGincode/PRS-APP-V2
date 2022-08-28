@@ -53,15 +53,16 @@
                                         <div class="waiting"
                                             style="position: absolute;height: 85%;width: 96%;background-color: #dfdfdf;z-index: 9999;border-radius: 10px;display:none;">
                                         </div>
-                                        @foreach ($item as $v)
-                                            @if (!$v['bahan']->delete)
+                                        @if (count($item))
+                                            @foreach ($item as $v)
                                                 <div class="animate__animated animate__backInDown animate__faster item"
                                                     id="pilihan_<?= $v['id'] ?>"
                                                     onclick="pilih(<?= $v['id'] ?>, <?= $v['bahan_id'] ?> )">
                                                     <div class="float-right"><b>
                                                             @if ($v['qty'] < 5)
                                                                 <i class="fa fa-exclamation-triangle"></i>
-                                                            @endif {{ $v['qty'] . ' ' . $v['satuan'] }}
+                                                            @endif
+                                                            {{ $v['qty'] . ' ' . $v['satuan'] }}
                                                         </b>
                                                     </div>
                                                     <div>
@@ -81,8 +82,10 @@
                                                     </div>
                                                     <hr>
                                                 </div>
-                                            @endif
-                                        @endforeach
+                                            @endforeach
+                                        @else
+                                            <b>!!!</b> Inventory Belum Terisi
+                                        @endif
                                     </div>
                                 </div>
 
@@ -317,6 +320,7 @@
                 },
                 error: function(xhr, status, error) {
                     // popup(status, true, xhr.status + " " + error);
+                    $('#item').html('');
                 },
                 success: function(data) {
                     $('.waiting').hide('');
