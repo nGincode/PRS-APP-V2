@@ -58,7 +58,7 @@ class TicketController extends Controller
         }
 
         $result = array('data' => array());
-        $Data = Ticket_Tukar::latest()->get();
+        $Data = Ticket_Tukar::orderBy('id', 'DESC')->get();
 
 
         foreach ($Data as $value) {

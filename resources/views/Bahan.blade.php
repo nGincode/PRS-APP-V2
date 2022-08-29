@@ -130,6 +130,15 @@
                                     </div>
                                 </div>
 
+
+                                <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label for="barcode">Barcode</label>
+                                        <input type="number" placeholder="Barcode" class="form-control" id="barcode"
+                                            name="barcode">
+                                    </div>
+                                </div>
+
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Penggunaan Ke</label>

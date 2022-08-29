@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('konversi_pemakaian', 20);
             $table->string('satuan_pengeluaran', 10);
             $table->string('konversi_pengeluaran', 20);
+            $table->string('barcode', 50)->nullable()->unique();
             $table->json('pengguna')->nullable();
             $table->boolean('delete')->default(false);
             $table->timestamps();

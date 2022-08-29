@@ -1237,9 +1237,8 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Kategori</label>
-                        <select disabled name="kategori" id="kategori_edit" onchange="clickkategoriedit(this.value)"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                        <select disabled name="kategori" id="kategori_edit" class="form-control select2 select2-danger"
+                            required data-dropdown-css-class="select2-danger" style="width: 100%;">
                             <option selected="true" disabled="disabled">Pilih</option>
                             <option value="1" @if ($BahanData['kategori'] == 1) selected @endif>Bahan Baku Segar
                             </option>
@@ -1332,9 +1331,9 @@
                 <div class="col-12 col-sm-6">
                     <div class="form-group">
                         <label>Satuan Pengeluaran</label>
-                        <select name="satuan_pengeluaran" onchange="pengeluaranedit(this.value)" id="satuan_pengeluaran"
-                            class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger"
-                            style="width: 100%;">
+                        <select name="satuan_pengeluaran" onchange="pengeluaranedit(this.value)"
+                            id="satuan_pengeluaran_edit" class="form-control select2 select2-danger" required
+                            data-dropdown-css-class="select2-danger" style="width: 100%;">
 
                             <option selected="true" disabled="disabled">Pilih</option>
 
@@ -1373,6 +1372,13 @@
                     </div>
                 </div>
 
+                <div class="col-12 col-sm-6">
+                    <div class="form-group">
+                        <label for="barcode_edit">Barcode</label>
+                        <input type="number" placeholder="Barcode" class="form-control"
+                            value="{{ $BahanData['barcode'] }}" id="barcode_edit" name="barcode">
+                    </div>
+                </div>
 
 
                 <div class="col-12 col-sm-6">

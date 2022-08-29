@@ -439,6 +439,7 @@ class MasterController extends Controller
                     'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
                     'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                     'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
+                    'barcode' => $request->input('barcode'),
                     'pengguna' => $pengguna,
                     'delete' => false
                 ];
@@ -547,6 +548,7 @@ class MasterController extends Controller
                         'konversi_pemakaian' => $this->unrupiah($request->input('konversi_pemakaian')),
                         'satuan_pengeluaran' => $request->input('satuan_pengeluaran'),
                         'konversi_pengeluaran' => $this->unrupiah($request->input('konversi_pengeluaran')),
+                        'barcode' => $request->input('barcode'),
                         'pengguna' => $pengguna,
                         'delete' => false
                     ];
