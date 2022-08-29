@@ -36,7 +36,7 @@
                                 <br><br>
                                 <div class="card card-success card-outline" style="min-height: 600px">
                                     <div class="card-header" style="display: flex">
-                                        <form id="FormBarcode" action="POS/Barcode">
+                                        <form id="FormBarcode" action="POS/Barcode" method="POST">
                                             <input type="search" class="form-control" name="id" id="barcode"
                                                 placeholder="Barcode..">
                                         </form>
@@ -655,6 +655,7 @@
                         popup(status, true, xhr.status + " " + error);
                     },
                     success: function(data) {
+                        console.log(data);
                         if (data.status) {
                             popup(data.status, data.toast, data.pesan);
                         } else {

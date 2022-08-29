@@ -17,7 +17,7 @@ use App\Http\Controllers\POSController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TicketController;
 
-use App\Models\Order;
+use App\Models\Bahan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -351,5 +351,10 @@ Route::controller(TicketController::class)->group(
 Route::get(
     '/test',
     function () {
+
+        $bahan = Bahan::where('kode', '12345678')->orWhere('barcode', 12345678)->first();
+
+
+        dd($bahan['barcode']);
     }
 );

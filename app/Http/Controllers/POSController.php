@@ -290,8 +290,9 @@ class POSController extends Controller
         $id_users = request()->session()->get('id');
 
         $bahan = Bahan::where('kode', $id)->orWhere('barcode', $id)->first();
+
         if ($bahan) {
-            $inventory = Inventory::where('bahan_id', $bahan['id'])->first();
+            $inventory = Inventory::where('bahan_id', $bahan['id'])->where('store_id', $id_store)->first();
         } else {
             $inventory = false;
         }
