@@ -232,7 +232,8 @@ class TicketController extends Controller
                     'pembuat' => $request->session()->get('store'),
                     'berlaku' => $ticket['berlaku'],
                     'pembayaran' => $request->input('tipe'),
-                    'harga' => round($ticket['harga'] * $request->input('jumlah'))
+                    'harga' => round($ticket['harga'] * $request->input('jumlah')),
+                    'created_at' => date('Y-m-d H:i:s')
                 ];
                 if ($id = Ticket_Tukar::insertGetId($input)) {
 
