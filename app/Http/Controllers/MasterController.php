@@ -348,8 +348,14 @@ class MasterController extends Controller
             }
 
             $generator = new BarcodeGeneratorPNG();
+
+            if ($value['barcode']) {
+                $barcode = '<i style="color:green" class="fa fa-check"></i>';
+            } else {
+                $barcode = '';
+            }
             $result['data'][] = array(
-                '<center><img width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"><br>' . $value['kode'] . '</center>',
+                '<center><img width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_128)) . '"><br>' . $value['kode'] . ' ' . $barcode . '</center>',
                 $value['nama'],
                 $kategori,
                 $this->rupiah($value['harga']) . '/' . $value['satuan_pembelian'],
