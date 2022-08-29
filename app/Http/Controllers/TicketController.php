@@ -269,10 +269,10 @@ class TicketController extends Controller
         $generator = new BarcodeGeneratorPNG();
         if ($data = Ticket_Tukar::where('kode', $id)->with('Ticket')->first()) {
             if ($data['ticket']->img_voc) {
-                if (strlen($data['nama']) <= 15) {
+                if (strlen($data['nama']) <= 16) {
                     $nama =  $data['nama'];
                 } else {
-                    $nama =  substr($data['nama'], 0, 15);
+                    $nama =  substr($data['nama'], 0, 16);
                 }
                 echo '
                 <head>
