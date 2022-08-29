@@ -269,6 +269,11 @@ class TicketController extends Controller
         $generator = new BarcodeGeneratorPNG();
         if ($data = Ticket_Tukar::where('kode', $id)->with('Ticket')->first()) {
             if ($data['ticket']->img_voc) {
+                if (strlen($data['nama']) <= 15) {
+                    $nama =  $data['nama'];
+                } else {
+                    $nama =  substr($data['nama'], 0, 15);
+                }
                 echo '
                 <head>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
@@ -282,7 +287,7 @@ class TicketController extends Controller
                 echo '<div style="position: relative;margin-top: -279px;margin-left: 85px;">
                 <img  width="800px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
                 </div>';
-                echo '<div style="position: relative;margin-top: -326px;font-size: 40px;width: 970px;text-align: center;font-weight: bolder;"><b>' . $data['nama'] . '</b></div>';
+                echo '<div style="position: relative;margin-top: -326px;font-size: 40px;width: 970px;text-align: center;font-weight: bolder;"><b>' . $nama . '</b></div>';
 
                 echo '<div style="position: absolute;top: 36px;font-size: 80px;left: 37px;width: 77px;text-align: center;"><b>' . $data['jumlah'] . '</b></div>';
             } else {
