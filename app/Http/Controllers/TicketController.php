@@ -266,13 +266,16 @@ class TicketController extends Controller
     {
         $id = $request->input('id');
 
-        $generator = new BarcodeGeneratorHTML();
+        $generator = new BarcodeGeneratorPNG();
         if ($data = Ticket_Tukar::where('kode', $id)->with('Ticket')->first()) {
             if ($data['ticket']->img_voc) {
-                echo '<img  width="800px" src="' . url('/uploads/ticket/' . $data['ticket']->img_voc) . '"> <br>';
-                echo '<div style="position: relative;margin-top: -245px;margin-left: 65px;">' . $generator->getBarcode($id, $generator::TYPE_CODE_128, 6, 110) . '</div>';
-                echo '<div style="position: relative;margin-top: -282px;font-size: 30px;width: 800px;text-align: center;font-weight: bolder;font-family: monospace;">' . $data['nama'] . '</div>';
-                echo '<div style="position: absolute;font-family: fantasy;top: 43px;font-size: 50px;left: 27px;width: 77px;text-align: center;">' . $data['jumlah'] . '</div>';
+                echo '<img  width="965px" src="' . url('/uploads/ticket/' . $data['ticket']->img_voc) . '"> <br>';
+                echo '<div style="position: relative;margin-top: -279px;margin-left: 85px;">
+                <img  width="800px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($id, $generator::TYPE_CODE_128)) . '">
+                </div>';
+                echo '<div style="position: relative;margin-top: -326px;font-size: 40px;width: 970px;text-align: center;font-weight: bolder;font-family: monospace;"><b>' . $data['nama'] . '</b></div>';
+
+                echo '<div style="position: absolute;font-family: monospace;top: 36px;font-size: 80px;left: 37px;width: 77px;text-align: center;"><b>' . $data['jumlah'] . '</b></div>';
             } else {
                 echo 'Voucher Tidak ditemukan';
             }
