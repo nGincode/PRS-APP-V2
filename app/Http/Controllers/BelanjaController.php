@@ -228,41 +228,54 @@ class BelanjaController extends Controller
                             };
                         } else {
 
-                            $input1 = [
-                                'nama' => $request->input('nama')[$key],
-                                'tgl' => date('Y-m-d'),
-                                'bahan_id' => null,
-                                'kategori' => $kategori,
-                                'users_id' => $request->session()->get('id'),
-                                'store_id' => $request->session()->get('store_id'),
-                                'qty' => $request->input('qty')[$key],
-                                'harga' => $request->input('harga')[$key] ?? null,
-                                'ket' => $request->input('ket')[$key] ?? null,
-                                'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
-                                'uom' => $request->input('uombelanja')[$key] ?? null,
-                                'stock' => $request->input('stock')[$key] ?? null,
-                                'stock_uom' => $request->input('stock_uom')[$key] ?? null,
-                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
-                                'hutang' => $request->input('hutang')[$key] ?? 0,
-                                'created_at' => date('Y-m-d H:i:s')
-                            ];
-
-                            if ($idbelanja = Belanja::insertGetId($input1)) {
-                                $data = [
-                                    'toast' => true,
-                                    'status' => 'success',
-                                    'pesan' => 'Autosave Berhasil',
-                                    'id' => $idbelanja,
-                                    'row' => $request->input('key')[$key]
+                            if (!Belanja::where('nama', $request->input('nama')[$key])
+                                ->where('store_id', $request->session()->get('store_id'))
+                                ->where('users_id', $request->session()->get('id'))
+                                ->where('kategori', $kategori)
+                                ->where('tgl', date('Y-m-d'))
+                                ->count()) {
+                                $input1 = [
+                                    'nama' => $request->input('nama')[$key],
+                                    'tgl' => date('Y-m-d'),
+                                    'bahan_id' => null,
+                                    'kategori' => $kategori,
+                                    'users_id' => $request->session()->get('id'),
+                                    'store_id' => $request->session()->get('store_id'),
+                                    'qty' => $request->input('qty')[$key],
+                                    'harga' => $request->input('harga')[$key] ?? null,
+                                    'ket' => $request->input('ket')[$key] ?? null,
+                                    'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
+                                    'uom' => $request->input('uombelanja')[$key] ?? null,
+                                    'stock' => $request->input('stock')[$key] ?? null,
+                                    'stock_uom' => $request->input('stock_uom')[$key] ?? null,
+                                    'stock_harga' => $request->input('stock_harga')[$key] ?? null,
+                                    'hutang' => $request->input('hutang')[$key] ?? 0,
+                                    'created_at' => date('Y-m-d H:i:s')
                                 ];
-                            } else {
 
+                                if ($idbelanja = Belanja::insertGetId($input1)) {
+                                    $data = [
+                                        'toast' => true,
+                                        'status' => 'success',
+                                        'pesan' => 'Autosave Berhasil',
+                                        'id' => $idbelanja,
+                                        'row' => $request->input('key')[$key]
+                                    ];
+                                } else {
+
+                                    $data = [
+                                        'toast' => true,
+                                        'status' => 'error',
+                                        'pesan' =>  'Terjadi kegagalan system'
+                                    ];
+                                };
+                            } else {
                                 $data = [
                                     'toast' => true,
                                     'status' => 'error',
-                                    'pesan' =>  'Terjadi kegagalan system'
+                                    'pesan' =>  '<b> ' . $request->input('nama')[$key]  . '</b> Dengan Kategori <b>' . $kategori . '</b> Telah ada'
                                 ];
-                            };
+                            }
                         }
                     } else {
                         $inventory = Inventory::with('Bahan')->where('bahan_id', $request->input('nama')[$key])->first();
