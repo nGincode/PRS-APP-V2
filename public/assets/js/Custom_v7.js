@@ -1430,6 +1430,23 @@ function Hapus(id, title) {
 function pembelian(value) {
     $('#konversid1').html('<span class="input-group-text">' + value + '</span>');
     $('#konversid2').html('<span class="input-group-text">' + value + '</span>');
+
+    
+    if($("#satuan_pemakaian")){
+        $("#satuan_pemakaian").val(value).trigger('change');
+    }
+
+    if(!$('#konversi_pemakaian').val()){
+        $('#konversi_pemakaian').val(1);
+    }
+
+    if($("#satuan_pengeluaran")){
+        $("#satuan_pengeluaran").val(value).trigger('change');
+    }
+    
+    if(!$('#konversi_pengeluaran').val()){
+        $('#konversi_pengeluaran').val(1);
+    }
 }
 
 function pembelianedit(value) {
