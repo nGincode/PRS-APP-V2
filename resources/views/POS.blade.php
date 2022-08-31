@@ -315,16 +315,31 @@
                 data: {
                     id: value
                 },
+                dataType: 'json',
                 beforeSend: function(xhr) {
                     $('.waiting').show('');
                 },
                 error: function(xhr, status, error) {
-                    // popup(status, true, xhr.status + " " + error);
                     $('#item').html('');
                 },
                 success: function(data) {
                     $('.waiting').hide('');
-                    $('#item').html(data);
+                    html = '';
+                    if (data.status === 200) {
+                        data.hasil.forEach(id => {
+                            html += '<div class="item" id="pilihan_' + id.id_pilihan + '" ' + id
+                                .onclick +
+                                ' > <div class="float-right"><b>' + id.ingat + ' ' + id.judul +
+                                '</b></div><div><small>' + id.kode +
+                                '</small></div><div><h5 class="card-title"><b>' + id.nama +
+                                '</b></h5> <p class = "card-text" > ' + 'Rp ' + id.harga +
+                                ' </p><hr></div></div >';
+                        });
+                    }
+                    if (data.status === 404) {
+                        html += 'Tidak ditemukan';
+                    }
+                    $('#item').html(html);
                 }
             });
         }

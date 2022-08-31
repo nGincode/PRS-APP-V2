@@ -33,12 +33,13 @@ class Inventory extends Model
 
     public function toSearchableArray()
     {
-        $data = Bahan::where('id', $this->bahan_id)->first();
-
-        return [
-            'id' => $this->id,
-            'nama' => $data['nama'],
-            'kode' => $data['kode']
-        ];
+        $data = Bahan::where('id', $this->bahan_id)->where('delete', false)->first();
+        if ($data) {
+            return [
+                'id' => $this->id,
+                'nama' => $data['nama'],
+                'kode' => $data['kode']
+            ];
+        }
     }
 }

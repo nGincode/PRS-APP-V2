@@ -159,19 +159,18 @@ class POSController extends Controller
             $cek = Inventory::where('store_id', $request->session()->get('store_id'))->count();
 
             if ($cek) {
-                $pos = Inventory::search($id)->where('delete', false)->get()->toArray();
-                $data = '';
+                $pos = Inventory::search($id)->get()->toArray();
+
+                $hasil = [];
                 foreach ($pos as $key => $v) {
 
                     $bahan = Bahan::where('id', $v['bahan_id'])->first();
                     if (!$bahan->delete) {
-                        $data .= '<div class="item" id="pilihan_' . $v['id'] . '"
-                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
-                                            <div class="float-right"><b>';
                         if ($v['qty'] < 5) {
-                            $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                            $ingat = '<i class="fa fa-exclamation-triangle"></i>';
+                        } else {
+                            $ingat = '';
                         }
-                        $data .= $v['qty'] . ' ' . $v['satuan'];
 
                         if ($v['auto_harga']) {
                             $harga = $v['harga_auto'];
@@ -179,36 +178,46 @@ class POSController extends Controller
                             $harga = $v['harga_manual'];
                         }
 
-                        $data .= '</b> </div> 
-                                            <div><small>' . $bahan['kode'] . '</small></div>
-                                            <div><h5 class="card-title"><b>' . $bahan['nama'] . '</b></h5>
-                                            <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
-                                            <hr></div>
-                                        </div>';
+                        $hasil[] = [
+                            'id_pilihan' => 'pilihan_' . $v['id'],
+                            'onclick' => 'onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')"',
+                            'ingat' =>  $ingat,
+                            'judul' => $v['qty'] . ' ' . $v['satuan'],
+                            'kode' => $bahan['kode'],
+                            'nama' => $bahan['nama'],
+                            'harga' =>  number_format($harga, 0, ',', '.')
+                        ];
                     }
                 }
-                if ($data) {
-                    echo $data;
+                if ($hasil) {
+                    $data = [
+                        'status' => 200,
+                        'hasil' => $hasil
+                    ];
                 } else {
-                    echo 'Tidak Ditemukan';
+                    $data = [
+                        'status' => 404
+                    ];
                 }
             } else {
-                echo 'Tidak ditemukan';
+                $data = [
+                    'status' => 404
+                ];
             }
         } else {
-            $data = '';
 
             $item = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->latest()->get();
 
 
+            $hasil = [];
             foreach ($item as $key => $v) {
+
                 if (!$v['bahan']->delete) {
-                    $data .= '<div class="animate__animated animate__backInDown animate__faster item" id="pilihan_' . $v['id'] . '"
-                                            onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')">
-                                            <div class="float-right"><b>';
 
                     if ($v['qty'] < 5) {
-                        $data .= '<i class="fa fa-exclamation-triangle"></i>';
+                        $ingat = '<i class="fa fa-exclamation-triangle"></i>';
+                    } else {
+                        $ingat = '';
                     }
 
                     if ($v['auto_harga']) {
@@ -217,20 +226,33 @@ class POSController extends Controller
                         $harga = $v['harga_manual'];
                     }
 
-                    $data .= $v['qty'] . ' ' . $v['satuan'];
-                    $data .= '</b> </div> <div>' . $v['bahan']->kode . '</div><div><h5 class="card-title"><b>' . $v['bahan']->nama . '</b></h5>
-                                            <p class="card-text">' . 'Rp ' . number_format($harga, 0, ',', '.') . '</p>
-                                            <hr></div>
-                                        </div>';
+
+                    $hasil[] = [
+                        'id_pilihan' => 'pilihan_' . $v['id'],
+                        'onclick' => 'onclick="pilih(' . $v['id'] . ',' . $v['bahan_id'] . ')"',
+                        'ingat' =>  $ingat,
+                        'judul' => $v['qty'] . ' ' . $v['satuan'],
+                        'kode' => $v['bahan']->kode,
+                        'nama' => $v['bahan']->nama,
+                        'harga' =>  number_format($harga, 0, ',', '.')
+                    ];
                 }
             }
 
-            if ($data) {
-                echo $data;
+            if ($hasil) {
+                $data = [
+                    'status' => 200,
+                    'hasil' => $hasil
+                ];
             } else {
-                echo 'Tidak Ditemukan';
+                $data = [
+                    'status' => 404
+                ];
             }
         }
+
+
+        echo json_encode($data);
     }
 
 
