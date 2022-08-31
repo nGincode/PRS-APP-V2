@@ -978,10 +978,6 @@ $(document).ready(function () {
                 'harga': {
                     required: true,
                     maxlength: 11
-                },
-                'margin': {
-                    required: true,
-                    maxlength: 3
                 }
             },
             messages: {},

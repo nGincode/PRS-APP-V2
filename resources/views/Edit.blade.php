@@ -2828,9 +2828,6 @@
                         },
                         'auto_harga_edit': {
                             required: true
-                        },
-                        'margin': {
-                            required: true
                         }
                     },
                     messages: {

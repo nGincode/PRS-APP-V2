@@ -85,8 +85,7 @@ class InventoryController extends Controller
                 'qty' => 'required',
                 'satuan' => 'required',
                 'auto_harga' => 'required',
-                'harga' => 'required',
-                'margin' => 'required'
+                'harga' => 'required'
             ],
             $messages  = [
                 'required' => 'Form :attribute harus terisi',
@@ -198,23 +197,23 @@ class InventoryController extends Controller
             if ($request->session()->get('tipe') == 'Office') {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
+                        $value['bahan']->kode,
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
-                        $value['margin'] . '%',
+                        ($value['margin'] ?? 0) . '%',
                         $button
                     );
                 }
             } else {
                 if (!$value['bahan']->delete) {
                     $result['data'][] = array(
-                        '<center><img  width="150px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['bahan']->kode, $generator::TYPE_CODE_128)) . '"> <br>' . $value['bahan']->kode . '</center>',
+                        $value['bahan']->kode,
                         $value['bahan']->nama,
                         $qty,
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
-                        $value['margin'] . '%',
+                        ($value['margin'] ?? 0) . '%',
                         $button
                     );
                 }
@@ -276,8 +275,7 @@ class InventoryController extends Controller
                 $request->all(),
                 $rules = [
                     'harga' => 'required',
-                    'auto_harga_edit' => 'required',
-                    'margin' => 'required',
+                    'auto_harga_edit' => 'required'
                 ],
                 $messages  = [
                     'required' => 'Form :attribute harus terisi',

@@ -973,7 +973,7 @@ if (Auth::check()) {
 
     <script src="{{ url('/') }}/assets/js/jQuery.print.min.js"></script>
     <script src="{{ url('/') }}/assets/js/numeral.min.js"></script>
-    <script src="{{ url('/') }}/assets/js/Custom_v5.js"></script>
+    <script src="{{ url('/') }}/assets/js/Custom_v6.js"></script>
 
     @include('sweetalert::alert')
 
