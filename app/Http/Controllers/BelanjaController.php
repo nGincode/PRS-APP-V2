@@ -188,9 +188,30 @@ class BelanjaController extends Controller
                 ];
             }
         } else {
+            $totalitem = 0;
+            $totalopr = 0;
+            $totalart = 0;
+            $totalsup = 0;
+            $totaldapro = 0;
             foreach ($request->input('kategori') as $key => $kategori) {
                 if (isset($request->input('qty')[$key]) && isset($request->input('nama')[$key])) {
                     if ($kategori == 'Supplay' or $kategori == 'Oprasional' or $kategori == 'ART' or $kategori == 'DAPRO') {
+
+                        if ($kategori == 'Oprasional') {
+                            $totalopr += ($request->input('qty')[$key] ?? 0) * ($request->input('harga')[$key] ?? 0);
+                        }
+
+                        if ($kategori == 'ART') {
+                            $totalart += ($request->input('qty')[$key] ?? 0) * ($request->input('harga')[$key] ?? 0);
+                        }
+
+                        if ($kategori == 'Supplay') {
+                            $totalsup += ($request->input('qty')[$key] ?? 0) * ($request->input('harga')[$key] ?? 0);
+                        }
+
+                        if ($kategori == 'DAPRO') {
+                            $totaldapro += ($request->input('qty')[$key] ?? 0) * ($request->input('harga')[$key] ?? 0);
+                        }
 
                         $id = $request->input('id')[$key] ?? 0;
                         if ($id) {
@@ -207,9 +228,6 @@ class BelanjaController extends Controller
                                 'ket' => $request->input('ket')[$key] ?? null,
                                 'total' => $request->input('qty')[$key] * $request->input('harga')[$key] ?? 0,
                                 'uom' => $request->input('uombelanja')[$key] ?? null,
-                                'stock' => $request->input('stock')[$key] ?? null,
-                                'stock_uom' => $request->input('stock_uom')[$key] ?? null,
-                                'stock_harga' => $request->input('stock_harga')[$key] ?? null,
                                 'hutang' => $request->input('hutang')[$key] ?? 0
                             ];
 
@@ -291,6 +309,7 @@ class BelanjaController extends Controller
                             ->count();
 
                         if (!$jml or $id) {
+                            $totalitem += ($request->input('stock')[$key] ?? 0) * ($request->input('stock_harga')[$key] ?? 0);
 
                             if ($id) {
                                 $input = [
@@ -376,6 +395,14 @@ class BelanjaController extends Controller
                 }
             }
         }
+
+
+        $data['totalitem'] = $totalitem;
+        $data['totalopr'] = $totalopr;
+        $data['totalart'] = $totalart;
+        $data['totalsup'] = $totalsup;
+        $data['totaldapro'] = $totaldapro;
+        $data['totalseluruh'] = $totaldapro + $totalsup + $totalart + $totalopr + $totalitem;
 
 
 

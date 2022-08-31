@@ -615,36 +615,74 @@ class MasterController extends Controller
         $Data = Bahan::where('delete', false)->latest()->get();
         echo
         '
-        <html>
-        <body onload="print()" style="width:80mm">
-        <div class="page">';
+            <html>
+            <body onload="print()" style="width:80mm">
+            <div class="page">';
+
+        $total = count($Data) - 1;
         foreach ($Data as $key => $value) {
+            if (
+                substr($key, -1) == 0 ||
+                substr($key, -1) == 2 ||
+                substr($key,  -1) == 4 ||
+                substr($key,  -1) == 6 ||
+                substr($key,  -1) == 8
+            ) {
+                echo '<div style="display:flex">';
+            }
             echo
             '
-            <div class="barcode">
-            <small style="font-size: 7px;">' . $value['nama'] . '</small>
-            <img width="115px" height="30px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_39)) . '">
-            <br> <small style="font-size: 9px;">' . $value['kode'] . '</small>
-            </div>';
+                <div class="barcode">
+                <small style="font-size: 7px;">' . $value['nama'] . '</small>
+                <br><img width="115px" height="30px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_39)) . '">
+                <br> <small style="font-size: 9px;">' . $value['kode'] . '</small>
+                </div>';
+
+
+            if (
+                substr($key,  -1) == 1 ||
+                substr($key,  -1) == 3 ||
+                substr($key,  -1) == 5 ||
+                substr($key,  -1) == 7 ||
+                substr($key,  -1) == 9 || $total == $key
+            ) {
+                echo '</div>';
+            }
         }
         echo '</div>
-        <style>
-        
-        .page{
-            font-family: monospace;
-            display: grid;  
-            grid-gap: 5px;  
-            grid-template-columns: repeat(auto-fit, 145px);
-            grid-template-rows: repeat(2, 75px); 
-        }
-        .barcode {
-            text-align:center;
-            margin:5px;
-        }
-        </style>
-        </body>
-        </html>
-        ';
+            <style>
+
+            .page{
+                font-family: monospace;
+            }
+            .barcode {
+                text-align:center;
+                margin: 10px 7px;
+                padding: 5px 10px;
+                border-radius: 10px;
+                border: 1px solid;
+            }
+            </style>
+            </body>
+            </html>
+            ';
+
+
+        // echo '<body onload="print()" style="width:80mm"><div class="page"><table style="width: 100%;">';
+        // foreach ($Data as $key => $value) {
+        //     echo
+        //     '
+
+        //     <tr>
+        //         <td >
+        //         <small style="font-size: 7px;">' . $value['nama'] . '</small>
+        //         <br><img width="115px" height="30px" src="data:image/png;base64,' . base64_encode($generator->getBarcode($value['kode'], $generator::TYPE_CODE_39)) . '">
+        //         <br><small style="font-size: 9px;">' . $value['kode'] . '</small>
+        //         </td>
+        //     </tr>
+        //         ';
+        // }
+        // echo '</table></div></body><style>td {text-align: center;padding:5px}</style>';
     }
 
     public function BahanExport(Request $request)

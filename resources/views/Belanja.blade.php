@@ -68,7 +68,36 @@
                                         <tbody>
                                             <tr>
                                             </tr>
+                                            <?php
+                                            $totalitem = 0;
+                                            $totalopr = 0;
+                                            $totalsup = 0;
+                                            $totalart = 0;
+                                            $totaldapro = 0;
+                                            ?>
                                             @foreach ($Data as $key => $v)
+                                                <?php
+                                                if ($v['kategori'] == 'Item') {
+                                                    $totalitem += $v['stock'] * $v['stock_harga'];
+                                                }
+                                                
+                                                if ($v['kategori'] == 'Oprasional') {
+                                                    $totalopr += $v['qty'] * $v['harga'];
+                                                }
+                                                
+                                                if ($v['kategori'] == 'ART') {
+                                                    $totalart += $v['qty'] * $v['harga'];
+                                                }
+                                                
+                                                if ($v['kategori'] == 'Supplay') {
+                                                    $totalsup += $v['qty'] * $v['harga'];
+                                                }
+                                                
+                                                if ($v['kategori'] == 'DAPRO') {
+                                                    $totaldapro += $v['qty'] * $v['harga'];
+                                                }
+                                                
+                                                ?>
                                                 <tr id="tr_{{ $key }}"
                                                     @if ($v['up']) style="background-color: #a9a9a966;" @endif>
                                                     <td
@@ -309,10 +338,45 @@
                                                             class="fas fa-plus"></i></a>
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td colspan="5" style="border: unset"></td>
+                                                <td><b>Total Item :</b></td>
+                                                <td id="total_item">{{ 'Rp ' . number_format($totalitem, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td><b>Total Oprasional :</b></td>
+                                                <td id="total_oprasional">
+                                                    {{ 'Rp ' . number_format($totalopr, 0, ',', '.') }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td><b>Total Supplay :</b></td>
+                                                <td id="total_supplay">{{ 'Rp ' . number_format($totalsup, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td><b>Total ART :</b></td>
+                                                <td id="total_art">{{ 'Rp ' . number_format($totalart, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="5"></td>
+                                                <td><b>Total DAPRO :</b></td>
+                                                <td id="total_dapro">{{ 'Rp ' . number_format($totaldapro, 0, ',', '.') }}
+                                                </td>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>
 
+                            </div>
+                            <div class="float-right" style=" border-bottom: 2px #007bff solid">
+                                Total : <h2><b
+                                        id="total_seluruh">{{ 'Rp ' . number_format($totaldapro + $totalart + $totalsup + $totalopr + $totalitem, 0, ',', '.') }}</b>
+                                </h2>
                             </div>
                             <!-- /.row -->
                         </div>
@@ -622,12 +686,37 @@
                             );
                             animateCSS('#autosave', 'shakeX');
                         }
+
+                        $('#total_item').html('Rp ' + formatRupiah(data.totalitem));
+                        $('#total_oprasional').html('Rp ' + formatRupiah(data.totalopr));
+                        $('#total_supplay').html('Rp ' + formatRupiah(data.totalsup));
+                        $('#total_art').html('Rp ' + formatRupiah(data.totalart));
+                        $('#total_dapro').html('Rp ' + formatRupiah(data.totaldapro));
+                        $('#total_seluruh').html('Rp ' + formatRupiah(data.totalseluruh));
                     }
                 });
 
             });
 
         });
+
+        function formatRupiah(angka, prefix) {
+            var number_string = angka.toString(),
+                split = number_string.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            // tambahkan titik jika yang di input sudah menjadi angka ribuan
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
+        }
+
 
         function lihat(id, judul) {
             $.ajax({

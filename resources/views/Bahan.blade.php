@@ -181,7 +181,7 @@
 
                         <a class="btn btn-default " target="_blank" href="Bahan/PrintBarcode"><i
                                 class="fa fa-barcode"></i>
-                            Print Barcode</a>
+                            Print</a>
                     </div><br>
 
                     <table id="manage" class="table table-bordered table-striped">
