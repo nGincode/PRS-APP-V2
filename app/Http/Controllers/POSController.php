@@ -159,7 +159,7 @@ class POSController extends Controller
             $cek = Inventory::where('store_id', $request->session()->get('store_id'))->count();
 
             if ($cek) {
-                $pos = Inventory::search($id)->get()->toArray();
+                $pos = Inventory::search($id)->where('delete', false)->get()->toArray();
 
                 $hasil = [];
                 foreach ($pos as $key => $v) {
