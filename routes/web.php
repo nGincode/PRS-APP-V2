@@ -17,7 +17,7 @@ use App\Http\Controllers\POSController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TicketController;
 
-use App\Models\Bahan;
+use App\Models\Inventory;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -352,9 +352,8 @@ Route::get(
     '/test',
     function () {
 
-        $bahan = Bahan::where('kode', '12345678')->orWhere('barcode', 12345678)->first();
+        $pos = Inventory::search('n')->where('delete', false)->get();
 
-
-        dd($bahan['barcode']);
+        dd($pos);
     }
 );

@@ -198,7 +198,7 @@ class POSController extends Controller
         } else {
             $data = '';
 
-            $item = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->get();
+            $item = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->latest()->get();
 
 
             foreach ($item as $key => $v) {

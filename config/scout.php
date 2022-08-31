@@ -135,7 +135,7 @@ return [
     ],
 
 
-    //tambah sendiri
+    //custom sendiri
     'tntsearch' => [
         'storage'  => storage_path(), //place where the index files will be stored
         'fuzziness' => env('TNTSEARCH_FUZZINESS', false),
