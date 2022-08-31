@@ -76,14 +76,15 @@
                                         <label>Auto Harga</label><br>
                                         <div class="icheck-primary d-inline">
                                             <input type="radio" id="auto_harga_1" max="100" name="auto_harga"
-                                                value="1" checked>
+                                                value="1">
                                             <label for="auto_harga_1">
                                                 Aktif
                                             </label>
                                         </div>
                                         &nbsp
                                         <div class="icheck-primary d-inline">
-                                            <input type="radio" id="auto_harga_0" value="0" name="auto_harga">
+                                            <input type="radio" id="auto_harga_0" value="0" name="auto_harga"
+                                                checked>
                                             <label for="auto_harga_0">
                                                 Non Aktif
                                             </label>
