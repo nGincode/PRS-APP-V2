@@ -426,11 +426,6 @@
                     @endif
                 </tfoot>
             </table>
-            <div class="float-right" style=" border-bottom: 2px #007bff solid">
-                Total : <h2><b id="total_seluruh">Rp.
-                        {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
-            </div>
-            <br><br><br>
             @isset($order)
                 <div>
                     Ket :<br>
@@ -448,6 +443,12 @@
 
     </div>
     <!-- /.row -->
+
+    <div class="float-right" style=" border-bottom: 2px #007bff solid">
+        Total : <h2><b id="total_seluruh">Rp.
+                {{ number_format($total_seluruh ?? 0, 0, '.', ',') }}</b></h2>
+    </div>
+    <br><br><br>
     </div>
 
     <div class="card-footer">

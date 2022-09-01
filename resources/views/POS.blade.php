@@ -4,7 +4,7 @@
     <section class="content">
         <div class="container-fluid">
             @if (in_array('createPOS', $user_permission))
-                <div class="card card-primary">
+                <div class="card card-primary ">
                     <div class="card-header">
                         <h3 class="card-title"><b> {{ $title . ' ' . $subtitle }} </b></h3>
 
@@ -12,33 +12,37 @@
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div class="row">
 
+
                             <div class="col-sm-8">
-                                <div class="float-right">
-                                    <b>
-                                        Total
-                                    </b>
-                                    <h1><b id="totalbelanja"></b></h1>
+
+                                <br>
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+                                        <h1>
+                                            <b>
+                                                {{ request()->session()->get('store') }}
+                                            </b>
+                                        </h1>
+                                    </div>
+                                    <div class="col-12 col-sm-6 text-right">
+                                        <b style="font-size: x-large">
+                                            Total
+                                        </b>
+                                        <h1><b id="totalbelanja"></b></h1>
+                                    </div>
                                 </div>
-                                <h1>
-                                    <b>
-                                        {{ request()->session()->get('store') }}
-                                    </b>
-                                </h1>
-                                <br><br>
+                                <br>
                                 <div class="card card-success card-outline" style="min-height: 600px">
                                     <div class="card-header" style="display: flex">
                                         <form id="FormBarcode" action="POS/Barcode" method="POST">
-                                            <input type="search" class="form-control" name="id" id="barcode"
-                                                placeholder="Barcode..">
+                                            <input autofocus type="search" class="form-control" name="id"
+                                                id="barcode" placeholder="Barcode..">
                                         </form>
                                         <i class="fa fa-barcode"
                                             style="padding: 10px;padding: 10px;margin-right:5px;border-radius: 5px;margin-left: 5px;border: solid 1px #e1e1e1;"></i>
@@ -181,7 +185,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form>
+                    <form id="bayarpos">
                         <center>
                             <h4><b>IDENTITAS</b></h4>
                         </center>
@@ -203,6 +207,7 @@
                             <select name="outlet_store" id="outlet_store" class="form-control select2"
                                 data-dropdown-css-class="select2-danger" style="width: 100%;">
                                 <option selected="true" disabled="disabled">Pilih</option>
+                                <option value="Pelanggan">Pelanggan</option>
                                 @foreach ($Store as $str)
                                     @if ($str['id'] != 1)
                                         <option value="{{ $str['nama'] }}">{{ $str['nama'] }}</option>
@@ -224,7 +229,7 @@
 
                         <div class="form-group">
                             <center>
-                                <input type="number" class="form-control" style="width:40%" no="jumlah"
+                                <input type="number" class="form-control" style="width:40%" name="jumlah"
                                     id="jumlah" onkeyup="$('input[type=radio]').prop('checked', false)"
                                     aria-describedby="Jumlah" placeholder="Masukan Data">
                             </center>
@@ -519,54 +524,83 @@
         }
 
         function bayar() {
-            $.ajax({
-                url: "POS/Input",
-                type: "POST",
-                data: {
-                    pengorder: $('#pengorder').val(),
-                    outlet: $('#outlet_store').val(),
-                    no: $('#no').val(),
-                    jumlah: $('#jumlah').val(),
-                    duit: $("input[name='duit']:checked").val()
-                },
-                dataType: 'json',
-                error: function(xhr, status, error) {
-                    popup(status, true, xhr.status + " " + error);
-                },
-                success: function(data) {
-                    console.log(data);
-                    if (data.status) {
-                        popup(data.status, data.toast, data.pesan);
-                    }
 
-                    if (data.status !== 'error') {
-                        layar();
-                        $('#transaksi').modal('hide');
-                        if (data.kembalian) {
-                            if (data.kembalian === 0) {
-                                $('#StatusKembalian').html(
-                                    '<div class="modal-body"><center><h2><b style="color: green">~ LUNAS ~</b></h2></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
-                                    data.id +
-                                    ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
-                                );
-                            } else {
-                                $('#StatusKembalian').html(
-                                    '<div class="modal-body"><center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' +
-                                    data
-                                    .kembalian +
-                                    '</b></h4></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
-                                    data.id +
-                                    ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
-                                );
-                            }
-                        }
-                        $('#kembalian').modal('show');
-                        $('#manage').DataTable().ajax.reload();
-                        search();
+            $('#bayarpos').validate({
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                },
+                success: function(validClass, element) {
+                    $(element).addClass('is-valid');
+                },
+                rules: {
+                    'outlet_store': {
+                        required: true
                     }
-
-                }
+                },
+                messages: {}
             });
+
+            var isValid = $('#bayarpos').valid();
+
+            if (isValid) {
+
+                $.ajax({
+                    url: "POS/Input",
+                    type: "POST",
+                    data: {
+                        pengorder: $('#pengorder').val(),
+                        outlet: $('#outlet_store').val(),
+                        no: $('#no').val(),
+                        jumlah: $('#jumlah').val(),
+                        duit: $("input[name='duit']:checked").val()
+                    },
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status) {
+                            popup(data.status, data.toast, data.pesan);
+                        }
+
+                        if (data.status !== 'error') {
+                            layar();
+                            $('#transaksi').modal('hide');
+                            if (data.kembalian) {
+                                if (data.kembalian === 0) {
+                                    $('#StatusKembalian').html(
+                                        '<div class="modal-body"><center><h2><b style="color: green">~ LUNAS ~</b></h2></center></div><div class="modal-footer"><button type="button" onclick="Print(' +
+                                        data.id +
+                                        ')" class="btn btn-primary btn-block"><b>Print</b></button></div>'
+                                    );
+                                } else {
+                                    $('#StatusKembalian').html(
+                                        '<div class="modal-body"><center><h3><b>~ KEMBALIAN ~</b></h3></center><center><h4><b>' +
+                                        data
+                                        .kembalian +
+                                        '</b></h4></center></div><div class="modal-footer"><a target="_blank" href="POS/Print?id=' +
+                                        data.id +
+                                        '" class="btn btn-primary btn-block"><b>Print</b></a></div>'
+                                    );
+                                }
+                            }
+                            $('#kembalian').modal('show');
+                            $('#manage').DataTable().ajax.reload();
+                            search();
+                        }
+
+                    }
+                });
+            }
         }
 
         function lihat(id, judul) {
@@ -590,36 +624,36 @@
         }
 
 
-        // function Print(id) {
-        //     $.ajax({
-        //         url: "POS/Print",
-        //         type: "POST",
-        //         data: {
-        //             id: id,
-        //         },
-        //         error: function(xhr, status, error) {
-        //             popup(status, true, xhr.status + " " + error);
-        //         },
-        //         success: function(data) {
-        //             $('#printaera').html(data);
+        function Print(id) {
+            $.ajax({
+                url: "POS/Print",
+                type: "POST",
+                data: {
+                    id: id,
+                },
+                error: function(xhr, status, error) {
+                    popup(status, true, xhr.status + " " + error);
+                },
+                success: function(data) {
+                    $('#printaera').html(data);
 
-        //             $("#printaera").print({
-        //                 globalStyles: true,
-        //                 mediaPrint: false,
-        //                 stylesheet: null,
-        //                 noPrintSelector: ".no-print",
-        //                 iframe: true,
-        //                 append: null,
-        //                 prepend: null,
-        //                 manuallyCopyFormValues: true,
-        //                 deferred: $.Deferred(),
-        //                 timeout: 750,
-        //                 title: null,
-        //                 doctype: '<!doctype html>'
-        //             });
-        //         }
-        //     });
-        // }
+                    $("#printaera").print({
+                        globalStyles: true,
+                        mediaPrint: false,
+                        stylesheet: null,
+                        noPrintSelector: ".no-print",
+                        iframe: true,
+                        append: null,
+                        prepend: null,
+                        manuallyCopyFormValues: true,
+                        deferred: $.Deferred(),
+                        timeout: 750,
+                        title: null,
+                        doctype: '<!doctype html>'
+                    });
+                }
+            });
+        }
 
 
         function qtyubah(id, qty) {
@@ -648,8 +682,6 @@
             });
         }
 
-
-        //Input
         $(document).ready(function() {
 
             $('#FormBarcode').submit(function(event) {

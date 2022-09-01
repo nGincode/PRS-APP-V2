@@ -338,45 +338,53 @@
                                                             class="fas fa-plus"></i></a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td colspan="5" style="border: unset"></td>
-                                                <td><b>Total Item :</b></td>
-                                                <td id="total_item">{{ 'Rp ' . number_format($totalitem, 0, ',', '.') }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5"></td>
-                                                <td><b>Total Oprasional :</b></td>
-                                                <td id="total_oprasional">
-                                                    {{ 'Rp ' . number_format($totalopr, 0, ',', '.') }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5"></td>
-                                                <td><b>Total Supplay :</b></td>
-                                                <td id="total_supplay">{{ 'Rp ' . number_format($totalsup, 0, ',', '.') }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5"></td>
-                                                <td><b>Total ART :</b></td>
-                                                <td id="total_art">{{ 'Rp ' . number_format($totalart, 0, ',', '.') }}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="5"></td>
-                                                <td><b>Total DAPRO :</b></td>
-                                                <td id="total_dapro">{{ 'Rp ' . number_format($totaldapro, 0, ',', '.') }}
-                                                </td>
-                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>
 
                             </div>
-                            <div class="float-right" style=" border-bottom: 2px #007bff solid">
-                                Total : <h2><b
-                                        id="total_seluruh">{{ 'Rp ' . number_format($totaldapro + $totalart + $totalsup + $totalopr + $totalitem, 0, ',', '.') }}</b>
-                                </h2>
+
+                            <div class="row">
+                                <table class="table col-12 col-sm-6">
+                                    <tr>
+                                        <td><b>Total Item</b></td>
+                                        <td><b>:</b></td>
+                                        <td id="total_item">{{ 'Rp ' . number_format($totalitem, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total Oprasional</b></td>
+                                        <td><b>:</b></td>
+                                        <td id="total_oprasional">
+                                            {{ 'Rp ' . number_format($totalopr, 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total Supplay</b></td>
+                                        <td><b>:</b></td>
+                                        <td id="total_supplay">{{ 'Rp ' . number_format($totalsup, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total ART</b></td>
+                                        <td><b>:</b></td>
+                                        <td id="total_art">{{ 'Rp ' . number_format($totalart, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total DAPRO</b></td>
+                                        <td><b>:</b></td>
+                                        <td id="total_dapro">{{ 'Rp ' . number_format($totaldapro, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="col-12 col-sm-6">
+                                    <div style="padding: 30px; font-size: xx-large; ">
+                                        <b>Total :</b>
+                                        <h2 style="font-size:50px;border-bottom: 2px #007bff solid"><b
+                                                id="total_seluruh">{{ 'Rp ' . number_format($totaldapro + $totalart + $totalsup + $totalopr + $totalitem, 0, ',', '.') }}</b>
+                                        </h2>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.row -->
                         </div>

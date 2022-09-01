@@ -3,15 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
-use App\Models\Bahan_Olahan;
-use App\Models\User;
 use App\Models\Store;
-use App\Models\Ivn;
-use App\Models\Pengadaan;
-use App\Models\LogistikProduk;
-use App\Models\LogistikBelanja;
-use App\Models\LogistikOrder;
-use App\Models\Groups;
 use App\Models\Inventory;
 use App\Models\POS;
 use App\Models\POSBill;
@@ -19,8 +11,6 @@ use App\Models\POSBillItem;
 
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 
 class POSController extends Controller
@@ -459,7 +449,7 @@ class POSController extends Controller
                 'no_hp' => $no,
                 'nama_bill' => $pengorder,
                 'gross_total' => $jumlahbelanja,
-                'store' => $request->input('outlet'),
+                'store' => ($request->input('outlet') == 'Pelanggan' ? null : $request->input('outlet')),
                 'disc' => null,
                 'tax' => null,
                 'paid' => 1,
@@ -512,11 +502,19 @@ class POSController extends Controller
                 ];
             };
         } else {
-            $data = [
-                'toast' => true,
-                'status' => 'error',
-                'pesan' =>  'Pembayaran Tidak Mencukupi'
-            ];
+            if ($jumlah) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Pembayaran Tidak Mencukupi'
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Jumlah Pembayaran Belum diisi'
+                ];
+            }
         }
         echo json_encode($data);
     }
