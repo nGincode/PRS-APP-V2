@@ -633,18 +633,4 @@ class TicketController extends Controller
         echo json_encode($data);
     }
     /////////////////////////////////// Buat //////////////////////////
-
-
-    /////////////////////////////////// Pelanggan //////////////////////////
-    public function Pelanggan(Request $request)
-    {
-        return view('TicketPelanggan', $this->data);
-    }
-
-    public function Daftar(Request $request)
-    {
-        $nama = $request->input('nama');
-        session()->flash('TiketError', 123);
-    }
-    /////////////////////////////////// Pelanggan //////////////////////////
 }

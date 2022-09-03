@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="icon" href="{{ url('/') }}/assets/images/logo/prslogin.png" sizes="10x16">
+    <title>Prima Rasa Selaras</title>
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css" rel="stylesheet">
 </head>
@@ -42,6 +43,11 @@
                     <div class="login__field">
                         <i class="login__icon fas fa-phone"></i>
                         <input type="number" required class="login__input" name="wa" placeholder="Whatsapp">
+                    </div>
+
+                    <div class="login__field">
+                        <i class="login__icon fas fa-envelope"></i>
+                        <input type="email" required class="login__input" name="email" placeholder="Email">
                     </div>
                     <button class="button login__submit">
                         <span class="button__text" id="submit">Login</span>

@@ -340,12 +340,13 @@ Route::controller(TicketController::class)->group(
         Route::post('Ticket/Ticket/Hapus', 'Hapus')->middleware('auth');
         Route::post('Ticket/Ticket/Edit', 'Edit')->middleware('auth');
         Route::post('Ticket/TambahEdit', 'TambahEdit')->middleware('auth');
-
-        Route::get('Ticket', 'Pelanggan');
-        Route::post('Ticket/Daftar', 'Daftar');
-        Route::post('Ticket/Login', 'Login');
     }
 );
+
+
+Route::get('Pelanggan/Login',  function () {
+    return view('PelangganLogin');
+});
 
 
 Route::get(
