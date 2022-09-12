@@ -9,7 +9,10 @@ use App\Models\Peralatan;
 use App\Models\Pegawai;
 use App\Models\Satuan;
 
-use App\Exports\PenjualanExport;
+use App\Exports\PenjualanAllExport;
+use App\Exports\PenjualanItemOutletExport;
+use App\Exports\PenjualanItemExport;
+use App\Exports\PenjualanOutletExport;
 use App\Exports\BelanjaExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -44,6 +47,7 @@ class ReportController extends Controller
     {
         $store = $request->input('store');
         $export = $request->input('export');
+        $laporan = $request->input('laporan');
 
         if ($date = $request->input('range_date')) {
             $tgl_awal = date('Y-m-d', strtotime(explode(" - ", $date)[0]));
@@ -53,13 +57,31 @@ class ReportController extends Controller
             $tgl_akhir = null;
         }
 
-        if ($store && $export && $tgl_awal && $tgl_akhir) {
-            if ($export == 1) {
-                return Excel::download(new PenjualanExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-            } else if ($export == 2) {
-                return Excel::download(new PenjualanExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
-            } else if ($export == 3) {
-                return Excel::download(new PenjualanExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.csv', \Maatwebsite\Excel\Excel::CSV);
+        if ($store && $export && $tgl_awal && $tgl_akhir && $laporan) {
+            if ($laporan === 'all') {
+                if ($export == 1) {
+                    return Excel::download(new PenjualanAllExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+                } else if ($export == 2) {
+                    return Excel::download(new PenjualanAllExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+                } else if ($export == 3) {
+                    return Excel::download(new PenjualanAllExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.csv', \Maatwebsite\Excel\Excel::CSV);
+                }
+            } else if ($laporan == 'item&outlet') {
+                if ($export == 1) {
+                    return Excel::download(new PenjualanItemOutletExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+                } else if ($export == 2) {
+                    return Excel::download(new PenjualanItemOutletExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+                } else if ($export == 3) {
+                    return Excel::download(new PenjualanItemOutletExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.csv', \Maatwebsite\Excel\Excel::CSV);
+                }
+            } else if ($laporan == 'item') {
+                if ($export == 1) {
+                    return Excel::download(new PenjualanItemExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+                } else if ($export == 2) {
+                    return Excel::download(new PenjualanItemExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
+                } else if ($export == 3) {
+                    return Excel::download(new PenjualanItemExport($store, $tgl_awal, $tgl_akhir), 'Penjualan ' . $tgl_awal . ' - ' . $tgl_akhir . '.csv', \Maatwebsite\Excel\Excel::CSV);
+                }
             }
         } else {
             return back()->with('toast_error', 'Input Belum Lengkap');

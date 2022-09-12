@@ -449,7 +449,7 @@ class POSController extends Controller
                 'no_hp' => $no,
                 'nama_bill' => $pengorder,
                 'gross_total' => $jumlahbelanja,
-                'store' => ($request->input('outlet') == 'Pelanggan' ? null : $request->input('outlet')),
+                'store' => $request->input('outlet'),
                 'disc' => null,
                 'tax' => null,
                 'paid' => 1,
@@ -472,6 +472,7 @@ class POSController extends Controller
                         'satuan' => $value1['satuan'],
                         'harga' => $value1['harga'],
                         'total' => $value1['qty'] * $value1['harga'],
+                        'tujuan' => $request->input('outlet'),
                         'paid' => 1,
                         'created_at' => date('Y-m-d H:i:s')
                     ];
@@ -591,7 +592,7 @@ class POSController extends Controller
                 $nama_bill,
                 $no_hp,
                 $this->rupiah($value['total']),
-                $paid,
+                $paid . ' <span class="badge badge-primary">' . $value['store'] . '</span>',
                 $button
             );
         }

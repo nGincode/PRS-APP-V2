@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 
 use Throwable;
 
-class PenjualanExport implements
+class PenjualanAllExport implements
     WithProperties,
     WithTitle,
     WithHeadings,
@@ -101,6 +101,7 @@ class PenjualanExport implements
 
     public function array(): array
     {
+
         $data = [];
         $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'Posbill')->orderBy('tgl', 'ASC')->orderBy('tgl', 'ASC')->get();
         $order = Orderitem::where('up', true)->where('logistik', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
@@ -150,7 +151,7 @@ class PenjualanExport implements
             }
         }
         if ($data) {
-            $data[] = ['Total', '', '', '', '', '', '', '', $total];
+            $data[] = ['Total', '', '', '', '', '', '', '', '', $total];
         } else {
             $data[] = ['Tidak Ditemukan', '', '', '', '', '', '', '', ''];
         }

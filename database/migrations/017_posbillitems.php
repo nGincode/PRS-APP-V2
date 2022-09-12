@@ -28,6 +28,8 @@ return new class extends Migration
             $table->unsignedBigInteger('bahan_id');
             $table->foreign('bahan_id')->references('id')->on('bahan');
 
+            $table->BigInteger('tujuan')->nullable();
+
             $table->dateTime('tgl');
             $table->string('nama', 50);
             $table->string('qty');

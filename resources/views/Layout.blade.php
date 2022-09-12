@@ -231,7 +231,6 @@ if (Auth::check()) {
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-
                 <!-- Notifications Dropdown Menu -->
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -279,7 +278,7 @@ if (Auth::check()) {
             <a href="{{ url('/') }}" class="brand-link">
                 <img src="{{ url('/') }}/assets/images/logo/prslogin.png" alt="PRS Logo" class="brand-image"
                     width="60" style="opacity: .8;margin-left: -5px;">
-                <span class="brand-text font-weight-light"> Application</span>
+                <span class="brand-text font-weight-light"> System V.2</span>
             </a>
             <!-- Sidebar -->
             <div class="sidebar">

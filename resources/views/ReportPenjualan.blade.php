@@ -44,6 +44,21 @@
                                     </div>
                                 @endif
 
+                                
+                                    <div class="col-12 col-sm-6">
+                                        <div class="form-group">
+                                            <label>Tipe Laporan</label>
+                                            <select name="laporan" id="laporan"
+                                                class="form-control select2 select2-danger" required
+                                                data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                <option selected="true" disabled="disabled">Pilih</option>
+                                                        <option value="all">All</option>
+                                                        <option value="item">By Item</option>
+                                                        <option value="item&outlet">By Item & By Outlet</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 <div class="col-12 col-sm-6">
                                     <div class="form-group">
                                         <label>Tanggal</label>
