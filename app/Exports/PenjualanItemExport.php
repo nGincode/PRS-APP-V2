@@ -67,21 +67,15 @@ class PenjualanItemExport implements
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->getDelegate()->mergeCells('A1:G1');
                 $event->sheet->getDelegate()->mergeCells('A2:G2');
-                $event->sheet->getDelegate()->mergeCells('A4:F4');
-                $event->sheet->getDelegate()->mergeCells('A5:F5');
-                $event->sheet->getDelegate()->mergeCells('A6:F6');
-                $event->sheet->getDelegate()->mergeCells('A7:F7');
-                $event->sheet->getDelegate()->mergeCells('A8:F8');
+                $event->sheet->getDelegate()->mergeCells('A4:B4');
                 $event->sheet->getDelegate()->getStyle('1')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle('1')->getFont()->setSize('12');
                 $event->sheet->getDelegate()->getStyle('3')->getFont()->setBold(true);
+                $event->sheet->getDelegate()->getStyle('4')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle('2')->getFont()->setBold(true);
                 $event->sheet->getDelegate()->getStyle('2')->getFont()->setSize('11');
                 $event->sheet->getDelegate()->getStyle('1')->getAlignment()->setHorizontal('center');
                 $event->sheet->getDelegate()->getStyle('2')->getAlignment()->setHorizontal('center');
-                $event->sheet->getDelegate()->getStyle('8')->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle('4')->getFont()->setBold(true);
-                $event->sheet->getDelegate()->getStyle('10')->getFont()->setBold(true);
             },
         ];
     }
@@ -107,10 +101,10 @@ class PenjualanItemExport implements
             foreach ($vall as $vv) {
                 $totalperoutlet += $vv['qty'] * $vv['harga'];
             }
-            $result[] = [($va['tujuan'] ?? 'Tidak diketahui'), '', '', '', '', '',  $totalperoutlet];
+            $result[] = ['-', ($va['tujuan'] ?? 'Tidak diketahui'),  '', '', '', '',  $totalperoutlet];
             $totalperoutletall += $totalperoutlet;
         }
-        $result[] = ['Total', '', '', '', '', '', $totalperoutletall];
+        $result[] = ['', 'Total', '', '', '', '', $totalperoutletall];
         $result[] = [];
         $result[] = [
             '#',
@@ -168,7 +162,7 @@ class PenjualanItemExport implements
             ];
             $result[] = $pos;
         }
-        $result[] = ['Total', '', '',  '', '', '', $totalall];
+        $result[] = ['', 'Total', '',  '', '', '', $totalall];
         // dd($result);
         return $result;
     }
