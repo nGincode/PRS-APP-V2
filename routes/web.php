@@ -240,6 +240,7 @@ Route::controller(BelanjaController::class)->group(
         Route::post('Belanja/Manage', 'Manage')->middleware('auth');
         Route::post('Belanja/ViewItem', 'ViewItem')->middleware('auth');
         Route::post('Belanja/Upload', 'Upload')->middleware('auth');
+        Route::post('Belanja/Upbelanja', 'Upbelanja')->middleware('auth');
     }
 );
 
@@ -261,6 +262,9 @@ Route::controller(POSController::class)->group(
         Route::post('POS/Manage', 'Manage')->middleware('auth');
         Route::post('POS/LihatBill', 'LihatBill')->middleware('auth');
         Route::get('POS/Print', 'Print')->middleware('auth');
+
+        Route::post('POS/Closing', 'Closing')->middleware('auth');
+        Route::get('POS/Print/Closing', 'PrintClosing')->middleware('auth');
     }
 );
 

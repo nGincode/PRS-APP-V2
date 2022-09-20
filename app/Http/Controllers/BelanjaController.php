@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Satuan;
 use App\Models\Belanja;
 use App\Models\Inventory;
+use App\Models\Closing;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -139,7 +140,7 @@ class BelanjaController extends Controller
 
         $this->AutoHarga();
 
-        $this->data['AutoUpload'] = $this->AutoUpload();
+        // $this->data['AutoUpload'] = $this->AutoUpload();
 
         $this->data['Belanja'] = Inventory::with('Bahan')->first();
 
@@ -151,6 +152,7 @@ class BelanjaController extends Controller
                 'nama' => $value['bahan']->nama
             );
         }
+        $this->data['closing'] = Closing::where('tgl', date('Y-m-d'))->where('store_id', $request->session()->get('store_id'))->count();
 
         $this->data['satuan'] = Satuan::all();
         $this->data['bahan'] = $bahan;
@@ -684,8 +686,10 @@ class BelanjaController extends Controller
             if (!$value['up']) {
                 $up = ' <a class="badge badge-warning">Proses</a> ';
                 $hapus = ' <a class="btn btn-danger btn-sm" onclick="hapusbelanja(' . $value['id'] . ',0)"><i class="fa fa-times"></i> </a>';
+                $upload = ' <a class="btn btn-success btn-sm" onclick="upbelanja(' . $value['id'] . ',0)"><i class="fa fa-upload"></i> </a>';
             } else {
                 $up = '';
+                $upload = '';
                 $hapus = '';
             }
 
@@ -718,7 +722,7 @@ class BelanjaController extends Controller
                         <td>' . $stock . ' ' . $value['stock_uom'] . '</td>
                         <td>' . $this->rupiah($value['stock_harga']) . '</td>
                         <td>' . $hutang . ($value['ket'] ?? '-') . '</td>
-                        <td>' . $this->rupiah($total) . $hapus . '</td>
+                        <td>' . $this->rupiah($total) . $hapus . $upload . '</td>
                     </tr>
                        
             ';
@@ -731,5 +735,48 @@ class BelanjaController extends Controller
                         </table>';
 
         echo $html;
+    }
+
+    public function Upbelanja(Request $request)
+    {
+
+        $id = $request->input('id');
+        if ($belanja = Belanja::where('id', $id)->first()) {
+
+            $bhn = Inventory::where('bahan_id', $belanja['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
+            if ($bhn  && $belanja) {
+                if ($belanja['stock']) {
+                    $jumlah = $belanja['stock'] + $bhn['qty'];
+                    if (Inventory::where('bahan_id', $belanja['bahan_id'])->update(['qty' => $jumlah])) {
+                        Belanja::where('id', $belanja['id'])->update(['up' => true]);
+                        $data = [
+                            'toast' => true,
+                            'status' => 'success',
+                            'pesan' =>  'Berhasil'
+                        ];
+                    } else {
+                        $data = [
+                            'toast' => true,
+                            'status' => 'error',
+                            'pesan' =>  'Gagal'
+                        ];
+                    };
+                } else {
+                    Belanja::where('id', $belanja['id'])->update(['up' => true]);
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' =>  'Berhasil'
+                    ];
+                }
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  'Gagal Mengambil Data'
+                ];
+            }
+        }
+        echo json_encode($data);
     }
 }

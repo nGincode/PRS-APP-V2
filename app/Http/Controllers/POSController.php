@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bahan;
+use App\Models\Belanja;
 use App\Models\Store;
 use App\Models\Inventory;
 use App\Models\POS;
 use App\Models\POSBill;
 use App\Models\POSBillItem;
+use App\Models\Closing;
+
 
 
 use Illuminate\Http\Request;
@@ -30,6 +33,13 @@ class POSController extends Controller
         }
 
         $this->data['item'] = Inventory::where('store_id', $request->session()->get('store_id'))->with('Bahan')->where('delete', false)->latest()->get();
+
+
+        $this->data['closing'] = Closing::where('tgl', date('Y-m-d'))->where('store_id', $request->session()->get('store_id'))->count();
+
+        $this->data['pos'] = POSBill::whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d 23:59:00')])->where('store_id', $request->session()->get('store_id'))->count();
+        $this->data['belanja'] = Belanja::where('tgl', date('Y-m-d'))->where('store_id', $request->session()->get('store_id'))->count();
+
         $this->data['Store'] = Store::where('active', 1)->orderBy('nama')->get();
 
 
@@ -726,6 +736,199 @@ class POSController extends Controller
             </div>
             ';
         }
+        $html .= '
+        
+			<style>html,body{height:unset;font-family: monospace;} div{padding-top:5px;padding-bottom:5px;}</style>
+			</body>
+			</html>';
+        echo $html;
+    }
+
+    public function Closing(Request $request)
+    {
+
+        POS::where('store_id', $request->session()->get('store_id'))->delete();
+
+
+        $item = [];
+        $true = [];
+        $cek = true;
+        foreach (Belanja::where('tgl', date('Y-m-d'))->where('up', false)->get() as $key => $value) {
+            if ($value['bahan_id']) {
+                if ($value['stock'] && $value['stock_harga'] && $value['stock_uom']) {
+                    if (Belanja::where('id', $value['id'])->update(['up' => true])) {
+                        if ($value['bahan_id']) {
+                            if ($value['stock']) {
+                                $bhn = Inventory::where('bahan_id', $value['bahan_id'])->first();
+                                if ($bhn) {
+                                    $jumlah = $value['stock'] + $bhn['qty'];
+                                    if (!Inventory::where('bahan_id', $value['bahan_id'])->update(['qty' => $jumlah])) {
+                                        Belanja::where('id', $value['id'])->update(['up' => false]);
+                                        $cek = false;
+                                        $item[] =  'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Inventory Gagal Menambah';
+                                    } else {
+                                        $true[] = 'Berhasil Terupload Untuk Tanggal ' . $value['tgl'];
+                                    };
+                                } else {
+                                    Belanja::where('id', $value['id'])->update(['up' => false]);
+                                    $cek = false;
+                                    $item[] =  'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Inventory Kosong';
+                                }
+                            } else {
+                                Belanja::where('id', $value['id'])->update(['up' => false]);
+                                $cek = false;
+                                $item[] = 'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Qty UOM Kosong';
+                            }
+                        }
+                    } else {
+                        $cek = false;
+                        $item[] = 'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Gagal Upload';
+                    }
+                } else {
+                    $cek = false;
+                    $item[] = 'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Tidak Lengkap (di Sarankan Hapus)';
+                }
+            } else {
+                if ($value['qty'] && $value['uom'] && $value['harga']) {
+                    if (!Belanja::where('id', $value['id'])->update(['up' => true])) {
+                        $cek = false;
+                        $item[] =  'Belanja ' . $value['tgl'] . '  (' . $value['nama'] . ') Gagal Upload';
+                    } else {
+                        $true[] = 'Berhasil Terupload  Untuk Tanggal ' . $value['tgl'];
+                    };
+                } else {
+                    $cek = false;
+                    $item[] = 'Belanja ' . $value['tgl'] . ' ( ' . $value['nama'] . ') Tidak Lengkap (di Sarankan Hapus)';
+                }
+            }
+        }
+        if ($cek && !$item) {
+            Closing::insert(['tgl' => date('Y-m-d'), 'store_id' => $request->session()->get('store_id')]);
+            $data = [
+                'toast' => true,
+                'status' => 'success',
+                'pesan' =>  'Berhasil'
+            ];
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  $item
+            ];
+        }
+
+        echo json_encode($data);
+    }
+
+    public function PrintClosing(Request $request)
+    {
+
+        if (!in_array('viewPOS', $this->permission())) {
+            return redirect()->to('/');
+        }
+        $store = Store::where('id', $request->session()->get('store_id'))->first();
+
+        $html = '
+        
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			</head>
+			<body onload="window.print();">
+            ';
+
+        $html .= '<div class="wrapper" style="width: 55mm;height:unset;font-size: 12px;">
+                    <div style="border-bottom:solid 1px black;">
+                    <center >
+                    <font style="font-size: 18px; text-align:center;"><b>' . $request->session()->get('store') . '</b></font><br>
+                    ' . $store['alamat'] . '<br>' . $store['wa'] . '
+                    </center>
+                    </div>
+                    <div style="border-bottom:solid 1px black">
+                    <center><b  style="font-size: 16px; text-align:center;">CLOSING</b></center>
+                    </div>
+                    <div style="border-bottom:dashed 1px black">
+                    <center><b>Penjualan</b></center>
+                    </div>
+                    
+                    <div style="padding-left: 5px; border-bottom:solid 1px black;">
+                    <center>
+                    ';
+
+        $store = POSBillItem::select('tujuan')->distinct()->where('store_id', $request->session()->get('store_id'))->whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d  23:59:00')])->with('Store', 'PosBill')->get();
+        $totalperoutletall = 0;
+        foreach ($store as $va) {
+            $vall = POSBillItem::where('tujuan', $va['tujuan'])->where('store_id', $request->session()->get('store_id'))->whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d  23:59:00')])->orderBy('tgl', 'ASC')->get();
+            $totalperoutlet = 0;
+            foreach ($vall as $vv) {
+                $totalperoutlet += $vv['qty'] * $vv['harga'];
+            }
+            $html .=  ($va['tujuan'] ?? 'Tidak diketahui') . ' : <br>' . $totalperoutlet;
+            $totalperoutletall += $totalperoutlet;
+        }
+        $html .= '
+                    </center><br><br>Total : ' . $totalperoutlet;
+
+
+        $html .= '<br><br>
+                    <div style="border-bottom:dashed 1px black; border-top:dashed 1px black">
+                    <center><b>Belanja</b></center>
+                    </div>';
+
+        $belanja = Belanja::where('up', true)->where('store_id', $request->session()->get('store_id'))->whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d  23:59:00')])->with('Store')->orderBy('kategori', 'DESC')->get();
+        $kategori = Belanja::select('kategori')->distinct()->where('up', true)->where('store_id', $request->session()->get('store_id'))->whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d  23:59:00')])
+            ->get();
+
+        foreach ($kategori as $v) {
+            $total = 0;
+            $no = 1;
+            $itemttl = [];
+            foreach ($belanja as $row) {
+                if ($v['kategori'] == $row['kategori']) {
+                    if ($row->bahan_id) {
+                        $harga = $row->stock_harga;
+                        $qty = $row->stock;
+                        $uom = $row->stock_uom;
+                    } else {
+                        $harga = $row->harga;
+                        $qty = $row->qty;
+                        $uom = $row->uom;
+                    }
+
+                    $total += $harga * $qty;
+                    $itemttl[] =  $row->nama;
+                }
+            }
+        }
+
+        $html .= '
+                    </center><br>Total Harga : ' . $total . '<br>
+                    Total Item   : ' .  count(array_unique($itemttl)) . '
+                    <br><br><div style="border-top:dashed 1px black"></div>';
+
+        $html .= '
+            <div style="float:left;text-align: center;padding-left: 5px;">
+            Penanggung Jawab<br><br><br>_________________
+            </div> 
+            
+            <div style="float:right;text-align: center;padding-left: 5px">
+            Mengetahui<br><br><br>_________
+            </div>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div style="padding-left: 5px"><br>
+			Note:<div style=" border: 1px solid;height: 60px;border-radius: 0px 10px;"></div>
+            </div>
+            </div>
+            ';
+
         $html .= '
         
 			<style>html,body{height:unset;font-family: monospace;} div{padding-top:5px;padding-bottom:5px;}</style>
