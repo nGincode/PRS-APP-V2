@@ -681,11 +681,11 @@ class OrderController extends Controller
         $total = 0;
         foreach ($variable as $key => $value) {
             $qty = 0;
-            if ($value['qty_deliv']) {
-                $total += $value['qty_deliv'] * $value['harga'];
+            if ($value['qty_deliv'] !== null) {
+                $totalitem = $value['qty_deliv'] * $value['harga'];
                 $qty += $value['qty_deliv'];
             } else {
-                $total += $value['qty_order'] * $value['harga'];
+                $totalitem = $value['qty_order'] * $value['harga'];
                 $qty += $value['qty_order'];
             }
             $html .= '
@@ -695,10 +695,11 @@ class OrderController extends Controller
                         <td>' . ($value['qty_deliv'] ?? 0) . ' ' . $value['satuan'] . '</td>
                         <td>' . ($value['qty_arrive'] ?? 0) . ' ' . $value['satuan'] . '</td>
                         <td>' . $this->rupiah($value['harga']) . '</td>
-                        <td>' . $this->rupiah($total) . '</td>
+                        <td>' . $this->rupiah($totalitem) . '</td>
                     </tr>
                        
             ';
+            $total += $totalitem;
         }
         $html .= '
                         <tr style="background-color:#607d8b7a;">
@@ -760,7 +761,9 @@ class OrderController extends Controller
                 if (in_array('viewOrder', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='KePOS(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'  ><i class='fas fa-download'></i> Tranfer Ke POS</a></li>";
 
-                    $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
+                    if ($request->session()->get('tipe') === 'Logistik') {
+                        $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
+                    }
                 }
                 if (in_array('updateOrder', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='OrderEdit(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'><i class='fas fa-pencil-alt'></i> Edit</a></li>";
