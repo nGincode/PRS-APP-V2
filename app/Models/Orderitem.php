@@ -17,4 +17,9 @@ class Orderitem extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    public function Bahan()
+    {
+        return $this->belongsTo(Bahan::class);
+    }
 }

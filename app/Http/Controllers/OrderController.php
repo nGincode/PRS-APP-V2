@@ -8,8 +8,7 @@ use App\Models\Store;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\Orderitem;
-
-
+use App\Models\POS;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -213,7 +212,13 @@ class OrderController extends Controller
             if ($request->session()->get('tipe') == 'Outlet') {
                 $store_id = $request->session()->get('store_id');
             } else {
-                $store_id = $request->input('outlet');
+                if ($request->input('outlet')) {
+                    $store_id = $request->input('outlet');
+                } else {
+                    if ($orderData = Order::where('id', $request->session()->get('IdEditOrder'))->first()) {
+                        $store_id = $orderData['store_id'];
+                    }
+                }
             }
 
             $ordercount = Order::where('tgl', date('Y-m-d'))->count() + 1;
@@ -753,6 +758,8 @@ class OrderController extends Controller
                 <ul class="dropdown-menu">';
 
                 if (in_array('viewOrder', $this->permission())) {
+                    $button .= "<li><a class='dropdown-item' onclick='KePOS(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'  ><i class='fas fa-download'></i> Tranfer Ke POS</a></li>";
+
                     $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
                 }
                 if (in_array('updateOrder', $this->permission())) {
@@ -826,5 +833,57 @@ class OrderController extends Controller
             }
         }
         echo json_encode($result);
+    }
+
+    public function KePOS(Request $request)
+    {
+
+        $id = $request->input('id');
+
+        $info = '';
+        if ($order = Orderitem::where('order_id', $id)->with('Bahan')->get()) {
+            POS::where('store_id', $request->session()->get('store_id'))->delete();
+
+            foreach ($order as $key => $value) {
+
+                $inventory = Inventory::where('bahan_id', $value['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
+
+                $input = [
+                    'users_id' => $request->session()->get('id'),
+                    'store_id' => $request->session()->get('store_id'),
+                    'inventory_id' => $inventory['id'],
+                    'bahan_id' => $value['bahan_id'],
+                    'qty' => ($value['qty_order'] ?? $value['qty_deliv']),
+                    'harga' => $value['harga'],
+                    'satuan' => $value['satuan'],
+                ];
+
+                if (!POS::create($input)) {
+                    $info .= $order['Bahan']->nama . ' Gagal Masuk POS';
+                }
+            }
+
+            if ($info) {
+                $data = [
+                    'toast' => true,
+                    'status' => 'error',
+                    'pesan' =>  $info
+                ];
+            } else {
+                $data = [
+                    'toast' => true,
+                    'status' => 'success',
+                    'pesan' =>  'Berhasil di Tranfer'
+                ];
+            }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Gagal di Tranfer'
+            ];
+        }
+
+        echo json_encode($data);
     }
 }

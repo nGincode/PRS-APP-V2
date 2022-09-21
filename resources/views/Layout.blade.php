@@ -1,4 +1,5 @@
 <?php
+
 use App\Models\User;
 use App\Models\Groups;
 use App\Models\GroupsUsers;
@@ -7,8 +8,8 @@ use App\Models\Orderitem;
 if (Auth::check()) {
     if (
         request()
-            ->session()
-            ->has('id')
+        ->session()
+        ->has('id')
     ) {
         $Id = request()
             ->session()
@@ -110,8 +111,7 @@ if (Auth::check()) {
     <title>{{ $title }}</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
 
     {{-- PLUGIN --}}
@@ -120,48 +120,36 @@ if (Auth::check()) {
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Daterange picker -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/daterangepicker/daterangepicker.css">
     <!-- iCheck -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Bootstrap Color Picker -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/css/select2.min.css">
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <!-- Bootstrap4 Duallistbox -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <!-- BS Stepper -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bs-stepper/css/bs-stepper.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bs-stepper/css/bs-stepper.min.css">
     <!-- dropzonejs -->
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/dropzone/min/dropzone.min.css">
     <!-- JQVMap -->
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/jqvmap/jqvmap.min.css">
     <!-- overlayScrollbars -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- summernote -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/summernote/summernote-bs4.min.css">
 
     <!-- animated -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <!-- DataTables -->
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet"
-        href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
     {{-- Admin LTE BASE TAMPLATE --}}
     <link rel="stylesheet" href="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/dist/css/adminlte.min.css">
@@ -176,11 +164,9 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js">
     </script>
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/dataTables.responsive.min.js">
     </script>
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js">
     </script>
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/datatables-buttons/js/dataTables.buttons.min.js">
     </script>
@@ -212,8 +198,7 @@ if (Auth::check()) {
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{ url('/') }}/assets/images/logo/prslogin.png" alt="PRS Logo"
-                height="60" width="120">
+            <img class="animation__shake" src="{{ url('/') }}/assets/images/logo/prslogin.png" alt="PRS Logo" height="60" width="120">
         </div>
 
         <!-- Navbar -->
@@ -221,8 +206,7 @@ if (Auth::check()) {
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item" style="margin-left:-10px;">
                     <a class="nav-link"><b>{{ $Store }}</b></a>
@@ -276,8 +260,7 @@ if (Auth::check()) {
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="{{ url('/') }}" class="brand-link">
-                <img src="{{ url('/') }}/assets/images/logo/prslogin.png" alt="PRS Logo" class="brand-image"
-                    width="60" style="opacity: .8;margin-left: -5px;">
+                <img src="{{ url('/') }}/assets/images/logo/prslogin.png" alt="PRS Logo" class="brand-image" width="60" style="opacity: .8;margin-left: -5px;">
                 <span class="brand-text font-weight-light"> System V.2</span>
             </a>
             <!-- Sidebar -->
@@ -297,8 +280,7 @@ if (Auth::check()) {
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                            aria-label="Search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -309,448 +291,423 @@ if (Auth::check()) {
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item">
-                            <a href="{{ url('/') }}"
-                                class="nav-link @if ($title == 'Dashboard') active @endif">
+                            <a href="{{ url('/') }}" class="nav-link @if ($title == 'Dashboard') active @endif">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
 
                         @if (in_array('createReportPenjualan', $user_permission) ||
-                            in_array('updateReportPenjualan', $user_permission) ||
-                            in_array('viewReportPenjualan', $user_permission) ||
-                            in_array('deleteReportPenjualan', $user_permission) ||
-                            in_array('createReportBelanja', $user_permission) ||
-                            in_array('updateReportBelanja', $user_permission) ||
-                            in_array('viewReportBelanja', $user_permission) ||
-                            in_array('deleteReportBelanja', $user_permission) ||
-                            in_array('createReportInventory', $user_permission) ||
-                            in_array('updateReportInventory', $user_permission) ||
-                            in_array('viewReportInventory', $user_permission) ||
-                            in_array('deleteReportInventory', $user_permission))
-                            <li class="nav-item @if ($title == 'Report') menu-open @endif ">
-                                <a class="nav-link @if ($title == 'Report') active @endif ">
-                                    <i class=" nav-icon fas fa-file"></i>
-                                    <p>
-                                        Report
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    @if (in_array('createReportPenjualan', $user_permission) ||
-                                        in_array('updateReportPenjualan', $user_permission) ||
-                                        in_array('viewReportPenjualan', $user_permission) ||
-                                        in_array('deleteReportPenjualan', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Report/Penjualan') }}"
-                                                class="nav-link @if ($subtitle == 'Penjualan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Penjualan</p>
-                                            </a>
-                                        </li>
-                                    @endif
+                        in_array('updateReportPenjualan', $user_permission) ||
+                        in_array('viewReportPenjualan', $user_permission) ||
+                        in_array('deleteReportPenjualan', $user_permission) ||
+                        in_array('createReportBelanja', $user_permission) ||
+                        in_array('updateReportBelanja', $user_permission) ||
+                        in_array('viewReportBelanja', $user_permission) ||
+                        in_array('deleteReportBelanja', $user_permission) ||
+                        in_array('createReportInventory', $user_permission) ||
+                        in_array('updateReportInventory', $user_permission) ||
+                        in_array('viewReportInventory', $user_permission) ||
+                        in_array('deleteReportInventory', $user_permission))
+                        <li class="nav-item @if ($title == 'Report') menu-open @endif ">
+                            <a class="nav-link @if ($title == 'Report') active @endif ">
+                                <i class=" nav-icon fas fa-file"></i>
+                                <p>
+                                    Report
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                @if (in_array('createReportPenjualan', $user_permission) ||
+                                in_array('updateReportPenjualan', $user_permission) ||
+                                in_array('viewReportPenjualan', $user_permission) ||
+                                in_array('deleteReportPenjualan', $user_permission))
+                                <li class="nav-item">
+                                    <a href="{{ url('/Report/Penjualan') }}" class="nav-link @if ($subtitle == 'Penjualan') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Penjualan</p>
+                                    </a>
+                                </li>
+                                @endif
 
-                                    @if (in_array('createReportBelanja', $user_permission) ||
-                                        in_array('updateReportBelanja', $user_permission) ||
-                                        in_array('viewReportBelanja', $user_permission) ||
-                                        in_array('deleteReportBelanja', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Report/Belanja') }}"
-                                                class="nav-link @if ($subtitle == 'Belanja') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Belanja</p>
-                                            </a>
-                                        </li>
-                                    @endif
+                                @if (in_array('createReportBelanja', $user_permission) ||
+                                in_array('updateReportBelanja', $user_permission) ||
+                                in_array('viewReportBelanja', $user_permission) ||
+                                in_array('deleteReportBelanja', $user_permission))
+                                <li class="nav-item">
+                                    <a href="{{ url('/Report/Belanja') }}" class="nav-link @if ($subtitle == 'Belanja') active @endif">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Belanja</p>
+                                    </a>
+                                </li>
+                                @endif
 
-                                    {{-- @if (in_array('createReportInventory', $user_permission) || in_array('updateReportInventory', $user_permission) || in_array('viewReportInventory', $user_permission) || in_array('deleteReportInventory', $user_permission))
+                                {{-- @if (in_array('createReportInventory', $user_permission) || in_array('updateReportInventory', $user_permission) || in_array('viewReportInventory', $user_permission) || in_array('deleteReportInventory', $user_permission))
                                         <li class="nav-item">
                                             <a href="{{ url('/Report/Inventory') }}"
-                                                class="nav-link @if ($subtitle == 'Inventory') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Inventory</p>
-                                            </a>
-                                        </li>
-                                    @endif --}}
-                                </ul>
-                            </li>
-                        @endif
-
-
-                        @if (in_array('createStore', $user_permission) ||
-                            in_array('updateStore', $user_permission) ||
-                            in_array('viewStore', $user_permission) ||
-                            in_array('deleteStore', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Store') }}"
-                                    class="nav-link @if ($title == 'Store') active @endif ">
-                                    <i class=" nav-icon fas fa-home"></i>
-                                    <p>
-                                        Stores
-                                    </p>
+                                class="nav-link @if ($subtitle == 'Inventory') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Inventory</p>
                                 </a>
-                            </li>
-                        @endif
+                        </li>
+                        @endif --}}
+                    </ul>
+                    </li>
+                    @endif
 
-                        @if (in_array('createUser', $user_permission) ||
-                            in_array('updateUser', $user_permission) ||
-                            in_array('viewUser', $user_permission) ||
-                            in_array('deleteUser', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Users') }}"
-                                    class="nav-link @if ($title == 'Users') active @endif ">
-                                    <i class=" nav-icon fas fa-user"></i>
-                                    <p>
-                                        Users
-                                    </p>
-                                </a>
-                            </li>
-                        @endif
 
-                        @if (in_array('createGroup', $user_permission) ||
-                            in_array('updateGroup', $user_permission) ||
-                            in_array('viewGroup', $user_permission) ||
-                            in_array('deleteGroup', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Group') }}"
-                                    class="nav-link @if ($title == 'Group') active @endif ">
-                                    <i class=" nav-icon fas fa-users"></i>
-                                    <p>
-                                        Groups
-                                    </p>
-                                </a>
-                            </li>
-                        @endif
+                    @if (in_array('createStore', $user_permission) ||
+                    in_array('updateStore', $user_permission) ||
+                    in_array('viewStore', $user_permission) ||
+                    in_array('deleteStore', $user_permission))
+                    <li class="nav-item ">
+                        <a href="{{ url('/Store') }}" class="nav-link @if ($title == 'Store') active @endif ">
+                            <i class=" nav-icon fas fa-home"></i>
+                            <p>
+                                Stores
+                            </p>
+                        </a>
+                    </li>
+                    @endif
 
-                        @if (in_array('createSupplier', $user_permission) ||
+                    @if (in_array('createUser', $user_permission) ||
+                    in_array('updateUser', $user_permission) ||
+                    in_array('viewUser', $user_permission) ||
+                    in_array('deleteUser', $user_permission))
+                    <li class="nav-item ">
+                        <a href="{{ url('/Users') }}" class="nav-link @if ($title == 'Users') active @endif ">
+                            <i class=" nav-icon fas fa-user"></i>
+                            <p>
+                                Users
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if (in_array('createGroup', $user_permission) ||
+                    in_array('updateGroup', $user_permission) ||
+                    in_array('viewGroup', $user_permission) ||
+                    in_array('deleteGroup', $user_permission))
+                    <li class="nav-item ">
+                        <a href="{{ url('/Group') }}" class="nav-link @if ($title == 'Group') active @endif ">
+                            <i class=" nav-icon fas fa-users"></i>
+                            <p>
+                                Groups
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if (in_array('createSupplier', $user_permission) ||
+                    in_array('updateSupplier', $user_permission) ||
+                    in_array('viewSupplier', $user_permission) ||
+                    in_array('deleteSupplier', $user_permission) ||
+                    in_array('createSatuan', $user_permission) ||
+                    in_array('updateSatuan', $user_permission) ||
+                    in_array('viewSatuan', $user_permission) ||
+                    in_array('deleteSatuan', $user_permission) ||
+                    in_array('createBahan', $user_permission) ||
+                    in_array('updateBahan', $user_permission) ||
+                    in_array('viewBahan', $user_permission) ||
+                    in_array('deleteBahan', $user_permission) ||
+                    in_array('createPeralatan', $user_permission) ||
+                    in_array('updatePeralatan', $user_permission) ||
+                    in_array('viewPeralatan', $user_permission) ||
+                    in_array('deletePeralatan', $user_permission) ||
+                    in_array('createPegawai', $user_permission) ||
+                    in_array('updatePegawai', $user_permission) ||
+                    in_array('viewPegawai', $user_permission) ||
+                    in_array('deletePegawai', $user_permission))
+
+                    <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
+                        <a class="nav-link @if ($title == 'Master') active @endif ">
+                            <i class=" nav-icon fas fa-database"></i>
+                            <p>
+                                Master Data
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (in_array('createSupplier', $user_permission) ||
                             in_array('updateSupplier', $user_permission) ||
                             in_array('viewSupplier', $user_permission) ||
-                            in_array('deleteSupplier', $user_permission) ||
-                            in_array('createSatuan', $user_permission) ||
+                            in_array('deleteSupplier', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Master/Supplier') }}" class="nav-link @if ($subtitle == 'Supplier') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Supplier</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createSatuan', $user_permission) ||
                             in_array('updateSatuan', $user_permission) ||
                             in_array('viewSatuan', $user_permission) ||
-                            in_array('deleteSatuan', $user_permission) ||
-                            in_array('createBahan', $user_permission) ||
+                            in_array('deleteSatuan', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Master/Satuan') }}" class="nav-link @if ($subtitle == 'Satuan') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Satuan</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createBahan', $user_permission) ||
                             in_array('updateBahan', $user_permission) ||
                             in_array('viewBahan', $user_permission) ||
-                            in_array('deleteBahan', $user_permission) ||
-                            in_array('createPeralatan', $user_permission) ||
+                            in_array('deleteBahan', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Master/Bahan') }}" class="nav-link @if ($subtitle == 'Bahan') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bahan</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createPeralatan', $user_permission) ||
                             in_array('updatePeralatan', $user_permission) ||
                             in_array('viewPeralatan', $user_permission) ||
-                            in_array('deletePeralatan', $user_permission) ||
-                            in_array('createPegawai', $user_permission) ||
+                            in_array('deletePeralatan', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Master/Peralatan') }}" class="nav-link @if ($subtitle == 'Peralatan') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Peralatan</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createPegawai', $user_permission) ||
                             in_array('updatePegawai', $user_permission) ||
                             in_array('viewPegawai', $user_permission) ||
                             in_array('deletePegawai', $user_permission))
-
-                            <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
-                                <a class="nav-link @if ($title == 'Master') active @endif ">
-                                    <i class=" nav-icon fas fa-database"></i>
-                                    <p>
-                                        Master Data
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                            <li class="nav-item">
+                                <a href="{{ url('/Master/Pegawai') }}" class="nav-link @if ($subtitle == 'Pegawai') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pegawai</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    @if (in_array('createSupplier', $user_permission) ||
-                                        in_array('updateSupplier', $user_permission) ||
-                                        in_array('viewSupplier', $user_permission) ||
-                                        in_array('deleteSupplier', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Master/Supplier') }}"
-                                                class="nav-link @if ($subtitle == 'Supplier') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Supplier</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createSatuan', $user_permission) ||
-                                        in_array('updateSatuan', $user_permission) ||
-                                        in_array('viewSatuan', $user_permission) ||
-                                        in_array('deleteSatuan', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Master/Satuan') }}"
-                                                class="nav-link @if ($subtitle == 'Satuan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Satuan</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createBahan', $user_permission) ||
-                                        in_array('updateBahan', $user_permission) ||
-                                        in_array('viewBahan', $user_permission) ||
-                                        in_array('deleteBahan', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Master/Bahan') }}"
-                                                class="nav-link @if ($subtitle == 'Bahan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Bahan</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createPeralatan', $user_permission) ||
-                                        in_array('updatePeralatan', $user_permission) ||
-                                        in_array('viewPeralatan', $user_permission) ||
-                                        in_array('deletePeralatan', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Master/Peralatan') }}"
-                                                class="nav-link @if ($subtitle == 'Peralatan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Peralatan</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createPegawai', $user_permission) ||
-                                        in_array('updatePegawai', $user_permission) ||
-                                        in_array('viewPegawai', $user_permission) ||
-                                        in_array('deletePegawai', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Master/Pegawai') }}"
-                                                class="nav-link @if ($subtitle == 'Pegawai') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Pegawai</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
                             </li>
-                        @endif
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
 
-                        @if (in_array('createFoodcostBahanOLahan', $user_permission) ||
+                    @if (in_array('createFoodcostBahanOLahan', $user_permission) ||
+                    in_array('updateFoodcostBahanOLahan', $user_permission) ||
+                    in_array('viewFoodcostBahanOLahan', $user_permission) ||
+                    in_array('deleteFoodcostBahanOLahan', $user_permission) ||
+                    in_array('createFoodcostVarian', $user_permission) ||
+                    in_array('updateFoodcostVarian', $user_permission) ||
+                    in_array('viewFoodcostVarian', $user_permission) ||
+                    in_array('deleteFoodcostVarian', $user_permission))
+                    <li class="nav-item @if ($title == 'Foodcost') menu-open @endif ">
+                        <a class="nav-link @if ($title == 'Foodcost') active @endif ">
+                            <i class=" nav-icon fas fa-pepper-hot"></i>
+                            <p>
+                                Foodcost
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (in_array('createFoodcostBahanOLahan', $user_permission) ||
                             in_array('updateFoodcostBahanOLahan', $user_permission) ||
                             in_array('viewFoodcostBahanOLahan', $user_permission) ||
                             in_array('deleteFoodcostBahanOLahan', $user_permission) ||
-                            in_array('createFoodcostVarian', $user_permission) ||
+                            in_array('createFoodcostResep', $user_permission) ||
+                            in_array('updateFoodcostResep', $user_permission) ||
+                            in_array('viewFoodcostResep', $user_permission) ||
+                            in_array('deleteFoodcostResep', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Foodcost/Olahan') }}" class="nav-link @if ($subtitle == 'Olahan') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bahan Olahan</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createFoodcostVarian', $user_permission) ||
                             in_array('updateFoodcostVarian', $user_permission) ||
                             in_array('viewFoodcostVarian', $user_permission) ||
                             in_array('deleteFoodcostVarian', $user_permission))
-                            <li class="nav-item @if ($title == 'Foodcost') menu-open @endif ">
-                                <a class="nav-link @if ($title == 'Foodcost') active @endif ">
-                                    <i class=" nav-icon fas fa-pepper-hot"></i>
-                                    <p>
-                                        Foodcost
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                            <li class="nav-item">
+                                <a href="{{ url('/Foodcost/Varian') }}" class="nav-link @if ($subtitle == 'Varian') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Varian</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    @if (in_array('createFoodcostBahanOLahan', $user_permission) ||
-                                        in_array('updateFoodcostBahanOLahan', $user_permission) ||
-                                        in_array('viewFoodcostBahanOLahan', $user_permission) ||
-                                        in_array('deleteFoodcostBahanOLahan', $user_permission) ||
-                                        in_array('createFoodcostResep', $user_permission) ||
-                                        in_array('updateFoodcostResep', $user_permission) ||
-                                        in_array('viewFoodcostResep', $user_permission) ||
-                                        in_array('deleteFoodcostResep', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Foodcost/Olahan') }}"
-                                                class="nav-link @if ($subtitle == 'Olahan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Bahan Olahan</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createFoodcostVarian', $user_permission) ||
-                                        in_array('updateFoodcostVarian', $user_permission) ||
-                                        in_array('viewFoodcostVarian', $user_permission) ||
-                                        in_array('deleteFoodcostVarian', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Foodcost/Varian') }}"
-                                                class="nav-link @if ($subtitle == 'Varian') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Varian</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createFoodcostResep', $user_permission) ||
-                                        in_array('updateFoodcostResep', $user_permission) ||
-                                        in_array('viewFoodcostResep', $user_permission) ||
-                                        in_array('deleteFoodcostResep', $user_permission))
-                                        <li class="nav-item">
-                                            <a href="{{ url('/Foodcost/Resep') }}"
-                                                class="nav-link @if ($subtitle == 'Resep') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Resep Menu</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
                             </li>
-                        @endif
+                            @endif
+                            @if (in_array('createFoodcostResep', $user_permission) ||
+                            in_array('updateFoodcostResep', $user_permission) ||
+                            in_array('viewFoodcostResep', $user_permission) ||
+                            in_array('deleteFoodcostResep', $user_permission))
+                            <li class="nav-item">
+                                <a href="{{ url('/Foodcost/Resep') }}" class="nav-link @if ($subtitle == 'Resep') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Resep Menu</p>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
 
-                        @if (in_array('createInventoryOpname', $user_permission) ||
+                    @if (in_array('createInventoryOpname', $user_permission) ||
+                    in_array('updateInventoryOpname', $user_permission) ||
+                    in_array('viewInventoryOpname', $user_permission) ||
+                    in_array('deleteInventoryOpname', $user_permission) ||
+                    in_array('createInventoryStock', $user_permission) ||
+                    in_array('updateInventoryStock', $user_permission) ||
+                    in_array('viewInventoryStock', $user_permission) ||
+                    in_array('deleteInventoryStock', $user_permission))
+                    <li class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
+                        <a class="nav-link @if ($title == 'Inventory') active @endif ">
+                            <i class=" nav-icon fas fa-cube"></i>
+                            <p>
+                                Inventory
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (in_array('createInventoryOpname', $user_permission) ||
                             in_array('updateInventoryOpname', $user_permission) ||
                             in_array('viewInventoryOpname', $user_permission) ||
-                            in_array('deleteInventoryOpname', $user_permission) ||
-                            in_array('createInventoryStock', $user_permission) ||
+                            in_array('deleteInventoryOpname', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Inventory/Opname') }}" class="nav-link  @if ($subtitle == 'Opname') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Opname</p>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array('createInventoryStock', $user_permission) ||
                             in_array('updateInventoryStock', $user_permission) ||
                             in_array('viewInventoryStock', $user_permission) ||
                             in_array('deleteInventoryStock', $user_permission))
-                            <li
-                                class="nav-item  @if ($title == 'Inventory') menu-is-opening menu-open @endif ">
-                                <a class="nav-link @if ($title == 'Inventory') active @endif ">
-                                    <i class=" nav-icon fas fa-cube"></i>
-                                    <p>
-                                        Inventory
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    @if (in_array('createInventoryOpname', $user_permission) ||
-                                        in_array('updateInventoryOpname', $user_permission) ||
-                                        in_array('viewInventoryOpname', $user_permission) ||
-                                        in_array('deleteInventoryOpname', $user_permission))
-                                        <li class="nav-item ">
-                                            <a href="{{ url('/Inventory/Opname') }}"
-                                                class="nav-link  @if ($subtitle == 'Opname') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Opname</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createInventoryStock', $user_permission) ||
-                                        in_array('updateInventoryStock', $user_permission) ||
-                                        in_array('viewInventoryStock', $user_permission) ||
-                                        in_array('deleteInventoryStock', $user_permission))
-                                        <li class="nav-item  ">
-                                            <a href="{{ url('/Inventory/Stock') }}"
-                                                class="nav-link @if ($subtitle == 'Stock') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Stock</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createInventoryMenu', $user_permission) ||
-                                        in_array('updateInventoryMenu', $user_permission) ||
-                                        in_array('viewInventoryMenu', $user_permission) ||
-                                        in_array('deleteInventoryMenu', $user_permission))
-                                        <li class="nav-item  ">
-                                            <a href="{{ url('/Inventory/Menu') }}"
-                                                class="nav-link @if ($subtitle == 'Menu') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Menu</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                </ul>
-                            </li>
-                        @endif
-
-                        @if (in_array('createPOS', $user_permission) ||
-                            in_array('updatePOS', $user_permission) ||
-                            in_array('viewPOS', $user_permission) ||
-                            in_array('deletePOS', $user_permission))
-                            <li class="nav-item @if ($title == 'POS')  @endif ">
-                                <a href="{{ url('/POS') }}"
-                                    class="nav-link @if ($title == 'POS') active @endif ">
-                                    <i class="  nav-icon fas fa-th"></i>
-                                    <p>
-                                        Poin Of Sales (POS)
-                                        <span class="right badge badge-danger">New</span>
-                                    </p>
+                            <li class="nav-item  ">
+                                <a href="{{ url('/Inventory/Stock') }}" class="nav-link @if ($subtitle == 'Stock') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Stock</p>
                                 </a>
                             </li>
-                        @endif
-
-                        @if (in_array('createBelanja', $user_permission) ||
-                            in_array('updateBelanja', $user_permission) ||
-                            in_array('viewBelanja', $user_permission) ||
-                            in_array('deleteBelanja', $user_permission))
-                            <li class="nav-item @if ($title == 'Belanja')  @endif ">
-                                <a href="{{ url('/Belanja') }}"
-                                    class="nav-link @if ($title == 'Belanja') active @endif ">
-                                    <i class="nav-icon fas fa-shopping-bag "></i>
-                                    <p>
-                                        Belanja
-                                        <span class="right badge badge-danger">New</span>
-                                    </p>
+                            @endif
+                            @if (in_array('createInventoryMenu', $user_permission) ||
+                            in_array('updateInventoryMenu', $user_permission) ||
+                            in_array('viewInventoryMenu', $user_permission) ||
+                            in_array('deleteInventoryMenu', $user_permission))
+                            <li class="nav-item  ">
+                                <a href="{{ url('/Inventory/Menu') }}" class="nav-link @if ($subtitle == 'Menu') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Menu</p>
                                 </a>
                             </li>
-                        @endif
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if (in_array('createPOS', $user_permission) ||
+                    in_array('updatePOS', $user_permission) ||
+                    in_array('viewPOS', $user_permission) ||
+                    in_array('deletePOS', $user_permission))
+                    <li class="nav-item @if ($title == 'POS')  @endif ">
+                        <a href="{{ url('/POS') }}" class="nav-link @if ($title == 'POS') active @endif ">
+                            <i class="  nav-icon fas fa-th"></i>
+                            <p>
+                                Poin Of Sales (POS)
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                    @endif
+
+                    @if (in_array('createBelanja', $user_permission) ||
+                    in_array('updateBelanja', $user_permission) ||
+                    in_array('viewBelanja', $user_permission) ||
+                    in_array('deleteBelanja', $user_permission))
+                    <li class="nav-item @if ($title == 'Belanja')  @endif ">
+                        <a href="{{ url('/Belanja') }}" class="nav-link @if ($title == 'Belanja') active @endif ">
+                            <i class="nav-icon fas fa-shopping-bag "></i>
+                            <p>
+                                Belanja
+                                <span class="right badge badge-danger">New</span>
+                            </p>
+                        </a>
+                    </li>
+                    @endif
 
 
-                        @if (in_array('createOrder', $user_permission) ||
-                            in_array('updateOrder', $user_permission) ||
-                            in_array('viewOrder', $user_permission) ||
-                            in_array('deleteOrder', $user_permission))
-                            <li class="nav-item @if ($title == 'Order')  @endif ">
-                                <a href="{{ url('/Order') }}"
-                                    class="nav-link @if ($title == 'Order') active @endif ">
-                                    <i class="nav-icon fas fa-shopping-cart "></i>
-                                    <p>
-                                        Order
-                                        <span class="right badge badge-danger"><?php
-                                        if (
-                                            $sumorder = Orderitem::where(
-                                                'logistik',
-                                                request()
-                                                    ->session()
-                                                    ->get('id'),
-                                            )
-                                                ->where('view', false)
-                                                ->count()
-                                        ) {
-                                            echo $sumorder;
-                                        } else {
-                                            echo 'New';
-                                        }
-                                        ?></span>
-                                    </p>
-                                </a>
-                            </li>
-                        @endif
+                    @if (in_array('createOrder', $user_permission) ||
+                    in_array('updateOrder', $user_permission) ||
+                    in_array('viewOrder', $user_permission) ||
+                    in_array('deleteOrder', $user_permission))
+                    <li class="nav-item @if ($title == 'Order')  @endif ">
+                        <a href="{{ url('/Order') }}" class="nav-link @if ($title == 'Order') active @endif ">
+                            <i class="nav-icon fas fa-shopping-cart "></i>
+                            <p>
+                                Order
+                                <span class="right badge badge-danger"><?php
+                                                                        if (
+                                                                            $sumorder = Orderitem::where(
+                                                                                'logistik',
+                                                                                request()
+                                                                                    ->session()
+                                                                                    ->get('id'),
+                                                                            )
+                                                                            ->where('view', false)
+                                                                            ->count()
+                                                                        ) {
+                                                                            echo $sumorder;
+                                                                        } else {
+                                                                            echo 'New';
+                                                                        }
+                                                                        ?></span>
+                            </p>
+                        </a>
+                    </li>
+                    @endif
 
 
 
-                        @if (in_array('createTicketNama', $user_permission) ||
-                            in_array('updateTicketNama', $user_permission) ||
-                            in_array('viewTicketNama', $user_permission) ||
-                            in_array('deleteTicketNama', $user_permission) ||
-                            in_array('createTicketScan', $user_permission) ||
+                    @if (in_array('createTicketNama', $user_permission) ||
+                    in_array('updateTicketNama', $user_permission) ||
+                    in_array('viewTicketNama', $user_permission) ||
+                    in_array('deleteTicketNama', $user_permission) ||
+                    in_array('createTicketScan', $user_permission) ||
+                    in_array('updateTicketScan', $user_permission) ||
+                    in_array('viewTicketScan', $user_permission) ||
+                    in_array('deleteTicketScan', $user_permission))
+                    <li class="nav-item  @if ($title == 'Ticket') menu-is-opening menu-open @endif ">
+                        <a class="nav-link @if ($title == 'Ticket') active @endif ">
+                            <i class=" nav-icon fas fa-cube"></i>
+                            <p>
+                                Ticket
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (in_array('createTicketScan', $user_permission) ||
                             in_array('updateTicketScan', $user_permission) ||
                             in_array('viewTicketScan', $user_permission) ||
                             in_array('deleteTicketScan', $user_permission))
-                            <li
-                                class="nav-item  @if ($title == 'Ticket') menu-is-opening menu-open @endif ">
-                                <a class="nav-link @if ($title == 'Ticket') active @endif ">
-                                    <i class=" nav-icon fas fa-cube"></i>
-                                    <p>
-                                        Ticket
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                            <li class="nav-item ">
+                                <a href="{{ url('/Ticket/Scan') }}" class="nav-link  @if ($subtitle == 'Scan') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Scan</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    @if (in_array('createTicketScan', $user_permission) ||
-                                        in_array('updateTicketScan', $user_permission) ||
-                                        in_array('viewTicketScan', $user_permission) ||
-                                        in_array('deleteTicketScan', $user_permission))
-                                        <li class="nav-item ">
-                                            <a href="{{ url('/Ticket/Scan') }}"
-                                                class="nav-link  @if ($subtitle == 'Scan') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Scan</p>
-                                            </a>
-                                        </li>
-                                    @endif
-                                    @if (in_array('createTicketNama', $user_permission) ||
-                                        in_array('updateTicketNama', $user_permission) ||
-                                        in_array('viewTicketNama', $user_permission) ||
-                                        in_array('deleteTicketNama', $user_permission))
-                                        <li class="nav-item ">
-                                            <a href="{{ url('/Ticket/Nama') }}"
-                                                class="nav-link  @if ($subtitle == 'Nama') active @endif">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Create</p>
-                                            </a>
-                                        </li>
-                                    @endif
                             </li>
-                        @endif
+                            @endif
+                            @if (in_array('createTicketNama', $user_permission) ||
+                            in_array('updateTicketNama', $user_permission) ||
+                            in_array('viewTicketNama', $user_permission) ||
+                            in_array('deleteTicketNama', $user_permission))
+                            <li class="nav-item ">
+                                <a href="{{ url('/Ticket/Nama') }}" class="nav-link  @if ($subtitle == 'Nama') active @endif">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create</p>
+                                </a>
+                            </li>
+                            @endif
+                    </li>
+                    @endif
 
-                        {{-- <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
+                    {{-- <li class="nav-item @if ($title == 'Master') menu-is-opening menu-open @endif ">
                             <a href="#" class="nav-link @if ($title == 'Master') active @endif ">
                                 <i class=" nav-icon fas fa-database"></i>
                                 <p>
@@ -762,65 +719,63 @@ if (Auth::check()) {
                                 @if (in_array('createSupplier', $user_permission) || in_array('updateSupplier', $user_permission) || in_array('viewSupplier', $user_permission) || in_array('deleteSupplier', $user_permission))
                                     <li class="nav-item">
                                         <a href="{{ url('/Master/Supplier') }}"
-                                            class="nav-link @if ($subtitle == 'Supplier') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Buat Order</p>
-                                        </a>
-                                    </li>
-                                @endif
-                                @if (in_array('createSupplier', $user_permission) || in_array('updateSupplier', $user_permission) || in_array('viewSupplier', $user_permission) || in_array('deleteSupplier', $user_permission))
-                                    <li class="nav-item">
-                                        <a href="{{ url('/Master/Supplier') }}"
-                                            class="nav-link @if ($subtitle == 'Supplier') active @endif">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Buat Order</p>
-                                        </a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </li> --}}
+                    class="nav-link @if ($subtitle == 'Supplier') active @endif">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Buat Order</p>
+                    </a>
+                    </li>
+                    @endif
+                    @if (in_array('createSupplier', $user_permission) || in_array('updateSupplier', $user_permission) || in_array('viewSupplier', $user_permission) || in_array('deleteSupplier', $user_permission))
+                    <li class="nav-item">
+                        <a href="{{ url('/Master/Supplier') }}" class="nav-link @if ($subtitle == 'Supplier') active @endif">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Buat Order</p>
+                        </a>
+                    </li>
+                    @endif
+                    </ul>
+                    </li> --}}
 
 
-                        {{-- @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                    {{-- @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
                             <li class="nav-item">
                                 <a href="{{ url('/') }}" class="nav-link">
-                                    <i class="nav-icon fas fa-camera"></i>
-                                    <p>
-                                        Absensi
-                                        <span class="right badge badge-danger">New</span>
-                                    </p>
+                    <i class="nav-icon fas fa-camera"></i>
+                    <p>
+                        Absensi
+                        <span class="right badge badge-danger">New</span>
+                    </p>
+                    </a>
+                    </li>
+                    @endif
+
+
+
+                    @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
+                    <li class="nav-item ">
+                        <a href="{{ url('/Produksi') }}" class="nav-link @if ($title == 'Produksi') active @endif ">
+                            <i class=" nav-icon fas fa-sign-language"></i>
+                            <p>
+                                Produksi
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="../forms/general.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Opname</p>
                                 </a>
                             </li>
-                        @endif
-
-
-
-                        @if (in_array('createMaster', $user_permission) || in_array('updateMaster', $user_permission) || in_array('viewMaster', $user_permission) || in_array('deleteMaster', $user_permission))
-                            <li class="nav-item ">
-                                <a href="{{ url('/Produksi') }}"
-                                    class="nav-link @if ($title == 'Produksi') active @endif ">
-                                    <i class=" nav-icon fas fa-sign-language"></i>
-                                    <p>
-                                        Produksi
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                            <li class="nav-item">
+                                <a href="../forms/general.html" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Stock</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Opname</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="../forms/general.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Stock</p>
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
-                        @endif --}}
+                        </ul>
+                    </li>
+                    @endif --}}
 
 
                     </ul>
@@ -846,7 +801,7 @@ if (Auth::check()) {
                                 <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
                                 <li class="breadcrumb-item active">{{ $title }}</li>
                                 @if ($subtitle)
-                                    <li class="breadcrumb-item active">{{ $subtitle }}</li>
+                                <li class="breadcrumb-item active">{{ $subtitle }}</li>
                                 @endif
                             </ol>
                         </div><!-- /.col -->
@@ -878,8 +833,7 @@ if (Auth::check()) {
     <!-- ./wrapper -->
 
     <!-- Modal -->
-    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-backdrop="static"
-        data-keyboard="false" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" data-backdrop="static" data-keyboard="false" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header text-white bg-dark mb-3">
@@ -904,8 +858,7 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/select2/js/select2.full.min.js"></script>
 
     <!-- Bootstrap4 Duallistbox -->
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js">
     </script>
 
     <!-- ChartJS -->
@@ -927,13 +880,11 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/daterangepicker/daterangepicker.js"></script>
 
     <!-- bootstrap color picker -->
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js">
     </script>
 
     <!-- Tempusdominus Bootstrap 4 -->
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js">
     </script>
 
     <!-- Bootstrap Switch -->
@@ -950,8 +901,7 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/summernote/summernote-bs4.min.js"></script>
 
     <!-- overlayScrollbars -->
-    <script
-        src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js">
+    <script src="{{ url('/') }}/Admin-LTE/AdminLTE-3.2.0/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js">
     </script>
 
     <!-- AdminLTE App -->
@@ -975,6 +925,7 @@ if (Auth::check()) {
     <script src="{{ url('/') }}/assets/js/Custom_v7.js"></script>
 
     @include('sweetalert::alert')
+
 
 
     <style>
@@ -1311,28 +1262,32 @@ if (Auth::check()) {
                     "dom": '<"dt-buttons"Bf><"clear">lirtp',
                     "buttons": [{
                             extend: 'copyHtml5',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage ?? '
+                            ' }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'excelHtml5',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage ?? '
+                            ' }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'csvHtml5',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage ?? '
+                            ' }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }
                         },
                         {
                             extend: 'pdfHtml5',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage ?? '
+                            ' }}',
                             exportOptions: {
                                 columns: [jmlcolm]
                             }
@@ -1340,7 +1295,8 @@ if (Auth::check()) {
                         {
                             extend: 'print',
                             messageTop: '',
-                            title: '{{ $manage ?? '' }}',
+                            title: '{{ $manage ?? '
+                            ' }}',
                             exportOptions: {
                                 stripHtml: false,
                                 columns: [jmlcolm]
@@ -1352,11 +1308,26 @@ if (Auth::check()) {
                         //         alert('Button activated');
                         //     }
                         // }
-                    ]
+                    ],
+                    "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                        console.log(aData[5]);
+                        if (aData[5] == ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Diproses"><i class="fa fa-eye"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Telah Sampai"><i class="fa fa-truck"></i></span> <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Belum Sampai"><i class="fa fa-home"></i></span> <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Stock Belum Dikurangi"><i class="fa fa-upload"></i></span>') {
+                            $('td', nRow).css('background-color', 'rgb(255 250 0 / 30%)');
+                        }
+
+                        if (aData[5] == ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Diproses"><i class="fa fa-eye"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Telah Sampai"><i class="fa fa-truck"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Sampai"><i class="fa fa-home"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Stock Dikurangi"><i class="fa fa-upload"></i></span>') {
+                            $('td', nRow).css('background-color', 'rgb(16 255 0 / 75%)');
+                        }
+
+                        if (aData[5] == ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Diproses"><i class="fa fa-eye"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Telah Sampai"><i class="fa fa-truck"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Sampai"><i class="fa fa-home"></i></span> <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Stock Belum Dikurangi"><i class="fa fa-upload"></i></span>') {
+                            $('td', nRow).css('background-color', 'rgb(130 255 71 / 28%)');
+                        }
+                    }
                 }).buttons().container().appendTo('#manage_wrapper .col-md-6:eq(0)');
             }
         }
         manage();
+
 
 
         //hilangkan alert datatables

@@ -453,7 +453,7 @@
 
     <div class="card-footer">
         @if (!$up)
-            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+            {{-- <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button> --}}
         @endif
         @if (request()->session()->get('IdEditOrder'))
             <a class="btn btn-danger" onclick="KeluarEdit()"><i class="fa fa-sign-out-alt"></i>
@@ -523,7 +523,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="OrderItem">
+                    <div id="OrderItem" style="overflow: auto">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1004,6 +1004,41 @@
                             setTimeout(function() {
                                 window.location.reload();
                             }, 1000);
+                        }
+                    }
+                })
+            }
+        })
+    }
+
+    
+    function KePOS(id) {
+        Swal.fire({
+            title: 'Yakin Ingin Tranfer Order Ke POS ?',
+            text: "Jika terdapat transaksi maka akan di hapus dan di gantikan ke item order!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oke'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    url: "Order/KePOS",
+                    type: "POST",
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    error: function(xhr, status, error) {
+                        popup(status, true, xhr.status + " " + error);
+                    },
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            popup(data.status, data.toast, data.pesan);
+                        } else {
+                            popup(data.status, data.toast, data.pesan);
                         }
                     }
                 })

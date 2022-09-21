@@ -310,6 +310,7 @@ Route::controller(OrderController::class)->group(
         Route::post('Order/LihatBill', 'LihatBill')->middleware('auth');
         Route::post('Order/Upload', 'Upload')->middleware('auth');
         Route::post('Order/UpRepair', 'UpRepair')->middleware('auth');
+        Route::post('Order/KePOS', 'KePOS')->middleware('auth');
     }
 );
 
