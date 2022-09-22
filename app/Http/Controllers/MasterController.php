@@ -435,9 +435,8 @@ class MasterController extends Controller
                     $pengguna = null;
                 }
 
-                if (Bahan::where('kategori', $kategori)->count()) {
+                if (Bahan::where('kode', $kategori)->count()) {
                     if ($request->input('kategori')) {
-
                         if ($request->input('kategori') == 1) {
                             $ktgr = 'BBS' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
                         } elseif ($request->input('kategori') == 2) {
