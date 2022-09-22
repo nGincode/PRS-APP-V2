@@ -435,9 +435,34 @@ class MasterController extends Controller
                     $pengguna = null;
                 }
 
+                if (Bahan::where('kategori', $kategori)->count()) {
+                    if ($request->input('kategori')) {
+
+                        if ($request->input('kategori') == 1) {
+                            $ktgr = 'BBS' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } elseif ($request->input('kategori') == 2) {
+                            $ktgr = 'BBB' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } elseif ($request->input('kategori') == 3) {
+                            $ktgr = 'BBK' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } elseif ($request->input('kategori') == 4) {
+                            $ktgr = 'BBD' . sprintf("%05s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } elseif ($request->input('kategori') == 11) {
+                            $ktgr = 'BS' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } elseif ($request->input('kategori') == 21) {
+                            $ktgr = 'BO' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        } else {
+                            $ktgr = 'X' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count() + 2);
+                        }
+                    } else {
+                        $ktgr = 'X' . sprintf("%06s", Bahan::where('kategori', $request->input('kategori'))->count());
+                    }
+                } else {
+                    $ktgr = $kategori;
+                }
+
                 $input = [
                     'nama' => $request->input('nama'),
-                    'kode' => $kategori,
+                    'kode' => $ktgr,
                     'kategori' => $request->input('kategori'),
                     'satuan_pembelian' => $request->input('satuan_pembelian'),
                     'harga' =>  $this->unrupiah($request->input('harga')),
