@@ -759,11 +759,11 @@ class OrderController extends Controller
                 <ul class="dropdown-menu">';
 
                 if (in_array('viewOrder', $this->permission())) {
-                    $button .= "<li><a class='dropdown-item' onclick='KePOS(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'  ><i class='fas fa-download'></i> Tranfer Ke POS</a></li>";
-
                     if ($request->session()->get('tipe') === 'Logistik') {
-                        $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
+                        $button .= "<li><a class='dropdown-item' onclick='KePOS(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'  ><i class='fas fa-download'></i> Tranfer Ke POS</a></li>";
                     }
+
+                    $button .= "<li><a class='dropdown-item' onclick='Lihat(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")' data-toggle='modal' data-target='#lihat' ><i class='fas fa-eye'></i> Lihat</a></li>";
                 }
                 if (in_array('updateOrder', $this->permission())) {
                     $button .= "<li><a class='dropdown-item' onclick='OrderEdit(" . '"' . $value['id'] . '"' . "," . '"' . $this->title . '"' . ")'><i class='fas fa-pencil-alt'></i> Edit</a></li>";

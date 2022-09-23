@@ -662,7 +662,7 @@ class POSController extends Controller
         }
         $id = $request->input('id');
 
-        $BillItem = POSBillItem::where('posbill_id', $id)->get();
+        $BillItem = POSBillItem::where('posbill_id', $id)->orderBy('nama', 'asc')->get();
         $Bill = POSBill::where('id', $id)->first();
 
         $store = Store::where('id', $request->session()->get('store_id'))->first();
