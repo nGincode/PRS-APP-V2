@@ -868,11 +868,11 @@ class POSController extends Controller
             foreach ($vall as $vv) {
                 $totalperoutlet += $vv['qty'] * $vv['harga'];
             }
-            $html .=  ($va['tujuan'] ?? 'Tidak diketahui') . ' : <br>' . $totalperoutlet;
+            $html .=  ($va['tujuan'] ?? 'Tidak diketahui') . ' : <br>' . $this->rupiah($totalperoutlet) . '<br>';
             $totalperoutletall += $totalperoutlet;
         }
         $html .= '
-                    </center><br><br>Total : ' . $totalperoutlet;
+                    </center><br><br>Total : ' . $this->rupiah($totalperoutlet);
 
 
         $html .= '<br><br>
@@ -907,7 +907,7 @@ class POSController extends Controller
         }
 
         $html .= '
-                    </center><br>Total Harga : ' . $total . '<br>
+                    </center><br>Total Harga : ' . $this->rupiah($total) . '<br>
                     Total Item   : ' .  count(array_unique($itemttl)) . '
                     <br><br><div style="border-top:dashed 1px black"></div>';
 
