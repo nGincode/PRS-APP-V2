@@ -885,9 +885,9 @@ class POSController extends Controller
             ->get();
 
         $total = 0;
+        $itemttl = [];
         foreach ($kategori as $v) {
             $no = 1;
-            $itemttl = [];
             foreach ($belanja as $row) {
                 if ($v['kategori'] == $row['kategori']) {
                     if ($row->bahan_id) {
