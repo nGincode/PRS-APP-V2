@@ -884,8 +884,8 @@ class POSController extends Controller
         $kategori = Belanja::select('kategori')->distinct()->where('up', true)->where('store_id', $request->session()->get('store_id'))->whereBetween('tgl', [date('Y-m-d 00:00:00'), date('Y-m-d  23:59:00')])
             ->get();
 
+        $total = 0;
         foreach ($kategori as $v) {
-            $total = 0;
             $no = 1;
             $itemttl = [];
             foreach ($belanja as $row) {

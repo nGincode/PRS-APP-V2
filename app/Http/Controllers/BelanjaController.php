@@ -17,6 +17,7 @@ class BelanjaController extends Controller
         $this->data['title'] = 'Belanja';
         $this->title = $this->data['title'];
         $this->data['subtitle'] = '';
+        $this->data['manage'] = 'Data ' . $this->data['title'] . ' Manage ' . date('Y-m-d');
     }
 
     function AutoUpload()

@@ -1301,15 +1301,9 @@ if (Auth::check()) {
                                 stripHtml: false,
                                 columns: [jmlcolm]
                             }
-                        },
-                        // {
-                        //     text: 'My button',
-                        //     action: function(e, dt, node, config) {
-                        //         alert('Button activated');
-                        //     }
-                        // }
+                        }
                     ],
-                    "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    fnRowCallback: function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                         console.log(aData[5]);
                         if (aData[5] == ' <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Diproses"><i class="fa fa-eye"></i></span> <span class="badge badge-success" data-toggle="tooltip" data-placement="top"  title="Telah Sampai"><i class="fa fa-truck"></i></span> <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Belum Sampai"><i class="fa fa-home"></i></span> <span class="badge badge-light" data-toggle="tooltip" data-placement="top"  title="Stock Belum Dikurangi"><i class="fa fa-upload"></i></span>') {
                             $('td', nRow).css('background-color', 'rgb(255 250 0 / 30%)');
