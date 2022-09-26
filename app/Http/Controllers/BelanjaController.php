@@ -677,6 +677,7 @@ class BelanjaController extends Controller
                             </thead>';
 
         $jumlah = 0;
+        $viewtotal = 0;
         foreach ($variable as $key => $value) {
             if ($value['hutang']) {
                 $hutang = ' <a class="badge badge-danger">Hutang</a> ';
