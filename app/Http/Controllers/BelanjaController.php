@@ -677,7 +677,12 @@ class BelanjaController extends Controller
                             </thead>';
 
         $jumlah = 0;
-        $viewtotal = 0;
+
+        if (request()->session()->get('tipe')) {
+            $viewtotal = 8;
+        } else {
+            $viewtotal = 7;
+        }
         foreach ($variable as $key => $value) {
             if ($value['hutang']) {
                 $hutang = ' <a class="badge badge-danger">Hutang</a> ';
@@ -708,9 +713,7 @@ class BelanjaController extends Controller
 
             if (request()->session()->get('tipe')) {
                 $viewstore = '<td>' . $value['store']->nama . '</td>';
-                $viewtotal = 8;
             } else {
-                $viewtotal = 7;
                 $viewstore = '';
             }
 
