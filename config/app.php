@@ -203,6 +203,7 @@ return [
         //custom sendiri
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Clockwork' => Clockwork\Support\Laravel\Facade::class,
 
     ])->toArray(),
 
