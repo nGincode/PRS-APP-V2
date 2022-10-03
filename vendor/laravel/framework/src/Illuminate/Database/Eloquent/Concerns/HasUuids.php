@@ -49,7 +49,11 @@ trait HasUuids
      */
     public function getKeyType()
     {
-        return 'string';
+        if (in_array($this->getKeyName(), $this->uniqueIds())) {
+            return 'string';
+        }
+
+        return $this->keyType;
     }
 
     /**
@@ -59,6 +63,10 @@ trait HasUuids
      */
     public function getIncrementing()
     {
-        return false;
+        if (in_array($this->getKeyName(), $this->uniqueIds())) {
+            return false;
+        }
+
+        return $this->incrementing;
     }
 }

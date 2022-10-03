@@ -38,7 +38,7 @@ trait InstallsInertiaStacks
 
         // Requests...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests/Auth'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/App/Http/Requests/Auth', app_path('Http/Requests/Auth'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Http/Requests/Auth', app_path('Http/Requests/Auth'));
 
         // Middleware...
         $this->installMiddlewareAfter('SubstituteBindings::class', '\App\Http\Middleware\HandleInertiaRequests::class');
@@ -138,8 +138,8 @@ trait InstallsInertiaStacks
                 'autoprefixer' => '^10.4.2',
                 'postcss' => '^8.4.6',
                 'tailwindcss' => '^3.1.0',
-                'react' => '^17.0.2',
-                'react-dom' => '^17.0.2',
+                'react' => '^18.2.0',
+                'react-dom' => '^18.2.0',
             ] + $packages;
         });
 
@@ -149,7 +149,7 @@ trait InstallsInertiaStacks
 
         // Requests...
         (new Filesystem)->ensureDirectoryExists(app_path('Http/Requests/Auth'));
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/App/Http/Requests/Auth', app_path('Http/Requests/Auth'));
+        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/default/app/Http/Requests/Auth', app_path('Http/Requests/Auth'));
 
         // Middleware...
         $this->installMiddlewareAfter('SubstituteBindings::class', '\App\Http\Middleware\HandleInertiaRequests::class');
