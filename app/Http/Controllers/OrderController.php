@@ -848,7 +848,9 @@ class OrderController extends Controller
             POS::where('store_id', $request->session()->get('store_id'))->delete();
 
             foreach ($order as $key => $value) {
-
+                if ($value['qty_deliv'] === null) {
+                    Orderitem::where('id', $value['id'])->update(['qty_deliv' => $value['qty_order']]);
+                }
                 $inventory = Inventory::where('bahan_id', $value['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
 
                 $input = [
@@ -856,7 +858,7 @@ class OrderController extends Controller
                     'store_id' => $request->session()->get('store_id'),
                     'inventory_id' => $inventory['id'],
                     'bahan_id' => $value['bahan_id'],
-                    'qty' => ($value['qty_order'] ?? $value['qty_deliv']),
+                    'qty' => ($value['qty_order'] ?? $value['qty_deliv']) ?? 0,
                     'harga' => $value['harga'],
                     'satuan' => $value['satuan'],
                 ];
