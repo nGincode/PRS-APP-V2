@@ -457,9 +457,14 @@
             },
             success: function(data) {
                 if (data.status) {
-                    popup(data.status, data.toast, data.pesan);
-                $('#TblPlus_' + id).prop('disabled', false);
-                $('#key_' + id).prop('disabled', false);
+                if(xhr.status === 419){
+                    popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
+                    }
+                    if(xhr.status === 500){
+                    popup('error', true, 'Server Masih Berproses');
+                    }
+                    $('#TblPlus_' + id).prop('disabled', false);
+                    $('#key_' + id).prop('disabled', false);
                 } else {
                     layar();
                 }
@@ -483,7 +488,12 @@
             },
             success: function(data) {
                 if (data.status) {
-                    popup(data.status, data.toast, data.pesan);
+                if(xhr.status === 419){
+                popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
+                }
+                if(xhr.status === 500){
+                popup('error', true, 'Server Masih Berproses');
+                }
                 $('#TblMinus_' + id).prop('disabled', false);
                 } else {
                     layar();
