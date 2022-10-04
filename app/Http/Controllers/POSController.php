@@ -115,8 +115,7 @@ class POSController extends Controller
             return redirect()->to('/');
         }
 
-        $pos = POS::where('store_id', $request->session()->get('store_id'))->with('Bahan')
-            ->join('bahan', 'pos.bahan_id', '=', 'bahan.id')->orderBy('bahan.nama', 'asc')->get();
+        $pos = POS::where('store_id', $request->session()->get('store_id'))->with('Bahan')->get();
 
 
 
