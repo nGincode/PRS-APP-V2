@@ -682,7 +682,7 @@ class POSController extends Controller
             ';
         if ($BillItem && $Bill) {
             $jumlah = 0;
-            $html .= '<div class="wrapper" style="width: 55mm;height:unset;font-size: 12px;">
+            $html .= '<div class="wrapper" style="width: 78mm;height:unset;font-size: 12px;">
                     <div style="border-bottom:dashed 1px black;">
                     <center >
                     <font style="font-size: 18px; text-align:center;"><b>' . $request->session()->get('store') . '</b></font><br>
