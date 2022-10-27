@@ -176,11 +176,11 @@ class InventoryController extends Controller
 
 
             if ($value['qty'] < 10) {
-                $qty = $value['qty'] . '/' . $value['satuan'] . ' &nbsp<span class="badge badge-danger"> <i class="fa fa-exclamation-triangle"></i></span> ';
+                $qty = $value['qty'] . ' &nbsp<span class="badge badge-danger"> <i class="fa fa-exclamation-triangle"></i></span> ';
             } else if ($value['qty'] < 20) {
-                $qty = $value['qty'] . '/' . $value['satuan'] . ' &nbsp<span class="badge badge-warning"> <i class="fa fa-exclamation-triangle"></i></span> ';
+                $qty = $value['qty'] . ' &nbsp<span class="badge badge-warning"> <i class="fa fa-exclamation-triangle"></i></span> ';
             } else {
-                $qty = $value['qty'] . '/' . $value['satuan'];
+                $qty = $value['qty'];
             }
 
             if ($value['auto_harga'] == 1) {
@@ -201,6 +201,7 @@ class InventoryController extends Controller
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
+                        $value['satuan'],
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
                         ($value['margin'] ?? 0) . '%',
                         $button
@@ -212,6 +213,7 @@ class InventoryController extends Controller
                         $value['bahan']->kode,
                         $value['bahan']->nama,
                         $qty,
+                        $value['satuan'],
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
                         ($value['margin'] ?? 0) . '%',
                         $button
