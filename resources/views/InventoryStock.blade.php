@@ -129,6 +129,7 @@
                             <th>Qty</th>
                             <th>Harga</th>
                             <th>Satuan</th>
+                            <th>Total</th>
                             <th>Margin</th>
                             <th>Action</th>
                         </tr>

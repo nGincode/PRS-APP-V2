@@ -201,8 +201,9 @@ class InventoryController extends Controller
                         $value['store']->nama,
                         $value['bahan']->nama,
                         $qty,
-                        $value['satuan'],
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
+                        $value['satuan'],
+                        (($this->rupiah($harga) ?? 0) * $value['qty']),
                         ($value['margin'] ?? 0) . '%',
                         $button
                     );
@@ -213,8 +214,9 @@ class InventoryController extends Controller
                         $value['bahan']->kode,
                         $value['bahan']->nama,
                         $qty,
-                        $value['satuan'],
                         ($this->rupiah($harga) ?? 'Rp. 0') .  $tanda,
+                        $value['satuan'],
+                        (($this->rupiah($harga) ?? 0) * $value['qty']),
                         ($value['margin'] ?? 0) . '%',
                         $button
                     );
