@@ -505,9 +505,9 @@ class OrderController extends Controller
                             $jumlah = $qty - $value['qty_deliv'];
 
                             if (Inventory::where('id', $inventory['id'])->update([
-                                'qty' => $jumlah
+                                'qty' => $jumlah,
                             ])) {
-                                Orderitem::where('id', $value['id'])->update(['up' => true]);
+                                Orderitem::where('id', $value['id'])->update(['up' => true, 'harga' =>  $inventory['harga_manual'] ?? $inventory['harga_auto']]);
                             } else {
                                 $pesan .= $value['nama'] . ' Tidak dapat diupload <br>';
                             }
@@ -859,8 +859,8 @@ class OrderController extends Controller
                     'inventory_id' => $inventory['id'],
                     'bahan_id' => $value['bahan_id'],
                     'qty' => ($value['qty_order'] ?? $value['qty_deliv']) ?? 0,
-                    'harga' => $value['harga'],
-                    'satuan' => $value['satuan'],
+                    'harga' => $inventory['harga_manual'] ?? $inventory['harga_auto'],
+                    'satuan' => $inventory['satuan'],
                 ];
 
                 if (!POS::create($input)) {
