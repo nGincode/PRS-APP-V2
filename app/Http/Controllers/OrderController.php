@@ -504,10 +504,16 @@ class OrderController extends Controller
                             $qty = $inventory['qty'];
                             $jumlah = $qty - $value['qty_deliv'];
 
+                            if ($inventory['auto_harga'] == 1) {
+                                $harga = $inventory['harga_auto'];
+                            } else {
+                                $harga = $inventory['harga_manual'];
+                            }
+
                             if (Inventory::where('id', $inventory['id'])->update([
                                 'qty' => $jumlah,
                             ])) {
-                                Orderitem::where('id', $value['id'])->update(['up' => true, 'harga' =>  $inventory['harga_manual'] ?? $inventory['harga_auto']]);
+                                Orderitem::where('id', $value['id'])->update(['up' => true, 'harga' =>  $harga]);
                             } else {
                                 $pesan .= $value['nama'] . ' Tidak dapat diupload <br>';
                             }
@@ -853,13 +859,18 @@ class OrderController extends Controller
                 }
                 $inventory = Inventory::where('bahan_id', $value['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
 
+                if ($inventory['auto_harga'] == 1) {
+                    $harga = $inventory['harga_auto'];
+                } else {
+                    $harga = $inventory['harga_manual'];
+                }
                 $input = [
                     'users_id' => $request->session()->get('id'),
                     'store_id' => $request->session()->get('store_id'),
                     'inventory_id' => $inventory['id'],
                     'bahan_id' => $value['bahan_id'],
                     'qty' => ($value['qty_order'] ?? $value['qty_deliv']) ?? 0,
-                    'harga' => $inventory['harga_manual'] ?? $inventory['harga_auto'],
+                    'harga' => $harga,
                     'satuan' => $inventory['satuan'],
                 ];
 
