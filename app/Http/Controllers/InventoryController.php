@@ -409,7 +409,7 @@ class InventoryController extends Controller
         $this->subtitle = $this->data['subtitle'];
 
         $result = array('data' => array());
-        $Data = OpnameStock::where('delete', false)->orderBy('id', "DESC")->get();
+        $Data = OpnameStock::where('delete', false)->orderBy('id', "DESC")->limit(1000)->get();
         foreach ($Data as $value) {
 
             if ($value['status'] == 'Tambah') {
