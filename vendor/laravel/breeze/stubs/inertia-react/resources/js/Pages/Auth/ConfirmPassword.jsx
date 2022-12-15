@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
@@ -31,7 +31,7 @@ export default function ConfirmPassword() {
         <GuestLayout>
             <Head title="Confirm Password" />
 
-            <div className="mb-4 text-sm text-gray-600">
+            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 This is a secure area of the application. Please confirm your password before continuing.
             </div>
 
@@ -40,6 +40,7 @@ export default function ConfirmPassword() {
                     <InputLabel forInput="password" value="Password" />
 
                     <TextInput
+                        id="password"
                         type="password"
                         name="password"
                         value={data.password}

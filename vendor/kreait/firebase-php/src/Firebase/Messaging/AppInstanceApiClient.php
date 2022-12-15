@@ -6,7 +6,9 @@ namespace Kreait\Firebase\Messaging;
 
 use Beste\Json;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Promise;
+use GuzzleHttp\Promise\Create;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Promise\Utils;
 use Kreait\Firebase\Exception\MessagingApiExceptionConverter;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -17,7 +19,6 @@ use Throwable;
 class AppInstanceApiClient
 {
     private ClientInterface $client;
-
     private MessagingApiExceptionConverter $errorHandler;
 
     public function __construct(ClientInterface $client, MessagingApiExceptionConverter $errorHandler)
@@ -48,11 +49,10 @@ class AppInstanceApiClient
                         'registration_tokens' => $tokenStrings,
                     ],
                 ])
-                ->then(static fn (ResponseInterface $response) => Json::decode((string) $response->getBody(), true))
-            ;
+                ->then(static fn (ResponseInterface $response) => Json::decode((string) $response->getBody(), true));
         }
 
-        $responses = Promise\Utils::settle($promises)->wait();
+        $responses = Utils::settle($promises)->wait();
 
         $result = [];
 
@@ -84,6 +84,7 @@ class AppInstanceApiClient
                     $result[$topicName] = $topicResults;
 
                     break;
+
                 case 'rejected':
                     $result[$topicName] = $response['reason']->getMessage();
 
@@ -114,11 +115,10 @@ class AppInstanceApiClient
                         'registration_tokens' => $tokenStrings,
                     ],
                 ])
-                ->then(static fn (ResponseInterface $response) => Json::decode((string) $response->getBody(), true))
-            ;
+                ->then(static fn (ResponseInterface $response) => Json::decode((string) $response->getBody(), true));
         }
 
-        $responses = Promise\Utils::settle($promises)->wait();
+        $responses = Utils::settle($promises)->wait();
 
         $result = [];
 
@@ -150,6 +150,7 @@ class AppInstanceApiClient
                     $result[$topicName] = $topicResults;
 
                     break;
+
                 case 'rejected':
                     $result[$topicName] = $response['reason']->getMessage();
 
@@ -160,7 +161,7 @@ class AppInstanceApiClient
         return $result;
     }
 
-    public function getAppInstanceAsync(RegistrationToken $registrationToken): Promise\PromiseInterface
+    public function getAppInstanceAsync(RegistrationToken $registrationToken): PromiseInterface
     {
         return $this->client
             ->requestAsync('GET', '/iid/'.$registrationToken->value().'?details=true')
@@ -169,7 +170,6 @@ class AppInstanceApiClient
 
                 return AppInstance::fromRawData($registrationToken, $data);
             })
-            ->otherwise(fn (Throwable $e) => Promise\Create::rejectionFor($this->errorHandler->convertException($e)))
-        ;
+            ->otherwise(fn (Throwable $e) => Create::rejectionFor($this->errorHandler->convertException($e)));
     }
 }

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Kreait\Firebase\Auth;
 
 use Beste\Json;
+use DateInterval;
 use GuzzleHttp\ClientInterface;
+use Kreait\Firebase\Auth\CreateSessionCookie\GuzzleApiClientHandler;
 use Kreait\Firebase\Auth\SignIn\Handler as SignInHandler;
 use Kreait\Firebase\Exception\Auth\EmailNotFound;
 use Kreait\Firebase\Exception\Auth\ExpiredOobCode;
@@ -14,10 +16,18 @@ use Kreait\Firebase\Exception\Auth\OperationNotAllowed;
 use Kreait\Firebase\Exception\Auth\UserDisabled;
 use Kreait\Firebase\Exception\AuthApiExceptionConverter;
 use Kreait\Firebase\Exception\AuthException;
-use Kreait\Firebase\Request;
+use Kreait\Firebase\Request\CreateUser;
+use Kreait\Firebase\Request\UpdateUser;
 use Psr\Http\Message\ResponseInterface;
 use StellaMaris\Clock\ClockInterface;
+use Stringable;
 use Throwable;
+
+use function array_filter;
+use function array_map;
+use function is_array;
+use function str_contains;
+use function time;
 
 /**
  * @internal
@@ -26,13 +36,13 @@ class ApiClient
 {
     private string $projectId;
     private ?string $tenantId;
+
     /** @var ProjectAwareAuthResourceUrlBuilder|TenantAwareAuthResourceUrlBuilder */
     private $awareAuthResourceUrlBuilder;
     private AuthResourceUrlBuilder $authResourceUrlBuilder;
     private ClientInterface $client;
     private SignInHandler $signInHandler;
     private ClockInterface $clock;
-
     private AuthApiExceptionConverter $errorHandler;
 
     public function __construct(
@@ -59,7 +69,7 @@ class ApiClient
     /**
      * @throws AuthException
      */
-    public function createUser(Request\CreateUser $request): ResponseInterface
+    public function createUser(CreateUser $request): ResponseInterface
     {
         $url = $this->authResourceUrlBuilder->getUrl('/accounts:signUp');
 
@@ -69,7 +79,7 @@ class ApiClient
     /**
      * @throws AuthException
      */
-    public function updateUser(Request\UpdateUser $request): ResponseInterface
+    public function updateUser(UpdateUser $request): ResponseInterface
     {
         $url = $this->awareAuthResourceUrlBuilder->getUrl('/accounts:update');
 
@@ -94,8 +104,8 @@ class ApiClient
     /**
      * Returns a user for the given email address.
      *
-     * @throws EmailNotFound
      * @throws AuthException
+     * @throws EmailNotFound
      */
     public function getUserByEmail(string $email): ResponseInterface
     {
@@ -121,7 +131,7 @@ class ApiClient
     {
         $batchSize = $batchSize ?: 1000;
 
-        $urlParams = \array_filter([
+        $urlParams = array_filter([
             'maxResults' => (string) $batchSize,
             'nextPageToken' => (string) $nextPageToken,
         ]);
@@ -165,7 +175,7 @@ class ApiClient
      */
     public function getAccountInfo($uids): ResponseInterface
     {
-        if (!\is_array($uids)) {
+        if (!is_array($uids)) {
             $uids = [$uids];
         }
 
@@ -175,11 +185,6 @@ class ApiClient
     }
 
     /**
-     *
-     * @param UserQuery $query
-     *
-     * @return ResponseInterface
-     *
      * @throws AuthException
      */
     public function queryUsers(UserQuery $query): ResponseInterface
@@ -190,10 +195,10 @@ class ApiClient
     }
 
     /**
+     * @throws AuthException
      * @throws ExpiredOobCode
      * @throws InvalidOobCode
      * @throws OperationNotAllowed
-     * @throws AuthException
      */
     public function verifyPasswordResetCode(string $oobCode): ResponseInterface
     {
@@ -203,11 +208,11 @@ class ApiClient
     }
 
     /**
+     * @throws AuthException
      * @throws ExpiredOobCode
      * @throws InvalidOobCode
      * @throws OperationNotAllowed
      * @throws UserDisabled
-     * @throws AuthException
      */
     public function confirmPasswordReset(string $oobCode, string $newPassword): ResponseInterface
     {
@@ -228,19 +233,19 @@ class ApiClient
 
         return $this->requestApi($url, [
             'localId' => $uid,
-            'validSince' => (string) \time(),
+            'validSince' => (string) time(),
         ]);
     }
 
     /**
-     * @param array<int, \Stringable|string> $providers
+     * @param array<int, Stringable|string> $providers
      *
      * @throws AuthException
      */
     public function unlinkProvider(string $uid, array $providers): ResponseInterface
     {
         $url = $this->awareAuthResourceUrlBuilder->getUrl('/accounts:update');
-        $providers = \array_map('strval', $providers);
+        $providers = array_map('strval', $providers);
 
         return $this->requestApi($url, [
             'localId' => $uid,
@@ -249,20 +254,18 @@ class ApiClient
     }
 
     /**
-     * @param int|\DateInterval $ttl
+     * @param int|DateInterval $ttl
      */
     public function createSessionCookie(string $idToken, $ttl): string
     {
-        return (new CreateSessionCookie\GuzzleApiClientHandler($this->client, $this->projectId))
-            ->handle(CreateSessionCookie::forIdToken($idToken, $this->tenantId, $ttl, $this->clock))
-        ;
+        return (new GuzzleApiClientHandler($this->client, $this->projectId))
+            ->handle(CreateSessionCookie::forIdToken($idToken, $this->tenantId, $ttl, $this->clock));
     }
 
     public function getEmailActionLink(string $type, string $email, ActionCodeSettings $actionCodeSettings, ?string $locale = null): string
     {
         return (new CreateActionLink\GuzzleApiClientHandler($this->client, $this->projectId))
-            ->handle(CreateActionLink::new($type, $email, $actionCodeSettings, $this->tenantId, $locale))
-            ;
+            ->handle(CreateActionLink::new($type, $email, $actionCodeSettings, $this->tenantId, $locale));
     }
 
     /**
@@ -302,11 +305,11 @@ class ApiClient
         $options = [];
         $method = 'GET';
 
-        if (!\str_contains($uri, 'projects')) {
+        if (!str_contains($uri, 'projects')) {
             $data['targetProjectId'] = $this->projectId;
         }
 
-        if ($this->tenantId !== null && !\str_contains($uri, 'tenants')) {
+        if ($this->tenantId !== null && !str_contains($uri, 'tenants')) {
             $data['tenantId'] = $this->tenantId;
         }
 

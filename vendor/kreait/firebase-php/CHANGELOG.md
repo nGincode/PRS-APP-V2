@@ -2,6 +2,64 @@
 
 ## [Unreleased]
 
+## [6.9.3] - 2022-11-04
+
+### Fixed
+
+* When no Service Account was provided, custom token were generated with a direct call to the Google Identity Toolkit,
+  which could create invalid token signatures depending on the environment (e.g. GCE).
+  Now, the provided credentials are used to sign custom tokens via the 
+  `Kreait\Firebase\Auth\CustomTokenViaGoogleCredentials` class. This is an internal class and should not be used
+  directly.
+  ([#745](https://github.com/kreait/firebase-php/pull/745))
+
+### Deprecated
+
+* `Kreait\Firebase\Auth\CustomTokenViaGoogleIam` (internal)
+
+## [6.9.2] - 2022-10-17
+
+### Fixed
+
+* Removed `"replace": {"symfony/polyfill-mbstring": "*"}` from `composer.json` because it made SDK updates
+  uninstallable in projects that require other libraries needing it.
+  ([#742](https://github.com/kreait/firebase-php/pull/742)
+
+## [6.9.1] - 2022-09-26
+
+### Added
+
+* Added `Kreait\Firebase\RemoteConfig\Template::conditionNames()` to return a list of condition names 
+  of a Remote Config template
+* Added `Kreait\Firebase\RemoteConfig\Template::withRemovedCondition(string $name)` to remove a condition from
+  a Remote Config template by name
+
+### Fixed
+
+* HTTP Proxy settings were not applied to the Auth Token Handler. Because of this, outgoing, proxied requests couldn't
+  be authenticated, effectively breaking the SDK.
+  ([#735](https://github.com/kreait/firebase-php/pull/735)
+
+## [6.9.0] - 2022-09-16
+
+### Added
+
+* Added support for Remote Config Personalization
+  ([#731](https://github.com/kreait/firebase-php/pull/731)/[#733](https://github.com/kreait/firebase-php/pull/733))
+  * Note: Personalization (currently) can not be added programmatically. The values can only be read and removed from a
+    Remote Config Template. To add Personalization, use the Firebase Web Console.
+* Added `Kreait\Firebase\RemoteConfig\Template::withRemovedParameter(string $name)` to remove an existing parameter 
+  from a Remote Config Template
+* Added method `Kreait\Firebase\RemoteConfig\Template::withRemovedParameterGroup(string $name)` to remove an existing 
+  parameter group from a Remote Config Template
+* Added `Kreait\Firebase\RemoteConfig\DefaultValue::useInAppDefault()`
+
+### Deprecated
+
+* `Kreait\Firebase\RemoteConfig\DefaultValue::IN_APP_DEFAULT_VALUE`
+* `Kreait\Firebase\RemoteConfig\DefaultValue::none()`
+* `Kreait\Firebase\RemoteConfig\DefaultValue::value()`
+
 ## [6.8.0] - 2022-08-20
 
 ### Added
@@ -283,7 +341,11 @@ methods.
     * `Kreait\Firebase\Value\Uid`
     * `Kreait\Firebase\Value\Url`
 
-[Unreleased]: https://github.com/kreait/firebase-php/compare/6.8.0...6.x
+[Unreleased]: https://github.com/kreait/firebase-php/compare/6.9.3...6.x
+[6.9.3]: https://github.com/kreait/firebase-php/compare/6.9.2...6.9.3
+[6.9.2]: https://github.com/kreait/firebase-php/compare/6.9.1...6.9.2
+[6.9.1]: https://github.com/kreait/firebase-php/compare/6.9.0...6.9.1
+[6.9.0]: https://github.com/kreait/firebase-php/compare/6.8.0...6.9.0
 [6.8.0]: https://github.com/kreait/firebase-php/compare/6.7.1...6.8.0
 [6.7.1]: https://github.com/kreait/firebase-php/compare/6.7.0...6.7.1
 [6.7.0]: https://github.com/kreait/firebase-php/compare/6.6.1...6.7.0

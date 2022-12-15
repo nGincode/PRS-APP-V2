@@ -15,16 +15,13 @@ jobs:
     strategy:
       matrix:
         php:
-          - "7.4"
           - "8.0"
           - "8.1"
-        dependencies:
-          - "lowest"
-          - "highest"
+          - "8.2"
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -34,10 +31,7 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: "ramsey/composer-install@v1"
-        with:
-          dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "${{ matrix.composer-options }}"
+      - uses: "ramsey/composer-install@v2"
 
       - name: Setup problem matchers for PHP
         run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"

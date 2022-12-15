@@ -1,3 +1,21 @@
+5.1.12
+
+- improved Timeline event run method to stop the event in case of an exception (implemented by UlrichEckhardt, thanks!)
+- fixed some deprecation warnings on PHP 8.2 (implemented by faytekin, thanks!)
+- fixed some deprecation warnings on PHP 8.1 (implemented by villermen, thanks!)
+
+5.1.11
+
+- fixed crash when resolving authenticated user in Laravel without using Eloquent (reported by m-thalmann-athesia, thanks!)
+
+5.1.10
+
+- fixed crash when resolving authenticated user in Laravel (reported by LucaRed, thanks!)
+
+5.1.9
+
+- added support for Eloquent strict mode (reported by Sergiobop, thanks!)
+
 5.1.8
 
 - updated list of built-in Laravel commands to ignore when collecting commands and included Horizon commands

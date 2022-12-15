@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2.3.1 - 2022-11-25
+This release reverts the change to implement `psr/clock` directly, to not break dependents who rely on `stella-maris/clock`
+
+## 2.3.0 - 2022-11-25
+This release re-introduces support for PHP ^8.0 and implements the freshly released `psr/clock` (PSR-20) directly.
+
+## 2.2.0 - 2022-11-04
+This release drops support for PHP <8.1.
+
 ## 2.1.0 - 2022-04-22
 Adds the `WrappingClock` which allows using an object with a `now()` method returning a `DateTimeImmutable` object
 as a "real" clock.
