@@ -159,7 +159,7 @@ class InventoryController extends Controller
         }
         foreach ($Data as $value) {
             $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
@@ -448,23 +448,26 @@ class InventoryController extends Controller
         $bahan = Inventory::where('bahan_id', $nama)->with('Bahan', 'Store')->first();
 
         if ($bahan) {
-            if ($status == 'Tambah') {
-                $qtyjml = $qty + $bahan['qty'];
-                $pesan = 'Menambah';
-            } elseif ($status == 'Kurang') {
-                $qtyjml = $bahan['qty'] - $qty;
+
+            if ($bahan['qty'] < $qty) {
+                $status = 'Tambah';
                 $pesan = 'Mengurangi';
+                $qtyjml = $qty;
+                $qtyAk = $qty - $bahan['qty'];
             } else {
-                $qtyjml = '';
-                $pesan = '';
+                $qtyjml = $qty;
+                $status = 'Kurang';
+                $pesan = 'Menambah';
+                $qtyAk = $qty - $bahan['qty'];
             }
+
             $input = [
                 'tgl' => date('Y-m-d H:i:s'),
                 'bahan_id' => $nama,
                 'nama' => $bahan['bahan']->nama,
                 'uom' => $bahan['satuan'],
                 'status' => $status,
-                'qty' => $qty,
+                'qty' => $qtyAk,
                 'ket' => $ket,
                 'store_id' => $request->session()->get('store_id'),
                 'users_id' => $request->session()->get('id'),
@@ -563,13 +566,13 @@ class InventoryController extends Controller
         }
         echo '</div>
         <style>
-        
+
         .page{
             font-family: monospace;
-            display: grid;  
-            grid-gap: 5px;  
+            display: grid;
+            grid-gap: 5px;
             grid-template-columns: repeat(auto-fit, 145px);
-            grid-template-rows: repeat(2, 75px); 
+            grid-template-rows: repeat(2, 75px);
         }
         .barcode {
             text-align:center;
@@ -610,13 +613,13 @@ class InventoryController extends Controller
         }
         echo '</div>
         <style>
-        
+
         .page{
             font-family: monospace;
-            display: grid;  
-            grid-gap: 5px;  
+            display: grid;
+            grid-gap: 5px;
             grid-template-columns: repeat(auto-fit, 145px);
-            grid-template-rows: repeat(2, 75px); 
+            grid-template-rows: repeat(2, 75px);
         }
         .barcode {
             text-align:center;
