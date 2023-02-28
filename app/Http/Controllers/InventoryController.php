@@ -474,33 +474,25 @@ class InventoryController extends Controller
                 'qty_sebelum' => $bahan['qty']
             ];
 
-            if ($qtyjml) {
-                if (Inventory::where('id', $bahan['id'])->update(['qty' => $qtyjml])) {
-                    if (OpnameStock::insert($input)) {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'success',
-                            'pesan' =>  'Berhasil ' . $pesan . ' Stock'
-                        ];
-                    } else {
-                        $data = [
-                            'toast' => true,
-                            'status' => 'error',
-                            'pesan' =>  'Terjadi kegagalan system'
-                        ];
-                    };
+            if (Inventory::where('id', $bahan['id'])->update(['qty' => $qtyjml])) {
+                if (OpnameStock::insert($input)) {
+                    $data = [
+                        'toast' => true,
+                        'status' => 'success',
+                        'pesan' =>  'Berhasil ' . $pesan . ' Stock'
+                    ];
                 } else {
                     $data = [
                         'toast' => true,
                         'status' => 'error',
                         'pesan' =>  'Terjadi kegagalan system'
                     ];
-                }
+                };
             } else {
                 $data = [
                     'toast' => true,
                     'status' => 'error',
-                    'pesan' =>  'Status Tidak didukung'
+                    'pesan' =>  'Terjadi kegagalan system'
                 ];
             }
         } else {
