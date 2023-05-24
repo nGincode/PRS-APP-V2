@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Bahan;
 use App\Models\Belanja;
 use App\Models\Orderitem;
 use App\Models\POSBillItem;
@@ -122,11 +123,14 @@ class BelanjaExport implements
                             $uom = $row->uom;
                         }
 
+
+
+                        $bahan = Bahan::where('nama', $row->nama)->first();
                         $array[] = [
                             $no++,
                             date('Y/m/d', strtotime($row->tgl)),
                             $row->kategori,
-                            $row->bahan->kode,
+                            $bahan->kode,
                             $row->nama,
                             $qty,
                             $uom,
