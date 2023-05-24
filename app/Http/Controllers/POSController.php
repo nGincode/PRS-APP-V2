@@ -135,13 +135,13 @@ class POSController extends Controller
                     <button class="btn btn-warning btn-sm" id="TblMinus_' . $value['id'] . '"  onclick="positemminus(' . $value['id'] . ')">
                     <i class="fa fa-minus"></i>
                     </button>
-                    
+
                     <button class="btn btn-success btn-sm" id="TblPlus_' . $value['id'] . '"  onclick="positemplus(' . $value['id'] . ')">
                     <i class="fa fa-plus"></i>
                     </button>
                     </div>
                 <hr>
-                
+
                 </div>';
         }
     }
@@ -565,7 +565,7 @@ class POSController extends Controller
 
         foreach ($Data as $key => $value) {
             $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
@@ -621,7 +621,7 @@ class POSController extends Controller
         $variable = POSBillItem::where('store_id', $id_store)->where('posbill_id', $id)->get();
         $bill = POSBill::where('id', $id)->first();
 
-        $html = ' 
+        $html = '
         <h5 style="float:right"><b>' . $bill['no_bill'] . '</b></h5>
         <h6><b>' . $this->tanggal($bill['tgl']) . '</b></h6>
         <table class="table table-bordered table-striped">
@@ -642,7 +642,7 @@ class POSController extends Controller
                         <td>' . $this->rupiah($value['harga']) . '</td>
                         <td>' . $this->rupiah($value['qty'] * $value['harga']) . '</td>
                     </tr>
-                       
+
             ';
         }
         $html .= '
@@ -668,7 +668,7 @@ class POSController extends Controller
         $store = Store::where('id', $request->session()->get('store_id'))->first();
 
         $html = '
-        
+
 			<!DOCTYPE html>
 			<html>
 			<head>
@@ -692,19 +692,21 @@ class POSController extends Controller
                     <div style="padding-left: 5px; border-bottom:solid 1px black;">
                         <font style="float:left">' . $Bill['no_bill'] . ' </font>
                         <font style="float:right">' . $this->tanggal($Bill['tgl'], true) . '</font>
-                        <br>A/N     : ' . $Bill['nama_bill'] . ' 
-                        <br>No Hp   : ' . $Bill['no_hp'] . ' 
-                        <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . ' 
+                        <br>A/N     : ' . $Bill['nama_bill'] . '
+                        <br>No Hp   : ' . $Bill['no_hp'] . '
+                        <br>Pemesan   : ' . ($Bill['store'] ?? 'Pelanggan') . '
                     </div>
                     <div style="padding-left:5px;margin-top:5px;border-bottom:solid 1px black;">
             ';
             foreach ($BillItem as $key => $value) {
+
+                $Bahan = Bahan::where('name', $value['nama'])->first();
                 $jumlah += $value['qty'] * $value['harga'];
                 $html .=
-                    $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
+                    '#' . $Bahan['kode'] . ' ' . $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
             }
             $html .= '</div>
-            
+
             <div style="padding-left: 5px;margin-top:5px;border-bottom:solid 1px black;">
             <b>
             Jumlah
@@ -715,14 +717,14 @@ class POSController extends Controller
             Tax
             <b>
             <font style="float:right">' . 0 . '</font><br>
-            Total 
+            Total
             <font style="float:right">' . $this->rupiah($jumlah) . '</font>
             </b>
             </div>
             <div style="float:left;text-align: center;padding-left: 5px;">
             Pengirim<br><br><br>_________
-            </div> 
-            
+            </div>
+
             <div style="float:right;text-align: center;padding-left: 5px">
             Penerima<br><br><br>_________
             </div>
@@ -737,7 +739,7 @@ class POSController extends Controller
             ';
         }
         $html .= '
-        
+
 			<style>html,body{height:unset;font-family: monospace;} div{padding-top:5px;padding-bottom:5px;}</style>
 			</body>
 			</html>';
@@ -829,7 +831,7 @@ class POSController extends Controller
         $store = Store::where('id', $request->session()->get('store_id'))->first();
 
         $html = '
-        
+
 			<!DOCTYPE html>
 			<html>
 			<head>
@@ -855,7 +857,7 @@ class POSController extends Controller
                     <div style="border-bottom:dashed 1px black">
                     <center><b>Penjualan</b></center>
                     </div>
-                    
+
                     <div style="padding-left: 5px; border-bottom:solid 1px black;">
                     <center>
                     ';
@@ -914,8 +916,8 @@ class POSController extends Controller
         $html .= '
             <div style="float:left;text-align: center;padding-left: 5px;">
             Penanggung Jawab<br><br><br>_________________
-            </div> 
-            
+            </div>
+
             <div style="float:right;text-align: center;padding-left: 5px">
             Mengetahui<br><br><br>_________
             </div>
@@ -930,7 +932,7 @@ class POSController extends Controller
             ';
 
         $html .= '
-        
+
 			<style>html,body{height:unset;font-family: monospace;} div{padding-top:5px;padding-bottom:5px;}</style>
 			</body>
 			</html>';
