@@ -700,7 +700,7 @@ class POSController extends Controller
             ';
             foreach ($BillItem as $key => $value) {
 
-                $Bahan = Bahan::where('name', $value['nama'])->first();
+                $Bahan = Bahan::where('nama', $value['nama'])->first();
                 $jumlah += $value['qty'] * $value['harga'];
                 $html .=
                     '#' . $Bahan['kode'] . ' ' . $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
