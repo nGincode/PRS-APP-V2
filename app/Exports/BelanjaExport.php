@@ -101,7 +101,7 @@ class BelanjaExport implements
     public function array(): array
     {
         $data = [];
-        $belanja = Belanja::where('up', true)->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->orderBy('kategori', 'DESC')->get();
+        $belanja = Belanja::where('up', true)->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'Bahan')->orderBy('kategori', 'DESC')->get();
         $kategori = Belanja::select('kategori')->distinct()->where('up', true)->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])
             ->get();
 
@@ -126,7 +126,7 @@ class BelanjaExport implements
                             $no++,
                             date('Y/m/d', strtotime($row->tgl)),
                             $row->kategori,
-                            $row->kode,
+                            $row->bahan->kode,
                             $row->nama,
                             $qty,
                             $uom,
