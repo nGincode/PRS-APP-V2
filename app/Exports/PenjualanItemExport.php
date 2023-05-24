@@ -124,8 +124,8 @@ class PenjualanItemExport implements
 
     public function array(): array
     {
-        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store', 'PosBill')->orderBy('tgl', 'ASC')->get();
-        $data = POSBillItem::select('nama')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->get();
+        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", strtotime($this->tgl_akhir)))])->with('Store', 'PosBill')->orderBy('tgl', 'ASC')->get();
+        $data = POSBillItem::select('nama')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", strtotime($this->tgl_akhir)))])->get();
 
         $result = [];
         $no = 1;
