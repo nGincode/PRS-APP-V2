@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Bahan;
 use App\Models\Orderitem;
 use App\Models\POSBillItem;
 use App\Models\Store;
@@ -88,6 +89,7 @@ class PenjualanAllExport implements
                 'Tgl',
                 'Dari',
                 'Tujuan',
+                'Kode',
                 'Nama Barang',
                 'Harga Beli',
                 'Qty',
@@ -113,6 +115,12 @@ class PenjualanAllExport implements
             foreach ($pos as $row) {
                 $belanja = Belanja::where('bahan_id', $row->bahan_id)->latest()->first();
 
+                if ($bahan = Bahan::where('id', $row->bahan_id)->first()) {
+                    $kode = $bahan['kode'];
+                } else {
+                    $kode = '';
+                }
+
                 if ($belanja) {
                     $hargabeli = $belanja['stock_harga'];
                 } else {
@@ -123,6 +131,7 @@ class PenjualanAllExport implements
                     date('Y/m/d', strtotime($row->tgl)),
                     'POS',
                     ($row['Posbill']->store ?? 'Pelanggan'),
+                    $kode,
                     $row->nama,
                     $hargabeli,
                     $row->qty,
@@ -136,11 +145,19 @@ class PenjualanAllExport implements
 
         if ($order) {
             foreach ($order as $v) {
+
+                if ($bahan = Bahan::where('id', $v->nama)->first()) {
+                    $kode = $bahan['kode'];
+                } else {
+                    $kode = '';
+                }
+
                 $data[] = [
                     $no++,
                     date('Y/m/d', strtotime($v->tgl)),
                     'Order',
                     $v->store->nama,
+                    $kode,
                     $v->nama,
                     $v->qty_deliv,
                     $v->satuan,
