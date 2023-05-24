@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Bahan;
 use App\Models\Orderitem;
 use App\Models\POSBill;
 use App\Models\POSBillItem;
@@ -108,6 +109,7 @@ class PenjualanItemExport implements
         $result[] = [];
         $result[] = [
             '#',
+            'Kode',
             'Nama Barang',
             'Harga Beli',
             'Qty',
@@ -151,8 +153,16 @@ class PenjualanItemExport implements
 
             $totalall += $total;
 
+            if ($bahan = Bahan::where('id', $val[0]->bahan_id)->first()) {
+                $kode = $bahan['kode'];
+            } else {
+                $kode = '';
+            }
+
+
             $pos = [
                 $no++,
+                $kode,
                 $value['nama'],
                 $hargabeli,
                 $qty,
