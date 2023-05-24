@@ -94,10 +94,10 @@ class PenjualanItemExport implements
         $result[] = ['TIPE : ITEM'];
         $result[] = [''];
         $result[] = ['INFO'];
-        $store = POSBillItem::select('tujuan')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'PosBill')->get();
+        $store = POSBillItem::select('tujuan')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store', 'PosBill')->get();
         $totalperoutletall = 0;
         foreach ($store as $va) {
-            $vall = POSBillItem::where('tujuan', $va['tujuan'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->orderBy('tgl', 'ASC')->get();
+            $vall = POSBillItem::where('tujuan', $va['tujuan'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->orderBy('tgl', 'ASC')->get();
             $totalperoutlet = 0;
             foreach ($vall as $vv) {
                 $totalperoutlet += $vv['qty'] * $vv['harga'];
@@ -124,14 +124,14 @@ class PenjualanItemExport implements
 
     public function array(): array
     {
-        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'PosBill')->orderBy('tgl', 'ASC')->get();
-        $data = POSBillItem::select('nama')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->get();
+        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store', 'PosBill')->orderBy('tgl', 'ASC')->get();
+        $data = POSBillItem::select('nama')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->get();
 
         $result = [];
         $no = 1;
         $totalall = 0;
         foreach ($data as $key => $value) {
-            $val = POSBillItem::where('nama', $value['nama'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->orderBy('tgl', 'ASC')->get();
+            $val = POSBillItem::where('nama', $value['nama'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->orderBy('tgl', 'ASC')->get();
 
             $belanja = Belanja::where('bahan_id', $val[0]->bahan_id)->latest()->first();
             if ($belanja) {

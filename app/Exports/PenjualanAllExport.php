@@ -105,8 +105,8 @@ class PenjualanAllExport implements
     {
 
         $data = [];
-        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store', 'Posbill')->orderBy('tgl', 'ASC')->orderBy('tgl', 'ASC')->get();
-        $order = Orderitem::where('up', true)->where('logistik', $this->store)->whereBetween('tgl', [$this->tgl_awal, $this->tgl_akhir])->with('Store')->get();
+        $pos = POSBillItem::where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store', 'Posbill')->orderBy('tgl', 'ASC')->orderBy('tgl', 'ASC')->get();
+        $order = Orderitem::where('up', true)->where('logistik', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store')->get();
 
         $no = 1;
         $total = 0;
