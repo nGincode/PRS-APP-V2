@@ -81,7 +81,7 @@ class BelanjaExport implements
         $store = Store::where('id', $this->store)->first();
         return [
             [
-                strtoupper('LAPORAN Belanja ' . $store->nama . ' Tanggal ' . date('d/m/Y', strtotime("-1 day", strtotime($this->tgl_awal))) . ' - ' . date('d/m/Y', strtotime($this->tgl_akhir)))
+                strtoupper('LAPORAN Belanja ' . $store->nama . ' Tanggal ' . date('d/m/Y', strtotime($this->tgl_awal)) . ' - ' . date('d/m/Y', strtotime($this->tgl_akhir)))
             ],
             [],
             [
