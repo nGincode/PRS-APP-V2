@@ -94,10 +94,10 @@ class PenjualanItemExport implements
         $result[] = ['TIPE : ITEM'];
         $result[] = [''];
         $result[] = ['INFO'];
-        $store = POSBillItem::select('tujuan')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->with('Store', 'PosBill')->get();
+        $store = POSBillItem::select('tujuan')->distinct()->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", strtotime($this->tgl_akhir)))])->with('Store', 'PosBill')->get();
         $totalperoutletall = 0;
         foreach ($store as $va) {
-            $vall = POSBillItem::where('tujuan', $va['tujuan'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", $this->tgl_akhir))])->orderBy('tgl', 'ASC')->get();
+            $vall = POSBillItem::where('tujuan', $va['tujuan'])->where('store_id', $this->store)->whereBetween('tgl', [$this->tgl_awal, date('Y-m-d', strtotime("+1 day", strtotime($this->tgl_akhir)))])->orderBy('tgl', 'ASC')->get();
             $totalperoutlet = 0;
             foreach ($vall as $vv) {
                 $totalperoutlet += $vv['qty'] * $vv['harga'];
