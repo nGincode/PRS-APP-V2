@@ -128,7 +128,7 @@ class BelanjaExport implements
                         if ($bahan = Bahan::where('nama', $row->nama)->first()) {
                             $kode = $bahan['kode'];
                         } else {
-                            $kode = $bahan['kode'];
+                            $kode = '';
                         }
 
                         $array[] = [
