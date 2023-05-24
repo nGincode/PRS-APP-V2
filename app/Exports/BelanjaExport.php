@@ -125,12 +125,17 @@ class BelanjaExport implements
 
 
 
-                        $bahan = Bahan::where('nama', $row->nama)->first();
+                        if ($bahan = Bahan::where('nama', $row->nama)->first()) {
+                            $kode = $bahan['kode'];
+                        } else {
+                            $kode = $bahan['kode'];
+                        }
+
                         $array[] = [
                             $no++,
                             date('Y/m/d', strtotime($row->tgl)),
                             $row->kategori,
-                            $bahan->kode,
+                            $kode,
                             $row->nama,
                             $qty,
                             $uom,
