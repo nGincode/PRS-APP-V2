@@ -327,7 +327,7 @@ class InventoryController extends Controller
     {
         $id = $request->input('id');
         if ($id) {
-            $inv = Inventory::where('store_id', $id)->with('Bahan')->get();
+            $inv = Inventory::where('store_id', $id)->where('delete', false)->with('Bahan')->get();
             if ($inv) {
                 $data = [
                     'status' => 'success',
