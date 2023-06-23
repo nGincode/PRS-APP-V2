@@ -702,8 +702,13 @@ class POSController extends Controller
 
                 $Bahan = Bahan::where('nama', $value['nama'])->first();
                 $jumlah += $value['qty'] * $value['harga'];
+                if ($Bahan['kode']) {
+                    $kode = $Bahan['kode'];
+                } else {
+                    $kode = '-';
+                }
                 $html .=
-                    '#' . $Bahan['kode'] . ' ' . $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
+                    '#' . $kode . ' ' . $value['nama'] . '<br>'  . '<font style="float:right">' . $this->rupiah($value['qty'] * $value['harga']) . '</font>' . $value['qty'] . ' x ' . $this->rupiah($value['harga']) . '<br><br>';
             }
             $html .= '</div>
 
