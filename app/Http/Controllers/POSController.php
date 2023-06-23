@@ -702,7 +702,7 @@ class POSController extends Controller
 
                 $Bahan = Bahan::where('nama', $value['nama'])->first();
                 $jumlah += $value['qty'] * $value['harga'];
-                if ($Bahan['kode']) {
+                if (isset($Bahan['kode'])) {
                     $kode = $Bahan['kode'];
                 } else {
                     $kode = '-';
