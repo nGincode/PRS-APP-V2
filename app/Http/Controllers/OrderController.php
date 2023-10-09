@@ -669,7 +669,7 @@ class OrderController extends Controller
         $variable = Orderitem::where('order_id', $id)->get();
         $bill = Order::with('Users')->where('id', $id)->first();
 
-        $html = ' 
+        $html = '
         <h5 style="float:right"><b>Bill ' . '#' . $bill['bill'] . '</b></h5>
         <h6><b>' . $this->tanggal($bill['tgl'], true) . '</b></h6>
         <table class="table table-bordered table-striped">
@@ -703,7 +703,7 @@ class OrderController extends Controller
                         <td>' . $this->rupiah($value['harga']) . '</td>
                         <td>' . $this->rupiah($totalitem) . '</td>
                     </tr>
-                       
+
             ';
             $total += $totalitem;
         }
@@ -759,7 +759,7 @@ class OrderController extends Controller
             foreach ($Data as $key => $value) {
 
                 $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
@@ -857,7 +857,7 @@ class OrderController extends Controller
                 if ($value['qty_deliv'] === null) {
                     Orderitem::where('id', $value['id'])->update(['qty_deliv' => $value['qty_order']]);
                 }
-                $inventory = Inventory::where('bahan_id', $value['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
+                $inventory = Inventory::where('delete', false)->where('bahan_id', $value['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
 
                 if ($inventory['auto_harga'] == 1) {
                     $harga = $inventory['harga_auto'];

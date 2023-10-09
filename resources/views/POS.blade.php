@@ -17,8 +17,8 @@
             <!-- /.card-header -->
             <div class="card-body">
                 <div class="row">
-    
-@if(!$closing)
+
+                    @if(!$closing)
 
                     <div class="col-sm-8">
 
@@ -98,17 +98,17 @@
                             </div>
                         </div>
                         <button href="#" id="submit" disabled class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#transaksi"><B>--| SUBMIT |--</B></button>
-                
+
                         @if($pos or $belanja)
                         <br>
-                        <a class="btn btn-danger btn-lg btn-block"onclick="closing()">CLOSING</a>
+                        <a class="btn btn-danger btn-lg btn-block" onclick="closing()">CLOSING</a>
                         @endif
                     </div>
 
                     @else
                     <div class="col-lg-12">
-                    <h2><b>Telah di Closing</b></h2><br>
-                    <a href="/POS/Print/Closing"><button class="btn btn-dark"><i class="fa fa-print"></i> Struk Closing</button></a>
+                        <h2><b>Telah di Closing</b></h2><br>
+                        <a href="/POS/Print/Closing"><button class="btn btn-dark"><i class="fa fa-print"></i> Struk Closing</button></a>
                     </div>
                     @endif
                 </div>
@@ -298,11 +298,11 @@
             },
             error: function(xhr, status, error) {
                 // popup(status, true, xhr.status + " " + error);
-                if(xhr.status === 419){
-                popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
+                if (xhr.status === 419) {
+                    popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
                 }
-                if(xhr.status === 500){
-                popup('error', true, 'Server Masih Berproses');
+                if (xhr.status === 500) {
+                    popup('error', true, 'Server Masih Berproses');
                 }
                 $('.waiting').hide('');
                 layar();
@@ -457,11 +457,11 @@
             },
             success: function(data) {
                 if (data.status) {
-                if(xhr.status === 419){
-                    popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
+                    if (xhr.status === 419) {
+                        popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
                     }
-                    if(xhr.status === 500){
-                    popup('error', true, 'Server Masih Berproses');
+                    if (xhr.status === 500) {
+                        popup('error', true, 'Server Masih Berproses');
                     }
                     $('#TblPlus_' + id).prop('disabled', false);
                     $('#key_' + id).prop('disabled', false);
@@ -488,13 +488,13 @@
             },
             success: function(data) {
                 if (data.status) {
-                if(xhr.status === 419){
-                popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
-                }
-                if(xhr.status === 500){
-                popup('error', true, 'Server Masih Berproses');
-                }
-                $('#TblMinus_' + id).prop('disabled', false);
+                    if (xhr.status === 419) {
+                        popup('error', true, 'Telalu Cepat, Coba Pelan Pelan');
+                    }
+                    if (xhr.status === 500) {
+                        popup('error', true, 'Server Masih Berproses');
+                    }
+                    $('#TblMinus_' + id).prop('disabled', false);
                 } else {
                     layar();
                 }
@@ -734,7 +734,7 @@
 
     });
 
-    
+
     function closing() {
         Swal.fire({
             title: 'Yakin Ingin Closing ?',
@@ -755,16 +755,16 @@
                     },
                     success: function(data) {
                         if (data.status === 'success') {
-                            popup(data.status, data.toast, data.pesan); 
-                            
-                            setTimeout(function(){
+                            popup(data.status, data.toast, data.pesan);
+
+                            setTimeout(function() {
                                 window.location.reload();
-                            },1000)
+                            }, 1000)
                         } else {
-                            popup(data.status, data.toast, data.pesan); 
-                            setTimeout(function(){
+                            popup(data.status, data.toast, data.pesan);
+                            setTimeout(function() {
                                 window.location.reload();
-                            },1000)
+                            }, 1000)
                         }
                     }
                 });

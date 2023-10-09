@@ -617,7 +617,7 @@ class BelanjaController extends Controller
             }
 
             $button = '<div class="btn-group dropleft">
-                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false"> 
+                <button type="button" class="btn btn-default dropdown-toggle"data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">';
@@ -655,7 +655,7 @@ class BelanjaController extends Controller
             $viewthstore = '';
         }
 
-        $html = ' 
+        $html = '
         <h5><b>' . $this->tanggal($id, true) . '</b></h5>
         <table class="table table-bordered table-striped">
                             <thead>
@@ -729,7 +729,7 @@ class BelanjaController extends Controller
                         <td>' . $hutang . ($value['ket'] ?? '-') . '</td>
                         <td>' . $this->rupiah($total) . $hapus . $upload . '</td>
                     </tr>
-                       
+
             ';
         }
         $html .= '
@@ -749,7 +749,7 @@ class BelanjaController extends Controller
         if ($belanja = Belanja::where('id', $id)->first()) {
 
             $bhn = Inventory::where('bahan_id', $belanja['bahan_id'])->where('store_id', $request->session()->get('store_id'))->first();
-            if ($bhn  && $belanja) {
+            if ($bhn) {
                 if ($belanja['stock']) {
                     $jumlah = $belanja['stock'] + $bhn['qty'];
                     if (Inventory::where('bahan_id', $belanja['bahan_id'])->update(['qty' => $jumlah])) {
@@ -766,21 +766,21 @@ class BelanjaController extends Controller
                             'pesan' =>  'Gagal'
                         ];
                     };
-                } else {
-                    Belanja::where('id', $belanja['id'])->update(['up' => true]);
-                    $data = [
-                        'toast' => true,
-                        'status' => 'success',
-                        'pesan' =>  'Berhasil'
-                    ];
                 }
             } else {
+                Belanja::where('id', $belanja['id'])->update(['up' => true]);
                 $data = [
                     'toast' => true,
-                    'status' => 'error',
-                    'pesan' =>  'Gagal Mengambil Data'
+                    'status' => 'success',
+                    'pesan' =>  'Berhasil'
                 ];
             }
+        } else {
+            $data = [
+                'toast' => true,
+                'status' => 'error',
+                'pesan' =>  'Gagal Mengambil Data'
+            ];
         }
         echo json_encode($data);
     }

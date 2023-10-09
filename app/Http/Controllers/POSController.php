@@ -115,12 +115,42 @@ class POSController extends Controller
             return redirect()->to('/');
         }
 
-        $pos = POS::where('store_id', $request->session()->get('store_id'))->with('Bahan')->get();
-
-
+        $pos = POS::where('store_id', $request->session()->get('store_id'))->with('Bahan', 'Inventory')->get();
 
         foreach ($pos as $key => $value) {
-            echo  $data = ' <div>
+            if ($value['inventory']) {
+
+                if ($value['inventory']['auto_harga']) {
+                    $harga = $value['inventory']['harga_auto'];
+                } else {
+                    $harga = $value['inventory']['harga_manual'];
+                }
+                echo  $data = ' <div>
+                <div class="float-right">
+                    <button class="btn btn-danger btn-sm"  onclick="positemhapus(' . $value['id'] . ')">
+                    <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <p style="float:right"><b>' . $this->rupiah($value['qty'] * $harga) . ' &nbsp</b></p>
+                 <h5 class="card-title"><b>' . $value['bahan']->nama . '</b><br><small>' . $value['bahan']->kode . '</small></h5>
+                <p class="card-text" style="margin-bottom:2px">' . $this->rupiah($harga) . '/' . $value['satuan'] . '</p>
+                    <div style="float: right;margin-top: -1.5rem;">
+                    <input type="number" onchange="qtyubah(' . $value['id'] . ',this.value)" style="max-width: 61px;text-align: right;border: unset;border-bottom: 2px #478faf solid;" id="key_' . $key . '" value="' . $value['qty'] . '">
+                    <button class="btn btn-warning btn-sm" id="TblMinus_' . $value['id'] . '"  onclick="positemminus(' . $value['id'] . ')">
+                    <i class="fa fa-minus"></i>
+                    </button>
+
+                    <button class="btn btn-success btn-sm" id="TblPlus_' . $value['id'] . '"  onclick="positemplus(' . $value['id'] . ')">
+                    <i class="fa fa-plus"></i>
+                    </button>
+                    </div>
+                <hr>
+
+                </div>';
+            } else {
+                echo  $data = ' <div>
+                <font color="red">Item ini telah di hapus di inventory<font>
+
                 <div class="float-right">
 
                     <button class="btn btn-danger btn-sm"  onclick="positemhapus(' . $value['id'] . ')">
@@ -141,8 +171,8 @@ class POSController extends Controller
                     </button>
                     </div>
                 <hr>
-
                 </div>';
+            }
         }
     }
 
